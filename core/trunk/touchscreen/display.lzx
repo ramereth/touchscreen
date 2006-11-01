@@ -1,0 +1,160 @@
+<!-- ================================================ -->
+<!--  Laszlo app intercommunication sample (Server)   -->
+<!--                                                  -->
+<!--  example of how to use AJAX and a Servlet to     -->
+<!--  communicate between two Laszlo applications     -->
+<!--  running in different browsers or even possibly  -->
+<!--  on separate machines                            -->
+<!--                                                  -->
+<!--  Author: Peter Krenesky                          -->
+<!--  Date: Aug 1, 2006                               -->
+<!-- ================================================ -->
+<canvas layout="x" debug="true" oninit="initServer();">
+    <debug width="600" height="250" x="400" y="5" fontsize="10"/>
+
+    <method name="initServer" >
+        canvas.connection.connect();
+        slideShowInit();
+        reset();
+    </method>
+
+    <!-- ================================================= -->
+    <!--   Connection and Messaging                        -->
+    <!-- ================================================= -->
+    <include href="connection.lzx" />
+    <connectiondatasource name="mycd">
+        <dataset name="command" />
+    </connectiondatasource>
+    <datapointer xpath="mycd:command:/*">
+        <!-- called when command is received, currently just -->
+        <!-- calls method with same name as command -->
+        <handler name="ondata">
+            <![CDATA[
+
+            //stop slideshow
+            canvas.slideshow=false;
+            LzTimer.removeTimer(canvas.showNextSlideDelegate);
+
+            //get and parse the command
+            var raw = this.xpathQuery('/text()');
+
+            //split string into an array
+            canvas.commandParams = raw.split(",");
+
+            //create delegate for the function we want to call
+            var del = new LzDelegate(eval(canvas.commandParams[0]), canvas.commandParams[1]);
+
+            //execute the function
+            del.execute();
+
+            ]]>
+        </handler>
+        <method event="onerror">
+            Debug.write("problems contacting server");
+        </method>
+
+        <method event="ontimeout">
+            Debug.write("server time out");
+        </method>
+    </datapointer>
+    <!-- variable for storing params in case they are needed by the function being called -->
+    <attribute name="commandParams" />
+
+    <!-- ================================================= -->
+    <!--   Slide Show functionality                        -->
+    <!-- ================================================= -->
+    <attribute name="currentSlideIndex" type="number" value="-1"/>
+    <attribute name="currentSlide" />
+    <attribute name="showNextSlideDelegate" />
+    <attribute name="slideshow" type="boolean" value="true"/>
+    <method name="showNextSlide">
+        if(slideshow) {
+            canvas.currentSlide.hide();
+            getNextSlide();
+            while (!currentSlide.slideshow){
+                getNextSlide();
+            }
+            Debug.write("next slide: " + canvas.currentSlide);
+            canvas.currentSlide.show();
+            LzTimer.resetTimer(canvas.showNextSlideDelegate, currentSlide.duration);
+        }
+    </method>
+    <method name="getNextSlide">
+        if (currentSlideIndex+1 == screenContainer.subviews.length) {
+            canvas.currentSlideIndex = 0;
+        } else {
+            canvas.currentSlideIndex = currentSlideIndex + 1;
+        }
+        canvas.currentSlide = screenContainer.subviews[canvas.currentSlideIndex];
+        Debug.write("next possible slide: " + canvas.currentSlide);
+    </method>
+    <method name="slideShowInit">
+        canvas.showNextSlideDelegate = new LzDelegate(canvas, "showNextSlide" );
+        getNextSlide();
+        currentSlideIndex=-1;
+    </method>
+
+    <method name="reset">
+        hideall();
+        canvas.slideshow=true;
+        showNextSlide();
+    </method>
+
+    <method name="hideall" args="save" >
+        for (var screen in screenContainer.subviews) {
+            if(save != screenContainer.subviews[screen]) {
+                screenContainer.subviews[screen].hide();
+            }
+        }
+    </method>
+
+
+    <!-- ================================================= -->
+    <!--   Screens that make up the display.  Screens      -->
+    <!--   must be in the view screenContainer for them to -->
+    <!--   to be registered for the slide show and         -->
+    <!--   autohide.                                       -->
+    <!-- ================================================= -->
+    <include href="screen.lzx" />
+    <view name="screenContainer">
+        <screen name="foo" id="foo" bgcolor="red" >
+            <image src="http://osuosl.org/themes/newosl/osl.png" align="center"/>
+        </screen>
+
+        <screen id="bar" name="barn" bgcolor="green" slideshow="false">
+            bar Screen
+            <image name="A" opacity="0.0" src="http://osuosl.org/files/deborahbryant.jpg"/>
+            <image name="B" opacity="0.0" src="http://osuosl.org/files/buchanae.jpg"/>
+            <image name="C" opacity="0.0" src="http://osuosl.org/files/mikeclay.jpg"/>
+            <image name="D" opacity="0.0" src="http://osuosl.org/files/boogles.jpg"/>
+            <method name="showBio" args="name">
+                <![CDATA[
+                var name = canvas.commandParams[2];           
+                Debug.write("name: " + name);
+                for(i=0; i<this.subviews.length; i++) {
+                    if (this.subviews[i].name == name) {
+                        this.subviews[i].animate("opacity",1.0,500);
+                    } else {
+                        this.subviews[i].animate("opacity",0.0,500);
+                    }
+                }
+                ]]>
+            </method>
+        </screen>
+
+        <screen id="noo" name="noon" bgcolor="blue" x="5" y="-500">
+            noo Screen
+            <animatorgroup name="_show" start="false">
+                <animator attribute="y" to="5" duration="1000"/>
+            </animatorgroup>
+            <animatorgroup name="_hide" start="false">
+                <animator attribute="y" to="-500" duration="1000"/>
+            </animatorgroup>
+        </screen>
+
+        <screen id="zoo" bgcolor="gray">
+            zoo Screen
+        </screen>
+    </view>
+</canvas>
+

@@ -1,0 +1,14 @@
+<view x="20" y="580" width="600" height="200">
+            <view bgcolor="0x337EEF" width="${parent.width}" height="30">
+                <text>weee</text>
+            </view>
+            <view bgcolor="white" width="${parent.width}" y="30" height="${parent.height-30}">
+                <view bgcolor="black" width="${parent.width-2}" x="1" y="1" height="${parent.height-2}" >
+                    <view bgcolor="0x337EEF" width="${parent.width-2}" height="${parent.height-2}" x="1" y="1">
+                        <view bgcolor="black" opacity="0.25" width="${parent.width}" height="${parent.parent.height-2}">
+
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </view>

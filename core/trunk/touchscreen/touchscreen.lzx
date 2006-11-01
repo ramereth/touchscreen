@@ -1,0 +1,216 @@
+<!-- ================================================ -->
+<!--  Laszlo app intercommunication sample (Client)   -->
+<!--                                                  -->
+<!--  example of how to use AJAX and a Servlet to     -->
+<!--  communicate between two Laszlo applications     -->
+<!--  running in different browsers or even possibly  -->
+<!--  on separate machines                            -->
+<!--                                                  -->
+<!--  Author: Peter Krenesky                          -->
+<!--  Date: Aug 1, 2006                               -->
+<!-- ================================================ -->
+
+<canvas layout="x" debug="true" oninit="clientInit()" width="1280" height="1024">
+
+    <include href="connection.lzx" />
+
+    <method name="reset" >
+        <!-- TODO: move screen resetting into menuButton class -->
+        foo.animate("opacity",1.0,500);
+        bar.animate("opacity",1.0,500);
+        noo.animate("opacity",1.0,500);
+        zoo.animate("opacity",1.0,500);
+        mycd.sendMessage("*","canvas,reset","command");
+        LzTimer.removeTimer( canvas.resetTimerDelegate );
+    </method>
+
+    <attribute name="resetTimerDelegate"/>
+    <attribute name="resetTimeout" type="number" value="30000"/>
+
+    <connectiondatasource name="mycd">
+        <dataset name="command" />
+    </connectiondatasource>
+
+    <method name="clientInit">
+        connection.connect();
+        canvas.resetTimerDelegate = new LzDelegate(canvas, "reset");
+    </method>
+                                              
+    <class name="contextBar" width="${canvas.width}" height="50" y="150" bgcolor="white">
+        <attribute name="color" type="color" value="0x000000" />
+        <attribute name="bartext" type="string" value=""/>
+        <view bgcolor="black" y="1" width="${parent.width}" height="48">
+            <view bgcolor="${parent.parent.color}" y="1" width="${parent.width}" height="46">
+                <text resize="true" valign="center" x="15" fgcolor="white" fontsize="28" text="${parent.parent.parent.bartext}"/>
+            </view>
+        </view>
+    </class>
+
+    <class name="menuButton" width="150" height="150" clip="false" extends="view">
+        <attribute name="command" type="string" value=""/>
+	    <attribute name="buttontext" type="string" value=""/>
+        <attribute name="contextbar"/>
+        <attribute name="color" type="color" value="0x000000"/>
+        <text name="_buttontext" resize="true" multiline="false" align="center" valign="middle" fgcolor="white" fontsize="16" fontstyle="bold"/>
+        <method event="onclick">
+            <![CDATA[
+            LzTimer.resetTimer( canvas.resetTimerDelegate, canvas.resetTimeout);
+            if (this.command != '') {
+                mycd.sendMessage("*",this.command,"command");
+            }
+            mainmenu.animate("opacity","0.0",300);
+            contextColorBar.animate("bgcolor","0x337EEF",0);
+            action();
+		]]>
+        </method>
+        <method event="oninit">
+            this._buttontext.setText(buttontext);
+        </method>
+        <method name="action">
+            <!-- method stub override to add other processing-->
+        </method>
+        <contextBar color="${parent.color}" x="${-5-width}">
+            <method event="oninit">
+                parent.contextbar = this;
+                this.bartext = parent.buttontext;
+                Debug.write(parent.buttontext);
+                Debug.write(this.bartext);
+            </method>
+        </contextBar>
+    </class>    
+
+    <resource name="buttonOrange" src="buttons/button-orange4.png"/>
+    <resource name="buttonGreen" src="buttons/button-green.png"/>
+    <resource name="buttonRed" src="buttons/button-red.png"/>
+    <resource name="buttonblue2" src="buttons/button-blue2.png"/>
+    <resource name="buttonblue" src="buttons/button-blue.png"/>
+    <resource name="buttonPurple" src="buttons/button-purple.png"/>
+    <resource name="buttonOrange2" src="buttons/button-orange2.png"/>
+    <resource name="buttonYellow" src="buttons/button-yellow.png"/>
+    <resource name="blue2" src="buttons/blue2.png"/>
+    <resource name="stop" src="buttons/stop.gif"/>
+    <resource name="stopShaded" src="buttons/stop-inactive.gif"/>
+    <resource name="play" src="buttons/play.gif"/>
+    <resource name="playShaded" src="buttons/play-inactive.gif"/>
+    <resource name="next" src="buttons/nextSlide.gif"/>
+    <resource name="prev" src="buttons/prevSlide.gif"/>
+    <resource name="osllogo" src="osl_logo2.png"/>
+
+
+    <image src="background-gray-1280x1024.gif" >
+
+        <view y="0" width="${parent.width}" height="150">
+            <view bgcolor="black" y="0" width="${parent.width}" height="${parent.height}" opacity="0.45"/>
+
+            <view resource="osllogo" x="20" valign="middle"></view>
+
+            <view y="20" x="950" id="slideshowControls">
+                <simplelayout axis="y" spacing="15"/>
+                <text align="center" fgcolor="white" fontstyle="bold" x="0" y="60" fontsize="16">Slideshow</text>
+                <view align="center">
+                    <simplelayout axis="x" spacing="25"/>
+
+                    <view resource="prev" />
+                    <view resource="stop"/>
+                    <view resource="play" />
+                    <view resource="next" />                    
+
+
+                </view>
+            </view>
+
+        </view>
+
+
+
+        <view id="mainmenu" y="250">
+            <view y="0" x="15">
+                <simplelayout axis="x" spacing="15"/>
+                <menuButton id="foo"  resource="buttonOrange" buttontext="About the OSL" command="about,show"/>
+                <menuButton id="noo"  resource="buttonBlue2" buttontext="Hosted Projects" command="noo,show" color="0x337EEF"/>
+                <menuButton id="bar"  resource="buttonGreen" buttontext="Staff">
+                    <attribute name="command" value="staff,show"/>
+                    <attribute name="shown" value="false" type="boolean"/>
+                    <method name="action">
+                        Debug.write(this, 'performing extra actions');
+                        if(!shown) {
+                        show.doStart();
+                        this.submenu.a.animate("opacity", 1.0, 600)
+                        this.submenu.b.animate("opacity", 1.0, 600)
+                        this.submenu.c.animate("opacity", 1.0, 600)
+                        this.submenu.d.animate("opacity", 1.0, 600)
+                        foo.animate("opacity",0.0,200);
+                        noo.animate("opacity",0.0,200);
+                        zoo.animate("opacity",0.0,200);
+                        shown = true;
+                        }
+                    </method>
+                    <method name="close">
+                        _close.doStart();
+                        shown = false;
+                        this.submenu.a.animate("opacity", 0.0, 200)
+                        this.submenu.b.animate("opacity", 0.0, 200)
+                        this.submenu.c.animate("opacity", 0.0, 200)
+                        this.submenu.d.animate("opacity", 0.0, 200)
+                        canvas.reset();
+                    </method>
+                    <animatorgroup name="show" process="simultaneous" start="false">
+                        <animator attribute="x" to="15" duration="500"/>
+                        <animator attribute="width" to="315" duration="500"/>
+                        <animator attribute="height" to="315" duration="500"/>
+                    </animatorgroup>
+                    <animatorgroup name="_close" process="simultaneous" start="false">
+                        <animator attribute="x" to="180" duration="200"/>
+                        <animator attribute="width" to="150" duration="200"/>
+                        <animator attribute="height" to="150" duration="200"/>
+                        <animator attribute="height" to="150" duration="200"/>
+                    </animatorgroup>
+                    <view name="submenu" x="15" y="15">
+                        <menuButton name="closer" bgcolor="black" fgcolor="white" width="55" height="30" x="245" y="-15" fontsize="20" label="close">
+                            <method name="action">parent.parent.close();</method>
+                            <attribute name="command" value="canvas,reset"/>
+                        </menuButton>
+                        <menuButton name="a" bgcolor="yellow" width="100" height="100" y="40" opacity="0.0" fontsize="80" command="bar,showBio,A">
+                            A
+                        </menuButton>
+                        <menuButton name="b" bgcolor="yellow" width="100" height="100" y="40" x="180" opacity="0.0"  fontsize="80" command="bar,showBio,B">
+                            B
+                        </menuButton>
+                        <menuButton name="c" bgcolor="yellow" width="100" height="100" y="180" opacity="0.0"  fontsize="80" command="bar,showBio,C">
+                            C
+                        </menuButton>
+                        <menuButton name="d" bgcolor="yellow" width="100" height="100" x="180" y="180" opacity="0.0"  fontsize="80" command="bar,showBio,D">
+                            D
+                        </menuButton>
+                    </view>
+                </menuButton>
+                <menuButton id="noo"  resource="buttonPurple" buttontext="Rack View" command="noo,show"/>
+            </view>
+            <view y="180" x="15">
+                <simplelayout axis="x" spacing="15"/>
+                <menuButton id="noo" resource="buttonPurple" command="noo,show" buttontext="Hosted Projects"/>
+                <menuButton id="zoo" command="zoo,show" resource="buttonOrange2" buttontext="Server Statistics">
+
+                </menuButton>
+                <menuButton id="zoo" command="zoo,show" resource="buttonRed" buttontext="Donors">
+
+                </menuButton>
+
+
+                <menuButton id="zoo" command="zoo,show" resource="buttonOrange" buttontext="Help">
+
+                </menuButton>
+            </view>
+        </view>
+        
+
+    </image>
+
+
+
+
+    <debug width="800" height="200" x="400" y="400" fontsize="12"/>
+
+</canvas>
+
+

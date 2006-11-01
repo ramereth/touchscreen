@@ -1,0 +1,249 @@
+<canvas layout="x" debug="false" oninit="initMap()">
+    <!--debug width="600" height="70" x="500" y="0" fontsize="10"/-->
+
+    <attribute name="currentPointIndex" type="number" value="0"/>
+    <attribute name="maxPoints" type="number" value="100"/>
+    <attribute name="points" />
+    <attribute name="updateMapDelegate" />
+    <attribute name="scrollDeleteDelegate" />
+    <attribute name="mapRefresh" type="number" value="5000" />
+
+    <method name="initMap">
+        canvas.points = new Array();
+        canvas.updateMapDelegate = new LzDelegate(canvas, "updateMap" );
+        canvas.scrollDeleteDelegate = new LzDelegate(canvas, "deleteFirstScrollLabel" );
+        LzTimer.resetTimer(canvas.updateMapDelegate, 3000);
+    </method>
+
+    <method name="updateMap">
+        dset.doRequest();
+        LzTimer.resetTimer(canvas.updateMapDelegate, canvas.mapRefresh);
+    </method>
+
+    <method name="deleteFirstScrollLabel">
+        // after subnode[0] is destroyed it is removed
+        // from the array automatically. The array is then
+        // automatically shifted so that subnode[1] is now
+        // subnode[0]
+        labelScrollBox.subnodes[0].destroy();
+    </method>
+	
+    <dataset type="http" name="dset"
+             src="http://ftp-osl.osuosl.org:8000/">
+    </dataset>
+
+    <datapointer xpath="dset:/rss/channel" rerunxpath="true">
+        <method event="ondata">
+            var label = this.xpathQuery('item[1]/title/text()');
+            var lat = this.xpathQuery('item[2]/title/text()');
+            var lon = this.xpathQuery('item[3]/title/text()');
+            canvas.createPoint(lat,lon, label);
+        </method>
+    </datapointer>
+
+    <method name="createPoint" args="lat, lon, label">
+
+        //change the last point created to a different collor and explicitly
+        //destroy its ping in case it did not destroy itself.
+        canvas.points[canvas.currentPointIndex].animate("fgcolor", "0x0000ff", 100);
+        canvas.points[canvas.currentPointIndex].ping.destroy();
+
+        // determine what array index is being used. increment to the
+        // end of the array and then start at the beginning.
+        canvas.currentPointIndex = canvas.currentPointIndex + 1;
+        if (canvas.currentPointIndex >= canvas.maxPoints ){
+            canvas.currentPointIndex = 0;
+        }
+
+        // destroy the old point in this index if there is one
+        if (canvas.points[canvas.currentPointIndex]) {
+            canvas.points[canvas.currentPointIndex].destroy();
+        }
+
+        // create a new point
+        canvas.points[canvas.currentPointIndex] = new FtpUserPoint(bgmap);
+        canvas.points[canvas.currentPointIndex].lon = lon;
+        canvas.points[canvas.currentPointIndex].lat = lat;
+        canvas.points[canvas.currentPointIndex].updatePosition();
+
+        // create a scrolling label for the new point
+        var textBlock = new scrollingLabel(labelScrollBox);
+        textBlock.setText(label);
+		
+
+    </method>
+
+    <class name="scrollingLabel" fgcolor="red" extends="text" x="10" y="498" fontsize="20" resize="true">
+        <attribute name="index" type="number" value="0"/>
+        <method event="oninit">
+            //get previous item
+            if (parent.subnodes.length != 1) {
+
+                this.index = parent.subnodes.length-1;
+
+                // constrain this label's y coordindate based on the
+                // label above it.  this chains the labels together
+                // so they scroll together when the first label is moved
+                var prev = parent.subnodes[this.index-1];
+                var f = function () {
+                    this.setAttribute("y", prev.y + prev.height);
+                }
+                var d = [this, 'index', prev, 'y', prev, 'height'];
+                this.applyConstraint("y",f,d);
+
+                //animate the list to move 1 position
+                if (parent.subnodes.length > 1) {
+                    parent.subnodes[0].animate("y",  parent.subnodes[0].y - 29, 500);
+                    parent.subnodes[this.index-1].setAttribute("fgcolor",123,0);
+                }
+
+                //if a label has gone past the clip plane of the box, destroy it
+                //for simplicity determine how many can fit in the box.
+                if (parent.subnodes.length > 19) {
+                    //this must be done by a delegate so it happens AFTER the animation.
+                    //The animation will stop if the label is destroyed first
+                    LzTimer.resetTimer(canvas.scrollDeleteDelegate, 600);
+                }
+            }
+			
+        </method>
+    </class>
+
+    <class name="circle" extends="drawview">
+        <attribute name="r" />
+        <attribute name="c" value="0x000000" type="color"/>
+        <method name="redraw" ><![CDATA[
+            this.moveTo(x+r, y);
+            var a = Math.tan(22.5 * Math.PI/180);
+            for (var angle = 45; angle<=360; angle += 45) {
+                // endpoint:
+                var endx = r*Math.cos(angle*Math.PI/180);
+                var endy = r*Math.sin(angle*Math.PI/180);
+                // control:
+                // (angle-90 is used to give the correct sign)
+                var cx =endx + r*a*Math.cos((angle-90)*Math.PI/180);
+                var cy =endy + r*a*Math.sin((angle-90)*Math.PI/180);
+                this.quadraticCurveTo(cx+x, cy+y, endx+x, endy+y);
+            }
+            this.strokeStyle = 0x00ff00
+            this.lineWidth = 1;
+            this.stroke();
+        ]]>
+        </method>
+    </class>
+
+
+    <class name="FtpUserPoint" extends="view" fgcolor="red">
+        <attribute name="lat" type="number" value="0"/>
+        <attribute name="lon" type="number" value="0"/>
+        <attribute name="ping"/>
+        <method name="updatePosition">
+            var lat=this.lat;
+            var lon=this.lon;
+            var earthradius=6376445;
+            var scale=0.000997572454;
+            var metersPerPixel=35.294117647;
+            var equator=529;
+            var primeMeridian=534;
+            var mapLonOffset = .5;
+            var pointerOffsetX = +1;
+            var pointerOffsetY = 0;
+
+            var offsetY = earthradius * scale * Math.log( Math.tan( Math.PI/4 + (lat*Math.PI/180)/2 )) / metersPerPixel;
+            var Y = equator - offsetY + pointerOffsetY;
+
+            var offsetX = earthradius * scale * ((lon-mapLonOffset)*Math.PI/180) / metersPerPixel
+            var X = primeMeridian + offsetX + pointerOffsetX;
+
+            this.animate("y",Y,0);
+            this.animate("x",X,0);
+
+            var tmp = new circle(this);
+            tmp.setAttribute("r",2);
+            tmp.redraw();
+            tmp = new circle(this);
+            tmp.setAttribute("r",1);
+            tmp.redraw();
+	
+            this.ping = new ping(this);
+            this.ping.setAttribute("radius",1);
+            this.ping.draw();
+        </method>
+    </class>
+
+		
+    <class name="ping">
+        <attribute name="color" value="0x000000" type="color"/>
+        <attribute name="radius" value="1" type="number"/>
+        <attribute name="x" value="0"/>
+        <attribute name="y" value="0"/>
+        <attribute name="circles" />
+        <attribute name="del" />
+	
+        <method name="draw">
+            circles = new Array();
+            del = new LzDelegate(this, "grow");
+            LzTimer.resetTimer(del,50);
+        </method>
+		
+        <method name="grow" >
+            <![CDATA[
+			if(circles[0]){circles[0].destroy();}
+                circles[0] = new circle(this);
+                circles[0].setAttribute("r", this.radius);
+                circles[0].setAttribute("x", x);
+                circles[0].setAttribute("y", y);
+                circles[0].redraw();
+			if (radius > 10) {
+			    circles[0].setAttribute("opacity",1-this.radius/35);
+			}
+	        if(circles[1]){circles[1].destroy();}
+            circles[1] = new circle(this);
+            circles[1].setAttribute("r", this.radius*2/3);
+            circles[1].setAttribute("x", x);
+            circles[1].setAttribute("y", y);
+					
+			circles[1].setAttribute("opacity",0.5);
+            circles[1].redraw();
+			if (radius > 10) {
+                circles[1].setAttribute("opacity",1-this.radius/45);
+            }
+            if(circles[2]){circles[2].destroy();}
+                circles[2] = new circle(this);
+                circles[2].setAttribute("r", this.radius/3);
+                circles[2].setAttribute("x", x);
+                circles[2].setAttribute("y", y);
+                circles[2].redraw();
+			if (radius > 10) {
+                circles[2].setAttribute("opacity",1-this.radius/55);
+           	}
+			radius = radius + 1;
+			if (radius < 55) {
+				LzTimer.resetTimer(del,50);
+			} else {
+				circles[0].destroy();
+				circles[1].destroy();
+				circles[2].destroy();
+			}
+			]]>
+        </method>
+    </class>
+
+
+    <view>
+        <simplelayout axis="x" spacing="-150"/>
+        <image id="bgmap" src="mercator.gif" opacity="1.0">
+            <text resize="true" fontsize="20" fgcolor="blue" x="400" y="20">Sample of ftp.osuosl.org users</text>
+            <!--<view name="locale_label" x="10" y="10" datapath="dset:/rss/channel/item[1]">
+                <text name="locale_name" datapath="title/text()" resize="true" fontsize="20"/>
+            </view-->
+        </image>
+        <view y="100">
+            <view id="labelScrollBox" clip="true" bgcolor="black" height="530" y="0" opacity="0.7" />
+            <view bgcolor="gray" width="${parent.width}" height="3" x="0" y="0" opacity="1.0"/>
+            <view bgcolor="gray" width="${parent.width}" height="3" x="0" y="530" opacity="1.0"/>
+        </view>
+
+    </view>
+
+</canvas>
