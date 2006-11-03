@@ -12,7 +12,7 @@
     <method name="initScreen">
         Debug.write("initializing:" ,this.id);
         this.shown=true;
-	 this.hide();
+	    this.hide();
     </method>
 
     <!-- indicates if the slide is being shown, used by hide() to avoid unneeded calls to the animation -->

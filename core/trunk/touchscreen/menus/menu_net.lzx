@@ -1,1 +1,46 @@
-<!-- todo -->
+<!-- OSL Main Menu -->
+
+<menu id="menu_net" title="Network Engineering" >
+
+    <method name="_show">
+        <![CDATA[
+				// make buttons invisibile so we can move them
+				for (i=0; i<subviews.length; i++){
+					buttons.subviews[i].animate("opacity","0.0",0);
+				}				
+				// move buttons into thier starting position
+				buttons.subviews[0].animate("x",-200,0);
+				buttons.subviews[2].animate("x",-200,0);
+				buttons.subviews[1].animate("x",1280+50,0);
+				buttons.subviews[3].animate("x",1280+50,0);
+
+				buttons.subviews[0].animate("y",0,0);
+				buttons.subviews[1].animate("y",0,0);
+				buttons.subviews[2].animate("y",200,0);
+				buttons.subviews[3].animate("y",200,0);
+
+				//make buttons visible again
+				for (i=0; i<subviews.length; i++){
+					buttons.subviews[i].animate("opacity","1.0",0);
+				}
+
+				// display them
+				buttons.subviews[0].animate("x",615-150,400);
+				buttons.subviews[2].animate("x",615-150,400);
+				buttons.subviews[1].animate("x",665,400);
+				buttons.subviews[3].animate("x",665,400);
+			]]>
+    </method>
+    <method name="_hide">
+        buttons.subviews[0].animate("x",-200,800);
+        buttons.subviews[2].animate("x",-200,800);
+        buttons.subviews[1].animate("x",1280+50,800);
+        buttons.subviews[3].animate("x",1280+50,800);
+    </method>
+    <view name="buttons">
+        <menuButton resource="buttonOrange" buttontext="Network Graphs" command="screen_net_networkgraphs,show" submenu="menu_net_networkgraphs"/>
+        <menuButton resource="buttonBlue2" buttontext="Mail Stats" command="screen_net_mailstats,show" submenu="menu_net_mailstats"/>
+        <menuButton resource="buttonOrange" buttontext="About" command="screen_net_about,show"/>
+        <menuButton resource="buttonBlue2" buttontext="Help" command="screen_help,show" submenu="menu_help"/>
+    </view>
+</menu>

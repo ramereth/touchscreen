@@ -1,6 +1,6 @@
 <!-- OSL Main Menu -->
 
-<menu id="menu_osl" title="Open Source Lab" colorKey="context_buttonOrange">    
+<menu id="menu_news" title="news">
 
     <method name="_show">
         <![CDATA[
@@ -41,7 +41,7 @@
 				buttons.subviews[3].animate("x",840+25,800);
 				buttons.subviews[6].animate("x",665,400);
 				buttons.subviews[7].animate("x",840+25,800);
-			]]>					
+			]]>
     </method>
     <method name="_hide">
         buttons.subviews[0].animate("x",-200,400);
@@ -54,14 +54,14 @@
         buttons.subviews[7].animate("x",1280+50,400);
     </method>
     <view name="buttons">
-        <menuButton resource="buttonOrange" buttontext="Network Graphs" command="osl_networkgraphs,show" submenu="menu_osl_networkgraphs"/>
-        <menuButton resource="buttonRed" buttontext="FTP Status" command="osl_ftpstatus,show" submenu="menu_osl_ftpstatus"/>
-        <menuButton resource="buttonBlue2" buttontext="Mail Stats" command="osl_mailstats,show" submenu="menu_osl_mailstats"/>
-        <menuButton resource="buttonBlue2" buttontext="Outages" command="osl_outages,show" submenu="menu_osl_outages"/>
+        <menuButton resource="buttonOrange" buttontext="Slashdot" command="screen_news,show" />
+        <menuButton resource="buttonRed" buttontext="Digg" command="screen_news,show" />
+        <menuButton resource="buttonBlue2" buttontext="OSL Spotlight" command="screen_news,show" />
+        <menuButton resource="buttonBlue2" buttontext="OSL News" command="screen_news,show" />
 
-        <menuButton resource="buttonOrange" buttontext="About" command="osl_about,show" submenu="menu_osl_about"/>
-        <menuButton resource="buttonRed" buttontext="News" command="osl_news,show" submenu="menu_osl_news"/>
-        <menuButton resource="buttonBlue2" buttontext="Donors" command="osl_donors,show" submenu="menu_osl_staff"/>
-        <menuButton resource="buttonBlue2" buttontext="Help" command="help,show" submenu="menu_help,show"/>
+        <menuButton resource="buttonOrange" buttontext="University News" command="screen_news,show" />
+        <menuButton resource="buttonRed" buttontext="Local News" command="screen_news,show" />
+        <menuButton resource="buttonBlue2" buttontext="Staff" command="screen_news,show" />
+        <menuButton resource="buttonBlue2" buttontext="Help" command="help,show" />
     </view>
 </menu>

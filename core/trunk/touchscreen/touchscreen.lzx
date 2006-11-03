@@ -13,23 +13,28 @@
 <canvas layout="x" debug="true" oninit="clientInit()" width="1280" height="1024">
 
     <include href="connection.lzx" />
-	<include href="screen.lzx" />
+    <include href="screen.lzx" />
+    <include href="menuButton.lzx" />
+    <include href="menu.lzx" />
+
+    
 
     <method name="reset" >
-		
-	 var cur = canvas.breadcrumbs.pop();
-	 if (cur != mainmenu) {	 
-	 	cur.hide();
-	 }
-	 while (cur != mainmenu)	{
-		cur = canvas.breadcrumbs.pop();
-	 }
-	 
-	 var del = new LzDelegate(mainmenu, "show");
+        // if not at the main menu hide the current menu
+        var cur = canvas.breadcrumbs.pop();
+        if (cur != mainmenu) {
+            cur.hide();
+        }
+        // pop everything off the stack
+        while (cur != mainmenu)	{
+            cur = canvas.breadcrumbs.pop();
+        }
+        //push main menu on the stack
+        canvas.breadcrumbs.push(mainmenu);
+        
+        // show the main menu
+        var del = new LzDelegate(mainmenu, "show");
         LzTimer.resetTimer( del , 1000);
-	 
-	 canvas.breadcrumbs.push(mainmenu);
-	 updateContextBar("bar_black","");
 
         mycd.sendMessage("*","canvas,reset","command");
         LzTimer.removeTimer( canvas.resetTimerDelegate );
@@ -37,26 +42,27 @@
 
     <attribute name="resetTimerDelegate"/>
     <attribute name="resetTimeout" type="number" value="30000"/>
-    <attribute name="breadcrumbs" />	
-	
+    <attribute name="breadcrumbs" />
+
     <connectiondatasource name="mycd">
         <dataset name="command" />
     </connectiondatasource>
 
-    <method name="clientInit">		
+    <method name="clientInit">
         connection.connect();
-	 canvas.breadcrumbs = new Array();
-	 canvas.breadcrumbs.push(mainmenu);
+        canvas.breadcrumbs = new Array();
+        canvas.breadcrumbs.push(mainmenu);
+        mainmenu.show();
         canvas.resetTimerDelegate = new LzDelegate(canvas, "reset");
-	 LzTimer.resetTimer( canvas.resetTimerDelegate, 1000);
+        LzTimer.resetTimer( canvas.resetTimerDelegate, 1000);
     </method>
 
     <method name="hideall"/>
-  
-    <method name="updateContextBar" args="name,text">
-		<![CDATA[
 
+    <method name="updateContextBar" args="name,text">
+        <![CDATA[
 		var cur = eval(name);
+		Debug.write("updating bar ["+name+"] ["+text+"]");
 		for(i=0; i<contextbars.subviews.length; i++){
 			if (contextbars.subviews[i] == cur){
 				cur.setAttribute("bartext", text);
@@ -69,57 +75,20 @@
 		]]>
     </method>
 
-                                              
+
     <class name="contextBar" width="${canvas.width}" height="50" bgcolor="white">
         <attribute name="color" type="color" value="0x000000" />
         <attribute name="bartext" type="string" value="" >
- 	
-	</attribute>
+
+        </attribute>
         <view bgcolor="black" y="1" width="${parent.width}" height="48">
             <view bgcolor="${parent.parent.color}" y="1" width="${parent.width}" height="46">
                 <text resize="true" valign="center" x="15" fgcolor="white" fontsize="28" text="${parent.parent.parent.bartext}"/>
             </view>
         </view>
-    </class>
-
-    <class name="menuButton" width="150" height="150" clip="false" extends="view">
-       <attribute name="command" type="string" value=""/>
-	<attribute name="buttontext" type="string" value=""/>
-	<attribute name="submenu" type="string" value=""/>
-        <text name="_buttontext" resize="true" multiline="false" align="center" valign="middle" fgcolor="white" fontsize="16" fontstyle="bold" opacity="${parent.opacity}"/>
-        <method event="onclick">
-            <![CDATA[
-            LzTimer.resetTimer( canvas.resetTimerDelegate, canvas.resetTimeout);
-            if (this.command != '') {
-                mycd.sendMessage("*",this.command,"command");
-            }
-
-              mainmenu.hide();            	
-
-		if (submenu) {
-			
-			var prev = canvas.breadcrumbs.pop();
-			prev.hide();
-			canvas.breadcrumbs.push(prev)
-			var menu = eval(submenu);
-			Debug.write("loading submenu: " + submenu + " ["+ menu +"]");
-			var del = new LzDelegate(menu, "show");
-        		LzTimer.resetTimer( del , 800);
-			canvas.breadcrumbs.push(menu);
-			canvas.updateContextBar('context_'+resource, this.buttontext);
-		}	
-              action();
-		]]>
-        </method>
-        <method event="oninit">
-            this._buttontext.setText(buttontext);
-        </method>
-        <method name="action">
-            <!-- method stub override to add other processing-->
-        </method>
     </class>    
 
-    <resource name="buttonOrange" src="buttons/button-orange4.png"/>
+    <resource name="buttonOrange" src="buttons/button-orange5.png"/>
     <resource name="buttonGreen" src="buttons/button-green.png"/>
     <resource name="buttonRed" src="buttons/button-red.png"/>
     <resource name="buttonblue2" src="buttons/button-blue2.png"/>
@@ -150,67 +119,79 @@
                     <view resource="prev" />
                     <view resource="stop"/>
                     <view resource="play" />
-                    <view resource="next" />                    
+                    <view resource="next" />
                 </view>
             </view>
-        </view>	
+        </view>
 
-	<view id="contextbars" y="150">
-		<contextBar id="context_buttonOrange" color="0xE55E00" opacity="0.0"/>
-		<contextBar id="context_buttonGreen"  color="0x0EB066" opacity="0.0"/>
-		<contextBar id="context_buttonRed"    color="0xEF3333" opacity="0.0"/>
-		<contextBar id="context_buttonBlue2"  color="0x337EEF" opacity="0.0"/>
-		<contextBar id="context_buttonPurple" color="0x7533EF" opacity="0.0"/>
-		<contextBar id="context_buttonYellow" color="0xEFCE33" opacity="0.0"/>
-		<contextBar id="context_buttonOrange2" color="0xEFBC33" opacity="0.0"/>
-		<contextBar id="bar_black" color="black" />	
-	</view>
+        <view id="contextbars" y="150">
+            <contextBar id="context_buttonOrange" color="0xE55E00" opacity="0.0"/>
+            <contextBar id="context_buttonGreen"  color="0x0EB066" opacity="0.0"/>
+            <contextBar id="context_buttonRed"    color="0xEF3333" opacity="0.0"/>
+            <contextBar id="context_buttonBlue2"  color="0x337EEF" opacity="0.0"/>
+            <contextBar id="context_buttonPurple" color="0x7533EF" opacity="0.0"/>
+            <contextBar id="context_buttonYellow" color="0xEFCE33" opacity="0.0"/>
+            <contextBar id="context_buttonOrange2" color="0xEFBC33" opacity="0.0"/>
+            <contextBar id="context_black" color="black" />
+        </view>
 
-	<view id="back" x="20" y="200" height="50" bgcolor="green"> 
-		<text fgcolor="white" fontsize="30">Back</text>  
-		<method event="onclick">
-			var cur = canvas.breadcrumbs.pop();
-			// check to make sure were not already at the main menu
-			if (cur != mainmenu){
-				cur.hide();
-				// get the previous menu and show it
-				var prev = canvas.breadcrumbs.pop();				
-				var del = new LzDelegate(prev, "show");
-	        		LzTimer.resetTimer( del , 800);
-				// now push the current menu back onto the stack so its there for the next action
-				canvas.breadcrumbs.push(prev);
-			} else {
-				// push main menu back on
-				canvas.breadcrumbs.push(cur);
-			}
-		</method>
-	</view>
+        <view id="back" x="20" y="200" height="50" bgcolor="green">
+            <text fgcolor="white" fontsize="30">Back</text>
+            <method event="onclick">
+                var cur = canvas.breadcrumbs.pop();
+                // check to make sure were not already at the main menu
+                if (cur != mainmenu){
+                    cur.hide();
+                    // get the previous menu and show it
+                    var prev = canvas.breadcrumbs.pop();
+                    var del = new LzDelegate(prev, "show");
+                    LzTimer.resetTimer( del , 800);
+                    // now push the current menu back onto the stack so its there for the next action
+                    canvas.breadcrumbs.push(prev);
 
-        <screen id="mainmenu" y="250" align="center" width="100%" height="100%" >
-	     <animatorgroup name="_show" start="false">
-                <animator attribute="opacity" to="1.0" duration="2000"/>
-            </animatorgroup>
-            <animatorgroup name="_hide" start="false">
-                <animator attribute="opacity" to="0.0" duration="500"/>
-            </animatorgroup>
+                    // update timeout for the touchscreen
+                    if (prev == mainmenu) {
+                        //if were at mainmenu we don't need the timeout
+                        LzTimer.removeTimer( canvas.resetTimerDelegate );
+                    } else {
+                        LzTimer.resetTimer( canvas.resetTimerDelegate, canvas.resetTimeout);
+                    }
+                } else {
+                    // push main menu back on
+                    canvas.breadcrumbs.push(cur);
+                }
+            </method>
+        </view>
 
+        <menu id="mainmenu" title="Main Menu" x="200">
+
+            <method name="_show">
+                this.animate("opacity","1.0",800);
+            </method>
+
+            <method name="_hide">
+                this.animate("opacity","0.0",800);
+            </method>
 
             <view y="0" x="15">
                 <simplelayout axis="x" spacing="50"/>
-                <menuButton resource="buttonOrange" buttontext="Open Source Lab" command="osl,show" submenu="menu_osl"/>
-                <menuButton resource="buttonRed" buttontext="Network Engineering" command="net,show" submenu="menu_net"/>
-                <menuButton resource="buttonBlue2" buttontext="Data Center Map" command="rackview,show" submenu="menu_rackview"/>
+                <menuButton resource="buttonOrange" buttontext="Open Source Lab" command="screen_osl_about,show" submenu="menu_osl"/>
+                <menuButton resource="buttonRed" buttontext="Network Engineering" command="screen_net_about,show" submenu="menu_net"/>
+                <menuButton resource="buttonBlue2" buttontext="Data Center Map" command="screen_rackview,show" submenu="menu_rackview"/>
             </view>
             <view y="200" x="15">
                 <simplelayout axis="x" spacing="50"/>
-                <menuButton resource="buttonPurple"  command="webcams,show" buttontext="Webcams" submenu="menu_webcams"/>
-                <menuButton resource="buttonOrange2" command="news,show" buttontext="News" submenu="menu_news"/>
-                <menuButton resource="buttonGreen"  command="help,show" buttontext="Help" submenu="menu_help"/>
+                <menuButton resource="buttonPurple"  command="screen_webcams,show" buttontext="Webcams" submenu="menu_webcams"/>
+                <menuButton resource="buttonOrange2" command="screen_news,show" buttontext="News" submenu="menu_news"/>
+                <menuButton resource="buttonGreen"  command="screen_help,show" buttontext="Help" submenu="menu_help"/>
             </view>
-        </screen>
+        </menu>
+
+        <include href="menus/menu_osl.lzx" />
+        <include href="menus/menu_osl_networkgraphs.lzx" />
+        <include href="menus/menu_news.lzx"/>
+        <include href="menus/menu_net.lzx"/>
         
-	 <include href="menus/menu_osl.lzx" />
-	<include href="menus/menu_osl_networkgraphs.lzx" />		
     </image>
 
 
