@@ -1,0 +1,73 @@
+<!-- OSL Main Menu -->
+
+<screen id="menu_osl" width="1280" height="100%" y="300" x="0">
+	     <animatorgroup name="_show" start="false">
+                <animator attribute="opacity" to="1.0" duration="2000"/>
+            </animatorgroup>
+            <animatorgroup name="_hide" start="false">
+                <animator attribute="opacity" to="0.0" duration="500"/>
+            </animatorgroup>
+
+		<method name="show">
+			<![CDATA[
+				// make buttons invisibile so we can move them
+				for (i=0; i<subviews.length; i++){
+					buttons.subviews[i].animate("opacity","0.0",0);
+				}				
+				// move buttons into thier starting position
+				buttons.subviews[0].animate("x",-200,0);
+				buttons.subviews[1].animate("x",-200,0);
+				buttons.subviews[4].animate("x",-200,0);
+				buttons.subviews[5].animate("x",-200,0);
+				buttons.subviews[2].animate("x",1280+50,0);
+				buttons.subviews[3].animate("x",1280+50,0);
+				buttons.subviews[6].animate("x",1280+50,0);
+				buttons.subviews[7].animate("x",1280+50,0);				
+
+				buttons.subviews[0].animate("y",0,0);
+				buttons.subviews[1].animate("y",0,0);
+				buttons.subviews[2].animate("y",0,0);
+				buttons.subviews[3].animate("y",0,0);
+				buttons.subviews[4].animate("y",200,0);
+				buttons.subviews[5].animate("y",200,0);
+				buttons.subviews[6].animate("y",200,0);
+				buttons.subviews[7].animate("y",200,0);
+
+				//make buttons visible again
+				for (i=0; i<subviews.length; i++){
+					buttons.subviews[i].animate("opacity","1.0",0);
+				}
+
+				// display them
+				buttons.subviews[0].animate("x",440-150-25,800);
+				buttons.subviews[1].animate("x",615-150,400);
+				buttons.subviews[4].animate("x",440-150-25,800);
+				buttons.subviews[5].animate("x",615-150,400);
+				buttons.subviews[2].animate("x",665,400);
+				buttons.subviews[3].animate("x",840+25,800);
+				buttons.subviews[6].animate("x",665,400);
+				buttons.subviews[7].animate("x",840+25,800);
+			]]>					
+		</method>
+		<method name="hide">
+				buttons.subviews[0].animate("x",-200,400);
+				buttons.subviews[1].animate("x",-200,800);
+				buttons.subviews[4].animate("x",-200,400);
+				buttons.subviews[5].animate("x",-200,800);
+				buttons.subviews[2].animate("x",1280+50,800);
+				buttons.subviews[3].animate("x",1280+50,400);
+				buttons.subviews[6].animate("x",1280+50,800);
+				buttons.subviews[7].animate("x",1280+50,400);
+		</method>
+            <view name="buttons">
+                <menuButton resource="buttonOrange" buttontext="Network Graphs" command="osl_networkgraphs,show" submenu="menu_osl_networkgraphs"/>
+                <menuButton resource="buttonRed" buttontext="FTP Status" command="osl_ftpstatus,show" submenu="menu_osl_ftpstatus"/>
+                <menuButton resource="buttonBlue2" buttontext="Mail Stats" command="osl_mailstats,show" submenu="menu_osl_mailstats"/>
+		  <menuButton resource="buttonBlue2" buttontext="Outages" command="osl_outages,show" submenu="menu_osl_outages"/> 
+
+		  <menuButton resource="buttonOrange" buttontext="About" command="osl_about,show" submenu="menu_osl_about"/>
+                <menuButton resource="buttonRed" buttontext="News" command="osl_news,show" submenu="menu_osl_news"/>
+                <menuButton resource="buttonBlue2" buttontext="Staff" command="osl_staff,show" submenu="menu_osl_staff"/>
+		  <menuButton resource="buttonBlue2" buttontext="Help" command="help,show" submenu="menu_help,show"/>
+            </view>
+</screen>

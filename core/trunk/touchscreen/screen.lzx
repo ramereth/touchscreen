@@ -7,11 +7,12 @@
                  what a specific screen does.                     
    *****************************************************************
 -->
-<class name="screen" height="300" width="300" x="-500" y="5" oninit="initScreen();" extends="text">
+<class name="screen" height="300" width="300" x="-500"  y="5" oninit="initScreen();" extends="text">
 
     <method name="initScreen">
         Debug.write("initializing:" ,this.id);
-        this.shown=false;
+        this.shown=true;
+	 this.hide();
     </method>
 
     <!-- indicates if the slide is being shown, used by hide() to avoid unneeded calls to the animation -->
@@ -45,7 +46,7 @@
     <!-- this is a screen with sub-elements that may slide in from  -->
     <!-- different angles                                           -->
     <!-- ========================================================== -->
-    <method name="show">
+    <method name="show">	
         canvas.hideall(this);
         if (!this.shown) {
             this._show.doStart();
