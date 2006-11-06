@@ -128,12 +128,9 @@
     <resource name="buttonOrange" src="buttons/final-button-shaded.png"/>
     <resource name="buttonGreen" src="buttons/final-button-green.png"/>
     <resource name="buttonRed" src="buttons/final-button-red.png"/>
-    <resource name="buttonblue2" src="buttons/final-button-blue.png"/>
-    <resource name="buttonblue" src="buttons/final-button-shaded.png"/>
+    <resource name="buttonBlue" src="buttons/final-button-blue.png"/>
     <resource name="buttonPurple" src="buttons/final-button-purple.png"/>
-    <resource name="buttonOrange2" src="buttons/final-button-yellow.png"/>
-    <resource name="buttonYellow" src="buttons/final-button-shaded.png"/>
-    <resource name="blue2" src="buttons/blue2.png"/>
+    <resource name="buttonYellow" src="buttons/final-button-yellow.png"/>        
     <resource name="stop" src="buttons/stop.gif"/>
     <resource name="stopShaded" src="buttons/stop-inactive.gif"/>
     <resource name="play" src="buttons/play.gif"/>
@@ -169,10 +166,9 @@
             <contextBar id="context_buttonOrange" color="0xE55E00" />
             <contextBar id="context_buttonGreen"  color="0x0EB066" />
             <contextBar id="context_buttonRed"    color="0xEF3333" />
-            <contextBar id="context_buttonBlue2"  color="0x337EEF" />
-            <contextBar id="context_buttonPurple" color="0x7533EF" />
-            <contextBar id="context_buttonYellow" color="0xEFCE33" />
-            <contextBar id="context_buttonOrange2" color="0xEFBC33" />
+            <contextBar id="context_buttonBlue"  color="0x337EEF" />
+            <contextBar id="context_buttonPurple" color="0x7533EF" />            
+            <contextBar id="context_buttonYellow" color="0xEFBC33" />
             <contextBar id="context_black" color="black" opacity="1.0"/>
         </view>
     </image>
@@ -235,9 +231,9 @@
             <view name="buttons">
                 <menuButton resource="buttonOrange" buttontext="Open Source Lab" command="screen_osl_about,show" submenu="menu_osl"/>
                 <menuButton resource="buttonRed" buttontext="Network Engineering" command="screen_net_about,show" submenu="menu_net"/>
-                <menuButton resource="buttonBlue2" buttontext="Data Center Map" command="screen_rackview,show" submenu="menu_rackview"/>
+                <menuButton resource="buttonBlue" buttontext="Data Center Map" command="screen_rackview,show" submenu="menu_rackview"/>
                 <menuButton resource="buttonPurple"  command="screen_webcams,show" buttontext="Webcams" submenu="menu_webcams"/>
-                <menuButton resource="buttonOrange2" command="screen_news,show" buttontext="News" submenu="menu_news"/>
+                <menuButton resource="buttonYellow" command="screen_news,show" buttontext="News" submenu="menu_news"/>
                 <menuButton resource="buttonGreen"  command="screen_help,show" buttontext="Help" submenu="menu_help"/>
             </view>
         </menu>

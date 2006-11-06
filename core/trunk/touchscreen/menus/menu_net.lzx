@@ -1,11 +1,11 @@
 <!-- OSL Main Menu -->
 
-<menu id="menu_net" title="Network Engineering" >
+<menu id="menu_net" title="Network Engineering" colorKey="context_buttonRed">
        
     <view name="buttons">
         <menuButton resource="buttonOrange" buttontext="Network Graphs" command="screen_net_networkgraphs,show" submenu="menu_net_networkgraphs"/>
-        <menuButton resource="buttonBlue2" buttontext="Mail Stats" command="screen_net_mailstats,show" submenu="menu_net_mailstats"/>
-        <menuButton resource="buttonOrange" buttontext="About" command="screen_net_about,show"/>
-        <menuButton resource="buttonBlue2" buttontext="Help" command="screen_help,show" submenu="menu_help"/>
+        <menuButton resource="buttonRed" buttontext="Mail Stats" command="screen_net_mailstats,show" submenu="menu_net_mailstats"/>
+        <menuButton resource="buttonBlue" buttontext="About" command="screen_net_about,show"/>
+        <menuButton resource="buttonGreen" buttontext="Help" command="screen_help,show" submenu="menu_help"/>
     </view>
 </menu>
