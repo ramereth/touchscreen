@@ -34,7 +34,8 @@
     <method event="oninit">
         Debug.write("initializing:" ,this.id);
         this.shown=true;
-        this.hide();
+        var del = new LzDelegate(this, "hide");
+        LzTimer.resetTimer(del,2000);        
     </method>
 
     <!-- ========================================================== -->
@@ -56,9 +57,13 @@
         }
     </method>
 
-    <method name="_hide"/>
+    <method name="_hide">        
+        canvas.menuAnimator.hide_slide_to_left_and_right(buttons.subviews);
+    </method>
 
-    <method name="_show"/>
+    <method name="_show">
+        canvas.menuAnimator.show_slide_from_left_and_right(buttons.subviews);
+    </method>
 
     <!-- ========================================================== -->
     <!-- Show Methods - these methods show the menu                 -->

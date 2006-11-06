@@ -16,6 +16,26 @@
     <include href="screen.lzx" />
     <include href="menuButton.lzx" />
     <include href="menu.lzx" />
+    <include href="animations.lzx" />
+
+    <attribute name="menuAnimator"/>
+
+    <method name="clientInit">
+        connection.connect();
+        canvas.breadcrumbs = new Array();
+        canvas.breadcrumbs.push(mainmenu);
+        canvas.menuAnimator = new menuAnimator();
+        canvas.resetTimerDelegate = new LzDelegate(canvas, "reset");
+        LzTimer.resetTimer( canvas.resetTimerDelegate, 1000);
+        canvas.buttonUnlockDelegate = new LzDelegate(canvas, "unlockbuttons");
+        mainmenu.show();
+    </method>
+
+    <!-- ========================================================== -->
+    <!-- ButtonLock - methods and attributes for handling the       -->
+    <!--  locking of all buttons.  This is needed to prevent users  -->
+    <!--  from clicking multiple buttons at the same time           -->
+    <!-- ========================================================== -->
 
     <!-- global property to lock buttons from processing clicks during animations -->
     <attribute name="buttonlock" type="boolean" value="false"/>
@@ -30,6 +50,11 @@
         Debug.write("buttons unlocked");
     </method>
 
+    <!-- ========================================================== -->
+    <!-- Reset - methods and attributes for resetting the           -->
+    <!--  touchscreen.  When reset is called it should return to    -->
+    <!--  the main menu                                             -->
+    <!-- ========================================================== -->
     <method name="reset" >
         canvas.lockbuttons(500);
 
@@ -57,22 +82,17 @@
     <attribute name="resetTimeout" type="number" value="30000"/>
     <attribute name="breadcrumbs" />
 
+    <!-- ================================================= -->
+    <!--   Connection and Messaging                        -->
+    <!-- ================================================= -->
     <connectiondatasource name="mycd">
         <dataset name="command" />
     </connectiondatasource>
 
-    <method name="clientInit">
-        connection.connect();
-        canvas.breadcrumbs = new Array();
-        canvas.breadcrumbs.push(mainmenu);
-        mainmenu.show();
-        canvas.resetTimerDelegate = new LzDelegate(canvas, "reset");
-        LzTimer.resetTimer( canvas.resetTimerDelegate, 1000);
-        canvas.buttonUnlockDelegate = new LzDelegate(canvas, "unlockbuttons");
-    </method>
-
-    <method name="hideall"/>
-
+    <!-- ================================================= -->
+    <!--   Context Bar                                     -->
+    <!-- ================================================= -->
+    <attribute name="colorMapping"/>    
     <method name="updateContextBar" args="name,text">
         <![CDATA[
 		var cur = eval(name);
@@ -89,8 +109,7 @@
 		]]>
     </method>
 
-
-    <class name="contextBar" width="${canvas.width}" height="50" bgcolor="white">
+    <class name="contextBar" width="${canvas.width}" height="50" bgcolor="white" opacity="0.0">
         <attribute name="color" type="color" value="0x000000" />
         <attribute name="bartext" type="string" value="" >
 
@@ -102,6 +121,10 @@
         </view>
     </class>    
 
+
+    <!-- ================================================= -->
+    <!--   Media Resources                                 -->
+    <!-- ================================================= -->
     <resource name="buttonOrange" src="buttons/final-button-shaded.png"/>
     <resource name="buttonGreen" src="buttons/final-button-green.png"/>
     <resource name="buttonRed" src="buttons/final-button-red.png"/>
@@ -120,7 +143,10 @@
     <resource name="osllogo" src="osl_logo2.png"/>
     <resource name="button_back" src="buttons/back.png"/>
 
-
+    
+    <!-- ================================================= -->
+    <!--   Header                                          -->
+    <!-- ================================================= -->
 
     <simplelayout axis="y" spacing="0"/>    
     <image src="background-header.gif" >
@@ -140,29 +166,34 @@
             </view>
         </view>
         <view id="contextbars" y="150">
-            <contextBar id="context_buttonOrange" color="0xE55E00" opacity="0.0"/>
-            <contextBar id="context_buttonGreen"  color="0x0EB066" opacity="0.0"/>
-            <contextBar id="context_buttonRed"    color="0xEF3333" opacity="0.0"/>
-            <contextBar id="context_buttonBlue2"  color="0x337EEF" opacity="0.0"/>
-            <contextBar id="context_buttonPurple" color="0x7533EF" opacity="0.0"/>
-            <contextBar id="context_buttonYellow" color="0xEFCE33" opacity="0.0"/>
-            <contextBar id="context_buttonOrange2" color="0xEFBC33" opacity="0.0"/>
-            <contextBar id="context_black" color="black" />
+            <contextBar id="context_buttonOrange" color="0xE55E00" />
+            <contextBar id="context_buttonGreen"  color="0x0EB066" />
+            <contextBar id="context_buttonRed"    color="0xEF3333" />
+            <contextBar id="context_buttonBlue2"  color="0x337EEF" />
+            <contextBar id="context_buttonPurple" color="0x7533EF" />
+            <contextBar id="context_buttonYellow" color="0xEFCE33" />
+            <contextBar id="context_buttonOrange2" color="0xEFBC33" />
+            <contextBar id="context_black" color="black" opacity="1.0"/>
         </view>
-    </image>     
+    </image>
+
+
+    <!-- ================================================= -->
+    <!--   Menu Area                                       -->
+    <!-- ================================================= -->
     <image src="background-gray-1280x824.gif" clip="true" >
         <view id="button_back" x="20" y="-150" resource="button_back">
             <!-- indicates if the slide is being shown, used by hide() to avoid unneeded calls to the animation -->
             <attribute name="shown" type="boolean" value="false"/>
             <method name="show">
                 if (!this.shown) {
-                    this.animate("y",40,1500);
+                    this.animate("y",40,2000);
                     this.shown=true;
                 }
             </method>
             <method name="hide">
                 if (this.shown){
-                    this.animate("y",-150,1500);
+                    this.animate("y",-150,1000);
                     this.shown=false;
                 }
             </method>
@@ -197,37 +228,27 @@
             </method>
         </view>
 
-        <menu id="mainmenu" title="Main Menu" x="250">
-
-            <method name="_show">
-                this.animate("opacity","1.0",800);
-            </method>
-
-            <method name="_hide">
-                this.animate("opacity","0.0",800);
-            </method>
-
-            <view y="0" >
-                <simplelayout axis="x" spacing="75"/>
+        <!-- ================================================= -->
+        <!--   Main menu                                       -->
+        <!-- ================================================= -->
+        <menu id="mainmenu" title="Main Menu">                        
+            <view name="buttons">
                 <menuButton resource="buttonOrange" buttontext="Open Source Lab" command="screen_osl_about,show" submenu="menu_osl"/>
                 <menuButton resource="buttonRed" buttontext="Network Engineering" command="screen_net_about,show" submenu="menu_net"/>
                 <menuButton resource="buttonBlue2" buttontext="Data Center Map" command="screen_rackview,show" submenu="menu_rackview"/>
-            </view>
-            <view y="275">
-                <simplelayout axis="x" spacing="75"/>
                 <menuButton resource="buttonPurple"  command="screen_webcams,show" buttontext="Webcams" submenu="menu_webcams"/>
                 <menuButton resource="buttonOrange2" command="screen_news,show" buttontext="News" submenu="menu_news"/>
                 <menuButton resource="buttonGreen"  command="screen_help,show" buttontext="Help" submenu="menu_help"/>
             </view>
         </menu>
 
+        <!-- ================================================= -->
+        <!--   Submenus                                           -->
+        <!-- ================================================= -->
         <include href="menus/menu_osl.lzx" />
         <include href="menus/menu_osl_networkgraphs.lzx" />
-        <!--include href="menus/menu_news.lzx"/>
-        <include href="menus/menu_net.lzx"/-->
-
-
-
+        <include href="menus/menu_news.lzx"/>
+        <include href="menus/menu_net.lzx"/>
 
     </image>
 
