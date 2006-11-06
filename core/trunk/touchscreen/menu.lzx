@@ -5,7 +5,7 @@
    *****************************************************************
 -->
 
-<class name="menu" extends="view" width="1280" height="100%" y="300" x="0">
+<class name="menu" extends="view" width="1280" height="100%" y="175" x="0">
 
     <!-- ========================================================== -->
     <!-- Title - displayed on the context bar when menu is active   -->
@@ -28,6 +28,9 @@
     <attribute name="shown" type="boolean" value="false"/>
     
 
+    <!-- ========================================================== -->
+    <!-- intialization function                                     -->
+    <!-- ========================================================== -->
     <method event="oninit">
         Debug.write("initializing:" ,this.id);
         this.shown=true;
@@ -35,7 +38,8 @@
     </method>
 
     <!-- ========================================================== -->
-    <!-- Show/Hide - called to show or hide the menu                -->
+    <!-- Show/Hide - called to show or hide the menu.  Override     -->
+    <!--             _show() and _hide() for custom animations.     -->    
     <!-- ========================================================== -->
     <method name="show">
         if (!this.shown) {

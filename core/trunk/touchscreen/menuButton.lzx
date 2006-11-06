@@ -1,29 +1,36 @@
-<class name="menuButton" width="150" height="150" clip="false" extends="view">
+<class name="menuButton" width="200" height="200" clip="false" extends="view">
         <attribute name="command" type="string" value=""/>
         <attribute name="buttontext" type="string" value=""/>
         <attribute name="submenu" type="string" value=""/>
         <text name="_buttontext" resize="true" multiline="false" align="center" valign="middle" fgcolor="white" fontsize="16" fontstyle="bold" opacity="${parent.opacity}"/>
         <method event="onclick">
             <![CDATA[
-            LzTimer.resetTimer( canvas.resetTimerDelegate, canvas.resetTimeout);
-            if (this.command != '') {
-                mycd.sendMessage("*",this.command,"command");
+            if (!canvas.buttonlock) {
+                canvas.lockbuttons(800);
+
+                LzTimer.resetTimer( canvas.resetTimerDelegate, canvas.resetTimeout);
+                if (this.command != '') {
+                    mycd.sendMessage("*",this.command,"command");
+                }
+
+                mainmenu.hide();
+
+		        if (submenu) {
+		            // update the breadcrumbs (history) so the back button can function
+			        var prev = canvas.breadcrumbs.pop();
+        			prev.hide();
+	        		canvas.breadcrumbs.push(prev)
+		        	var menu = eval(submenu);
+			        Debug.write("loading submenu: " + submenu + " ["+ menu +"]");
+    			    var del = new LzDelegate(menu, "show");
+                    LzTimer.resetTimer( del , 800);
+	    	    	canvas.breadcrumbs.push(menu);
+
+                    // display the backbutton
+	    	    	button_back.show();
+		        }
+                action();
             }
-
-              mainmenu.hide();
-
-		if (submenu) {
-
-			var prev = canvas.breadcrumbs.pop();
-			prev.hide();
-			canvas.breadcrumbs.push(prev)
-			var menu = eval(submenu);
-			Debug.write("loading submenu: " + submenu + " ["+ menu +"]");
-			var del = new LzDelegate(menu, "show");
-            LzTimer.resetTimer( del , 800);
-			canvas.breadcrumbs.push(menu);
-		}
-              action();
 		]]>
         </method>
         <method event="oninit">

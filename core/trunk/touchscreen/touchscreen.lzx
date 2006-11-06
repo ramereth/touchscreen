@@ -17,9 +17,22 @@
     <include href="menuButton.lzx" />
     <include href="menu.lzx" />
 
-    
+    <!-- global property to lock buttons from processing clicks during animations -->
+    <attribute name="buttonlock" type="boolean" value="false"/>
+    <attribute name="buttonUnlockDelegate"/>
+    <method name="lockbuttons" args="time">
+        Debug.write("buttons LOCKED!");
+        buttonlock=true;
+        LzTimer.resetTimer(canvas.buttonUnlockDelegate,time);
+    </method>
+    <method name="unlockbuttons">
+        buttonlock=false;
+        Debug.write("buttons unlocked");
+    </method>
 
     <method name="reset" >
+        canvas.lockbuttons(500);
+
         // if not at the main menu hide the current menu
         var cur = canvas.breadcrumbs.pop();
         if (cur != mainmenu) {
@@ -55,6 +68,7 @@
         mainmenu.show();
         canvas.resetTimerDelegate = new LzDelegate(canvas, "reset");
         LzTimer.resetTimer( canvas.resetTimerDelegate, 1000);
+        canvas.buttonUnlockDelegate = new LzDelegate(canvas, "unlockbuttons");
     </method>
 
     <method name="hideall"/>
@@ -88,14 +102,14 @@
         </view>
     </class>    
 
-    <resource name="buttonOrange" src="buttons/button-orange5.png"/>
-    <resource name="buttonGreen" src="buttons/button-green.png"/>
-    <resource name="buttonRed" src="buttons/button-red.png"/>
-    <resource name="buttonblue2" src="buttons/button-blue2.png"/>
-    <resource name="buttonblue" src="buttons/button-blue.png"/>
-    <resource name="buttonPurple" src="buttons/button-purple.png"/>
-    <resource name="buttonOrange2" src="buttons/button-orange2.png"/>
-    <resource name="buttonYellow" src="buttons/button-yellow.png"/>
+    <resource name="buttonOrange" src="buttons/final-button-shaded.png"/>
+    <resource name="buttonGreen" src="buttons/final-button-green.png"/>
+    <resource name="buttonRed" src="buttons/final-button-red.png"/>
+    <resource name="buttonblue2" src="buttons/final-button-blue.png"/>
+    <resource name="buttonblue" src="buttons/final-button-shaded.png"/>
+    <resource name="buttonPurple" src="buttons/final-button-purple.png"/>
+    <resource name="buttonOrange2" src="buttons/final-button-yellow.png"/>
+    <resource name="buttonYellow" src="buttons/final-button-shaded.png"/>
     <resource name="blue2" src="buttons/blue2.png"/>
     <resource name="stop" src="buttons/stop.gif"/>
     <resource name="stopShaded" src="buttons/stop-inactive.gif"/>
@@ -104,10 +118,12 @@
     <resource name="next" src="buttons/nextSlide.gif"/>
     <resource name="prev" src="buttons/prevSlide.gif"/>
     <resource name="osllogo" src="osl_logo2.png"/>
+    <resource name="button_back" src="buttons/back.png"/>
 
 
-    <image src="background-gray-1280x1024.gif" >
 
+    <simplelayout axis="y" spacing="0"/>    
+    <image src="background-header.gif" >
         <view y="0" width="${parent.width}" height="150">
             <view bgcolor="black" y="0" width="${parent.width}" height="${parent.height}" opacity="0.35"/>
             <view resource="osllogo" x="20" valign="middle"></view>
@@ -123,7 +139,6 @@
                 </view>
             </view>
         </view>
-
         <view id="contextbars" y="150">
             <contextBar id="context_buttonOrange" color="0xE55E00" opacity="0.0"/>
             <contextBar id="context_buttonGreen"  color="0x0EB066" opacity="0.0"/>
@@ -134,36 +149,55 @@
             <contextBar id="context_buttonOrange2" color="0xEFBC33" opacity="0.0"/>
             <contextBar id="context_black" color="black" />
         </view>
-
-        <view id="back" x="20" y="200" height="50" bgcolor="green">
-            <text fgcolor="white" fontsize="30">Back</text>
+    </image>     
+    <image src="background-gray-1280x824.gif" clip="true" >
+        <view id="button_back" x="20" y="-150" resource="button_back">
+            <!-- indicates if the slide is being shown, used by hide() to avoid unneeded calls to the animation -->
+            <attribute name="shown" type="boolean" value="false"/>
+            <method name="show">
+                if (!this.shown) {
+                    this.animate("y",40,1500);
+                    this.shown=true;
+                }
+            </method>
+            <method name="hide">
+                if (this.shown){
+                    this.animate("y",-150,1500);
+                    this.shown=false;
+                }
+            </method>
             <method event="onclick">
-                var cur = canvas.breadcrumbs.pop();
-                // check to make sure were not already at the main menu
-                if (cur != mainmenu){
-                    cur.hide();
-                    // get the previous menu and show it
-                    var prev = canvas.breadcrumbs.pop();
-                    var del = new LzDelegate(prev, "show");
-                    LzTimer.resetTimer( del , 800);
-                    // now push the current menu back onto the stack so its there for the next action
-                    canvas.breadcrumbs.push(prev);
+                if (!canvas.buttonlock) {
+                    canvas.lockbuttons(800);
+                    var cur = canvas.breadcrumbs.pop();
+                    // check to make sure were not already at the main menu
+                    if (cur != mainmenu){
+                        cur.hide();
+                        // get the previous menu and show it
+                        var prev = canvas.breadcrumbs.pop();
+                        var del = new LzDelegate(prev, "show");
+                        LzTimer.resetTimer( del , 800);
+                        // now push the current menu back onto the stack so its there for the next action
+                        canvas.breadcrumbs.push(prev);
 
-                    // update timeout for the touchscreen
-                    if (prev == mainmenu) {
-                        //if were at mainmenu we don't need the timeout
-                        LzTimer.removeTimer( canvas.resetTimerDelegate );
+                        // update timeout for the touchscreen
+                        if (prev == mainmenu) {
+                            //if were at mainmenu we don't need the timeout
+                            LzTimer.removeTimer( canvas.resetTimerDelegate );
+                            //back button also isn't needed so hide it
+                            this.hide();
+                        } else {
+                            LzTimer.resetTimer( canvas.resetTimerDelegate, canvas.resetTimeout);
+                        }
                     } else {
-                        LzTimer.resetTimer( canvas.resetTimerDelegate, canvas.resetTimeout);
+                        // push main menu back on
+                        canvas.breadcrumbs.push(cur);
                     }
-                } else {
-                    // push main menu back on
-                    canvas.breadcrumbs.push(cur);
                 }
             </method>
         </view>
 
-        <menu id="mainmenu" title="Main Menu" x="200">
+        <menu id="mainmenu" title="Main Menu" x="250">
 
             <method name="_show">
                 this.animate("opacity","1.0",800);
@@ -173,14 +207,14 @@
                 this.animate("opacity","0.0",800);
             </method>
 
-            <view y="0" x="15">
-                <simplelayout axis="x" spacing="50"/>
+            <view y="0" >
+                <simplelayout axis="x" spacing="75"/>
                 <menuButton resource="buttonOrange" buttontext="Open Source Lab" command="screen_osl_about,show" submenu="menu_osl"/>
                 <menuButton resource="buttonRed" buttontext="Network Engineering" command="screen_net_about,show" submenu="menu_net"/>
                 <menuButton resource="buttonBlue2" buttontext="Data Center Map" command="screen_rackview,show" submenu="menu_rackview"/>
             </view>
-            <view y="200" x="15">
-                <simplelayout axis="x" spacing="50"/>
+            <view y="275">
+                <simplelayout axis="x" spacing="75"/>
                 <menuButton resource="buttonPurple"  command="screen_webcams,show" buttontext="Webcams" submenu="menu_webcams"/>
                 <menuButton resource="buttonOrange2" command="screen_news,show" buttontext="News" submenu="menu_news"/>
                 <menuButton resource="buttonGreen"  command="screen_help,show" buttontext="Help" submenu="menu_help"/>
@@ -189,9 +223,12 @@
 
         <include href="menus/menu_osl.lzx" />
         <include href="menus/menu_osl_networkgraphs.lzx" />
-        <include href="menus/menu_news.lzx"/>
-        <include href="menus/menu_net.lzx"/>
-        
+        <!--include href="menus/menu_news.lzx"/>
+        <include href="menus/menu_net.lzx"/-->
+
+
+
+
     </image>
 
 
