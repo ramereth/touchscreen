@@ -12,9 +12,7 @@
                 if (this.command != '') {
                     mycd.sendMessage("*",this.command,"command");
                 }
-
-                mainmenu.hide();
-
+                
 		        if (submenu) {
 		            // update the breadcrumbs (history) so the back button can function
 			        var prev = canvas.breadcrumbs.pop();
