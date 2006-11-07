@@ -10,7 +10,7 @@
 <!--  Date: Aug 1, 2006                               -->
 <!-- ================================================ -->
 
-<canvas layout="x" debug="true" oninit="clientInit()" width="1280" height="1024">
+<canvas layout="x" debug="false" oninit="clientInit()" width="1280" height="1024">
 
     <include href="connection.lzx" />
     <include href="screen.lzx" />
@@ -76,6 +76,9 @@
 
         mycd.sendMessage("*","canvas,reset","command");
         LzTimer.removeTimer( canvas.resetTimerDelegate );
+
+        //hide back button
+        button_back.hide();
     </method>
 
     <attribute name="resetTimerDelegate"/>
@@ -251,7 +254,7 @@
 
 
 
-    <debug width="800" height="200" x="400" y="600" fontsize="12"/>
+    <!--debug width="800" height="200" x="400" y="600" fontsize="12"/-->
 
 </canvas>
 
