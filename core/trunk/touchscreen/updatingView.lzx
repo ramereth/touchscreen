@@ -1,0 +1,64 @@
+<class name="updatingView" extends="view" clickable="false">
+
+            <!-- time in ms to update the image -->        
+            <attribute name="updatems" type="number" value="2000"/>
+
+            <!-- href to the url with the image to load and refresh -->
+            <attribute name="resourceHref" type="string" value=""/>
+
+            <!-- number of frames in the buffer.  increase this number to reduce flicker -->
+            <!-- things to consider are how fast is the refresh (updatems) and how long  -->
+            <!-- does it take each image to load.  The buffer needs to be big enough to  -->
+            <!-- allow each frame to load before it is displayed.                        -->
+            <attribute name="buffersize" type="number" value="3"/>
+
+            <!-- index of the current buffer frame being shown -->
+            <attribute name="currentView" type="number" value="0"/>
+
+            <!-- container for the views that will hold the images, they will be dynamically created -->
+            <view name="container"/>
+
+            <method event="oninit">
+                <![CDATA[
+                // initialize the buffer
+                for(i=0; i<this.buffersize; i++){
+                   var newview = new LzView(this.container);
+                   newview.animate("height",this.height,0);                   
+                   newview.animate("width",this.width,0);
+                   newview.stretchResource("width");
+                   newview.stretchResource("height");
+                   newview.animate("opacity",0.0,0);
+                }
+                // start the refresh cycle
+                this.refreshTimer();
+                ]]>
+            </method>
+
+            <method name="refreshTimer">
+                this.timerDelegate = new LzDelegate(this, "refreshMethod")
+                LzTimer.addTimer(this.timerDelegate, updatems )
+            </method>
+            <method name="refreshMethod">
+
+                    <!-- get the current view being displayed-->
+                    var cur  = this.container.subviews[currentView];
+                
+                    <!-- get the next view to be shown-->
+                    this.currentView = this.currentView + 1;
+                    if (this.currentView >= this.container.subviews.length) {
+                        <!-- start at 0 if at the end of the array -->
+                        this.currentView = 0;
+                    }                
+                    var next = this.container.subviews[currentView];
+
+                    <!-- hide the old view and show the new.                     -->
+                    <!-- The show MUST be faster than the hide or you get flicker-->
+                    next.animate("opacity",1.0,0);
+                    cur.animate("opacity",0.0,.5);                    
+
+                    <!-- update the image for the current (now last) view to be shown -->
+                    cur.setSource(this.getAttribute('resourceHref'));
+
+                this.refreshTimer()
+            </method>
+</class>

@@ -7,7 +7,7 @@
                  what a specific screen does.                     
    *****************************************************************
 -->
-<class name="screen" height="300" width="300" x="-500"  y="5" oninit="initScreen();" extends="text">
+<class name="screen" height="768" width="1366" x="-1366"  y="0" oninit="initScreen();" extends="text">
 
     <method name="initScreen">
         Debug.write("initializing:" ,this.id);
@@ -28,14 +28,14 @@
     <!-- animation for hiding the screen. called by hide().         -->
     <!-- ========================================================== -->
     <animatorgroup name="_hide" process="sequential" start="false">
-        <animator attribute="x" to="-500" duration="1000"/>
+        <animator attribute="x" to="-1366" duration="1000"/>
     </animatorgroup>
 
     <!-- ========================================================== -->
     <!-- animation for showing the screen. called by hide().        -->
     <!-- ========================================================== -->
     <animatorgroup name="_show" process="sequential" start="false">
-        <animator attribute="x" to="5" duration="1000"/>
+        <animator attribute="x" to="0" duration="1000"/>
     </animatorgroup>
 
     <!-- ========================================================== -->
@@ -49,6 +49,7 @@
     <method name="show">	
         canvas.hideall(this);
         if (!this.shown) {
+	     
             this._show.doStart();
             this.shown=true;
         }

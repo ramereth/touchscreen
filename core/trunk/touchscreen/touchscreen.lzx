@@ -82,7 +82,7 @@
     </method>
 
     <attribute name="resetTimerDelegate"/>
-    <attribute name="resetTimeout" type="number" value="30000"/>
+    <attribute name="resetTimeout" type="number" value="300000"/>
     <attribute name="breadcrumbs" />
 
     <!-- ================================================= -->
@@ -248,6 +248,7 @@
         <include href="menus/menu_osl_networkgraphs.lzx" />
         <include href="menus/menu_news.lzx"/>
         <include href="menus/menu_net.lzx"/>
+        <include href="menus/menu_webcam.lzx"/>
 
     </image>
 

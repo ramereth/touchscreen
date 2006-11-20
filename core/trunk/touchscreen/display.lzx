@@ -9,8 +9,12 @@
 <!--  Author: Peter Krenesky                          -->
 <!--  Date: Aug 1, 2006                               -->
 <!-- ================================================ -->
-<canvas layout="x" debug="true" oninit="initServer();">
-    <debug width="600" height="250" x="400" y="5" fontsize="10"/>
+<canvas layout="x" debug="false" oninit="initServer();" height="768" width="1366">
+    <!--debug width="1366" height="768" x="800" y="5" fontsize="10"/-->
+
+    <include href="updatingView.lzx"/>
+    <include href="webcam.lzx"/>
+
 
     <method name="initServer" >
         canvas.connection.connect();
@@ -41,11 +45,15 @@
             //split string into an array
             canvas.commandParams = raw.split(",");
 
+
+
             //create delegate for the function we want to call
-            var del = new LzDelegate(eval(canvas.commandParams[0]), canvas.commandParams[1]);
+            var deltest = new LzDelegate(eval(canvas.commandParams[0]), canvas.commandParams[1]);
+
+            Debug.write("context: " + canvas.commandParams[0] + "   command: " + canvas.commandParams[1]   +  "  eval: " + eval(canvas.commandParams[0]) + "   del: " + deltest );
 
             //execute the function
-            del.execute();
+            deltest.execute();
 
             ]]>
         </handler>
@@ -116,45 +124,10 @@
     <!--   autohide.                                       -->
     <!-- ================================================= -->
     <include href="screen.lzx" />
-    <view name="screenContainer">
-        <screen name="foo" id="foo" bgcolor="red" >
-            <image src="http://osuosl.org/themes/newosl/osl.png" align="center"/>
-        </screen>
-
-        <screen id="bar" name="barn" bgcolor="green" slideshow="false">
-            bar Screen
-            <image name="A" opacity="0.0" src="http://osuosl.org/files/deborahbryant.jpg"/>
-            <image name="B" opacity="0.0" src="http://osuosl.org/files/buchanae.jpg"/>
-            <image name="C" opacity="0.0" src="http://osuosl.org/files/mikeclay.jpg"/>
-            <image name="D" opacity="0.0" src="http://osuosl.org/files/boogles.jpg"/>
-            <method name="showBio" args="name">
-                <![CDATA[
-                var name = canvas.commandParams[2];           
-                Debug.write("name: " + name);
-                for(i=0; i<this.subviews.length; i++) {
-                    if (this.subviews[i].name == name) {
-                        this.subviews[i].animate("opacity",1.0,500);
-                    } else {
-                        this.subviews[i].animate("opacity",0.0,500);
-                    }
-                }
-                ]]>
-            </method>
-        </screen>
-
-        <screen id="noo" name="noon" bgcolor="blue" x="5" y="-500">
-            noo Screen
-            <animatorgroup name="_show" start="false">
-                <animator attribute="y" to="5" duration="1000"/>
-            </animatorgroup>
-            <animatorgroup name="_hide" start="false">
-                <animator attribute="y" to="-500" duration="1000"/>
-            </animatorgroup>
-        </screen>
-
-        <screen id="zoo" bgcolor="gray">
-            zoo Screen
-        </screen>
-    </view>
+    <image name="screenContainer" src="background-gray-1280x824.gif" clip="true" resourcewidth="1366" height="768" >
+	  <include href="screens/osl-about.lzx"/>
+	  <include href="screens/news.lzx"/>
+	  <include href="screens/webcams.lzx"/>	
+    </image>
 </canvas>
 
