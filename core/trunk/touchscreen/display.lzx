@@ -136,6 +136,9 @@
 	  <include href="screens/osl_networkgraphs.lzx"/>
 	  <include href="screens/news.lzx"/>
 	  <include href="screens/webcams.lzx"/>	
+	  <include href="screens/net_about.lzx"/>
+	  <include href="screens/rackview.lzx"/>	
+	  <include href="screens/weather.lzx"/>	
     </image>
 </canvas>
 

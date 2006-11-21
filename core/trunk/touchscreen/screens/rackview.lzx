@@ -1,0 +1,9 @@
+<screen id="screen_rackview">
+
+    <view x="500" y="300"  height="200" width="510" color="white">
+        <view x="0" y="0" height="200" width="510" bgcolor="black" opacity="0.3"/>
+        <image align="center" y="20" src="construction.gif"/>
+        <text align="center" y="80" height="50" ><font size="20" color="#ffffff">Rack View (server room map)</font></text>
+    </view>    
+
+</screen>
