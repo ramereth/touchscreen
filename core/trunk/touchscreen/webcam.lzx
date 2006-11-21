@@ -11,5 +11,16 @@
     <!-- allow each frame to load before it is displayed.                        -->
     <attribute name="buffersize" type="number" value="3"/>
 
-    <updatingView x="1" y="1" width="${parent.width-2}" height="${parent.height-2}" bgcolor="black" resourceHref="${parent.resourceHref}" updatems="${parent.updatems}" buffersize="${parent.buffersize}"/>
+    <!-- updating view that contains the webcam images -->
+    <updatingView name="updatingview" x="1" y="1" width="${parent.width-2}" height="${parent.height-2}" bgcolor="black" resourceHref="${parent.resourceHref}" updatems="${parent.updatems}" buffersize="${parent.buffersize}"/>
+
+    <!-- delegate start and stop to the updating view -->
+    <method name="start">
+        this.updatingview.start();
+    </method>
+    <method name="stop">
+        this.updatingview.stop();
+    </method>
+
+    
 </class>

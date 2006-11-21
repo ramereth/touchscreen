@@ -15,9 +15,16 @@
             <!-- index of the current buffer frame being shown -->
             <attribute name="currentView" type="number" value="0"/>
 
+            <!-- delegate for fetching the next frame -->
+            <attribute name="timerDelegate"/>
+
+            <!-- attribute determining if the update is currently running -->
+            <attribute name="running" type="boolean" value="false"/>
+
             <!-- container for the views that will hold the images, they will be dynamically created -->
             <view name="container"/>
 
+            <!-- initialize the view, setup the view buffer, etc -->
             <method event="oninit">
                 <![CDATA[
                 // initialize the buffer
@@ -30,16 +37,18 @@
                    newview.animate("opacity",0.0,0);
                 }
                 // start the refresh cycle
-                this.refreshTimer();
+                this.timerDelegate = new LzDelegate(this, "refreshTimer")                
                 ]]>
             </method>
 
+            <!-- function that recursively calls itself to advance the framebuffer -->
             <method name="refreshTimer">
-                this.timerDelegate = new LzDelegate(this, "refreshMethod")
+                this.refreshMethod();
                 LzTimer.addTimer(this.timerDelegate, updatems )
             </method>
-            <method name="refreshMethod">
 
+            <!-- refreshes the view -->
+            <method name="refreshMethod">
                     <!-- get the current view being displayed-->
                     var cur  = this.container.subviews[currentView];
                 
@@ -57,8 +66,23 @@
                     cur.animate("opacity",0.0,.5);                    
 
                     <!-- update the image for the current (now last) view to be shown -->
-                    cur.setSource(this.getAttribute('resourceHref'));
-
-                this.refreshTimer()
+                    cur.setSource(this.getAttribute('resourceHref'));                    
             </method>
+
+            <!-- starts the update process -->
+            <method name="start">
+                if (!this.running){
+                    this.running = true;
+                    this.refreshTimer();
+                }
+            </method>
+
+            <!-- stops the update process -->
+            <method name="stop">
+                if (this.running){
+                    this.running = false;
+                    LzTimer.removeTimer(this.timerDelegate);
+                }
+            </method>
+
 </class>
