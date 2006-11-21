@@ -30,16 +30,16 @@
     <!-- ========================================================== -->
     <!-- animation for hiding the screen. called by hide().         -->
     <!-- ========================================================== -->
-    <animatorgroup name="_hide" process="sequential" start="false">
-        <animator attribute="x" to="-1366" duration="1000"/>
-    </animatorgroup>
+    <method name="_hide">
+        this.animate("x", -1366, 1000);
+    </method>
 
     <!-- ========================================================== -->
     <!-- animation for showing the screen. called by hide().        -->
     <!-- ========================================================== -->
-    <animatorgroup name="_show" process="sequential" start="false">
-        <animator attribute="x" to="0" duration="1000"/>
-    </animatorgroup>
+    <method name="_show">
+        this.animate("x", 0, 1000);        
+    </method>
 
     <!-- ========================================================== -->
     <!-- used to show the screen, this also hides all other screens -->
@@ -52,7 +52,7 @@
     <method name="show">	
         canvas.hideall(this);
         if (!this.shown) {
-            this._show.doStart();
+            this._show();
             this.shown=true;
             this.start();
         }
@@ -65,20 +65,27 @@
     <!-- ========================================================== -->
     <method name="hide">
         if (this.shown){
-            this._hide.doStart();
+            this._hide();
             this.shown=false;
             this.stop();
         }
     </method>
 
-    
-    <method name="start">        
+    <!-- ========================================================== -->
+    <!-- Starts any automatic updating that happens with this       -->
+    <!-- screen.  implementations of screen should implement _start -->
+    <!-- ========================================================== -->
+    <method name="start">
         if (!this.running) {            
             this.running=true;
             this._start();
         }
     </method>
 
+    <!-- ========================================================== -->
+    <!-- Stops any automatic updating that happens with this        -->
+    <!-- screen.  implementations of screen should implement _stop  -->    
+    <!-- ========================================================== -->
     <method name="stop">
         if (this.running){
             this.running=false;
@@ -86,6 +93,9 @@
         }
     </method>
 
+    <!-- ========================================================== -->
+    <!-- Method Stubs to be overridden as needed                    -->
+    <!-- ========================================================== -->
     <method name="_start"/>
     <method name="_stop"/>        
     <method name="_init"/>        
