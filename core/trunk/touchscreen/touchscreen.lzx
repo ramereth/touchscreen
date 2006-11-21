@@ -250,6 +250,7 @@
         <include href="menus/menu_news.lzx"/>
         <include href="menus/menu_net.lzx"/>
         <include href="menus/menu_webcam.lzx"/>
+        <include href="menus/menu_help.lzx"/>
 
     </image>
 

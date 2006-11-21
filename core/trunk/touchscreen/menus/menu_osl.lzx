@@ -11,6 +11,6 @@
         <menuButton resource="buttonOrange" buttontext="About" command="osl_about,show" submenu="menu_osl_about"/>
         <menuButton resource="buttonRed" buttontext="News" command="osl_news,show" submenu="menu_osl_news"/>
         <menuButton resource="buttonBlue" buttontext="Donors" command="osl_donors,show" submenu="menu_osl_staff"/>
-        <menuButton resource="buttonGreen" buttontext="Help" command="help,show" submenu="menu_help,show"/>
+        <menuButton resource="buttonGreen" buttontext="Help" command="help,show" submenu="menu_help"/>
     </view>
 </menu>
