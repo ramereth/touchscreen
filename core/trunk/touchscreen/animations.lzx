@@ -25,10 +25,7 @@
             var y1 = yOffset + buttonWidth + spacing;
 
             var startX0 = 0 - buttonWidth - spacing;
-            var startX1 = canvasWidth + spacing;
-
-            Debug.write ("x0: "+startX0);
-            Debug.write ("x1: "+x1);
+            var startX1 = canvasWidth + spacing;            
 
             // make buttons invisibile so we can move them
             for (i=0; i<subviews.length; i++){
@@ -71,16 +68,11 @@
             var x1 = (canvasWidth/2)-(buttonWidth/2)
             var x2 = (canvasWidth/2)+spacing+(buttonWidth/2);
 
-
             var y0 = yOffset;
             var y1 = yOffset + buttonWidth + spacing;
 
             var startX0 = 0 - buttonWidth - spacing;
             var startX1 = canvasWidth + spacing;
-
-            Debug.write ("x0: "+x0);
-            Debug.write ("x1: "+x1);
-            Debug.write ("x2: "+x2);
 
             // make buttons invisibile so we can move them
             for (i=0; i<subviews.length; i++){
@@ -192,8 +184,7 @@
         var buttonWidth = 200;
 
         var startX0 = 0 - buttonWidth - spacing-75;
-        var startX1 = width + spacing;
-        Debug.write ("startx: "+startX0);
+        var startX1 = width + spacing;        
         buttons[0].animate("x",startX0,400);
         buttons[1].animate("x",startX1,800);
         buttons[2].animate("x",startX0,800);
@@ -207,7 +198,6 @@
 
         var startX0 = 0 - buttonWidth - spacing-75;
         var startX1 = width + spacing;
-        Debug.write ("startx: "+startX0);
         buttons[0].animate("x",startX0,400);
         buttons[1].animate("x",startX0,800);
         buttons[2].animate("x",startX1,400);
@@ -222,8 +212,7 @@
         var buttonWidth = 200;
 
         var startX0 = 0 - buttonWidth - spacing-75;
-        var startX1 = width + spacing;
-        Debug.write ("startx: "+startX0);
+        var startX1 = width + spacing;        
         buttons[0].animate("x",startX0,400);
         buttons[1].animate("x",startX0,800);
         buttons[4].animate("x",startX0,400);
