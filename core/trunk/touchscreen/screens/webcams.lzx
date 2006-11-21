@@ -146,7 +146,9 @@
         }
         Debug.write("enlargee: " + enlargee +  "   obj: " + this.fullsize.subviews[enlargee]);
         this.fullsize.subviews[enlargee].animate("opacity",1.0,0);
+        this.fullsize.subviews[enlargee].start();
         this.fullsize.subviews[this.currentBig].animate("opacity",0.0,0.5);
+        this.fullsize.subviews[this.currentBig].stop();        
         this.currentBig = enlargee;
         ]]>
     </method>
@@ -161,18 +163,32 @@
     </method>
 
     <method name="_start">
+        <![CDATA[
         //start automatic rotations
         this.nextTimed();
 
         //start feed updates
+        this.fullsize.subviews[this.currentBig].start();
+
+        for(i=0; i<this.thumbnails.subviews.length; i++){
+            this.thumbnails.subviews[i].start();
+        }
+        ]]>
     </method>
 
     <method name="_stop">
+        <![CDATA[
         //stop automatic rotations
         LzTimer.removeTimer(this.nextDelegate);
 
         //stop feed updates
-        
+        this.fullsize.subviews[this.currentBig].stop();
+
+        for(i=0; i<this.thumbnails.subviews.length; i++){
+            this.thumbnails.subviews[i].stop();
+        }
+
+        ]]>
     </method>
 
 </screen>
