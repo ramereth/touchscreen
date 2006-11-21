@@ -2,11 +2,10 @@
 
 <screen id="screen_webcams" duration="500000">
     <attribute name="duration" type="number" value="500000"/>
-
-    <view bgcolor="white"  x="25" y="10">
-
-    </view>
-
+    <attribute name="smallduration" type="number" value="10000"/>
+    <attribute name="bigduration" type="number" value="30000"/>
+    <attribute name="nextDelegate"/>
+    <attribute name="enlargeDelegate"/>
 
     <view width="756" height="532" x="475" y="115" bgcolor="black" opacity="0.25"/>    
     <view width="379" height="768" x="25" y="0" bgcolor="black" opacity="0.25"/>
@@ -57,20 +56,15 @@
 
         if (this.current + 2 >= this.thumbnails.subviews.length) {
             var vis3 = this.thumbnails.subviews[current+2-this.thumbnails.subviews.length];
-            Debug.write("indexC: " + (current+2-this.thumbnails.subviews.length));
         } else {
             var vis3 = this.thumbnails.subviews[this.current+2];
-            Debug.write("index: " + (this.current+2));    
         }
-        Debug.write("vis3: " +vis3);
 
         if (this.current + 3 >= this.thumbnails.subviews.length) {
             var next = this.thumbnails.subviews[current+3-this.thumbnails.subviews.length];
         } else {
             var next = this.thumbnails.subviews[this.current+3];
         }
-
-        //Debug.write("y0: " +;
 
         //animate prev and next into thier starting positions;
         prev.animate("opacity",0.0,0);
@@ -126,8 +120,6 @@
             var next = this.thumbnails.subviews[this.current+3];
         }
 
-        //Debug.write("y0: " +;
-
         //animate prev and next into thier starting positions;
         next.animate("opacity",0.0,0);
         next.animate("y",y4,0);
@@ -159,5 +151,28 @@
         ]]>
     </method>
 
+    <method name="_init">
+        this.nextDelegate = new LzDelegate(this, "nextTimed");
+    </method>
+
+    <method name="nextTimed">
+        this.next();
+        LzTimer.resetTimer(this.nextDelegate, this.smallduration);
+    </method>
+
+    <method name="_start">
+        //start automatic rotations
+        this.nextTimed();
+
+        //start feed updates
+    </method>
+
+    <method name="_stop">
+        //stop automatic rotations
+        LzTimer.removeTimer(this.nextDelegate);
+
+        //stop feed updates
+        
+    </method>
 
 </screen>

@@ -1,1 +1,37 @@
-<screen id="screen_news" bgcolor="yellow"/>
+<screen id="screen_news" >
+    
+
+
+    <view name="barometer" bgcolor="red" x="10" y="10" layout="axis: y">
+        <image src="http://media.collegepublisher.com/media/paper854/template/templatemedia/bar_header.jpg"/>            
+        <view datapath="dset_barometer:/rss/channel/item" >
+            <text y="0" datapath="title/text()" width="300"/>
+            <!--text y="10" datapath="description/text()" width="400" multiline="true"/-->
+        </view>
+    </view>
+
+    <view name="oregonian" bgcolor="red" x="10" y="400" layout="axis: y">
+        <image src="http://www.oregonlive.com/images/toprail/newspaper.gif"/>
+        <view datapath="dset_oregonian:/rss/channel/item" >
+            <text y="0" datapath="title/text()" width="300"/>
+            <!--text y="10" datapath="description/text()" width="400" multiline="true"/-->
+        </view>
+    </view>
+
+    <view name="slashdot" bgcolor="red" x="600" y="10" layout="axis: y">
+        <image src="http://images.slashdot.org/logo.png"/>
+        <view datapath="dset_slashdot:/rdf:RDF/channel/item" >
+            <text y="0" datapath="title/text()" width="300"/>
+            <!--text y="10" datapath="description/text()" width="400" multiline="true"/-->
+        </view>
+    </view>
+
+    <view name="planetosl" bgcolor="red" x="600" y="400" layout="axis: y">
+        <image src="http://osuosl.org/themes/newosl/osl.png"/>
+        <view datapath="dset_planetosl:/rss/channel/item" >
+            <text y="0" datapath="title/text()" width="300"/>
+            <!--text y="10" datapath="description/text()" width="400" multiline="true"/-->
+        </view>
+    </view>
+
+</screen>

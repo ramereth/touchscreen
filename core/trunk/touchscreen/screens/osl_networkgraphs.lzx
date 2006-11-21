@@ -1,0 +1,58 @@
+<screen id="screen_osl_networkgraphs">
+
+    <view name="OSLServices" x="100" y="40">
+        <text x="50" color="white">OSL Services</text>
+        <mrtgWindow y="20" name="osuoslDaily" url="http://www.nero.net/NERO/images/rrdgifs/OSUOSL-Services-Normal-day-ifInOctets-1000000000-AVERAGE.png" updatems="300000" title="Daily 5-minute Avg" />
+        <mrtgWindow y="315" name="osuoslWeekly" url="http://www.nero.net/NERO/images/rrdgifs/OSUOSL-Services-Normal-week-ifInOctets-1000000000-AVERAGE.png" updatems="300000" title="Weekly 30-minute Avg" />
+    </view>
+
+    <view name="OSLGeneral" x="700" y="40">
+        <text x="50" color="white">OSL General</text>
+        <mrtgWindow y="20" name="osuoslgeneralDaily" url="http://www.nero.net/NERO/images/rrdgifs/OSUOSL-General-Normal-day-ifInOctets-1000000000-AVERAGE.png" updatems="300000" title="Daily 5-minute Avg"/>
+        <mrtgWindow y="315" name="osuoslgeneralWeekly" url="http://www.nero.net/NERO/images/rrdgifs/OSUOSL-General-Normal-week-ifInOctets-1000000000-AVERAGE.png" updatems="300000" title="Weekly 30-minute Avg"/>
+    </view>
+
+    <view name="Gentoo" x="100" y="40" opacity="0.0">
+        <text x="50" color="white">Gentoo</text>
+        <mrtgWindow y="20" name="gentooDaily" url="http://www.nero.net/NERO/images/rrdgifs/OSUOSL-Gentoo-Normal-day-ifInOctets-1000000000-AVERAGE.png" updatems="300000" title="Daily 5-minute Avg" />
+        <mrtgWindow y="315" name="gentooWeekly" url="http://www.nero.net/NERO/images/rrdgifs/OSUOSL-Gentoo-Normal-week-ifInOctets-1000000000-AVERAGE.png" updatems="300000" title="Weekly 30-minute Avg" />
+    </view>
+
+    <view name="Mozilla" x="700" y="40" opacity="0.0">
+        <text x="50" color="white">Mozilla</text>
+        <mrtgWindow y="20" name="mozillaDaily" url="http://www.nero.net/NERO/images/rrdgifs/OSUOSL-Mozilla-Normal-day-ifInOctets-1000000000-AVERAGE.png" updatems="300000" title="Daily 5-minute Avg" />
+        <mrtgWindow y="315" name="mozillaWeekly" url="http://www.nero.net/NERO/images/rrdgifs/OSUOSL-Mozilla-Normal-week-ifInOctets-1000000000-AVERAGE.png" updatems="300000" title="Weekly 30-minute Avg" />
+    </view>
+
+
+    <!--    <mrtgWindow x="10" y="65" name="spoutFTPDaily" url="http://spout.ussg.indiana.edu/mrtg/ftp-day.png" updatems="600000" title="FTP Daily 5-minute Avg" opacity="0.0" />
+        <mrtgWindow x="10" y="255" name="spoutFTPWeekly" url="http://spout.ussg.indiana.edu/mrtg/ftp-week.png" updatems="3600000" title="FTP Weekly 30-minute Avg" opacity="0.0" />
+        <mrtgWindow x="10" y="65" name="spoutRSYNCDaily" url="http://spout.ussg.indiana.edu/mrtg/rsync-day.png" updatems="600000" title="RSYNC Daily 5-minute Avg" opacity="0.0" />
+        <mrtgWindow x="10" y="255" name="spoutRSYNCWeekly" url="http://spout.ussg.indiana.edu/mrtg/rsync-week.png" updatems="3600000" title="RSYNC Weekly 30-minute Avg" opacity="0.0" />
+        <mrtgWindow x="10" y="65" name="spoutAPACHEDaily" url="http://spout.ussg.indiana.edu/mrtg/spout/apache.busyservers-day.png" updatems="600000" title="Apache Servers Daily 5-minute Avg" opacity="0.0" />
+        <mrtgWindow x="10" y="255" name="spoutAPACHEWeekly" url="http://spout.ussg.indiana.edu/mrtg/spout/apache.busyservers-week.png" updatems="3600000" title="Apache Servers Weekly 30-minute Avg" opacity="0.0" /> -->
+
+    <method name="showOSL">
+        this.OSLServices.animate("opacity",1.0,1000);
+        this.OSLGeneral.animate("opacity",1.0,1000);
+        this.Gentoo.animate("opacity",0.0,1000);
+        this.Mozilla.animate("opacity",0.0,1000);
+    </method>
+
+    <method name="showProjects">
+        this.Gentoo.animate("opacity",1.0,1000);
+        this.Mozilla.animate("opacity",1.0,1000);
+        this.OSLServices.animate("opacity",0.0,1000);
+        this.OSLGeneral.animate("opacity",0.0,1000);
+    </method>
+
+    <method name="showFTPBandwidthMap">
+
+    </method>
+
+    <method name="showFTPUsersMap">
+
+    </method>
+
+
+</screen>

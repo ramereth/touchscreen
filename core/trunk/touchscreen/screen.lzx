@@ -12,11 +12,14 @@
     <method name="initScreen">
         Debug.write("initializing:" ,this.id);
         this.shown=true;
-	    this.hide();
+        this._init();
+        this.hide();
     </method>
 
     <!-- indicates if the slide is being shown, used by hide() to avoid unneeded calls to the animation -->
     <attribute name="shown" type="boolean" value="false"/>
+
+    <attribute name="running" type="boolean" value="false"/>
 
     <!-- indicates if this screen should be used in the slideshow. -->
     <attribute name="slideshow" type="boolean" value="true"/>
@@ -49,9 +52,9 @@
     <method name="show">	
         canvas.hideall(this);
         if (!this.shown) {
-	     
             this._show.doStart();
             this.shown=true;
+            this.start();
         }
     </method>
 
@@ -64,7 +67,28 @@
         if (this.shown){
             this._hide.doStart();
             this.shown=false;
+            this.stop();
         }
     </method>
+
+    
+    <method name="start">        
+        if (!this.running) {            
+            this.running=true;
+            this._start();
+        }
+    </method>
+
+    <method name="stop">
+        if (this.running){
+            this.running=false;
+            this._stop();
+        }
+    </method>
+
+    <method name="_start"/>
+    <method name="_stop"/>        
+    <method name="_init"/>        
+
 </class>
 

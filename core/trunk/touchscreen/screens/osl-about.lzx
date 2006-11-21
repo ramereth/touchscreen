@@ -1,7 +1,8 @@
-<screen id="screen_osl_about" bgcolor="blue">
-	<image src="http://osuosl.org/themes/newosl/osl.png" align="center"/>
-    What is the Open Source Lab?
-    The Open Source Lab facilitates open source communities and the development and distribution of Open Source Software (OSS). We accomplish this through hosting projects and developing software.
-    What is Open Source Software?
-    "Open source" means that the building blocks for a program are freely available to use, modify, and improve. This provides for rapid software development by contributors worldwide, and the resulting program is available for anyone to use, anywhere, free of charge.    
+<screen id="screen_osl_about" bgcolor="0xE55E00">
+    <simplelayout axis="y"/>
+    <image src="http://osuosl.org/themes/newosl/osl.png" align="center"/>
+    <text >What is the Open Source Lab?</text>
+    <text>The Open Source Lab facilitates open source communities and the development and distribution of Open Source Software (OSS). We accomplish this through hosting projects and developing software.</text>
+    <text>What is Open Source Software?</text>
+    <text>"Open source" means that the building blocks for a program are freely available to use, modify, and improve. This provides for rapid software development by contributors worldwide, and the resulting program is available for anyone to use, anywhere, free of charge.</text>
 </screen>

@@ -9,17 +9,19 @@
 <!--  Author: Peter Krenesky                          -->
 <!--  Date: Aug 1, 2006                               -->
 <!-- ================================================ -->
-<canvas layout="x" debug="false" oninit="initServer();" height="768" width="1366">
-    <!--debug width="1366" height="768" x="800" y="5" fontsize="10"/-->
+<canvas layout="x" debug="true" oninit="initServer();" height="768" width="1366">
+    <debug width="1366" height="768" x="800" y="5" fontsize="10"/>
 
     <include href="updatingView.lzx"/>
+    <include href="mrtgWindow.lzx"/>
     <include href="webcam.lzx"/>
 
 
     <method name="initServer" >
         canvas.connection.connect();
         slideShowInit();
-        reset();
+        var resetDelegate = new LzDelegate(canvas, "reset");
+        LzTimer.resetTimer(resetDelegate,1000);
     </method>
 
     <!-- ================================================= -->
@@ -35,6 +37,7 @@
         <handler name="ondata">
             <![CDATA[
 
+            Debug.write("receiving command");
             //stop slideshow
             canvas.slideshow=false;
             LzTimer.removeTimer(canvas.showNextSlideDelegate);
@@ -45,13 +48,11 @@
             //split string into an array
             canvas.commandParams = raw.split(",");
 
-
+            Debug.write("context: " + canvas.commandParams[0] + "   command: " + canvas.commandParams[1]   +  "  eval: " + eval(canvas.commandParams[0]) + "   del: " + deltest );
 
             //create delegate for the function we want to call
             var deltest = new LzDelegate(eval(canvas.commandParams[0]), canvas.commandParams[1]);
-
-            Debug.write("context: " + canvas.commandParams[0] + "   command: " + canvas.commandParams[1]   +  "  eval: " + eval(canvas.commandParams[0]) + "   del: " + deltest );
-
+           
             //execute the function
             deltest.execute();
 
@@ -75,18 +76,20 @@
     <attribute name="currentSlide" />
     <attribute name="showNextSlideDelegate" />
     <attribute name="slideshow" type="boolean" value="true"/>
+    <!-- hides the current slide and then shows the next one -->
     <method name="showNextSlide">
-        if(slideshow) {
+        if(slideshow) {            
             canvas.currentSlide.hide();
             getNextSlide();
             while (!currentSlide.slideshow){
                 getNextSlide();
             }
-            Debug.write("next slide: " + canvas.currentSlide);
+            Debug.write("showing next slide: " + canvas.currentSlide.id);
             canvas.currentSlide.show();
             LzTimer.resetTimer(canvas.showNextSlideDelegate, currentSlide.duration);
         }
     </method>
+    <!-- gets the next slide that should be shown -->
     <method name="getNextSlide">
         if (currentSlideIndex+1 == screenContainer.subviews.length) {
             canvas.currentSlideIndex = 0;
@@ -94,7 +97,7 @@
             canvas.currentSlideIndex = currentSlideIndex + 1;
         }
         canvas.currentSlide = screenContainer.subviews[canvas.currentSlideIndex];
-        Debug.write("next possible slide: " + canvas.currentSlide);
+        Debug.write("next possible slide: " + canvas.currentSlide.id);
     </method>
     <method name="slideShowInit">
         canvas.showNextSlideDelegate = new LzDelegate(canvas, "showNextSlide" );
@@ -124,8 +127,13 @@
     <!--   autohide.                                       -->
     <!-- ================================================= -->
     <include href="screen.lzx" />
+    <dataset name="dset_barometer" request="true" src="http://barometer.orst.edu/articles.rss"/>
+    <dataset name="dset_oregonian" request="true" src="http://www.blogs.oregonlive.com/community/feeds/rss.asp?cat=2151"/>
+    <dataset name="dset_slashdot" request="true" src="http://rss.slashdot.org/Slashdot/slashdot"/>
+    <dataset name="dset_planetosl" request="true" src="http://osuosl.org/aggregator/rss/1"/>
     <image name="screenContainer" src="background-gray-1280x824.gif" clip="true" resourcewidth="1366" height="768" >
 	  <include href="screens/osl-about.lzx"/>
+	  <include href="screens/osl_networkgraphs.lzx"/>
 	  <include href="screens/news.lzx"/>
 	  <include href="screens/webcams.lzx"/>	
     </image>
