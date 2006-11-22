@@ -7,7 +7,7 @@
                  what a specific screen does.                     
    *****************************************************************
 -->
-<class name="screen" height="768" width="1366" x="-1366"  y="0" oninit="initScreen();" extends="text">
+<class name="screen" height="768" width="1366" x="0"  y="0" oninit="initScreen();" extends="text">
 
     <method name="initScreen">
         Debug.write("initializing:" ,this.id);
