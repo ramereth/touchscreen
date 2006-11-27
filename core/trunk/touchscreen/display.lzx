@@ -9,19 +9,21 @@
 <!--  Author: Peter Krenesky                          -->
 <!--  Date: Aug 1, 2006                               -->
 <!-- ================================================ -->
-<canvas layout="x" debug="true" oninit="initServer();" height="768" width="1366">
+<canvas debug="true" oninit="initServer();" height="768" width="1366">
     <debug width="200" height="300" x="1000" y="600" fontsize="10"/>
 
     <include href="updatingView.lzx"/>
     <include href="mrtgWindow.lzx"/>
     <include href="webcam.lzx"/>
 
+    <attribute name="screenContainer"/>
 
     <method name="initServer" >
         canvas.connection.connect();
         slideShowInit();
         var resetDelegate = new LzDelegate(canvas, "reset");
-        LzTimer.resetTimer(resetDelegate,1000);
+        LzTimer.resetTimer(resetDelegate,1000);        
+        Debug.write("Display initialized");
     </method>
 
     <!-- ================================================= -->
@@ -91,12 +93,12 @@
     </method>
     <!-- gets the next slide that should be shown -->
     <method name="getNextSlide">
-        if (currentSlideIndex+1 == screenContainer.subviews.length) {
+        if (currentSlideIndex+1 == canvas.screenContainer.length) {
             canvas.currentSlideIndex = 0;
         } else {
             canvas.currentSlideIndex = currentSlideIndex + 1;
         }
-        canvas.currentSlide = screenContainer.subviews[canvas.currentSlideIndex];
+        canvas.currentSlide = canvas.screenContainer[canvas.currentSlideIndex];
         Debug.write("next possible slide: " + canvas.currentSlide.id);
     </method>
     <method name="slideShowInit">
@@ -112,9 +114,9 @@
     </method>
 
     <method name="hideall" args="save" >
-        for (var screen in screenContainer.subviews) {
-            if(save != screenContainer.subviews[screen]) {
-                screenContainer.subviews[screen].hide();
+        for (var screen in canvas.screenContainer) {
+            if(save != canvas.screenContainer[screen]) {
+                canvas.screenContainer[screen].hide();
             }
         }
     </method>
@@ -132,14 +134,17 @@
     <dataset name="dset_slashdot" request="true" src="http://rss.slashdot.org/Slashdot/slashdot"/>
     <dataset name="dset_planetosl" request="true" src="http://osuosl.org/aggregator/rss/1"/>
     <resource name="edray" src="EdRay.png"/>
-    <image name="screenContainer" src="background-gray-1280x824.gif" clip="true" resourcewidth="1366" height="768" >
-	  <include href="screens/osl-about.lzx"/>
-	  <include href="screens/osl_networkgraphs.lzx"/>
-	  <include href="screens/news.lzx"/>
-	  <include href="screens/webcams.lzx"/>	
-	  <include href="screens/net_about.lzx"/>
-	  <include href="screens/rackview.lzx"/>	
-	  <include href="screens/weather.lzx"/>	
-    </image>
+    
+    <image name="background" src="background-gray-1280x824.gif" clip="true" resourcewidth="1366" height="768" />
+	  	        
+    <include href="screens/osl-about.lzx"/>
+    <include href="screens/osl_networkgraphs.lzx"/>
+    <include href="screens/news.lzx"/>
+    <include href="screens/webcams.lzx"/>
+    <include href="screens/net_about.lzx"/>
+    <include href="screens/rackview.lzx"/>
+    <include href="screens/weather.lzx"/>
+
+
 </canvas>
 

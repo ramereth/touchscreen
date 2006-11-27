@@ -14,6 +14,10 @@
         this.shown=true;
         this._init();
         this.hide();
+        if (!canvas.getAttribute("screenContainer")) {
+            canvas.screenContainer = new Array();
+        }        
+        canvas.screenContainer.push(this);
     </method>
 
     <!-- indicates if the slide is being shown, used by hide() to avoid unneeded calls to the animation -->
