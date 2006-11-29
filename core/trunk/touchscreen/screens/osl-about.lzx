@@ -1,11 +1,11 @@
-<screen id="screen_osl_about" duration="500000">
+<screen id="screen_osl_about" >
 
-    <view name="osl" x="50" y="25" bgcolor="white" width="750" height="718">
+    <view name="osl" x="-900" y="25" bgcolor="white" width="870" height="718">
         <view x="1" y="1" bgcolor="black" width="${parent.width-2}" height="${parent.height-2}">
             <view bgcolor="0xE55E00" x="1" y="1" width="${parent.width-2}" height="${parent.height-2}">
                 <view height="${parent.height}" width="${parent.width}" bgcolor="black" opacity="0.2"/>
                 <image src="http://osuosl.org/themes/newosl/osl.png" align="center"/>
-                <text multiline="true" y="100" x="20" height="${parent.height-this.y}" width="${parent.width-40}">
+                <text multiline="true" y="120" x="20" height="${parent.height-this.y}" width="${parent.width-40}">
                     <font color="#000000">
                         <font color="#FFFFFF"><b>What is the Open Source Lab?</b></font><br/>
                         The Oregon State University Open Source Lab is a global, world-class facility and data center for Open Source Software (OSS) knowledge, hosting, infrastructure, development, and collaboration. The Open Source Lab fosters the development of unique OSS products, as well as directly assists in the development, implementation, and use of targeted OSS solutions for use in education, research, government, and business. By working closely with the OSU community, other universities, governments, and private sector business, the OSU Open Source Lab is quickly becoming a critical worldwide center for services related to open source software.
@@ -14,9 +14,11 @@
                         <font color="#FFFFFF"><b>Why the Open Source Lab?</b></font><br/>
                         Our goal is to help promote collaboration through the nurturing and development of software projects across like-minded institutions. Our experience and world-class infrastructure helps seed development efforts across these communities, which enables them to move forward with investments in open source software that leverage open standards. The more people we can have working together, the more value we can help the world realize.
                         <p>The core mission of the OSU Open Source Lab can be summed up with the following:
-                            * Create an atmosphere of innovation for students, faculty and staff by providing an open, diverse environment for development and collaboration.
-                            * Collaborate with public and private institutions to better understand and develop open source software.
-                            * Bolster the return on investment to the State and local economy by helping promote and build tools and products that our constituents can use.
+				
+                             <br/>  &#32;&#32;&#8226; Create an atmosphere of innovation for students, faculty and staff by providing an open, diverse environment for development and collaboration.
+                             <br/>  &#32;&#32;&#8226; Collaborate with public and private institutions to better understand and develop open source software.
+                             <br/>  &#32;&#32;&#8226; Bolster the return on investment to the State and local economy by helping promote and build tools and products that our constituents can use.
+				 
                         </p>
                         <p>Open source projects today are held together by shoe string budgets and questionable infrastructure. Innovation needs a solid foundation to grow upon and the OSL brings that in the form of development experience, world-class infrastructure, and the willingness to always do the right thing for the community.</p>
                         <p>Bringing the open source community together both physically and virtually is about enabling cross-pollination, economies of scale and the fostering of new and exciting projects. By focusing our energies on our "main thing" we allow other projects to do the same. We shorten the open source transaction time with innovative tools and a globally- distributed infrastructure that services these communities 24 hours a day, 7 days a week and 365 days a year.</p>
@@ -27,11 +29,11 @@
         </view>
     </view>
 
-    <view name="edray" x="830" y="25" bgcolor="white" width="354" height="257">
+    <view name="edray" x="1400" y="25" bgcolor="white" width="354" height="257">
         <view x="1" y="1" resource="edray"/>
     </view>
 
-    <view name="oss" x="830" y="300" bgcolor="white" width="354" height="443">
+    <view name="oss" x="1400" y="300" bgcolor="white" width="354" height="443">
         <view x="1" y="1" bgcolor="black" width="${parent.width-2}" height="${parent.height-2}">
             <view bgcolor="0xE55E00" x="1" y="1" width="${parent.width-2}" height="${parent.height-2}">
                 <view height="${parent.height}" width="${parent.width}" bgcolor="black" opacity="0.1"/>
@@ -51,13 +53,13 @@
     <method name="_show">
         Debug.write("showing osl about: " + this.osl);
         this.osl.animate("x",50,800);
-        this.oss.animate("x",830,800);
-        this.edray.animate("x",830,800);
+        this.oss.animate("x",960,800);
+        this.edray.animate("x",960,800);
     </method>
 
     <method name="_hide">
         Debug.write("hiding osl about");
-        this.osl.animate("x",-800,800);
+        this.osl.animate("x",-900,800);
         this.oss.animate("x",1400,800);
         this.edray.animate("x",1400,800);
     </method>

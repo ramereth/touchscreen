@@ -1,7 +1,10 @@
 <class name="updatingView" extends="view" clickable="false">
 
             <!-- time in ms to update the image -->        
-            <attribute name="updatems" type="number" value="2000"/>
+            <attribute name="updatems" type="number" value="500000"/>
+
+            <!-- time in ms to delay the displaying of new image -->
+            <attribute name="delayms" type="number" value="500"/>
 
             <!-- href to the url with the image to load and refresh -->
             <attribute name="resourceHref" type="string" value=""/>
@@ -10,13 +13,14 @@
             <!-- things to consider are how fast is the refresh (updatems) and how long  -->
             <!-- does it take each image to load.  The buffer needs to be big enough to  -->
             <!-- allow each frame to load before it is displayed.                        -->
-            <attribute name="buffersize" type="number" value="3"/>
+            <attribute name="buffersize" type="number" value="2"/>
 
             <!-- index of the current buffer frame being shown -->
             <attribute name="currentView" type="number" value="0"/>
 
-            <!-- delegate for fetching the next frame -->
-            <attribute name="timerDelegate"/>
+            <!-- delegates for fetching the next frame -->
+            <attribute name="fetchDelegate"/>
+            <attribute name="swapDelegate"/>
 
             <!-- attribute determining if the update is currently running -->
             <attribute name="running" type="boolean" value="false"/>
@@ -37,36 +41,55 @@
                    newview.animate("opacity",0.0,0);
                 }
                 // start the refresh cycle
-                this.timerDelegate = new LzDelegate(this, "refreshTimer")                
+                this.timerDelegate = new LzDelegate(this, "refreshTimer")
+                this.swapDelegate = new LzDelegate(this, "showNextImage")
                 ]]>
             </method>
 
             <!-- function that recursively calls itself to advance the framebuffer -->
             <method name="refreshTimer">
-                this.refreshMethod();
-                LzTimer.addTimer(this.timerDelegate, updatems )
+                this.fetchNextImage();
+                LzTimer.resetTimer(this.timerDelegate, updatems )
             </method>
 
             <!-- refreshes the view -->
-            <method name="refreshMethod">
+            <method name="fetchNextImage">
                     <!-- get the current view being displayed-->
                     var cur  = this.container.subviews[currentView];
-                
+
+                    <!-- get the next view to be shown-->
+                    var next = this.currentView + 1;
+                    if (next >= this.container.subviews.length) {
+                        <!-- start at 0 if at the end of the array -->
+                        next = 0;
+                    }
+                    var nextFrame = this.container.subviews[next];
+
+                    <!-- update the image for the current (now last) view to be shown -->
+                    nextFrame.setSource(this.getAttribute('resourceHref'));    
+
+                    Debug.write("updating view: " + this + "  with href: " + this.getAttribute('resourceHref'));
+
+                    <!-- set delayed swap of new image -->
+                    LzTimer.resetTimer(this.swapDelegate, delayms);
+            </method>
+
+            <method name="showNextImage">
+                    <!-- get the current view being displayed-->
+                    var cur  = this.container.subviews[currentView];
+
                     <!-- get the next view to be shown-->
                     this.currentView = this.currentView + 1;
                     if (this.currentView >= this.container.subviews.length) {
                         <!-- start at 0 if at the end of the array -->
                         this.currentView = 0;
-                    }                
+                    }
                     var next = this.container.subviews[currentView];
 
                     <!-- hide the old view and show the new.                     -->
                     <!-- The show MUST be faster than the hide or you get flicker-->
                     next.animate("opacity",1.0,0);
-                    cur.animate("opacity",0.0,.5);                    
-
-                    <!-- update the image for the current (now last) view to be shown -->
-                    cur.setSource(this.getAttribute('resourceHref'));                    
+                    cur.animate("opacity",0.0,.5);
             </method>
 
             <!-- starts the update process -->
@@ -81,7 +104,7 @@
             <method name="stop">
                 if (this.running){
                     this.running = false;
-                    LzTimer.removeTimer(this.timerDelegate);
+                    LzTimer.removeTimer(this.timerDelegate);                    
                 }
             </method>
 
