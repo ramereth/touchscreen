@@ -12,9 +12,14 @@
 <canvas debug="true" oninit="initServer();" height="768" width="1366">
     <debug width="200" height="300" x="1000" y="600" fontsize="10"/>
 
-    <include href="updatingView.lzx"/>
-    <include href="mrtgWindow.lzx"/>
+    <include href="lib/updatingView.lzx"/>
+    <include href="lib/mrtgWindow.lzx"/>
     <include href="webcam.lzx"/>
+    <include href="lib/borderedBox.lzx"/>
+    <include href="lib/scrollingLabel.lzx"/>
+
+    <font name="timmons" src="timmonsb.ttf"/>
+    <font name="default" src="helmetr.ttf"/>
 
     <attribute name="screenContainer"/>
 
@@ -25,6 +30,9 @@
         LzTimer.resetTimer(resetDelegate,1000);        
         Debug.write("Display initialized");
     </method>
+
+    <resource name="bgimage" src="background-gray-1x768.gif"/>
+    <view name="background" resource="bgimage" width="1366" height="768" stretches="width"/>	
 
     <!-- ================================================= -->
     <!--   Connection and Messaging                        -->
@@ -133,17 +141,20 @@
     <dataset name="dset_oregonian" request="true" src="http://www.blogs.oregonlive.com/community/feeds/rss.asp?cat=2151"/>
     <dataset name="dset_slashdot" request="true" src="http://rss.slashdot.org/Slashdot/slashdot"/>
     <dataset name="dset_planetosl" request="true" src="http://osuosl.org/aggregator/rss/1"/>
+    <dataset name="dset_weatherData" request="true" src="http://xoap.weather.com/weather/local/USOR0076?cc=*&amp;dayf=5&amp;prod=xoap&amp;par=1003666583&amp;key=4128909340a9b2fc"/>
+    <dataset name="dset_sponsors" request="true" src="screens/sponsors/personalDonations.xml"/>
+    <!--dataset name="dset_weatherData" request="true" src="http://www.nws.noaa.gov/data/current_obs/KCVO.xml"/-->
     <resource name="edray" src="EdRay.png"/>
-    
-    <image name="background" src="background-gray-1280x824.gif" clip="true" resourcewidth="1366" height="768" />
-	  	        
+
+    <include href="screens/osl_sponsors.lzx"/>
+    <!--include href="screens/weather.lzx"/>
     <include href="screens/osl-about.lzx"/>
     <include href="screens/osl_networkgraphs.lzx"/>
     <include href="screens/news.lzx"/>
     <include href="screens/webcams.lzx"/>
     <include href="screens/net_about.lzx"/>
-    <include href="screens/rackview.lzx"/>
-    <include href="screens/weather.lzx"/>
+    <include href="screens/rackview.lzx"/-->
+
 
 
 </canvas>
