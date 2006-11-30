@@ -1,0 +1,20 @@
+<class name="borderedBox" extends="view">
+
+    <attribute name="viewopacity" type="number" value="0.3"/>
+
+    <!-- white border -->
+    <view width="1" height="${parent.height}" x="0" y="0" bgcolor="white"/>
+    <view width="1" height="${parent.height}" x="${parent.width-1}" y="0" bgcolor="white"/>
+    <view width="${parent.width}" height="1" x="0" y="0" bgcolor="white"/>
+    <view width="${parent.width}" height="1" x="0" y="${parent.height-1}" bgcolor="white"/>
+
+    <!-- gray border -->
+    <view width="1" height="${parent.height-2}" x="1" y="1" bgcolor="black"/>
+    <view width="1" height="${parent.height-2}" x="${parent.width-2}" y="1" bgcolor="black"/>
+    <view width="${parent.width-2}" height="1" x="1" y="1" bgcolor="black"/>
+    <view width="${parent.width-2}" height="1" x="1" y="${parent.height-2}" bgcolor="black"/>
+
+    <!-- translucent background -->
+    <view x="2" y="2" height="${parent.height-4}" width="${parent.width-4}" bgcolor="black" opacity="${parent.viewopacity}"/>
+
+</class>

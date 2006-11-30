@@ -1,0 +1,227 @@
+<screen id="screen_sponsors" name="screen_sponsors" duration="500000">
+		
+    <!-- starts the update process -->
+    <method name="_start">
+        corporateBox.start();
+    </method>
+
+    <!-- stops the update process -->
+    <method name="_stop">
+        corporateBox.stop();
+    </method>           
+
+    <borderedBox x="400" y="50" width="600" height="100">
+        <text align="center" valign="middle" fgcolor="white" font="timmons" fontsize="40">Thank You To Our Sponors</text>
+    </borderedBox>
+
+    <borderedBox x="100" y="250" name="corporateBox" width="850" height="484" bgcolor="white" viewopacity="0.0">
+
+        <!-- attribute determining if the update is currently running -->
+        <attribute name="running" type="boolean" value="false"/>
+
+        <!-- time in ms to update the image -->
+        <attribute name="updatems" type="number" value="10000"/>	  
+        
+        <!-- delegates for fetching the next frame -->
+        <attribute name="timerDelegate"/>
+
+        <attribute name="currentView" type="number" value="0"/>
+
+        <!-- initialize the view, setup the view buffer, etc -->
+        <method event="oninit">
+            this.timerDelegate = new LzDelegate(this, "refreshTimer")
+        </method>
+
+        <!-- function that recursively calls itself to advance the framebuffer -->
+        <method name="refreshTimer">
+            this.fetchNextDonor();
+            LzTimer.resetTimer(this.timerDelegate, updatems )
+        </method>
+
+        <!-- refreshes the view -->
+        <method name="fetchNextDonor">
+            <!-- get the current view being displayed-->
+            var cur  = this.container.subviews[currentView];
+           
+            <!-- get the next view to be shown-->
+            this.currentView = this.currentView + 1;
+            if (this.currentView >= this.container.subviews.length) {
+            <!-- start at 0 if at the end of the array -->
+            this.currentView = 0;
+            }
+            var next = this.container.subviews[currentView];
+
+            <!-- hide the old view and show the new.                     -->
+            <!-- The show MUST be faster than the hide or you get flicker-->
+            next.animate("opacity",1.0,600);
+            cur.animate("opacity",0.0,500);
+        </method>
+
+        <!-- starts the update process -->
+        <method name="start">
+            <![CDATA[
+
+	            if (!this.running){
+       	         this.running = true;                
+              	  LzTimer.resetTimer(this.timerDelegate, updatems )		  					  
+	            }
+		     ]]>
+        </method>
+
+        <!-- stops the update process -->
+        <method name="stop">
+            <![CDATA[
+	            if (this.running){
+       	         this.running = false;                
+              	  LzTimer.removeTimer(this.timerDelegate);
+	            }
+			]]>
+        </method>
+
+        <view name="container"  height="${parent.height-4}" width="${parent.width-4}" x="2" y="2">
+            <view name="google"  opacity="0.0" height="${parent.height}" width="${parent.width}" >
+                <image align="center" y="20" src="http://osuosl.org/files/sponsors/google.png" />
+                <text x="20" y="130" resize="true" font="default" fontsize="18" width="${parent.width-40}" multiline="true">
+                    Google is one of the world's leading search engines and quickly becoming a leader in the web services industry. From their website, "Google's mission is to organize the world's information and make it universally accessible and useful." The OSL shares in this mission by organizing the resources of the Open Source community, making it easier for developers to focus on writing code.
+                    <p/>
+                    Google sponsors the OSL through financial grants. This funding helps the OSL to provide the community with physical hosting, bandwidth, and to cover the cost of "smart-hands" support. Google is a big supporter of the Open Source movement, producing open code of their own (see code.google.com), and sponsoring the Summer of Code program. Each year Google puts millions of dollars towards Open Source research and development through this program.
+                </text>
+            </view>
+		
+            <view name="ibm" opacity="0.0"  height="${parent.height}" width="${parent.width}" >
+                <image align="center" y="20" src="http://osuosl.org/files/sponsors/ibm-osl.png" />
+                <text x="20" y="120" resize="true" font="default" fontsize="18" width="${parent.width-40}" multiline="true">
+                    IBM has helped contribute to projects hosted here at the Open Source Lab by donating hardware resources.
+                    <p/>
+                    IBM has long been an advocate, sponsor and contributor to the Linux developer community and Open Technology development. Continuing this tradition of support, IBM has contributed a number of IBM970 and POWER5 servers to the Open Source Lab for the purpose of Linux and Open Source project development by the community on the Power Architecture. Please see: http://powerdev.osuosl.org/ for more information and SSH-based remote access to Linux on POWER servers. Also contributed a 4-way POWER5 system used for the development and testing of the Gentoo distribution for POWER.
+                </text>
+            </view>
+
+            <view name="tds" opacity="0.0"  height="${parent.height}" width="${parent.width}" >
+                <image align="center" y="20" src="http://osuosl.org/files/sponsors/tds.gif" />
+                <text x="20" y="90" resize="true" font="default" fontsize="14" width="${parent.width-40}" multiline="true">
+                    The Open Source Lab at Oregon State University has received a large donation of Internet bandwidth from TDS Telecom that will allow it to more than double the number of visitors it can serve, in the future helping up to 50 million people a day review or download free software.
+                    <p/>For a five-year period, the Open Source Lab will receive 600 megabits of bandwidth - a volume of Internet connectivity that is more than five times higher than the total used by the rest of the university. In addition, OSU servers will be hosted in a TDS Data Center.
+                    <p/>"This gift from TDS Telecom really allows OSU to continue its integrated efforts in education, research, and outreach in the Open Source space. The increased bandwidth gives OSU strong reach into many of the communities it serves.", said Ed Ray, President of Oregon State University.
+                    <p/>TDS Telecom is a major telephone and Internet services provider. Their donation of bandwidth to OSU will help TDS balance the volume of data they share back and forth with other networks, which is necessary for the smooth operation of the global Internet system.  The TDS donation will enable the OSL to provide more highly demanded content.
+                </text>
+            </view>
+
+            <view name="genesi" opacity="0.0"  height="${parent.height}" width="${parent.width}" >
+                <image align="center" y="20" src="http://osuosl.org/files/sponsors/genesi-thumb.png" />
+                <text x="20" y="140" resize="true" font="default" fontsize="18" width="${parent.width-40}" multiline="true">
+                    Genesi is a leading provider of Freescale and IBM PowerPC based computing products. Genesi's PegasosPPC MicroATX computer is designed to bring PowerPC technology flexibility and efficiency to the desktop, low-end server and pervasive market segments at an affordable price.
+                    <p/>Genesi has provided many PowerPC based Open Desktop Workstations to the Open Source Lab. For information about Genesi's involvement in the Linux Open Source community, please see www.PPCZone.org
+                </text>
+            </view>
+
+            <view name="intel" opacity="0.0"  height="${parent.height}" width="${parent.width}" >
+                <image align="center" y="20" src="http://osuosl.org/files/sponsors/intel.png" />
+                <text x="20" y="140" resize="true" font="default" fontsize="18" width="${parent.width-40}" multiline="true">
+                    Intel, the world leader in silicon innovation, develops technologies, products, and initiatives to continually advance how people work and live. Explore the many ways Intel's belief in innovation has defined our corporate identity. (from intel.com)
+                    <p/>Intel supports the OSL through gifted hardware resources. Using Intel's new dual core technology, we have been able to process a much larger amount of logs and stats. Another benefit of this added power is that we are able to virtualize servers using Xen, allowing us to give many virtual machines to smaller OSS projects and stretch the usefulness of those servers even further.
+                </text>
+            </view>
+
+            <view name="splunk" opacity="0.0"  height="${parent.height}" width="${parent.width}" >
+                <image align="center" y="20" src="http://osuosl.org/files/sponsors/logo_splunk_trans.gif" />
+                <text x="20" y="100" resize="true" font="default" fontsize="14" width="${parent.width-40}" multiline="true">
+                    Splunk is search software that indexes and links together ALL the IT data generated by ANY system, application or device making it possible to search and navigate your running IT infrastructure. (taken from splunk.com)
+                    <p/>The OSL benefits from an installation of the Splunk Professional Server that watches and indexes the logs of all of our managed servers. This allows us to quickly search and troubleshoot problems by finding the log data we need fast.
+                    <p/>At the OSL we have multiple servers performing a single function, such as mail, DNS, and LDAP. With Splunk, we can search one place for an event that may have happened in any number of places, and do so quicker than grep'ing through logs on our loghost. Saving these searches and watching time-based event trends from the log data is a big bonus. Splunk has quickly shown itself to be a valuable part of our administrative toolkit. In today's boom of Web2.0 applications, think of Splunk as Logs2.0.
+                    <p/>Splunk offers a free version that can index up to 500MB per day. Try it out at www.splunk.com
+                </text>
+            </view>
+
+
+
+
+        </view>
+    </borderedBox >
+
+    <borderedBox name="personalDonations" x="1050" y="200" width="220" clip="false" height="484" datapath="dset_sponsors:/sponsors" bgcolor="0xE55E00" viewopacity="0.0">
+        <view name="container" clip="false" x="2" y="2" height="${parent.height-4}" width="${parent.width-4}"/>
+        <attribute name="current" type="number" value="0"/>
+        <attribute name="updateDelegate"/>
+        <attribute name="scrollDeleteDelegate"/>
+        <attribute name="names"/>
+
+        <method name="updateNames">
+            dset.doRequest();
+        </method>
+
+        <method name="nextName">
+            <![CDATA[
+                // get the next name
+                this.current = this.current + 1;
+                if (current >= this.names.length){
+                    current = 0;
+                }
+                var label = this.names[current];
+
+                // create a scrolling label
+                var textBlock = new scrollingLabel(this.container);
+                                
+                textBlock.setAttribute("font","default");
+                textBlock.setAttribute("fontsize",16);
+                textBlock.setText(label);
+                textBlock.setAlign("center");
+                textBlock.animate("height",30,0);                
+                // shrink any names that are too big
+                while (textBlock.width > 216 && textBlock.fontsize > 2) {                                    
+                    textBlock.setAttribute("fontsize",textBlock.fontsize-1);
+                }
+
+                //animate the list to move 1 position                
+                if (container.subnodes.length > 1) {                    
+                    container.subnodes[0].animate("y", -30, 500);                                        
+                } else {
+                    container.subnodes[0].animate("y",480,0);
+                }
+
+                //if a label has gone past the clip plane of the box, destroy it
+                //for simplicity determine how many can fit in the box.
+                if (container.subnodes.length > 16) {
+                    //this must be done by a delegate so it happens AFTER the animation.
+                    //The animation will stop if the label is destroyed first
+                    LzTimer.resetTimer(this.scrollDeleteDelegate, 600);
+                }
+            ]]>
+        </method>
+
+        <method name="scrollLoop">
+            this.nextName();
+            LzTimer.resetTimer(this.updateDelegate,1000);
+        </method>
+
+        <method name="deleteFirstScrollLabel">
+            // after subnode[0] is destroyed it is removed
+            // from the array automatically. The array is then
+            // automatically shifted so that subnode[1] is now
+            // subnode[0]
+            this.container.subnodes[0].destroy();
+        </method>
+
+        <method event="oninit">
+            loadNames();
+            this.updateDelegate = new LzDelegate(this, "scrollLoop" );
+            this.scrollDeleteDelegate = new LzDelegate(this, "deleteFirstScrollLabel" );
+            LzTimer.resetTimer(this.updateDelegate, 3000);
+        </method>
+
+        <method name="loadNames">
+            <![CDATA[
+                this.current=0;
+                this.names = new Array();
+                var namesArr = this.datapath.xpathQuery('name');
+                for(var i=1; i<=namesArr.length; i++) {                        
+                        var name = this.datapath.xpathQuery('name['+i+']/text()');
+                        this.names.push(name);                        
+                }
+            ]]>
+        </method>        
+
+    </borderedBox>
+
+
+</screen>

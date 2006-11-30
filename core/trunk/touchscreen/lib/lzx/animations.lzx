@@ -1,0 +1,227 @@
+<class name="menuAnimator">
+
+    <method name="show_slide_from_left_and_right" args="buttons">
+        if (buttons.length == 4){
+            show_slide_from_left_and_right_4(buttons);
+        } else if (buttons.length == 6) {
+            show_slide_from_left_and_right_6(buttons);
+        } else if (buttons.length == 8) {
+            show_slide_from_left_and_right_8(buttons);
+        }
+    </method>
+
+    <method name="show_slide_from_left_and_right_4" args="buttons">
+        <![CDATA[
+            var spacing = 75;
+            var canvasWidth = 1280;
+            var height = 1024;
+            var yOffset = 0;
+            var buttonWidth = 200;
+
+            var x0 = (canvasWidth/2)-(spacing/2)-buttonWidth;
+            var x1 = (canvasWidth/2)+(spacing/2)
+
+            var y0 = yOffset;
+            var y1 = yOffset + buttonWidth + spacing;
+
+            var startX0 = 0 - buttonWidth - spacing;
+            var startX1 = canvasWidth + spacing;            
+
+            // make buttons invisibile so we can move them
+            for (i=0; i<subviews.length; i++){
+                buttons.subviews[i].animate("opacity","0.0",0);
+            }
+            // move buttons into thier starting position
+            buttons[0].animate("x",startX0,0);
+            buttons[1].animate("x",startX1,0);
+            buttons[2].animate("x",startX0,0);
+            buttons[3].animate("x",startX1,0);
+
+            buttons[0].animate("y",y0,0);
+            buttons[1].animate("y",y0,0);
+            buttons[2].animate("y",y1,0);
+            buttons[3].animate("y",y1,0);
+
+
+            //make buttons visible again
+            for (i=0; i<subviews.length; i++){
+            buttons[i].animate("opacity","1.0",0);
+            }
+
+            // display them
+            buttons[0].animate("x",x0,400);
+            buttons[1].animate("x",x1,800);
+            buttons[2].animate("x",x0,800);
+            buttons[3].animate("x",x1,400);
+
+        ]]>
+    </method>
+
+    <method name="show_slide_from_left_and_right_6" args="buttons">
+        <![CDATA[
+            var spacing = 75;
+            var canvasWidth = 1280;
+            var height = 1024;
+            var yOffset = 0;
+            var buttonWidth = 200;
+            var x0 = (canvasWidth/2)-spacing-(buttonWidth*1.5);
+            var x1 = (canvasWidth/2)-(buttonWidth/2)
+            var x2 = (canvasWidth/2)+spacing+(buttonWidth/2);
+
+            var y0 = yOffset;
+            var y1 = yOffset + buttonWidth + spacing;
+
+            var startX0 = 0 - buttonWidth - spacing;
+            var startX1 = canvasWidth + spacing;
+
+            // make buttons invisibile so we can move them
+            for (i=0; i<subviews.length; i++){
+                buttons.subviews[i].animate("opacity","0.0",0);
+            }
+            // move buttons into thier starting position
+            buttons[0].animate("x",startX0,0);
+            buttons[1].animate("x",startX0,0);
+            buttons[3].animate("x",startX0,0);
+            buttons[2].animate("x",startX1,0);
+            buttons[4].animate("x",startX1,0);
+            buttons[5].animate("x",startX1,0);
+
+            buttons[0].animate("y",y0,0);
+            buttons[1].animate("y",y0,0);
+            buttons[2].animate("y",y0,0);
+            buttons[3].animate("y",y1,0);
+            buttons[4].animate("y",y1,0);
+            buttons[5].animate("y",y1,0);
+
+            //make buttons visible again
+            for (i=0; i<subviews.length; i++){
+                buttons[i].animate("opacity","1.0",0);
+            }
+
+            // display them
+            buttons[0].animate("x",x0,600);
+            buttons[1].animate("x",x1,400);
+            buttons[2].animate("x",x2,800);
+            buttons[3].animate("x",x0,800);
+            buttons[4].animate("x",x1,400);
+            buttons[5].animate("x",x2,600);
+        ]]>
+    </method>
+
+    <method name="show_slide_from_left_and_right_8" args="buttons">
+        <![CDATA[                    
+            var spacing = 75;
+            var canvasWidth = 1280;
+            var height = 1024;
+            var yOffset = 0;
+            var buttonWidth = 200;
+            var x0 = (canvasWidth/2)-(spacing/2)-(2*buttonWidth+spacing);
+            var x1 = (canvasWidth/2)-(spacing/2)-buttonWidth;
+            var x2 = (canvasWidth/2)+(spacing/2)
+            var x3 = (canvasWidth/2)+(spacing/2)+(buttonWidth+spacing);
+
+            var y0 = yOffset;
+            var y1 = yOffset + buttonWidth + spacing;
+
+            var startX0 = 0 - buttonWidth - spacing;
+            var startX1 = canvasWidth + spacing;
+
+            // make buttons invisibile so we can move them
+            for (i=0; i<subviews.length; i++){
+            buttons.subviews[i].animate("opacity","0.0",0);
+            }
+            // move buttons into thier starting position
+            buttons[0].animate("x",startX0,0);
+            buttons[1].animate("x",startX0,0);
+            buttons[4].animate("x",startX0,0);
+            buttons[5].animate("x",startX0,0);
+            buttons[2].animate("x",startX1,0);
+            buttons[3].animate("x",startX1,0);
+            buttons[6].animate("x",startX1,0);
+            buttons[7].animate("x",startX1,0);
+
+            buttons[0].animate("y",y0,0);
+            buttons[1].animate("y",y0,0);
+            buttons[2].animate("y",y0,0);
+            buttons[3].animate("y",y0,0);
+            buttons[4].animate("y",y1,0);
+            buttons[5].animate("y",y1,0);
+            buttons[6].animate("y",y1,0);
+            buttons[7].animate("y",y1,0);
+
+            //make buttons visible again
+            for (i=0; i<subviews.length; i++){
+            buttons[i].animate("opacity","1.0",0);
+            }
+
+            // display them
+            buttons[0].animate("x",x0,800);
+            buttons[1].animate("x",x1,400);
+            buttons[4].animate("x",x0,800);
+            buttons[5].animate("x",x1,400);
+            buttons[2].animate("x",x2,400);
+            buttons[3].animate("x",x3,800);
+            buttons[6].animate("x",x2,400);
+            buttons[7].animate("x",x3,800);
+
+            return 800;
+        ]]>
+    </method>
+
+    <method name="hide_slide_to_left_and_right" args="buttons">
+        if (buttons.length == 4){
+            hide_slide_to_left_and_right_4(buttons);
+        } else if (buttons.length == 6) {
+            hide_slide_to_left_and_right_6(buttons);
+        } else if (buttons.length == 8) {
+            hide_slide_to_left_and_right_8(buttons);
+        }
+    </method>
+
+    <method name="hide_slide_to_left_and_right_4" args="buttons">
+        var spacing = 75;
+        var width = 1280;
+        var buttonWidth = 200;
+
+        var startX0 = 0 - buttonWidth - spacing-75;
+        var startX1 = width + spacing;        
+        buttons[0].animate("x",startX0,400);
+        buttons[1].animate("x",startX1,800);
+        buttons[2].animate("x",startX0,800);
+        buttons[3].animate("x",startX1,400);
+    </method>
+
+    <method name="hide_slide_to_left_and_right_6" args="buttons">
+        var spacing = 75;
+        var width = 1280;
+        var buttonWidth = 200;
+
+        var startX0 = 0 - buttonWidth - spacing-75;
+        var startX1 = width + spacing;
+        buttons[0].animate("x",startX0,400);
+        buttons[1].animate("x",startX0,800);
+        buttons[2].animate("x",startX1,400);
+        buttons[3].animate("x",startX0,800);
+        buttons[4].animate("x",startX1,800);
+        buttons[5].animate("x",startX1,400);
+    </method>
+
+    <method name="hide_slide_to_left_and_right_8" args="buttons">
+        var spacing = 75;
+        var width = 1280;
+        var buttonWidth = 200;
+
+        var startX0 = 0 - buttonWidth - spacing-75;
+        var startX1 = width + spacing;        
+        buttons[0].animate("x",startX0,400);
+        buttons[1].animate("x",startX0,800);
+        buttons[4].animate("x",startX0,400);
+        buttons[5].animate("x",startX0,800);
+        buttons[2].animate("x",startX1,800);
+        buttons[3].animate("x",startX1,400);
+        buttons[6].animate("x",startX1,800);
+        buttons[7].animate("x",startX1,400);
+    </method>
+
+
+</class>

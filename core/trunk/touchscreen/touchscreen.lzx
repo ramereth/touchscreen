@@ -12,11 +12,11 @@
 
 <canvas layout="x" debug="true" oninit="clientInit()" width="1280" height="1024">
 
-    <include href="connection.lzx" />
-    <include href="screen.lzx" />
-    <include href="menuButton.lzx" />
-    <include href="menu.lzx" />
-    <include href="animations.lzx" />
+    <include href="lib/lzx/connection.lzx" />
+    <include href="lib/lzx/screen.lzx" />
+    <include href="lib/lzx/menuButton.lzx" />
+    <include href="lib/lzx/menu.lzx" />
+    <include href="lib/lzx/animations.lzx" />
 
     <attribute name="menuAnimator"/>
 
@@ -180,7 +180,7 @@
     <!-- ================================================= -->
     <!--   Menu Area                                       -->
     <!-- ================================================= -->
-    <image src="background-gray-1280x824.gif" clip="true" >
+    <image src="lib/images/background-gray-1280x824.gif" clip="true" >
         <view id="button_back" x="20" y="-150" resource="button_back">
             <!-- indicates if the slide is being shown, used by hide() to avoid unneeded calls to the animation -->
             <attribute name="shown" type="boolean" value="false"/>
