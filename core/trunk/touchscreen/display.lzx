@@ -10,7 +10,7 @@
 <!--  Date: Aug 1, 2006                               -->
 <!-- ================================================ -->
 <canvas debug="true" oninit="initServer();" height="768" width="1366">
-    <debug width="200" height="300" x="1000" y="600" fontsize="10"/>
+    <debug width="400" height="300" x="200" y="500" fontsize="10"/>
 
     <include href="lib/lzx/updatingView.lzx"/>
     <include href="lib/lzx/mrtgWindow.lzx"/>
@@ -18,6 +18,8 @@
     <include href="lib/lzx/scrollingLabel.lzx"/>
     
     <font name="default" src="helmetr.ttf"/>
+    <font name="Myriabol" src="myriabol.ttf" />
+    <font name="Myriarom" src="myriarom.ttf" />
 
     <attribute name="screenContainer"/>
 
@@ -136,6 +138,13 @@
     <!-- ================================================= -->
     <include href="lib/lzx/screen.lzx" />
 
+    <!-- Advisories and Outages -->
+    <dataset name="nagios" request="true" src="http://page.osuosl.org:8000/"/>
+    <dataset name="glsa" request="true" src="http://www.gentoo.org/rdf/en/glsa-index.rdf"/>
+    <dataset name="dsa" request="true" src="http://www.debian.org/security/dsa"/>
+    <!--  <dataset name="rt" request="true" secureport="4443" type="http" src="https://support.osuosl.org:4443/rt/Search/Results.rdf?Order=DESC&amp;Query=Owner%20%3D%20'Nobody'%20AND%20(%20Status%20%3D%20'new'%20OR%20Status%20%3D%20'open')&amp;Rows=50&amp;OrderBy=Priority&amp;Page=1&amp;Format=&amp;user=bigscreen&amp;pass=4r3e2w1q0p9o8i7u"/> -->
+    <include href="screens/osl_outages.lzx"/>
+
     <!-- NEWS -->
     <dataset name="dset_barometer" request="true" src="http://barometer.orst.edu/articles.rss"/>
     <dataset name="dset_oregonian" request="true" src="http://www.blogs.oregonlive.com/community/feeds/rss.asp?cat=2151"/>
@@ -158,7 +167,6 @@
     <!-- WEBCAMS -->
     <include href="screens/webcams/webcam.lzx"/>
     <include href="screens/webcams/webcams.lzx"/>
-
 
     <!-- OTHER STUFF -->
     <include href="screens/osl_networkgraphs.lzx"/>
