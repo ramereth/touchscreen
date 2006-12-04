@@ -2,36 +2,48 @@
     
 
 
-    <view name="barometer" bgcolor="red" x="10" y="10" layout="axis: y">
+    <view name="barometer" bgcolor="0xE55E00" x="10" y="10" layout="axis: y" width="400">
         <image src="http://media.collegepublisher.com/media/paper854/template/templatemedia/bar_header.jpg"/>            
-        <view datapath="dset_barometer:/rss/channel/item" >
-            <text y="0" datapath="title/text()" width="300"/>
-            <!--text y="10" datapath="description/text()" width="400" multiline="true"/-->
+        <view datapath="dset_barometer:/rss/channel/item[0-4]"  height="20">
+            <text fontsize="17" y="-4" x="20">&#8226;</text><text x="35" y="0" datapath="title/text()" width="400" multiline="true"/>
         </view>
     </view>
 
-    <view name="oregonian" bgcolor="red" x="10" y="400" layout="axis: y">
+    <view name="oregonian" bgcolor="0xE55E00" x="10" y="200" layout="axis: y"  width="400">
         <image src="http://www.oregonlive.com/images/toprail/newspaper.gif"/>
-        <view datapath="dset_oregonian:/rss/channel/item" >
-            <text y="0" datapath="title/text()" width="300"/>
-            <!--text y="10" datapath="description/text()" width="400" multiline="true"/-->
+        <view datapath="dset_oregonian:/rss/channel/item[0-4]"  height="20">
+            <text fontsize="17" y="-4" x="20">&#8226;</text><text x="35" y="0" datapath="title/text()" width="400" multiline="true"/>
         </view>
     </view>
 
-    <view name="slashdot" bgcolor="red" x="600" y="10" layout="axis: y">
+    <view name="slashdot" bgcolor="0xE55E00" x="10" y="400" layout="axis: y"  width="400">
         <image src="http://images.slashdot.org/logo.png"/>
-        <view datapath="dset_slashdot:/rdf:RDF/channel/item" >
-            <text y="0" datapath="title/text()" width="300"/>
-            <!--text y="10" datapath="description/text()" width="400" multiline="true"/-->
+        <view datapath="dset_slashdot:/rdf:RDF/item[0-4]"  height="20">
+            <text fontsize="17" y="-4" x="20">&#8226;</text><text x="35" y="0" datapath="title/text()" width="400" multiline="true"/>
         </view>
     </view>
 
-    <view name="planetosl" bgcolor="red" x="600" y="400" layout="axis: y">
+    <view name="planetosl" bgcolor="0xE55E00" x="10" y="600" layout="axis: y"  width="435">
         <image src="http://osuosl.org/themes/newosl/osl.png"/>
-        <view datapath="dset_planetosl:/rss/channel/item" >
-            <text y="0" datapath="title/text()" width="300"/>
-            <!--text y="10" datapath="description/text()" width="400" multiline="true"/-->
+        <view datapath="dset_planetosl:/rss/channel/item[0-4]" height="20" >
+            <text fontsize="17" y="-4" x="20">&#8226;</text><text x="35" y="0" datapath="title/text()" width="400" multiline="true"/>
         </view>
     </view>
+
+    <borderedBox x="600" y="100" height="600" width="600" bgcolor="0xE55E00" viewopacity="0.0">
+        <view  x="2" y="2" height="${parent.height-4}" width="${parent.width-4}" datapath="dset_planetosl:/rss/channel/item[4]">
+            <text name="body" bgcolor="green" width="600" height="600" resize="true"  multiline="true" >
+                <img align="middle" src="http://staff.osuosl.org/~cshields/images/wet_cd.jpg" alt="wet cd"/><br/><br/>
+                
+            </text>
+            <method event="ondata">
+                //var output = this.datapath.xpathQuery("description/text()");
+                //Debug.write(output);
+                <![CDATA[
+                //this.body.setText(output);
+                ]]>
+            </method>
+        </view>
+    </borderedBox>
 
 </screen>
