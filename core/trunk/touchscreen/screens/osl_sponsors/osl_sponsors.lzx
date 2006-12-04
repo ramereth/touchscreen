@@ -1,4 +1,4 @@
-<screen id="screen_sponsors" name="screen_sponsors" duration="500000">
+<screen id="screen_sponsors" name="screen_sponsors" duration="30000">
 		
     <!-- starts the update process -->
     <method name="_start">
@@ -8,10 +8,10 @@
     <!-- stops the update process -->
     <method name="_stop">
         corporateBox.stop();
-    </method>           
+    </method>
 
-    <borderedBox x="400" y="50" width="600" height="100">
-        <text align="center" valign="middle" fgcolor="white" font="timmons" fontsize="40">Thank You To Our Sponors</text>
+    <borderedBox name="header" x="400" y="50" width="600" height="100">
+        <text align="center" valign="middle" fgcolor="white" font="default" fontsize="40">Thank You To Our Sponors</text>
     </borderedBox>
 
     <borderedBox x="100" y="250" name="corporateBox" width="850" height="484" bgcolor="white" viewopacity="0.0">
@@ -20,7 +20,7 @@
         <attribute name="running" type="boolean" value="false"/>
 
         <!-- time in ms to update the image -->
-        <attribute name="updatems" type="number" value="10000"/>	  
+        <attribute name="updatems" type="number" value="10000"/>
         
         <!-- delegates for fetching the next frame -->
         <attribute name="timerDelegate"/>
@@ -139,7 +139,7 @@
         </view>
     </borderedBox >
 
-    <borderedBox name="personalDonations" x="1050" y="200" width="220" clip="false" height="484" datapath="dset_sponsors:/sponsors" bgcolor="0xE55E00" viewopacity="0.0">
+    <borderedBox name="personalDonations" x="1050" y="250" width="220" clip="false" height="484" datapath="dset_sponsors:/sponsors" bgcolor="0xE55E00" viewopacity="0.0">
         <view name="container" clip="false" x="2" y="2" height="${parent.height-4}" width="${parent.width-4}"/>
         <attribute name="current" type="number" value="0"/>
         <attribute name="updateDelegate"/>
@@ -219,9 +219,20 @@
                         this.names.push(name);                        
                 }
             ]]>
-        </method>        
+        </method>
 
     </borderedBox>
 
+    <method name="_show">
+          this.header.animate("y",50,800);
+          this.corporateBox.animate("x",100,800);
+          this.personalDonations.animate("x",1050,800);
+    </method>
+
+    <method name="_hide">
+          this.header.animate("y",-150,800);
+          this.corporateBox.animate("x",-900,800);
+          this.personalDonations.animate("x",1400,800);
+    </method>
 
 </screen>

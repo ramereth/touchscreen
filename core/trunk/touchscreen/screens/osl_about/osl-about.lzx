@@ -5,7 +5,7 @@
             <view bgcolor="0xE55E00" x="1" y="1" width="${parent.width-2}" height="${parent.height-2}">
                 <view height="${parent.height}" width="${parent.width}" bgcolor="black" opacity="0.2"/>
                 <image src="http://osuosl.org/themes/newosl/osl.png" align="center"/>
-                <text multiline="true" y="120" x="20"  font="timmons" height="${parent.height-this.y}" width="${parent.width-40}">
+                <text multiline="true" y="120" x="20"  font="default" height="${parent.height-this.y}" width="${parent.width-40}">
                     <font color="#000000">
                         <font color="#FFFFFF"><b>What is the Open Source Lab?</b></font><br/>
                         The Oregon State University Open Source Lab is a global, world-class facility and data center for Open Source Software (OSS) knowledge, hosting, infrastructure, development, and collaboration. The Open Source Lab fosters the development of unique OSS products, as well as directly assists in the development, implementation, and use of targeted OSS solutions for use in education, research, government, and business. By working closely with the OSU community, other universities, governments, and private sector business, the OSU Open Source Lab is quickly becoming a critical worldwide center for services related to open source software.
@@ -37,7 +37,7 @@
         <view x="1" y="1" bgcolor="black" width="${parent.width-2}" height="${parent.height-2}">
             <view bgcolor="0xE55E00" x="1" y="1" width="${parent.width-2}" height="${parent.height-2}">
                 <view height="${parent.height}" width="${parent.width}" bgcolor="black" opacity="0.1"/>
-                <text multiline="true" y="10" x="10"  font="timmons" height="${parent.height}" width="${parent.width-20}">
+                <text multiline="true" y="10" x="10"  font="default" height="${parent.height}" width="${parent.width-20}">
                     <font color="#000000">
                         <font color="#FFFFFF"><b>What is Open Source Software?</b></font><br/>
                         "Open source" means that the building blocks for a program are freely available to use, modify, and improve. This provides for rapid software development by contributors worldwide, and the resulting program is available for anyone to use, anywhere, free of charge.<p/>
