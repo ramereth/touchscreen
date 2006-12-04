@@ -52,7 +52,7 @@
 
             <view  opacity="0.0" name="debian">
                 <text font="default" fgcolor="0xE55E00" fontsize="18" fontstyle="bold">Latest Debian Advisories</text>
-                <image x="490" y="20" src="debian.png"/>
+                <image x="490" y="20" src="lib/images/debian.png"/>
                 <view y="40" layout="axis:y">
                     <view name="dsaBox" datapath="dsa:/rdf:RDF/item[-4]">
                         <simplelayout axis="x" spacing="1"/>
@@ -80,7 +80,7 @@
                 </view>
             </view>
             <view name="gentoo" opacity="0.0">
-                <image x="500" y="30" src="gentoo.png"/>
+                <image x="500" y="30" src="lib/images/gentoo.png"/>
                 <text font="default" fgcolor="0xE55E00" fontsize="18" fontstyle="bold">Latest Gentoo Advisories</text>
                 <view y="40" layout="axis:y">
                     <view name="glsaBox" datapath="glsa:/*/item[-5]">
