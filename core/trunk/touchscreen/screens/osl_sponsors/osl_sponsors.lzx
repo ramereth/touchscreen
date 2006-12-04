@@ -1,4 +1,4 @@
-<screen id="screen_sponsors" name="screen_sponsors" duration="30000">
+<screen id="screen_osl_sponsors" name="screen_sponsors" duration="30000">
 		
     <!-- starts the update process -->
     <method name="_start">
