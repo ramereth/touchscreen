@@ -16,10 +16,8 @@
     <include href="lib/lzx/mrtgWindow.lzx"/>
     <include href="lib/lzx/borderedBox.lzx"/>
     <include href="lib/lzx/scrollingLabel.lzx"/>
-    
-    <font name="default" src="helmetr.ttf"/>
-    <font name="Myriabol" src="myriabol.ttf" />
-    <font name="Myriarom" src="myriarom.ttf" />
+
+    <font name="default" src="helmetr.ttf"/>    
 
     <attribute name="screenContainer"/>
 
