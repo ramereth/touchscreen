@@ -140,7 +140,7 @@
     <resource name="playShaded" src="buttons/play-inactive.gif"/>
     <resource name="next" src="buttons/nextSlide.gif"/>
     <resource name="prev" src="buttons/prevSlide.gif"/>
-    <resource name="osllogo" src="osl_logo2.png"/>
+    <resource name="osllogo" src="lib/images/osl_logo2.png"/>
     <resource name="button_back" src="buttons/back.png"/>
 
     
@@ -149,7 +149,7 @@
     <!-- ================================================= -->
 
     <simplelayout axis="y" spacing="0"/>    
-    <image src="background-header.gif" >
+    <image src="lib/images/background-header.gif" >
         <view y="0" width="${parent.width}" height="150">
             <view bgcolor="black" y="0" width="${parent.width}" height="${parent.height}" opacity="0.35"/>
             <view resource="osllogo" x="20" valign="middle"></view>
