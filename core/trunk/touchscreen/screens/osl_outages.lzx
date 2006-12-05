@@ -95,7 +95,7 @@
                                 var id_txt = titleRaw.substring(0, titleRaw.indexOf("("));
                                 var level_txt = titleRaw.substring(titleRaw.indexOf('(')+1, titleRaw.indexOf(")") );
                                 var title_txt = descRaw.substring(0, descRaw.indexOf(':')) + ":";
-                                var desc_txt = descRaw.substring(descRaw.indexOf(':')+2,descRaw.length-1) ;
+                                var desc_txt = descRaw.substring(descRaw.indexOf(':')+2,descRaw.length) ;
 
                                 if (level_txt == "High"){                                    
                                     this.level.setAttribute("fgcolor",0xFF0000);
