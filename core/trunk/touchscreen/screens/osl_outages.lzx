@@ -187,4 +187,14 @@
         this.securityView.stop();
     </method>    
 
+    <method name="_show">
+        this.nagiosView.animate("x",20,800);
+        this.securityView.animate("x",700,800);
+    </method>
+
+    <method name="_hide">
+        this.nagiosView.animate("x",-650,800);
+        this.securityView.animate("x",1400,800);
+    </method>
+
 </screen>
