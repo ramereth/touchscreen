@@ -84,8 +84,7 @@
                         if (!icon){
                         icon = "na";
                         }
-                        this.setSource( "screens/weather/images/Samurize/large_icons/" + icon + ".png" );
-                        Debug.write("initializing current conditions: " + parent.datapath);
+                        this.setSource( "screens/weather/images/Samurize/large_icons/" + icon + ".png" );                        
                     </method>
                 </view>
                 <!-- text -->
@@ -145,7 +144,7 @@
             next.animate("opacity",1.0,500);
             cur.animate("opacity",0.0,500);
            
-            Debug.write("showing next map: " + next);
+            //Debug.write("showing next map: " + next);
         </method>
 
 
@@ -225,7 +224,7 @@
     </method>
 
     <method name="_start">
-        Debug.write("starting map updates");
+        //Debug.write("starting map updates");
         this.maps.start();
 	 updateLoop();
     </method>
