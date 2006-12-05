@@ -9,7 +9,7 @@
 <!--  Author: Peter Krenesky                          -->
 <!--  Date: Aug 1, 2006                               -->
 <!-- ================================================ -->
-<canvas debug="true" oninit="initServer();" height="768" width="1366">
+<canvas debug="true" oninit="initServer();" height="768" width="1360">
     <debug width="400" height="300" x="200" y="500" fontsize="10"/>
 
     <include href="lib/lzx/updatingView.lzx"/>
@@ -30,7 +30,7 @@
     </method>
 
     <resource name="bgimage" src="lib/images/background-gray-1x768.gif"/>
-    <view name="background" resource="bgimage" width="1366" height="768" stretches="width"/>	
+    <view name="background" resource="bgimage" width="1360" height="768" stretches="width"/>	
 
     <!-- ================================================= -->
     <!--   Connection and Messaging                        -->
