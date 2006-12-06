@@ -68,7 +68,7 @@
                     <!-- update the image for the current (now last) view to be shown -->
                     nextFrame.setSource(this.getAttribute('resourceHref'));    
 
-                    Debug.write("updating view: " + this + "  with href: " + this.getAttribute('resourceHref'));
+                    //Debug.write("updating view: " + this + "  with href: " + this.getAttribute('resourceHref'));
 
                     <!-- set delayed swap of new image -->
                     LzTimer.resetTimer(this.swapDelegate, delayms);

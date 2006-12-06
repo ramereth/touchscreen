@@ -1,16 +1,4 @@
-<!-- ================================================ -->
-<!--  Laszlo app intercommunication sample (Client)   -->
-<!--                                                  -->
-<!--  example of how to use AJAX and a Servlet to     -->
-<!--  communicate between two Laszlo applications     -->
-<!--  running in different browsers or even possibly  -->
-<!--  on separate machines                            -->
-<!--                                                  -->
-<!--  Author: Peter Krenesky                          -->
-<!--  Date: Aug 1, 2006                               -->
-<!-- ================================================ -->
-
-<canvas layout="x" debug="true" oninit="clientInit()" width="1280" height="1024">
+<canvas layout="x" debug="true" oninit="clientInit()" width="1280" height="1024" >
 
     <include href="lib/lzx/connection.lzx" />
     <include href="lib/lzx/screen.lzx" />
@@ -21,7 +9,7 @@
     <attribute name="menuAnimator"/>
 
     <method name="clientInit">
-        connection.connect();
+        canvas.connection.connect();
         canvas.breadcrumbs = new Array();
         canvas.breadcrumbs.push(mainmenu);
         canvas.menuAnimator = new menuAnimator();
@@ -233,12 +221,12 @@
         <!-- ================================================= -->
         <menu id="mainmenu" title="Main Menu">                        
             <view name="buttons">
-                <menuButton resource="buttonOrange" buttontext="Open Source Lab" command="screen_osl_about,show" submenu="menu_osl"/>
-                <menuButton resource="buttonRed" buttontext="Network Engineering" command="screen_net_about,show" submenu="menu_net"/>
-                <menuButton resource="buttonBlue" buttontext="Data Center Map" command="screen_rackview,show" submenu="menu_rackview"/>
-                <menuButton resource="buttonPurple"  command="screen_webcams,show" buttontext="Webcams" submenu="menu_webcams"/>
-                <menuButton resource="buttonYellow" command="screen_news,show" buttontext="News" submenu="menu_news"/>
-                <menuButton resource="buttonGreen"  command="screen_help,show" buttontext="Help" submenu="menu_help"/>
+                <menuButton resource="buttonOrange" buttontext="Open Source Lab" command="canvas,showSlideCommand,screen_osl_about" submenu="menu_osl"/>
+                <menuButton resource="buttonRed" buttontext="Network Engineering" command="canvas,showSlideCommand,screen_net_about" submenu="menu_net"/>
+                <menuButton resource="buttonBlue" buttontext="Data Center Map" command="canvas,showSlideCommand,screen_rackview" submenu="menu_rackview"/>
+                <menuButton resource="buttonPurple"  command="canvas,showSlideCommand,screen_webcams" buttontext="Webcams" submenu="menu_webcams"/>
+                <menuButton resource="buttonYellow" command="canvas,showSlideCommand,screen_news" buttontext="News" submenu="menu_news"/>
+                <menuButton resource="buttonGreen"  command="canvas,showSlideCommand,screen_help" buttontext="Help" submenu="menu_help"/>
             </view>
         </menu>
 

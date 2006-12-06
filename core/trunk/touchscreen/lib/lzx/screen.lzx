@@ -53,8 +53,7 @@
     <!-- this is a screen with sub-elements that may slide in from  -->
     <!-- different angles                                           -->
     <!-- ========================================================== -->
-    <method name="show">	
-        canvas.hideall(this);
+    <method name="show">	        
         if (!this.shown) {
             this._show();
             this.shown=true;

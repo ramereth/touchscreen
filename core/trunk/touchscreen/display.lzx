@@ -17,7 +17,7 @@
     <include href="lib/lzx/borderedBox.lzx"/>
     <include href="lib/lzx/scrollingLabel.lzx"/>
 
-    <font name="default" src="helmetr.ttf"/>    
+    <font name="default" src="helmetr.ttf"/>
 
     <attribute name="screenContainer"/>
 
@@ -25,12 +25,16 @@
         canvas.connection.connect();
         slideShowInit();
         var resetDelegate = new LzDelegate(canvas, "reset");
-        LzTimer.resetTimer(resetDelegate,1000);        
+        LzTimer.resetTimer(resetDelegate,1000);
+        this.showNextDelegate = new LzDelegate(canvas, "showCurrentSlide");
+        for (var screen in canvas.screenContainer) {
+            canvas.screenContainer[screen].hide();
+        }
         Debug.write("Display initialized");
     </method>
 
     <resource name="bgimage" src="lib/images/background-gray-1x768.gif"/>
-    <view name="background" resource="bgimage" width="1360" height="768" stretches="width"/>	
+    <view name="background" resource="bgimage" width="1360" height="768" stretches="width"/>
 
     <!-- ================================================= -->
     <!--   Connection and Messaging                        -->
@@ -56,11 +60,11 @@
             //split string into an array
             canvas.commandParams = raw.split(",");
 
-            Debug.write("context: " + canvas.commandParams[0] + "   command: " + canvas.commandParams[1]   +  "  eval: " + eval(canvas.commandParams[0]) + "   del: " + deltest );
-
             //create delegate for the function we want to call
             var deltest = new LzDelegate(eval(canvas.commandParams[0]), canvas.commandParams[1]);
-           
+
+            Debug.write("context: " + canvas.commandParams[0] + "   command: " + canvas.commandParams[1]   +  "  eval: " + eval(canvas.commandParams[0]) + "   del: " + deltest );
+
             //execute the function
             deltest.execute();
 
@@ -78,23 +82,39 @@
     <attribute name="commandParams" />
 
     <!-- ================================================= -->
+    <!--   Show / Hide screen functionality                -->
+    <!-- ================================================= -->
+    <attribute name="currentSlide" />
+    <attribute name="showNextDelegate" />
+    <method name="showSlideCommand" >                      
+          this.showSlide(eval(canvas.commandParams[2]));
+    </method>
+    <method name="showSlide" args="newSlide">
+        canvas.currentSlide.hide();
+        canvas.currentSlide = newSlide;
+        Debug.write("showing next slide: " + newSlide);
+        LzTimer.resetTimer(showNextDelegate, 800);
+    </method>
+    <method name="showCurrentSlide">
+        canvas.currentSlide.show();
+    </method>
+
+    <!-- ================================================= -->
     <!--   Slide Show functionality                        -->
     <!-- ================================================= -->
     <attribute name="currentSlideIndex" type="number" value="-1"/>
-    <attribute name="currentSlide" />
     <attribute name="showNextSlideDelegate" />
     <attribute name="slideshow" type="boolean" value="true"/>
     <!-- hides the current slide and then shows the next one -->
     <method name="showNextSlide">
-        if(slideshow) {            
-            canvas.currentSlide.hide();
-            getNextSlide();
-            while (!currentSlide.slideshow){
-                getNextSlide();
+        if(slideshow) {
+            var nextSlide = getNextSlide();
+            Debug.write("nextSlide: " + nextSlide);
+            while (!nextSlide.slideshow) {
+                nextSlide = getNextSlide();
             }
-            Debug.write("showing next slide: " + canvas.currentSlide.id);
-            canvas.currentSlide.show();
-            LzTimer.resetTimer(canvas.showNextSlideDelegate, currentSlide.duration);
+            showSlide(nextSlide);
+            LzTimer.resetTimer(canvas.showNextSlideDelegate, canvas.currentSlide.duration);
         }
     </method>
     <!-- gets the next slide that should be shown -->
@@ -104,29 +124,19 @@
         } else {
             canvas.currentSlideIndex = currentSlideIndex + 1;
         }
-        canvas.currentSlide = canvas.screenContainer[canvas.currentSlideIndex];
-        Debug.write("next possible slide: " + canvas.currentSlide.id);
+        return canvas.screenContainer[canvas.currentSlideIndex];
     </method>
     <method name="slideShowInit">
         canvas.showNextSlideDelegate = new LzDelegate(canvas, "showNextSlide" );
-        getNextSlide();
-        currentSlideIndex=-1;
+        currentSlideIndex=-1;        
+        canvas.currentSlide = getNextSlide();
+        Debug.write("first slide: " + canvas.currentSlide.id);
     </method>
 
     <method name="reset">
-        hideall();
         canvas.slideshow=true;
         showNextSlide();
     </method>
-
-    <method name="hideall" args="save" >
-        for (var screen in canvas.screenContainer) {
-            if(save != canvas.screenContainer[screen]) {
-                canvas.screenContainer[screen].hide();
-            }
-        }
-    </method>
-
 
     <!-- ================================================= -->
     <!--   Screens that make up the display.  Screens      -->

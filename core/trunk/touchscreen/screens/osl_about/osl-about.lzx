@@ -44,8 +44,8 @@
 
                 <view x="5" y="5" height="${parent.height-this.y}" width="${parent.width-10}" fontsize="13"  font="default">
                      <text fgcolor="white" fontstyle="bold">What is Open Source Software?</text>
-                     <text y="20" multiline="true" width="${parent.width}">"Open source" means that the building blocks for a program are freely available to use, modify, and improve. This provides for rapid software development by contributors worldwide, and the resulting program is available for anyone to use, anywhere, free of charge.</text>
-                     <text y="125" fgcolor="white" fontstyle="bold">Why Open Source?</text>
+                    <text y="20" multiline="true" width="${parent.width}">"Open source" means that the building blocks for a program are freely available to use, modify, and improve. This provides for rapid software development by contributors worldwide, and the resulting program is available for anyone to use, anywhere, free of charge.</text>
+                    <text y="125" fgcolor="white" fontstyle="bold">Why Open Source?</text>
                      <text y="150" multiline="true" width="${parent.width}">Open source software allows the user to freely take their own best interests into account, without being constrained by the interests and/or licensing restrictions of the author or vendor. This means that if, for example, you are dissatisfied with an open source application's security implementation or find that some feature is missing, you can dive in and fix the code yourself. You can then give those changes back to the community so that others may benefit.
                         <p>The reason open source has become so successful is that it leverages open standards, which are the rules and guidelines that drive communication among people/sites/hosts on the Internet. These open standards help open source developers create applications that in turn conform to those same standards, ultimately giving the user the freedom to choose their preferred applications.</p>
                      </text>

@@ -3,14 +3,14 @@
 <menu id="menu_osl" title="Open Source Lab" colorKey="context_buttonOrange">    
         
     <view name="buttons">
-        <menuButton resource="buttonOrange" buttontext="Network Graphs" command="screen_osl_networkgraphs,show" submenu="menu_osl_networkgraphs"/>
-        <menuButton resource="buttonRed" buttontext="FTP Status" command="screen_ftp_bandwidth,show" submenu="menu_osl_ftpstatus"/>
-        <menuButton resource="buttonBlue" buttontext="Mail Stats" command="osl_mailstats,show" />
-        <menuButton resource="buttonGreen" buttontext="Outages" command="screen_osl_outages,show" />
+        <menuButton resource="buttonOrange" buttontext="Network Graphs" command="canvas,showSlideCommand,screen_osl_networkgraphs" submenu="menu_osl_networkgraphs"/>
+        <menuButton resource="buttonRed" buttontext="FTP Status" command="canvas,showSlideCommand,screen_ftp_bandwidth" submenu="menu_osl_ftpstatus"/>
+        <menuButton resource="buttonBlue" buttontext="Mail Stats" command="canvas,showSlideCommand,osl_mailstats" />
+        <menuButton resource="buttonGreen" buttontext="Outages" command="canvas,showSlideCommand,screen_osl_outages" />
 
-        <menuButton resource="buttonOrange" buttontext="About" command="screen_osl_about,show" />
-        <menuButton resource="buttonRed" buttontext="News" command="osl_news,show" submenu="menu_osl_news"/>
-        <menuButton resource="buttonBlue" buttontext="Donors" command="screen_osl_sponsors,show"/>
-        <menuButton resource="buttonGreen" buttontext="Help" command="help,show" submenu="menu_help"/>
+        <menuButton resource="buttonOrange" buttontext="About" command="canvas,showSlideCommand,screen_osl_about" />
+        <menuButton resource="buttonRed" buttontext="News" command="canvas,showSlideCommand,osl_news" submenu="menu_osl_news"/>
+        <menuButton resource="buttonBlue" buttontext="Donors" command="canvas,showSlideCommand,screen_osl_sponsors"/>
+        <menuButton resource="buttonGreen" buttontext="Help" command="canvas,showSlideCommand,help" submenu="menu_help"/>
     </view>
 </menu>

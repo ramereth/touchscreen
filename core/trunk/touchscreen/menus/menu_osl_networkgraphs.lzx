@@ -5,7 +5,7 @@
     <view name="buttons">
         <menuButton resource="buttonOrange" buttontext="OSL General" command="screen_osl_networkgraphs,showOSL" />
         <menuButton resource="ButtonRed" buttontext="Hosted Projects" command="screen_osl_networkgraphs,showProjects" />
-        <menuButton resource="buttonBlue" buttontext="FTP Map" command="screen_ftp_bandwidth,show" />
-        <menuButton resource="buttonGreen" buttontext="Users Map" command="screen_osl_networkgraphs,show" />
+        <menuButton resource="buttonBlue" buttontext="FTP Map" command="canvas,showSlideCommand,screen_ftp_bandwidth" />
+        <menuButton resource="buttonGreen" buttontext="Users Map" command="canvas,showSlideCommand,screen_osl_networkgraphs" />
     </view>
 </menu>
