@@ -168,7 +168,9 @@
     <!-- ================================================= -->
     <!--   Menu Area                                       -->
     <!-- ================================================= -->
-    <image src="lib/images/background-gray-1280x824.gif" clip="true" >
+    <resource name="bgimage" src="lib/images/background-gray-1x824.gif"/>
+    <view width="1280" height="824" clip="true">
+        <view x="0" y="0" name="background" resource="bgimage" width="1280" height="824" stretches="width" clip="true" />        
         <view id="button_back" x="20" y="-150" resource="button_back">
             <!-- indicates if the slide is being shown, used by hide() to avoid unneeded calls to the animation -->
             <attribute name="shown" type="boolean" value="false"/>
@@ -240,7 +242,7 @@
         <include href="menus/menu_webcam.lzx"/>
         <include href="menus/menu_help.lzx"/>
 
-    </image>
+    </view>
 
 
 
