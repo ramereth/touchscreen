@@ -1,0 +1,37 @@
+<screen id="screen_ftp_bandwidth" >
+
+    <view name='background' bgcolor="white" width="1360" height="768" opacity="0.0"/>
+
+    <updatingView name="map" x="200" y="50" width="924" height="654" stretches="both" resourceHref="http://page.osuosl.org/ftpmap/weathermap.png" opacity="0.0"/>
+
+    <method name="_start">
+        this.map.start();
+    </method>
+
+    <method name="_stop">
+        this.map.stop();
+    </method>    
+
+    <animatorgroup name="hideMap" process="sequential" start="false">
+        <animator attribute="opacity" to="0.0" duration="500" target="${parent.parent.map}"/>
+        <animator attribute="opacity" to="0.0" duration="500" target="${parent.parent.background}"/>
+        <animator attribute="y" to="-800" duration="0" target="${parent.parent.map}"/>
+        <animator attribute="y" to="-800" duration="0" target="${parent.parent.background}"/>
+    </animatorgroup>
+
+    <animatorgroup name="showMap" process="sequential" start="false">
+        <animator attribute="y" to="50" duration="0" target="${parent.parent.map}"/>
+        <animator attribute="y" to="0" duration="0" target="${parent.parent.background}"/>
+        <animator attribute="opacity" to="1.0" duration="500" target="${parent.parent.background}"/>
+        <animator attribute="opacity" to="1.0" duration="500" target="${parent.parent.map}"/>
+    </animatorgroup>
+
+    <method name="_hide">
+        this.hideMap.doStart();
+    </method>
+
+    <method name="_show">
+        this.showMap.doStart();
+    </method>
+
+</screen>

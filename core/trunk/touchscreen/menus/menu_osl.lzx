@@ -4,7 +4,7 @@
         
     <view name="buttons">
         <menuButton resource="buttonOrange" buttontext="Network Graphs" command="screen_osl_networkgraphs,show" submenu="menu_osl_networkgraphs"/>
-        <menuButton resource="buttonRed" buttontext="FTP Status" command="osl_ftpstatus,show" submenu="menu_osl_ftpstatus"/>
+        <menuButton resource="buttonRed" buttontext="FTP Status" command="screen_ftp_bandwidth,show" submenu="menu_osl_ftpstatus"/>
         <menuButton resource="buttonBlue" buttontext="Mail Stats" command="osl_mailstats,show" />
         <menuButton resource="buttonGreen" buttontext="Outages" command="screen_osl_outages,show" />
 
