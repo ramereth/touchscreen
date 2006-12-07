@@ -178,7 +178,7 @@
 
     </borderedBox>
 
-    <updatingView resource="http://isc.sans.org/images/status.gif" height="92" width="354" y="653" x="475" visible="true" opacity="1.0" updatems="900000"/>
+    <updatingView name="sans" resource="http://isc.sans.org/images/status.gif" height="92" width="354" y="653" align="middle" visible="true" opacity="1.0" updatems="900000"/>
 
     <method name="_start">
         this.securityView.start();
@@ -190,11 +190,13 @@
     <method name="_show">
         this.nagiosView.animate("x",20,800);
         this.securityView.animate("x",700,800);
+        this.sans.animate("y",653,800);
     </method>
 
     <method name="_hide">
         this.nagiosView.animate("x",-650,800);
         this.securityView.animate("x",1400,800);
+        this.sans.animate("y",840,800);
     </method>
 
 </screen>

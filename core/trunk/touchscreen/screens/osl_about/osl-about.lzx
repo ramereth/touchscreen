@@ -1,9 +1,6 @@
 <screen id="screen_osl_about" >
 
-    <view name="osl" x="-900" y="25" bgcolor="white" width="870" height="718">
-        <view x="1" y="1" bgcolor="black" width="${parent.width-2}" height="${parent.height-2}">
-            <view bgcolor="0xE55E00" x="1" y="1" width="${parent.width-2}" height="${parent.height-2}">
-                <view height="${parent.height}" width="${parent.width}" bgcolor="black" opacity="0.1"/>
+    <borderedBox name="osl" x="-900" y="25" bgcolor="0xE55E00" width="870" height="718" viewopacity="0">
                 <image src="http://osuosl.org/themes/newosl/osl.png" align="center"/>
 
                 <view x="20" y="110" font="default" >
@@ -28,41 +25,38 @@
                         <br/><br/>The open source community has grown by leaps and bounds over the past 5 years. It has been an amazing thing to watch. As the community grows, its members begin to depend on services provided by projects that become critical to the life of a piece of software. The OSL hopes to become a key component to the open source life cycle by providing reliable infrastructure and knowledge that others can leverage. The success of the OSL hinges on the satisfaction of our customers: participants of the open source community.
 
                     </text>
-                </view>
-            </view>
-        </view>
-    </view>
+                </view>        
+    </borderedBox>
 
     <view name="edray" x="1400" y="25" bgcolor="white" width="354" height="257">
         <view x="1" y="1" resource="edray"/>
     </view>
 
-    <view name="oss" x="1400" y="300" bgcolor="white" width="354" height="443">
-        <view x="1" y="1" bgcolor="black" width="${parent.width-2}" height="${parent.height-2}">
-            <view bgcolor="0xE55E00" x="1" y="1" width="${parent.width-2}" height="${parent.height-2}">
-                <view height="${parent.height}" width="${parent.width}" bgcolor="black" opacity="0.1"/>
-
-                <view x="5" y="5" height="${parent.height-this.y}" width="${parent.width-10}" fontsize="13"  font="default">
-                     <text fgcolor="white" fontstyle="bold">What is Open Source Software?</text>
-                    <text y="20" multiline="true" width="${parent.width}">"Open source" means that the building blocks for a program are freely available to use, modify, and improve. This provides for rapid software development by contributors worldwide, and the resulting program is available for anyone to use, anywhere, free of charge.</text>
-                    <text y="125" fgcolor="white" fontstyle="bold">Why Open Source?</text>
-                     <text y="150" multiline="true" width="${parent.width}">Open source software allows the user to freely take their own best interests into account, without being constrained by the interests and/or licensing restrictions of the author or vendor. This means that if, for example, you are dissatisfied with an open source application's security implementation or find that some feature is missing, you can dive in and fix the code yourself. You can then give those changes back to the community so that others may benefit.
-                        <p>The reason open source has become so successful is that it leverages open standards, which are the rules and guidelines that drive communication among people/sites/hosts on the Internet. These open standards help open source developers create applications that in turn conform to those same standards, ultimately giving the user the freedom to choose their preferred applications.</p>
-                     </text>
-                </view>
-           </view>
+    <borderedBox name="oss" x="1400" y="300" bgcolor="0xE55E00" width="354" height="443" viewopacity="0">
+        <view x="5" y="5" height="295" width="344" fontsize="13"  font="default">
+            <text fgcolor="white" fontstyle="bold">What is Open Source Software?</text>
+            <text y="20" multiline="true" width="344">"Open source" means that the building blocks for a program are freely available to use, modify, and improve. This provides for rapid software development by contributors worldwide, and the resulting program is available for anyone to use, anywhere, free of charge.</text>
+            <text y="125" fgcolor="white" fontstyle="bold">Why Open Source?</text>
+            <text y="150" multiline="true" width="344">Open source software allows the user to freely take their own best interests into account, without being constrained by the interests and/or licensing restrictions of the author or vendor. This means that if, for example, you are dissatisfied with an open source application's security implementation or find that some feature is missing, you can dive in and fix the code yourself. You can then give those changes back to the community so that others may benefit.
+                <p>The reason open source has become so successful is that it leverages open standards, which are the rules and guidelines that drive communication among people/sites/hosts on the Internet. These open standards help open source developers create applications that in turn conform to those same standards, ultimately giving the user the freedom to choose their preferred applications.</p>
+            </text>
         </view>
-    </view>
+    </borderedBox>
+
+    <animatorgroup name="showgroup" start="false" process="simultaneous">
+        <animator target="${parent.parent.osl}" attribute="x" to="50" duration="800" motion="easein" />
+        <animator target="${parent.parent.oss}" attribute="x" to="960" duration="800" motion="easein" />
+        <animator target="${parent.parent.edray}" attribute="x" to="960" duration="800" motion="easein" />
+    </animatorgroup>
 
     <method name="_show">
-        Debug.write("showing osl about: " + this.osl);
-        this.osl.animate("x",50,800);
-        this.oss.animate("x",960,800);
-        this.edray.animate("x",960,800);
+        showgroup.doStart();
+        //this.osl.animate("x",50,800);
+        //this.oss.animate("x",960,800);
+        //this.edray.animate("x",960,800);
     </method>
 
     <method name="_hide">
-        Debug.write("hiding osl about");
         this.osl.animate("x",-900,800);
         this.oss.animate("x",1400,800);
         this.edray.animate("x",1400,800);

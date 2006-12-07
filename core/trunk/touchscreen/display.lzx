@@ -146,6 +146,8 @@
     <!-- ================================================= -->
     <include href="lib/lzx/screen.lzx" />
 
+
+
     <!-- Advisories and Outages -->
     <dataset name="nagios" request="true" src="http://page.osuosl.org:8000/"/>
     <dataset name="glsa" request="true" src="http://www.gentoo.org/rdf/en/glsa-index.rdf"/>
@@ -153,16 +155,16 @@
     <!--  <dataset name="rt" request="true" secureport="4443" type="http" src="https://support.osuosl.org:4443/rt/Search/Results.rdf?Order=DESC&amp;Query=Owner%20%3D%20'Nobody'%20AND%20(%20Status%20%3D%20'new'%20OR%20Status%20%3D%20'open')&amp;Rows=50&amp;OrderBy=Priority&amp;Page=1&amp;Format=&amp;user=bigscreen&amp;pass=4r3e2w1q0p9o8i7u"/> -->
     <include href="screens/osl_outages.lzx"/>
 
+    <!-- OSL_ABOUT -->
+    <resource name="edray" src="screens/osl_about/EdRay.png"/>
+    <include href="screens/osl_about/osl-about.lzx"/>
+
     <!-- NEWS -->
     <dataset name="dset_barometer" request="true" src="http://barometer.orst.edu/articles.rss"/>
     <dataset name="dset_oregonian" request="true" src="http://www.blogs.oregonlive.com/community/feeds/rss.asp?cat=2151"/>
     <dataset name="dset_slashdot" request="true" src="http://rss.slashdot.org/Slashdot/slashdot"/>
     <dataset name="dset_planetosl" request="true" src="http://osuosl.org/aggregator/rss/1"/>
     <include href="screens/news.lzx"/>
-
-     <!-- OSL_ABOUT -->
-    <resource name="edray" src="screens/osl_about/EdRay.png"/>
-    <include href="screens/osl_about/osl-about.lzx"/>
 
     <!-- WEBCAMS -->
     <include href="screens/webcams/webcam.lzx"/>
