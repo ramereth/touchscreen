@@ -35,8 +35,10 @@
         Debug.write("initializing:" ,this.id);
         this.shown=true;
         var del = new LzDelegate(this, "hide");
-        LzTimer.resetTimer(del,2000);        
+        LzTimer.resetTimer(del,2000);
+        this._init();
     </method>
+    <method name="_init"/>
 
     <!-- ========================================================== -->
     <!-- Show/Hide - called to show or hide the menu.  Override     -->

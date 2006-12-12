@@ -5,8 +5,11 @@
     <include href="lib/lzx/menuButton.lzx" />
     <include href="lib/lzx/menu.lzx" />
     <include href="lib/lzx/animations.lzx" />
-
+    <include href="lib/lzx/borderedBox.lzx"/>
+    
     <attribute name="menuAnimator"/>
+
+    <font name="default" src="helmetr.ttf"/>
 
     <method name="clientInit">
         canvas.connection.connect();
@@ -240,14 +243,14 @@
         <include href="menus/menu_news.lzx"/>
         <include href="menus/menu_net.lzx"/>
         <include href="menus/menu_webcam.lzx"/>
-        <include href="menus/menu_help.lzx"/>
+        <include href="menus/help/menu_help.lzx"/>
 
     </view>
 
 
 
 
-    <debug width="800" height="200" x="400" y="600" fontsize="12"/>
+    <debug width="800" height="200" x="400" y="900" fontsize="12"/>
 
 </canvas>
 
