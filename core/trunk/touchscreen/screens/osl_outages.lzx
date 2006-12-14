@@ -178,7 +178,7 @@
 
     </borderedBox>
 
-    <updatingView name="sans" resource="http://isc.sans.org/images/status.gif" height="92" width="354" y="653" align="middle" visible="true" opacity="1.0" updatems="900000"/>
+    <updatingView name="sans" resource="http://isc.sans.org/images/status.gif" height="92" width="354" y="653" align="center" visible="true" opacity="1.0" updatems="900000"/>
 
     <method name="_start">
         this.securityView.start();
