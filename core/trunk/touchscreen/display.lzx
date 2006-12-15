@@ -25,7 +25,7 @@
         canvas.connection.connect();
         slideShowInit();
         var resetDelegate = new LzDelegate(canvas, "reset");
-        LzTimer.resetTimer(resetDelegate,1000);
+        LzTimer.resetTimer(resetDelegate,4000);
         this.showNextDelegate = new LzDelegate(canvas, "showCurrentSlide");
         for (var screen in canvas.screenContainer) {
             canvas.screenContainer[screen].hide();
@@ -90,10 +90,15 @@
           this.showSlide(eval(canvas.commandParams[2]));
     </method>
     <method name="showSlide" args="newSlide">
-        canvas.currentSlide.hide();
+        var hidetime = canvas.currentSlide.hide();
         canvas.currentSlide = newSlide;
         Debug.write("showing next slide: " + newSlide);
-        LzTimer.resetTimer(showNextDelegate, 800);
+        Debug.write("hidetime: " +hidetime);
+        if(!hidetime){
+            Debug.write("using default wait before showing slide");
+            hidetime = 1000
+        }
+        LzTimer.resetTimer(showNextDelegate, hidetime);
     </method>
     <method name="showCurrentSlide">
         canvas.currentSlide.show();
@@ -146,37 +151,25 @@
     <!-- ================================================= -->
     <include href="lib/lzx/screen.lzx" />
 
+    <!-- FTP User Map -->
+    <dataset type="http" name="dset_ftpUserMap"
+             src="http://ftp-osl.osuosl.org:8000/">
+    </dataset>
+    <datapointer xpath="dset_ftpUserMap:/rss/channel" rerunxpath="true">
+        <method event="ondata">
+            var label = this.xpathQuery('item[1]/title/text()');
+            var lat = this.xpathQuery('item[2]/title/text()');
+            var lon = this.xpathQuery('item[3]/title/text()');
+            screen_ftpusersmap.createPoint(lat,lon, label);
+        </method>
+    </datapointer>
+    <include href="lib/lzx/circle.lzx"/>
+    <include href="lib/lzx/ping.lzx"/>
+    <include href="lib/lzx/ftpUserPoint.lzx"/>
+    <resource name="ftpusermap" src="screens/ftpmap/map_1360nolabel.png"/>   
+    <include href="screens/ftpmap/ftpusersmap.lzx"/>
 
-
-    <!-- Advisories and Outages -->
-    <dataset name="nagios" request="true" src="http://page.osuosl.org:8000/"/>
-    <dataset name="glsa" request="true" src="http://www.gentoo.org/rdf/en/glsa-index.rdf"/>
-    <dataset name="dsa" request="true" src="http://www.debian.org/security/dsa"/>
-    <!--  <dataset name="rt" request="true" secureport="4443" type="http" src="https://support.osuosl.org:4443/rt/Search/Results.rdf?Order=DESC&amp;Query=Owner%20%3D%20'Nobody'%20AND%20(%20Status%20%3D%20'new'%20OR%20Status%20%3D%20'open')&amp;Rows=50&amp;OrderBy=Priority&amp;Page=1&amp;Format=&amp;user=bigscreen&amp;pass=4r3e2w1q0p9o8i7u"/> -->
-    <include href="screens/osl_outages.lzx"/>
-
-    <!-- OSL_ABOUT -->
-    <resource name="edray" src="screens/osl_about/EdRay.png"/>
-    <include href="screens/osl_about/osl-about.lzx"/>
-
-    <!-- NEWS -->
-    <dataset name="dset_barometer" request="true" src="http://barometer.orst.edu/articles.rss"/>
-    <dataset name="dset_oregonian" request="true" src="http://www.blogs.oregonlive.com/community/feeds/rss.asp?cat=2151"/>
-    <dataset name="dset_slashdot" request="true" src="http://rss.slashdot.org/Slashdot/slashdot"/>
-    <dataset name="dset_planetosl" request="true" src="http://osuosl.org/aggregator/rss/1"/>
-    <include href="screens/news.lzx"/>
-
-    <!-- WEBCAMS -->
-    <include href="screens/webcams/webcam.lzx"/>
-    <include href="screens/webcams/webcams.lzx"/>
-
-    <!-- OTHER STUFF -->
-    <include href="screens/osl_networkgraphs.lzx"/>
-    <include href="screens/net_about.lzx"/>
-    <include href="screens/rackview.lzx"/>
-
-    <!-- ftp bandwidth map -->
-    <include href="screens/ftpbandwidth/ftpbandwidth.lzx"/>
+    
 
 </canvas>
 

@@ -53,12 +53,14 @@
     <!-- this is a screen with sub-elements that may slide in from  -->
     <!-- different angles                                           -->
     <!-- ========================================================== -->
-    <method name="show">	        
+    <method name="show">
+        var ret = 0;
         if (!this.shown) {
-            this._show();
+            ret = this._show();
             this.shown=true;
             this.start();
         }
+        return ret;
     </method>
 
     <!-- ========================================================== -->
@@ -67,11 +69,13 @@
     <!-- needing more than just an animator group to hide the screen-->
     <!-- ========================================================== -->
     <method name="hide">
-        if (this.shown){
-            this._hide();
+        var ret = 0;
+        if (this.shown == true){
             this.shown=false;
-            this.stop();
+            this.stop();            
+            ret = this._hide();
         }
+        return ret;
     </method>
 
     <!-- ========================================================== -->

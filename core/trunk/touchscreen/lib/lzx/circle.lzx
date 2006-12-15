@@ -1,0 +1,24 @@
+<class name="circle" extends="drawview">
+        <attribute name="r" />
+        <attribute name="c" value="0x000000" type="color"/>
+        <method name="redraw" ><![CDATA[
+            this.moveTo(x+r, y);
+            var a = Math.tan(22.5 * Math.PI/180);
+            for (var angle = 45; angle<=360; angle += 45) {
+                // endpoint:
+                var endx = r*Math.cos(angle*Math.PI/180);
+                var endy = r*Math.sin(angle*Math.PI/180);
+                // control:
+                // (angle-90 is used to give the correct sign)
+                var cx =endx + r*a*Math.cos((angle-90)*Math.PI/180);
+                var cy =endy + r*a*Math.sin((angle-90)*Math.PI/180);
+                this.quadraticCurveTo(cx+x, cy+y, endx+x, endy+y);
+            }
+            this.strokeStyle = 0x00ff00
+            this.lineWidth = 1;
+            this.stroke();
+        ]]>
+        </method>
+</class>
+
+
