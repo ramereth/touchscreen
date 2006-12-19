@@ -6,12 +6,14 @@
     <attribute name="maxPoints" type="number" value="100"/>
     <attribute name="points" />
     <attribute name="updateMapDelegate" />
-    <attribute name="mapRefresh" type="number" value="5000" />
+    <attribute name="mapRefresh" type="number" value="1500" />
+    <attribute name="scrollDeleteDelegate"/>
 
     <method name="_init">
         this.points = new Array();
         this.updateMapDelegate = new LzDelegate(this, "updateMap" );
-        LzTimer.resetTimer(this.updateMapDelegate, 3000);
+        this.scrollDeleteDelegate = new LzDelegate(this, "deleteFirstScrollLabel" );
+        LzTimer.resetTimer(this.updateMapDelegate, 3000);        
         this.currentPointIndex = -1;
     </method>
 
@@ -21,12 +23,17 @@
     </method>
     
     <method name="createPoint" args="lat, lon, label">
-
+        <![CDATA[
         //change the last point created to a different collor and explicitly
         //destroy its ping in case it did not destroy itself.
         if (this.currentPointIndex != -1) {
-            this.points[this.currentPointIndex].animate("fgcolor", "0x0000ff", 100);
-            this.points[this.currentPointIndex].ping.destroy();
+            var remove = this.currentPointIndex - 5;
+            if (remove < 0) {
+                remove = this.maxPoints - 1 + remove;
+            }
+            if ( this.points[remove] ) {
+                this.points[remove].animate("fgcolor", "0xE55E00", 100);                
+            }
         }
 
         // determine what array index is being used. increment to the
@@ -48,14 +55,52 @@
         this.points[this.currentPointIndex].updatePosition();
 
         // create a scrolling label for the new point
-        //var textBlock = new scrollingLabel(labelScrollBox);
-        //textBlock.setText(label);
+        var textBlock = new scrollingLabel(this.map.locationBox.container);
+
+        textBlock.setAttribute("font","default");
+        textBlock.setColor(0xE55E00);        
+        textBlock.setAttribute("fontsize",15);
+        textBlock.setText(label);
+        textBlock.setAlign("center");
+        textBlock.animate("height",25,0);
+        // shrink any names that are too big
+        while (textBlock.width > 190 && textBlock.fontsize > 2) {
+            textBlock.setAttribute("fontsize",textBlock.fontsize-1);
+        }
+
+        //animate the list to move 1 position
+        if (this.map.locationBox.container.subnodes.length > 1) {
+            this.map.locationBox.container.subnodes[0].animate("y", -25, 500);
+        } else {
+            this.map.locationBox.container.subnodes[0].animate("y",0,0);
+        }
+
+        //if a label has gone past the clip plane of the box, destroy it
+        //for simplicity determine how many can fit in the box.
+        if (this.map.locationBox.container.subnodes.length > 14) {
+            //this must be done by a delegate so it happens AFTER the animation.
+            //The animation will stop if the label is destroyed first
+            LzTimer.resetTimer(this.scrollDeleteDelegate, 800);
+        }
+        ]]>
     </method>
 
+    <method name="deleteFirstScrollLabel">
+            // after subnode[0] is destroyed it is removed
+            // from the array automatically. The array is then
+            // automatically shifted so that subnode[1] is now
+            // subnode[0]
+            this.map.locationBox.container.subnodes[0].destroy();
+        </method>
 
-    <view name="map" resource="ftpusermap" >        
-        <text resize="true" fontsize="20" fgcolor="blue" x="400" y="20">Sample of ftp.osuosl.org users</text>        
-    </view>    
+    <view name="map" resource="ftpusermap" >
+        <borderedBox y="10" height="30" width="300" align="center" viewopacity="0.5">        
+            <text resize="true" fontsize="20" fgcolor="0xE55E00" align="center" valign="middle" font="default">Sample of ftp.osuosl.org users</text>
+        </borderedBox>
+        <borderedBox name="locationBox" x="15" y="400" width="204" height="354" clip="false" viewopacity="0.5">
+              <view name="container" height="350" width="200" x="2" y="2" clip="true"/>
+        </borderedBox>
+    </view>
 
     <animatorgroup name="hideMap" process="sequential" start="false">        
         <animator attribute="opacity" to="0.0" duration="500" target="${parent.parent.map}"/>
