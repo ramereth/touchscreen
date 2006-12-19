@@ -1,43 +1,37 @@
-<canvas layout="x" debug="true" oninit="calcY()">
-    <debug width="600" height="70" x="500" y="0" fontsize="10"/>    
-
+<canvas layout="x" debug="true" oninit="calcY()" width="1360" height="768">
+    <debug width="600" height="70" x="600" y="630" fontsize="10"/>    
     <method name="calcY" >
         var lat=latInput.getValue();
         var lon=lonInput.getValue();
-        var earthradius=6376445;
-        var scale=0.000997572454;
-        var metersPerPixel=35.294117647;
-        var equator=529;
-        var primeMeridian=534;
-        var mapLonOffset = .5;
-        var pointerOffsetX = -1;
+        var earthradius=6376445;        
+        var scale=0.00100880364654288
+        var metersPerPixel=29.46702941176470588235294;
+        var equator=438;
+        var primeMeridian=680;
+        var pointerOffsetX = -2;
         var pointerOffsetY = -1;
 
-
+        //calculate Y
         var offsetY = earthradius * scale * Math.log( Math.tan( Math.PI/4 + (lat*Math.PI/180)/2 )) / metersPerPixel;
         var Y = equator - offsetY + pointerOffsetY;
 
-        var offsetX = earthradius * scale * ((lon-mapLonOffset)*Math.PI/180) / metersPerPixel
+        //calculate X
+        var offsetX = earthradius * scale * (lon*Math.PI/180) / metersPerPixel
         var X = primeMeridian + offsetX + pointerOffsetX;
 
-        Debug.write("lon = " + lon + ", X = " + X);
-        Debug.write("lat = " + lat + ", Y = " + Y);
-
+        Debug.write("lon = " + lon + ", X = " + X +"   lat = " + lat + ", Y = " + Y);
+        
         point.animate("y",Y,1000);
         point.animate("x",X,1000);
-
-
     </method>
 
-    <image src="mercator.gif" opacity="0.5">
-        <view id="point" bgcolor="red" fgcolor="red" height="3" width="3" x="0" y="0"/>
+    <resource name="map" src="map_1360nolabel.png"/>
+    <view resource="map" opacity="1">
+        <view id="point" bgcolor="red" fgcolor="red" height="3" width="3" x="50" y="50"/>
         <view x="5" y="700">
-            <edittext id="lonInput" width="50" x="0" y="0">-123</edittext>
-            <edittext id="latInput" width="50" x="50" y="0">44</edittext>
+            <edittext id="lonInput" width="50" x="0" y="0">0</edittext>
+            <edittext id="latInput" width="50" x="50" y="0">0</edittext>
             <button x="100" y="0" onclick="canvas.calcY();">Plot</button>
         </view>
-    </image>
-
-
-
+    </view>
 </canvas>
