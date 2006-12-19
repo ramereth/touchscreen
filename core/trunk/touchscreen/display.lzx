@@ -170,8 +170,8 @@
     <include href="screens/ftpmap/ftpusersmap.lzx"/>
 
     <!-- donors -->
-    <dataset name="dset_sponsors" request="true" src="screens/sponsors/personalDonations.xml"/>    
-    <include href="screens/osl_sponsors.lzx"/>
+    <dataset name="dset_sponsors" request="true" src="screens/osl_sponsors/personalDonations.xml"/>    
+    <include href="screens/osl_sponsors/osl_sponsors.lzx"/>
 
     <!-- Advisories and Outages -->
     <dataset name="nagios" request="true" src="http://page.osuosl.org:8000/"/>
