@@ -169,6 +169,9 @@
     <resource name="ftpusermap" src="screens/ftpmap/map_1360nolabel.png"/>   
     <include href="screens/ftpmap/ftpusersmap.lzx"/>
 
+    <!-- donors -->
+    <dataset name="dset_sponsors" request="true" src="screens/sponsors/personalDonations.xml"/>    
+    <include href="screens/osl_sponsors.lzx"/>
 
     <!-- Advisories and Outages -->
     <dataset name="nagios" request="true" src="http://page.osuosl.org:8000/"/>
