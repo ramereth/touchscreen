@@ -1,6 +1,7 @@
 <class name="circle" extends="drawview">
         <attribute name="r" />
-        <attribute name="c" value="0x000000" type="color"/>
+        <attribute name="lineWidth" value="1" />
+        <attribute name="c" value="0x000000" type="color"/>        
         <method name="redraw" ><![CDATA[
             this.moveTo(x+r, y);
             var a = Math.tan(22.5 * Math.PI/180);
@@ -15,7 +16,6 @@
                 this.quadraticCurveTo(cx+x, cy+y, endx+x, endy+y);
             }
             this.strokeStyle = 0x00ff00
-            this.lineWidth = 1;
             this.stroke();
         ]]>
         </method>

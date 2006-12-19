@@ -11,19 +11,19 @@
     <view bgcolor="blue" height="229" width="333" x="48" y="268" />
 
     <view name="thumbnails" x="0" y="0">        
-        <webcam name="reser2" x="50" y="-300" resourceHref="http://reser-webcam2.beav.oregonstate.edu/axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
-        <webcam name="memorial union" x="50" y="10" resourceHref="http://muwebcam.hhs.oregonstate.edu/axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
-        <webcam name="library" x="50" y="270" resourceHref="http://librarywebcam.nws.oregonstate.edu/axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
-        <webcam name="southcampus" x="50" y="530" resourceHref="http://southcampus-webcam.uhds.oregonstate.edu/axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
-        <webcam name="reser" x="50" y="800" resourceHref="http://reser-webcam1.beav.oregonstate.edu/axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
+        <webcam name="reser2" x="50" y="-300" resourceHref="http://reser2.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
+        <webcam name="memorial union" x="50" y="10" resourceHref="http://mu.webcam.oregonstate.edu//axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
+        <webcam name="library" x="50" y="270" resourceHref="http://library.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
+        <webcam name="southcampus" x="50" y="530" resourceHref="http://south.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
+        <webcam name="reser" x="50" y="800" resourceHref="http://reser1.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
     </view>
 
     <view name="fullsize" x="0" y="0">
-        <webcam name="reser2" resourceHref="http://reser-webcam2.beav.oregonstate.edu/axis-cgi/jpg/image.cgi" width="706" height="482" x="500" y="140" opacity="1.0"/>
-        <webcam name="memorial union"  resourceHref="http://muwebcam.hhs.oregonstate.edu/axis-cgi/jpg/image.cgi" width="706" height="482" x="500" y="140" opacity="0.0"/>
-        <webcam name="library" resourceHref="http://librarywebcam.nws.oregonstate.edu/axis-cgi/jpg/image.cgi" width="706" height="482" x="500" y="140" opacity="0.0"/>
-        <webcam name="southcampus" resourceHref="http://southcampus-webcam.uhds.oregonstate.edu/axis-cgi/jpg/image.cgi" width="706" height="482" x="500" y="140" opacity="0.0"/>
-        <webcam name="reser" resourceHref="http://reser-webcam1.beav.oregonstate.edu/axis-cgi/jpg/image.cgi" width="706" height="482" x="500" y="140" opacity="0.0"/>
+        <webcam name="reser2" resourceHref="http://reser2.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="706" height="482" x="500" y="140" opacity="1.0"/>
+        <webcam name="memorial union"  resourceHref="http://mu.webcam.oregonstate.edu//axis-cgi/jpg/image.cgi" width="706" height="482" x="500" y="140" opacity="0.0"/>
+        <webcam name="library" resourceHref="http://library.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="706" height="482" x="500" y="140" opacity="0.0"/>
+        <webcam name="southcampus" resourceHref="http://south.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="706" height="482" x="500" y="140" opacity="0.0"/>
+        <webcam name="reser" resourceHref="http://reser1.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="706" height="482" x="500" y="140" opacity="0.0"/>
     </view>
 
     <attribute name="currentBig" type="number" value="0"/>

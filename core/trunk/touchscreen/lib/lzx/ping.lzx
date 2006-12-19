@@ -9,51 +9,51 @@
         <attribute name="circles" />
         <attribute name="del" />
 
-        <method name="draw">
-            circles = new Array();
-            del = new LzDelegate(this, "grow");
-            LzTimer.resetTimer(del,50);
+        <method event="oninit">
+            this.circles = new Array();                        
         </method>
 
-        <method name="grow" >
-            <![CDATA[
-			if(circles[0]){circles[0].destroy();}
-                circles[0] = new circle(this);
-                circles[0].setAttribute("r", this.radius);
-                circles[0].setAttribute("x", x);
-                circles[0].setAttribute("y", y);
-                circles[0].redraw();
-			if (radius > 10) {
-			    circles[0].setAttribute("opacity",1-this.radius/35);
-			}
-	        if(circles[1]){circles[1].destroy();}
-            circles[1] = new circle(this);
-            circles[1].setAttribute("r", this.radius*2/3);
-            circles[1].setAttribute("x", x);
-            circles[1].setAttribute("y", y);
+        <method event="onradius">
+            this.draw();
+        </method>
 
-			circles[1].setAttribute("opacity",0.5);
-            circles[1].redraw();
+        <animator name="grow" to="100" duration="8000" attribute="radius" motion="linear" />
+
+        <method name="draw" >
+            <![CDATA[            
+			if(this.circles[0]){this.circles[0].destroy();}
+                this.circles[0] = new circle(this);
+                this.circles[0].setAttribute("r", this.radius);
+                this.circles[0].setAttribute("x", x);
+                this.circles[0].setAttribute("y", y);
+                this.circles[0].setAttribute("lineWidth", 2);
+                this.circles[0].redraw();
 			if (radius > 10) {
-                circles[1].setAttribute("opacity",1-this.radius/45);
-            }
-            if(circles[2]){circles[2].destroy();}
-                circles[2] = new circle(this);
-                circles[2].setAttribute("r", this.radius/3);
-                circles[2].setAttribute("x", x);
-                circles[2].setAttribute("y", y);
-                circles[2].redraw();
-			if (radius > 10) {
-                circles[2].setAttribute("opacity",1-this.radius/55);
-           	}
-			radius = radius + 1;
-			if (radius < 55) {
-				LzTimer.resetTimer(del,50);
-			} else {
-				circles[0].destroy();
-				circles[1].destroy();
-				circles[2].destroy();
+			    this.circles[0].setAttribute("opacity",1-this.radius/35);
 			}
+	        if(this.circles[1]){this.circles[1].destroy();}
+            this.circles[1] = new circle(this);
+            this.circles[1].setAttribute("r", this.radius*2/3);
+            this.circles[1].setAttribute("x", x);
+            this.circles[1].setAttribute("y", y);
+            this.circles[1].setAttribute("lineWidth", 2);
+
+			this.circles[1].setAttribute("opacity",0.5);
+            this.circles[1].redraw();
+			if (radius > 10) {
+                this.circles[1].setAttribute("opacity",1-this.radius/45);
+            }
+            if(this.circles[2]){this.circles[2].destroy();}
+                this.circles[2] = new circle(this);
+                this.circles[2].setAttribute("r", this.radius/3);
+                this.circles[2].setAttribute("x", x);
+                this.circles[2].setAttribute("y", y);
+                this.circles[2].setAttribute("lineWidth", 2);
+                this.circles[2].redraw();
+			if (radius > 10) {
+                this.circles[2].setAttribute("opacity",1-this.radius/55);
+           	}
+
 			]]>
         </method>
     </class>

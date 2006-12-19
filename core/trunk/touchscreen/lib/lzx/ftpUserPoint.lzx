@@ -24,17 +24,15 @@
         this.animate("y",Y,0);
         this.animate("x",X,0);
 
-        var tmp = new circle(this);
-        //tmp.setAttribute("r",2);
-        //tmp.redraw();
-        //tmp = new circle(this);
+        var tmp = new circle(this);        
         tmp.setAttribute("color",0xa60606);
         tmp.setAttribute("r",1);
+        tmp.setAttribute("lineWidth",2);
         tmp.redraw();
-
+        
         this.ping = new ping(this);
         this.ping.setAttribute("radius",1);
         this.ping.setAttribute("color",0xa60606);
-        this.ping.draw();
+        this.ping.grow.doStart();
     </method>
 </class>
