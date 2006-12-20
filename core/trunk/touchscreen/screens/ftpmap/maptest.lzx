@@ -1,3 +1,12 @@
+<!-- ================================================ -->
+<!--  Map Plotter                                     -->
+<!--                                                  -->
+<!--  example of how to plot points on a Mercator     -->
+<!--  Projected map in realtime                       -->
+<!--                                                  -->
+<!--  Author: Peter Krenesky (peter@osuosl.org)       -->
+<!--  Date: Dec 16, 2006                              -->
+<!-- ================================================ -->
 <canvas layout="x" debug="true" oninit="calcY()" width="1360" height="768">
     <debug width="600" height="70" x="600" y="630" fontsize="10"/>    
     <method name="calcY" >
