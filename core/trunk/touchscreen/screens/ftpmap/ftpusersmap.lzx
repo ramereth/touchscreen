@@ -1,4 +1,4 @@
-<screen id="screen_osl_ftpusersmap" duration="450000" x="0" y="0">
+<screen id="screen_osl_ftpusersmap" duration="60000" x="0" y="0">
 
     <view name='background' bgcolor="0x154459" width="1360" height="768" opacity="0.0"/>
 
@@ -19,7 +19,9 @@
 
     <method name="updateMap">        
         dset_ftpUserMap.doRequest();
-        LzTimer.resetTimer(this.updateMapDelegate, this.mapRefresh);
+        if (this.running){        
+            LzTimer.resetTimer(this.updateMapDelegate, this.mapRefresh);
+        }
     </method>
     
     <method name="createPoint" args="lat, lon, label">
