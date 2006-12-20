@@ -39,8 +39,8 @@
     <view resource="map" opacity="1">
         <view id="point" bgcolor="red" fgcolor="red" height="3" width="3" x="50" y="50"/>
         <view x="5" y="700">
-            <edittext id="lonInput" width="50" x="0" y="0">0</edittext>
-            <edittext id="latInput" width="50" x="50" y="0">0</edittext>
+            <edittext id="latInput" width="50" x="0" y="0">0</edittext>
+            <edittext id="lonInput" width="50" x="50" y="0">0</edittext>
             <button x="100" y="0" onclick="canvas.calcY();">Plot</button>
         </view>
     </view>
