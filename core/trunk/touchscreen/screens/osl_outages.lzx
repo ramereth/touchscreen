@@ -1,14 +1,11 @@
-<screen id="screen_osl_outages">
+<screen id="screen_osl_outages" duration="500000">
 
 
     <borderedBox name="nagiosView" x="20" y="20" width="600" height="540" clickable="false" opacity="1.0" viewopacity="0.2" bgcolor="0xE55E00">
 
+        <image src="http://osuosl.org/themes/newosl/osl.png" align="center"/>
 
-        <view name="hostTitleFrame" bgcolor="green" >
-            <text name="rightBoxTitle2" font="default" fontsize="20" resize="true" fgcolor="white">Outage Notices</text>
-        </view>
-
-        <view x="20" y="60" layout="axis:y; spacing:20">
+        <view x="20" y="110" layout="axis:y; spacing:20">
             <view datapath="nagios:/rss/channel/item[-7]">
                 <text y="0" name="text1" font="default" fgcolor="white" datapath="title/text()" fontsize="18" resize="true" />
                 <text y="20" name="text2" font="default" fgcolor="black" datapath="description/text()" fontsize="16" resize="true" />
