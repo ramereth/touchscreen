@@ -14,18 +14,18 @@
         var lon=lonInput.getValue();
         var earthradius=6376445;        
         var scale=0.00100880364654288
-        var metersPerPixel=29.46702941176470588235294;
+        var kilometersPerPixel=29.46702941176470588235294;
         var equator=438;
         var primeMeridian=680;
         var pointerOffsetX = -2;
         var pointerOffsetY = -1;
 
         //calculate Y
-        var offsetY = earthradius * scale * Math.log( Math.tan( Math.PI/4 + (lat*Math.PI/180)/2 )) / metersPerPixel;
+        var offsetY = earthradius * scale * Math.log( Math.tan( Math.PI/4 + (lat*Math.PI/180)/2 )) / kilometersPerPixel;
         var Y = equator - offsetY + pointerOffsetY;
 
         //calculate X
-        var offsetX = earthradius * scale * (lon*Math.PI/180) / metersPerPixel
+        var offsetX = earthradius * scale * (lon*Math.PI/180) / kilometersPerPixel
         var X = primeMeridian + offsetX + pointerOffsetX;
 
         Debug.write("lon = " + lon + ", X = " + X +"   lat = " + lat + ", Y = " + Y);
