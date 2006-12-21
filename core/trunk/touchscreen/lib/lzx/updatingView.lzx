@@ -39,6 +39,7 @@
                    newview.stretchResource("width");
                    newview.stretchResource("height");
                    newview.animate("opacity",0.0,0);
+                   newview.setSource(this.getAttribute('resourceHref'));
                 }
                 // start the refresh cycle
                 this.timerDelegate = new LzDelegate(this, "refreshTimer")

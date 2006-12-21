@@ -5,32 +5,30 @@
     <attribute name="bigduration" type="number" value="30000"/>
     <attribute name="nextDelegate"/>
     <attribute name="enlargeDelegate"/>
-
-    <view width="756" height="532" x="475" y="115" bgcolor="black" opacity="0.25"/>    
+    
     <view width="379" height="768" x="25" y="0" bgcolor="black" opacity="0.25"/>
     <view bgcolor="blue" height="229" width="333" x="48" y="268" />
 
-    <view name="thumbnails" x="0" y="0">        
-        <webcam name="reser2" x="50" y="-300" resourceHref="http://reser2.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
-        <webcam name="memorial union" x="50" y="10" resourceHref="http://mu.webcam.oregonstate.edu//axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
-        <webcam name="library" x="50" y="270" resourceHref="http://library.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
-        <webcam name="southcampus" x="50" y="530" resourceHref="http://south.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
-        <webcam name="reser" x="50" y="800" resourceHref="http://reser1.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
+    <view name="thumbnails" x="0" y="0">
+        <webcam name="southcampus" x="450" y="10" updatems="30000" resourceHref="http://south.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
+        <webcam name="reser" x="830" y="10" updatems="30000" resourceHref="http://reser1.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
+        <webcam name="reser2" x="50" y="10" updatems="30000" resourceHref="http://reser2.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
+        <webcam name="memorial union" x="50" y="270" updatems="30000" resourceHref="http://mu.webcam.oregonstate.edu//axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
+        <webcam name="library" x="50" y="530" updatems="30000" resourceHref="http://library.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
     </view>
 
-    <view name="fullsize" x="0" y="0">
-        <webcam name="reser2" resourceHref="http://reser2.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="706" height="482" x="500" y="140" opacity="1.0"/>
-        <webcam name="memorial union"  resourceHref="http://mu.webcam.oregonstate.edu//axis-cgi/jpg/image.cgi" width="706" height="482" x="500" y="140" opacity="0.0"/>
-        <webcam name="library" resourceHref="http://library.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="706" height="482" x="500" y="140" opacity="0.0"/>
-        <webcam name="southcampus" resourceHref="http://south.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="706" height="482" x="500" y="140" opacity="0.0"/>
-        <webcam name="reser" resourceHref="http://reser1.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="706" height="482" x="500" y="140" opacity="0.0"/>
+    <view name="fullsize" x="450" y="270" bgcolor="red" >
+        <webcam name="reser2" updatems="700" delayms="300" resourceHref="http://reser2.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" opacity="1.0"/>
+        <webcam name="memorial union"  resourceHref="http://mu.webcam.oregonstate.edu//axis-cgi/jpg/image.cgi" width="709" height="485" x="500" y="140" opacity="0.0"/>
+        <webcam name="library" resourceHref="http://library.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" x="500" y="140" opacity="0.0"/>
+        <webcam name="southcampus" resourceHref="http://south.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" x="500" y="140" opacity="0.0"/>
+        <webcam name="reser" resourceHref="http://reser1.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" x="500" y="140" opacity="0.0"/>
     </view>
 
     <attribute name="currentBig" type="number" value="0"/>
     <attribute name="current" type="number" value="1"/>
 
     <method name="next">
-
         Debug.write("next webcam thumbnail");
 
         var y0 = -300;
@@ -153,7 +151,7 @@
     </method>
 
     <method name="_init">
-        this.nextDelegate = new LzDelegate(this, "nextTimed");
+        //this.nextDelegate = new LzDelegate(this, "nextTimed");
     </method>
 
     <method name="nextTimed">
@@ -164,7 +162,7 @@
     <method name="_start">
         <![CDATA[
         //start automatic rotations
-        this.nextTimed();
+        //this.nextTimed();
 
         //start feed updates
         this.fullsize.subviews[this.currentBig].start();
