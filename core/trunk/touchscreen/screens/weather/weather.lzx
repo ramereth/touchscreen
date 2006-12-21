@@ -1,5 +1,5 @@
 
-<screen id="screen_weather" >
+<screen id="screen_weather" duration="60000">
 
     <borderedBox name="currentConditions" x="100" y="50"  height="400" width="520" color="white" font="default" viewopacity="0.5">
         <text align="center" y="10" height="50" width="200" fontsize="20" fgcolor="white">Current Conditions</text>

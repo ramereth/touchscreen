@@ -28,10 +28,12 @@
 
     <method name="_hide">
         this.hideMap.doStart();
+        return 1500;
     </method>
 
     <method name="_show">
         this.showMap.doStart();
+        return 1500;
     </method>
 
 </screen>

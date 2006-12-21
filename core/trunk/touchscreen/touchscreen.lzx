@@ -230,7 +230,7 @@
                 <menuButton resource="buttonRed" buttontext="Network Engineering" command="canvas,showSlideCommand,screen_net_about" submenu="menu_net"/>
                 <menuButton resource="buttonBlue" buttontext="Data Center Map" command="canvas,showSlideCommand,screen_rackview" submenu="menu_rackview"/>
                 <menuButton resource="buttonPurple"  command="canvas,showSlideCommand,screen_webcams" buttontext="Webcams" submenu="menu_webcams"/>
-                <menuButton resource="buttonYellow" command="canvas,showSlideCommand,screen_news" buttontext="News" submenu="menu_news"/>
+                <menuButton resource="buttonYellow" command="canvas,showSlideCommand,screen_weather" buttontext="Weather"/>
                 <menuButton resource="buttonGreen"  buttontext="Help" submenu="menu_help"/>
             </view>
         </menu>
@@ -246,8 +246,6 @@
         <include href="menus/help/menu_help.lzx"/>
 
     </view>
-
-
 
 
     <debug width="800" height="200" x="400" y="900" fontsize="12"/>
