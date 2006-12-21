@@ -209,7 +209,7 @@
                             LzTimer.removeTimer( canvas.resetTimerDelegate );
                             //back button also isn't needed so hide it
                             this.hide();
-                            mycd.sendMessage("*","canvas,reset","command");
+                            //mycd.sendMessage("*","canvas,reset","command");
                         } else {
                             LzTimer.resetTimer( canvas.resetTimerDelegate, canvas.resetTimeout);
                         }
