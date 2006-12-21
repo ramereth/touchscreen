@@ -27,14 +27,14 @@
                 <view>
                     <text align="left" resize="true" fgcolor="white">Wind: </text>
                     <view x="85" layout="axis:x; spacing:-1">
-                        <text resize="true" fgcolor="white" datapath="cc/wind/s/text()"/>
-                        <text resize="true" fgcolor="white" datapath="cc/wind/t/text()"/>                                                
+                        <text resize="true" fgcolor="0xCCCCCC" datapath="cc/wind/s/text()"/>
+                        <text resize="true" fgcolor="0xCCCCCC" datapath="cc/wind/t/text()"/>                                                
                     </view>
                     <text y="20" align="left" resize="true" fgcolor="white">Pressure: </text>
                     <view y="20" x="85" layout="axis:x; spacing:1">
-                        <text resize="true" fgcolor="white" datapath="cc/bar/r/text()"/>
-                        <text resize="true" fgcolor="white">in.</text>
-                        <text datapath="cc/bar/d" resize="true" fgcolor="white" font="default" >
+                        <text resize="true" fgcolor="0xCCCCCC" datapath="cc/bar/r/text()"/>
+                        <text resize="true" fgcolor="0xCCCCCC">in.</text>
+                        <text datapath="cc/bar/d" resize="true" fgcolor="0xCCCCCC" font="default" >
                             <method event="ondata">
                                 <![CDATA[
                                 var movement = this.datapath.xpathQuery('text()');                                
@@ -49,25 +49,25 @@
                     </view>
                     <text y="40" align="left" resize="true" fgcolor="white">UV Index:</text>
                     <view y="40" x="85" layout="axis:x">
-                        <text y="40" x="85" resize="true" fgcolor="white" datapath="cc/uv/i/text()"/>
-                        <text y="40" x="85" resize="true" fgcolor="white" datapath="cc/uv/t/text()"/>
+                        <text resize="true" fgcolor="0xCCCCCC" datapath="cc/uv/i/text()"/>
+                        <text resize="true" fgcolor="0xCCCCCC" datapath="cc/uv/t/text()"/>
                     </view>
                 </view>
                 <view>
                     <text align="left" resize="true" fgcolor="white">Humidity: </text>
                     <view x="85" layout="axis:x; spacing:-1">
-                        <text resize="true" fgcolor="white" datapath="cc/hmid/text()"/>
-                        <text resize="true" fgcolor="white">%</text>
+                        <text resize="true" fgcolor="0xCCCCCC" datapath="cc/hmid/text()"/>
+                        <text resize="true" fgcolor="0xCCCCCC">%</text>
                     </view>
                     <text y="20" align="left" resize="true" fgcolor="white">Visibility: </text>
                     <view y="20" x="85" layout="axis:x; spacing:1">
-                        <text resize="true" fgcolor="white" datapath="cc/vis/text()"/>
-                        <text resize="true" fgcolor="white">miles</text>
+                        <text resize="true" fgcolor="0xCCCCCC" datapath="cc/vis/text()"/>
+                        <text resize="true" fgcolor="0xCCCCCC">miles</text>
                     </view>
                     <text y="40" align="left" resize="true" fgcolor="white">Dewpoint:</text>
                     <view y="40" x="85" layout="axis:x">
-                        <text y="40" x="85" resize="true" fgcolor="white" datapath="cc/dewp/text()"/>
-                        <text resize="true" fgcolor="white">&#176;</text>
+                        <text resize="true" fgcolor="0xCCCCCC" datapath="cc/dewp/text()"/>
+                        <text resize="true" fgcolor="0xCCCCCC">&#176;</text>
                     </view>
                 </view>
             </view>
@@ -117,7 +117,8 @@
 
         <!-- initialize the view, setup the view buffer, etc -->
         <method event="oninit">                
-                this.timerDelegate = new LzDelegate(this, "refreshTimer")
+                this.timerDelegate = new LzDelegate(this, "refreshTimer");
+                this.fetchNextMap();                
         </method>
 
         <!-- function that recursively calls itself to advance the framebuffer -->
@@ -155,8 +156,8 @@
             if (!this.running){
                 this.running = true;
                 for (i=0; i<this.container.subviews.length; i++){
-			this.container.subviews[i].start();
-		  }
+			        this.container.subviews[i].start();
+		        }
                 LzTimer.resetTimer(this.timerDelegate, updatems )		  					  
             }
 	     ]]>
@@ -168,8 +169,8 @@
             if (this.running){
                 this.running = false;
                 for (i=0; i<this.container.subviews.length; i++){
-			this.container.subviews[i].stop();
-		  }
+			        this.container.subviews[i].stop();
+		        }
                 LzTimer.removeTimer(this.timerDelegate);
             }
 		]]>
@@ -211,38 +212,38 @@
     <attribute name="refreshTime" type="number" value="900000"/>
 
     <method name="_init">
-	this.updateLoopDelegate = new LzDelegate(this, "updateLoop");
+	    this.updateLoopDelegate = new LzDelegate(this, "updateLoop");
     </method>
 
     <method name="updateLoop">
-	updateForecast();
-	LzTimer.resetTimer(this.updateLoopDelegate, this.refreshTime);
+	    updateForecast();
+	    LzTimer.resetTimer(this.updateLoopDelegate, this.refreshTime);
     </method>
 
     <method name="updateForecast">
-	dset_weatherData.doRequest();	
+	    dset_weatherData.doRequest();	
     </method>
 
     <method name="_start">
         //Debug.write("starting map updates");
         this.maps.start();
-	 updateLoop();
+	    updateLoop();
     </method>
 
     <method name="_stop">
         this.maps.stop();
-	 LzTimer.removeTimer(this.updateLoopDelegate);                
+	    LzTimer.removeTimer(this.updateLoopDelegate);
     </method>
 
     <method name="_show">
-	this.currentConditions.animate("x",100,800);
-	this.maps.animate("x",708,800);
-	this.fiveDayForecast.animate("y",525,800);
+	    this.currentConditions.animate("x",100,800);
+	    this.maps.animate("x",708,800);
+	    this.fiveDayForecast.animate("y",525,800);
     </method>
 
     <method name="_hide">    
-	this.currentConditions.animate("x",-530,800);
-	this.maps.animate("x",1400,800);
-	this.fiveDayForecast.animate("y",800,800);
+	    this.currentConditions.animate("x",-530,800);
+	    this.maps.animate("x",1400,800);
+	    this.fiveDayForecast.animate("y",800,800);
     </method>
 </screen>
