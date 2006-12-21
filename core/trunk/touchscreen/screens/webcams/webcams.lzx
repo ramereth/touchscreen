@@ -1,6 +1,6 @@
 
 <screen id="screen_webcams">
-    <attribute name="duration" type="number" value="500000"/>
+    <attribute name="duration" type="number" value="60000"/>
     <attribute name="bigduration" type="number" value="30000"/>
     <attribute name="enlargeDelegate"/>
     
