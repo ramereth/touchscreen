@@ -184,20 +184,24 @@
     <resource name="edray" src="screens/osl_about/EdRay.png"/>
     <include href="screens/osl_about/osl-about.lzx"/>
 
+    <!-- WEATHER -->
+    <dataset name="dset_weatherData" request="true" src="http://xoap.weather.com/weather/local/USOR0076?cc=*&amp;dayf=5&amp;prod=xoap&amp;par=1003666583&amp;key=4128909340a9b2fc"/>
+    <include href="screens/weather/weather.lzx"/>
+
     <!-- NEWS -->
-    <dataset name="dset_barometer" request="true" src="http://barometer.orst.edu/articles.rss"/>
+    <!--dataset name="dset_barometer" request="true" src="http://barometer.orst.edu/articles.rss"/>
     <dataset name="dset_oregonian" request="true" src="http://www.blogs.oregonlive.com/community/feeds/rss.asp?cat=2151"/>
     <dataset name="dset_slashdot" request="true" src="http://rss.slashdot.org/Slashdot/slashdot"/>
     <dataset name="dset_planetosl" request="true" src="http://osuosl.org/aggregator/rss/1"/>
-    <include href="screens/news.lzx"/>
+    <include href="screens/news.lzx"/-->
 
     <!-- WEBCAMS -->
     <include href="screens/webcams/webcam.lzx"/>
     <include href="screens/webcams/webcams.lzx"/>
 
     <!-- OTHER STUFF -->
-    <include href="screens/osl_bandwidth_general.lzx"/>
-    <include href="screens/osl_bandwidth_projects.lzx"/>
+    <include href="screens/osl_bandwidth/general.lzx"/>
+    <include href="screens/osl_bandwidth/projects.lzx"/>
     <include href="screens/net_about.lzx"/>
     <include href="screens/rackview.lzx"/>
 
