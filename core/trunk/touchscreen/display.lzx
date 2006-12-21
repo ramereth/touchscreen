@@ -85,15 +85,15 @@
     <!--   Show / Hide screen functionality                -->
     <!-- ================================================= -->
     <attribute name="currentSlide" />
+    <attribute name="currentScreen" />
     <attribute name="showNextDelegate" />
     <method name="showSlideCommand" >                      
-          this.showSlide(eval(canvas.commandParams[2]));
+        this.showSlide(eval(canvas.commandParams[2]));
     </method>
     <method name="showSlide" args="newSlide">
         var hidetime = canvas.currentSlide.hide();
         canvas.currentSlide = newSlide;
-        Debug.write("showing next slide: " + newSlide);
-        Debug.write("hidetime: " +hidetime);
+        Debug.write("showing next slide: " + newSlide);        
         if(!hidetime){
             Debug.write("using default wait before showing slide");
             hidetime = 1000
@@ -110,17 +110,30 @@
     <attribute name="currentSlideIndex" type="number" value="-1"/>
     <attribute name="showNextSlideDelegate" />
     <attribute name="slideshow" type="boolean" value="true"/>
-    <!-- hides the current slide and then shows the next one -->
-    <method name="showNextSlide">
+
+    <method name="showNextSlideLoop">
         if(slideshow) {
-            var nextSlide = getNextSlide();
-            Debug.write("nextSlide: " + nextSlide);
-            while (!nextSlide.slideshow) {
-                nextSlide = getNextSlide();
-            }
-            showSlide(nextSlide);
+            this.showNextSlide();
             LzTimer.resetTimer(canvas.showNextSlideDelegate, canvas.currentSlide.duration);
         }
+    </method>
+    <!-- hides the current slide and then shows the next one -->
+    <method name="showNextSlide">
+        var nextSlide = getNextSlide();        
+        while (!nextSlide.slideshow) {
+            nextSlide = getNextSlide();
+        }
+        Debug.write("nextSlide: " + nextSlide);
+        showSlide(nextSlide);
+
+    </method>
+    <method name="showPrevSlide">
+        var nextSlide = getPrevSlide();
+        while (!nextSlide.slideshow) {
+            nextSlide = getPrevSlide();
+        }
+        Debug.write("prevSlide: " + nextSlide);
+        showSlide(nextSlide);
     </method>
     <!-- gets the next slide that should be shown -->
     <method name="getNextSlide">
@@ -131,8 +144,17 @@
         }
         return canvas.screenContainer[canvas.currentSlideIndex];
     </method>
+    <!-- gets the next (previous) slide that should be shown -->
+    <method name="getPrevSlide">
+        if (currentSlideIndex == 0) {
+            canvas.currentSlideIndex = canvas.screenContainer.length-1;
+        } else {
+            canvas.currentSlideIndex = currentSlideIndex - 1;
+        }
+        return canvas.screenContainer[canvas.currentSlideIndex];
+    </method>
     <method name="slideShowInit">
-        canvas.showNextSlideDelegate = new LzDelegate(canvas, "showNextSlide" );
+        canvas.showNextSlideDelegate = new LzDelegate(canvas, "showNextSlideLoop" );
         currentSlideIndex=-1;        
         canvas.currentSlide = getNextSlide();
         Debug.write("first slide: " + canvas.currentSlide.id);
@@ -140,7 +162,25 @@
 
     <method name="reset">
         canvas.slideshow=true;
-        showNextSlide();
+        showNextSlideLoop();
+    </method>
+    <!-- ================================================= -->
+    <!--   Slide Show Commands                             -->
+    <!-- ================================================= -->
+    <method name="slideShowPrev">
+        this.showPrevSlide();
+    </method>
+
+    <method name="slideShowStop">
+        //do nothing its already stopped;
+    </method>
+
+    <method name="slideShowPlay">
+        this.reset();
+    </method>
+
+    <method name="slideShowNext">
+        this.showNextSlide();
     </method>
 
     <!-- ================================================= -->
