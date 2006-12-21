@@ -1,0 +1,29 @@
+<screen id="screen_osl_networkgraphs_general">
+
+    <view name="OSLServices" x="100" y="40">
+        <text x="50" color="white">OSL Services</text>
+        <mrtgWindow y="20" name="osuoslDaily" url="http://www.nero.net/NERO/images/rrdgifs/OSUOSL-Services-Normal-day-ifInOctets-1000000000-AVERAGE.png" updatems="300000" title="Daily 5-minute Avg" />
+        <mrtgWindow y="315" name="osuoslWeekly" url="http://www.nero.net/NERO/images/rrdgifs/OSUOSL-Services-Normal-week-ifInOctets-1000000000-AVERAGE.png" updatems="300000" title="Weekly 30-minute Avg" />
+    </view>
+
+    <view name="OSLGeneral" x="700" y="40">
+        <text x="50" color="white">OSL General</text>
+        <mrtgWindow y="20" name="osuoslgeneralDaily" url="http://www.nero.net/NERO/images/rrdgifs/OSUOSL-General-Normal-day-ifInOctets-1000000000-AVERAGE.png" updatems="300000" title="Daily 5-minute Avg"/>
+        <mrtgWindow y="315" name="osuoslgeneralWeekly" url="http://www.nero.net/NERO/images/rrdgifs/OSUOSL-General-Normal-week-ifInOctets-1000000000-AVERAGE.png" updatems="300000" title="Weekly 30-minute Avg"/>
+    </view>
+
+    <method name="_start">
+        this.OSLServices.osuoslDaily.start();
+        this.OSLServices.osuoslWeekly.start();
+        this.OSLGeneral.osuoslgeneralDaily.start();
+        this.OSLGeneral.osuoslgeneralWeekly.start();
+    </method>
+
+    <method name="_stop">
+        this.OSLServices.osuoslDaily.stop();
+        this.OSLServices.osuoslWeekly.stop();
+        this.OSLGeneral.osuoslgeneralDaily.stop();
+        this.OSLGeneral.osuoslgeneralWeekly.stop();
+    </method>
+    
+</screen>

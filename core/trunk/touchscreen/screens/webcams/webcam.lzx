@@ -12,10 +12,12 @@
     <!-- things to consider are how fast is the refresh (updatems) and how long  -->
     <!-- does it take each image to load.  The buffer needs to be big enough to  -->
     <!-- allow each frame to load before it is displayed.                        -->
-    <attribute name="buffersize" type="number" value="3"/>
+    <attribute name="buffersize" type="number" value="2"/>
 
     <!-- updating view that contains the webcam images -->
-    <updatingView name="updatingview" x="1" y="1" width="${parent.width-2}" height="${parent.height-2}" bgcolor="black" resourceHref="${parent.resourceHref}" updatems="${parent.updatems}" delayms="${parent.delayms}" buffersize="${parent.buffersize}"/>
+    <view name="blackbackground" width="${parent.width-2}" bgcolor="black" height="${parent.height-2}" x="1" y="1" />
+    <updatingView name="updatingview" x="1" y="1" width="${parent.width-2}" height="${parent.height-2}" resourceHref="${parent.resourceHref}" updatems="${parent.updatems}" delayms="${parent.delayms}" buffersize="${parent.buffersize}"/>
+
 
     <!-- delegate start and stop to the updating view -->
     <method name="start">

@@ -15,11 +15,11 @@
     </view>
 
     <view name="fullsize" x="450" y="270" bgcolor="red" >
-        <webcam name="library" updatems="250" delayms="700"  resourceHref="http://library.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" opacity="0.0"/>
-        <webcam name="memorial union" updatems="250" delayms="700"   resourceHref="http://mu.webcam.oregonstate.edu//axis-cgi/jpg/image.cgi" width="709" height="485" opacity="0.0"/>
-        <webcam name="southcampus" updatems="250" delayms="700"  resourceHref="http://south.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" opacity="0.0"/>
-        <webcam name="reser2" updatems="250" delayms="700" resourceHref="http://reser2.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" opacity="1.0"/>
-        <webcam name="reser" updatems="250" delayms="700"  resourceHref="http://reser1.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" opacity="0.0"/>
+        <webcam name="library" updatems="5" delayms="700"  resourceHref="http://library.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" opacity="0.0"/>
+        <webcam name="memorial union" updatems="5" delayms="700"   resourceHref="http://mu.webcam.oregonstate.edu//axis-cgi/jpg/image.cgi" width="709" height="485" opacity="0.0"/>
+        <webcam name="southcampus" updatems="5" delayms="700"  resourceHref="http://south.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" opacity="0.0"/>
+        <webcam name="reser2" updatems="5" delayms="700" resourceHref="http://reser2.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" opacity="1.0"/>
+        <webcam name="reser" updatems="5" delayms="700"  resourceHref="http://reser1.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" opacity="0.0"/>
     </view>
 
     <attribute name="currentBig" type="number" value="0"/>

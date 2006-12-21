@@ -3,8 +3,8 @@
 <menu id="menu_osl_networkgraphs" title="OSL Network Graphs" colorKey="context_buttonOrange">
 
     <view name="buttons">
-        <menuButton resource="buttonOrange" buttontext="OSL General" command="screen_osl_networkgraphs,showOSL" />
-        <menuButton resource="ButtonRed" buttontext="Hosted Projects" command="screen_osl_networkgraphs,showProjects" />
+        <menuButton resource="buttonOrange" buttontext="OSL General" command="canvas,showSlideCommand,screen_osl_networkgraphs_general,showOSL" />
+        <menuButton resource="ButtonRed" buttontext="Hosted Projects" command="canvas,showSlideCommand,screen_osl_networkgraphs_projects,showProjects" />
         <menuButton resource="buttonBlue" buttontext="FTP Map" command="canvas,showSlideCommand,screen_ftp_bandwidth" />
         <menuButton resource="buttonGreen" buttontext="Users Map" command="canvas,showSlideCommand,screen_osl_ftpusersmap" />
     </view>
