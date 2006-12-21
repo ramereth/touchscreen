@@ -166,11 +166,11 @@
     <include href="lib/lzx/circle.lzx"/>
     <include href="lib/lzx/ping.lzx"/>
     <include href="lib/lzx/ftpUserPoint.lzx"/>
-    <resource name="ftpusermap" src="screens/ftpmap/map_1360nolabel.png"/>   
+    <resource name="ftpusermap" src="screens/ftpmap/map_1360nolabel.png"/>
     <include href="screens/ftpmap/ftpusersmap.lzx"/>
 
     <!-- donors -->
-    <dataset name="dset_sponsors" request="true" src="screens/osl_sponsors/personalDonations.xml"/>    
+    <dataset name="dset_sponsors" request="true" src="screens/osl_sponsors/personalDonations.xml"/>
     <include href="screens/osl_sponsors/osl_sponsors.lzx"/>
 
     <!-- Advisories and Outages -->
@@ -196,7 +196,8 @@
     <include href="screens/webcams/webcams.lzx"/>
 
     <!-- OTHER STUFF -->
-    <include href="screens/osl_networkgraphs.lzx"/>
+    <include href="screens/osl_bandwidth_general.lzx"/>
+    <include href="screens/osl_bandwidth_projects.lzx"/>
     <include href="screens/net_about.lzx"/>
     <include href="screens/rackview.lzx"/>
 
