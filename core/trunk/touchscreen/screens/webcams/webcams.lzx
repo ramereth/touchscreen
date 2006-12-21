@@ -1,162 +1,49 @@
 
 <screen id="screen_webcams">
     <attribute name="duration" type="number" value="500000"/>
-    <attribute name="smallduration" type="number" value="10000"/>
     <attribute name="bigduration" type="number" value="30000"/>
-    <attribute name="nextDelegate"/>
     <attribute name="enlargeDelegate"/>
     
-    <view width="379" height="768" x="25" y="0" bgcolor="black" opacity="0.25"/>
-    <view bgcolor="blue" height="229" width="333" x="48" y="268" />
+    <view width="379" height="768" x="25" y="0" bgcolor="black" opacity="0.25"/>    
 
     <view name="thumbnails" x="0" y="0">
-        <webcam name="southcampus" x="450" y="10" updatems="30000" resourceHref="http://south.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
-        <webcam name="reser" x="830" y="10" updatems="30000" resourceHref="http://reser1.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
-        <webcam name="reser2" x="50" y="10" updatems="30000" resourceHref="http://reser2.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
-        <webcam name="memorial union" x="50" y="270" updatems="30000" resourceHref="http://mu.webcam.oregonstate.edu//axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
-        <webcam name="library" x="50" y="530" updatems="30000" resourceHref="http://library.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
+        <webcam name="library" x="50" y="530" updatems="300000" resourceHref="http://library.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
+        <webcam name="memorial union" x="50" y="270" updatems="300000" resourceHref="http://mu.webcam.oregonstate.edu//axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
+        <webcam name="southcampus" x="50" y="10" updatems="300000" resourceHref="http://south.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
+        <webcam name="reser2" x="450" y="10" updatems="300000" resourceHref="http://reser2.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
+        <webcam name="reser" x="830" y="10" updatems="300000" resourceHref="http://reser1.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
     </view>
 
     <view name="fullsize" x="450" y="270" bgcolor="red" >
-        <webcam name="reser2" updatems="700" delayms="300" resourceHref="http://reser2.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" opacity="1.0"/>
-        <webcam name="memorial union"  resourceHref="http://mu.webcam.oregonstate.edu//axis-cgi/jpg/image.cgi" width="709" height="485" x="500" y="140" opacity="0.0"/>
-        <webcam name="library" resourceHref="http://library.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" x="500" y="140" opacity="0.0"/>
-        <webcam name="southcampus" resourceHref="http://south.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" x="500" y="140" opacity="0.0"/>
-        <webcam name="reser" resourceHref="http://reser1.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" x="500" y="140" opacity="0.0"/>
+        <webcam name="library" updatems="750" delayms="700"  resourceHref="http://library.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" opacity="0.0"/>
+        <webcam name="memorial union" updatems="750" delayms="700"   resourceHref="http://mu.webcam.oregonstate.edu//axis-cgi/jpg/image.cgi" width="709" height="485" opacity="0.0"/>
+        <webcam name="southcampus" updatems="750" delayms="700"  resourceHref="http://south.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" opacity="0.0"/>
+        <webcam name="reser2" updatems="750" delayms="700" resourceHref="http://reser2.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" opacity="1.0"/>
+        <webcam name="reser" updatems="750" delayms="700"  resourceHref="http://reser1.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" opacity="0.0"/>
     </view>
 
     <attribute name="currentBig" type="number" value="0"/>
     <attribute name="current" type="number" value="1"/>
 
-    <method name="next">
-        Debug.write("next webcam thumbnail");
-
-        var y0 = -300;
-        var y1 = 10;
-        var y2 = 270;
-        var y3 = 530;
-        var y4 = 800;
-
-        if (this.current == 0){
-            var prev = this.thumbnails.subviews[this.thumbnails.subviews.length-1];
-        } else {
-            var prev = this.thumbnails.subviews[this.current-1];
-        }
-
-        var vis1 = this.thumbnails.subviews[this.current];
-
-        if (this.current + 1 >= this.thumbnails.subviews.length) {
-            var vis2 = this.thumbnails.subviews[0];
-        } else {
-            var vis2 = this.thumbnails.subviews[this.current+1];
-        }
-
-        if (this.current + 2 >= this.thumbnails.subviews.length) {
-            var vis3 = this.thumbnails.subviews[current+2-this.thumbnails.subviews.length];
-        } else {
-            var vis3 = this.thumbnails.subviews[this.current+2];
-        }
-
-        if (this.current + 3 >= this.thumbnails.subviews.length) {
-            var next = this.thumbnails.subviews[current+3-this.thumbnails.subviews.length];
-        } else {
-            var next = this.thumbnails.subviews[this.current+3];
-        }
-
-        //animate prev and next into thier starting positions;
-        prev.animate("opacity",0.0,0);
-        prev.animate("y",y0,0);
-        prev.animate("opacity",1.0,0);
-
-        //animate the 4 moving boxes;
-        vis3.animate("y",y4,2000);
-        vis2.animate("y",y3,2000);
-        vis1.animate("y",y2,2000);
-        prev.animate("y",y1,2000);
-
-        this.current = this.current - 1;
-        if (this.current == -1){
-            this.current = this.thumbnails.subviews.length -1; 
-        }
-
+    <method name="enlargeCommand">
+        this.enlarge(canvas.commandParams[2]);        
     </method>
 
-
-    <method name="prev">
-        Debug.write("prev webcam thumbnail");
-
-        var y0 = -300;
-        var y1 = 10;
-        var y2 = 270;
-        var y3 = 530;
-        var y4 = 800;
-
-        if (this.current == 0){
-            var prev = this.thumbnails.subviews[this.thumbnails.subviews.length-1];
-        } else {
-            var prev = this.thumbnails.subviews[this.current-1];
-        }
-
-        var vis1 = this.thumbnails.subviews[this.current];
-
-        if (this.current + 1 >= this.thumbnails.subviews.length) {
-            var vis2 = this.thumbnails.subviews[0];
-        } else {
-            var vis2 = this.thumbnails.subviews[this.current+1];
-        }
-
-        if (this.current + 2 >= this.thumbnails.subviews.length) {
-            var vis3 = this.thumbnails.subviews[current+2-this.thumbnails.subviews.length ];
-        } else {
-            var vis3 = this.thumbnails.subviews[this.current+2];
-        }
-
-        if (this.current + 3 >= this.thumbnails.subviews.length) {
-            var next = this.thumbnails.subviews[current+3-this.thumbnails.subviews.length];
-        } else {
-            var next = this.thumbnails.subviews[this.current+3];
-        }
-
-        //animate prev and next into thier starting positions;
-        next.animate("opacity",0.0,0);
-        next.animate("y",y4,0);
-        next.animate("opacity",1.0,0);
-
-        //animate the 4 moving boxes;        
-        vis1.animate("y",y0,2000);
-        vis2.animate("y",y1,2000);
-        vis3.animate("y",y2,2000);
-        next.animate("y",y3,2000);
-
-        this.current = this.current + 1;
-        if (this.current >= this.thumbnails.subviews.length){
-            this.current = 0; 
-        }
-
-    </method>
-    <method name="enlarge">
-        <![CDATA[
-        Debug.write("enlarging webcam!");
-        var enlargee=this.current+1;
-        if (enlargee >= this.fullsize.subviews.length) {
-            enlargee = 0;
-        }
+    <method name="enlarge" args="enlargee">
+        <![CDATA[        
         Debug.write("enlargee: " + enlargee +  "   obj: " + this.fullsize.subviews[enlargee]);
-        this.fullsize.subviews[enlargee].animate("opacity",1.0,0);
-        this.fullsize.subviews[enlargee].start();
-        this.fullsize.subviews[this.currentBig].animate("opacity",0.0,0.5);
-        this.fullsize.subviews[this.currentBig].stop();        
-        this.currentBig = enlargee;
+        if (enlargee != this.currentBig){
+            this.fullsize.subviews[enlargee].animate("opacity",1.0,0);
+            this.fullsize.subviews[enlargee].start();
+            this.fullsize.subviews[this.currentBig].animate("opacity",0.0,0.5);
+            this.fullsize.subviews[this.currentBig].stop();
+            this.currentBig = enlargee;
+        }
         ]]>
-    </method>
+    </method>        
 
     <method name="_init">
-        //this.nextDelegate = new LzDelegate(this, "nextTimed");
-    </method>
-
-    <method name="nextTimed">
-        this.next();
-        LzTimer.resetTimer(this.nextDelegate, this.smallduration);
+        
     </method>
 
     <method name="_start">
@@ -176,7 +63,7 @@
     <method name="_stop">
         <![CDATA[
         //stop automatic rotations
-        LzTimer.removeTimer(this.nextDelegate);
+        //LzTimer.removeTimer(this.nextDelegate);
 
         //stop feed updates
         this.fullsize.subviews[this.currentBig].stop();

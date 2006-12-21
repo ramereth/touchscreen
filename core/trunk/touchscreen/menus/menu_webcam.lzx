@@ -2,9 +2,14 @@
 
 <menu id="menu_webcams" title="Open Source Lab" colorKey="context_buttonOrange">
     <view name="buttons">
-        <menuButton resource="buttonOrange" buttontext="prev" command="screen_webcams,prev" />
-        <menuButton resource="buttonRed" buttontext="next" command="screen_webcams,next" />
-        <menuButton resource="buttonBlue" buttontext="enlarge" command="screen_webcams,enlarge" />        
-        <menuButton resource="buttonBlue" buttontext="enlarge" command="screen_webcams,enlarge" />        
+        <menuButton resource="buttonYellow" buttontext="Valley Library" command="screen_webcams,enlargeCommand,0" />
+        <menuButton resource="buttonBlue" buttontext="Memorial Union" command="screen_webcams,enlargeCommand,1" />
+        <menuButton resource="buttonGreen" buttontext="South Campus" command="screen_webcams,enlargeCommand,2" />
+        <menuButton resource="buttonRed" buttontext=" Reser Stadium" command="screen_webcams,enlargeCommand,3">
+            <text y="125" align="center" fgcolor="white" fontsize="14" fontstyle="bold">(outside)</text>
+        </menuButton>
+        <menuButton resource="buttonOrange" buttontext="Reser Stadium" command="screen_webcams,enlargeCommand,4">
+            <text y="125" align="center" fgcolor="white" fontsize="14" fontstyle="bold">(inside)</text>
+        </menuButton>
     </view>
 </menu>

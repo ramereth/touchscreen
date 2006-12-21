@@ -231,7 +231,7 @@
                 <menuButton resource="buttonBlue" buttontext="Data Center Map" command="canvas,showSlideCommand,screen_rackview" submenu="menu_rackview"/>
                 <menuButton resource="buttonPurple"  command="canvas,showSlideCommand,screen_webcams" buttontext="Webcams" submenu="menu_webcams"/>
                 <menuButton resource="buttonYellow" command="canvas,showSlideCommand,screen_news" buttontext="News" submenu="menu_news"/>
-                <menuButton resource="buttonGreen"  command="canvas,showSlideCommand,screen_help" buttontext="Help" submenu="menu_help"/>
+                <menuButton resource="buttonGreen"  buttontext="Help" submenu="menu_help"/>
             </view>
         </menu>
 

@@ -49,8 +49,9 @@
 
             <!-- function that recursively calls itself to advance the framebuffer -->
             <method name="refreshTimer">
-                this.fetchNextImage();
-                LzTimer.resetTimer(this.timerDelegate, updatems )
+                if(this.running){
+                    this.fetchNextImage();
+                }
             </method>
 
             <!-- refreshes the view -->
@@ -69,10 +70,10 @@
                     <!-- update the image for the current (now last) view to be shown -->
                     nextFrame.setSource(this.getAttribute('resourceHref'));    
 
-                    //Debug.write("updating view: " + this + "  with href: " + this.getAttribute('resourceHref'));
-
+                    Debug.write("updating view: " + this + "  with href: " + this.getAttribute('resourceHref'));
+                    //Debug.write("delay: "+ delayms);
                     <!-- set delayed swap of new image -->
-                    LzTimer.resetTimer(this.swapDelegate, delayms);
+                    LzTimer.resetTimer(this.swapDelegate, this.delayms);
             </method>
 
             <method name="showNextImage">
@@ -91,6 +92,8 @@
                     <!-- The show MUST be faster than the hide or you get flicker-->
                     next.animate("opacity",1.0,0);
                     cur.animate("opacity",0.0,.5);
+                    LzTimer.resetTimer(this.timerDelegate, this.updatems )
+                    //Debug.write("next: "+ this.updatems);
             </method>
 
             <!-- starts the update process -->
