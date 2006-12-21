@@ -30,6 +30,7 @@
         <!-- initialize the view, setup the view buffer, etc -->
         <method event="oninit">
             this.timerDelegate = new LzDelegate(this, "refreshTimer")
+            this.fetchNextDonor();
         </method>
 
         <!-- function that recursively calls itself to advance the framebuffer -->
