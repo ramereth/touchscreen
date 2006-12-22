@@ -178,6 +178,18 @@
 
     <updatingView name="sans" resourceHref="http://isc.sans.org/images/status.gif" height="92" width="354" y="653" align="center" visible="true" opacity="1.0" updatems="900000"/>
 
+    <attribute name="refreshOSLDelegate"/>
+    <attribute name="refreshTime" type="number" value="900000"/>
+    <method name="_init">
+        this.refreshOSLDelegate = new LzDelegate(this, "refreshOSLLoop");
+        refreshOSLLoop();
+    </method>
+
+    <method name="refreshOSLLoop">
+        nagios.doRequest();
+        LzTimer.resetTimer(this.refreshOSLDelegate, this.refreshTime);
+    </method>
+
     <method name="_start">
         this.securityView.start();
         this.sans.start();
