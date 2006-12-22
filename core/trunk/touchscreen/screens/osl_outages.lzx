@@ -11,7 +11,7 @@
                 <text y="20" name="text2" font="default" fgcolor="black" datapath="description/text()" fontsize="16" resize="true" />
             </view>
         </view>
-        
+
     </borderedBox>
 
 
@@ -176,14 +176,16 @@
 
     </borderedBox>
 
-    <updatingView name="sans" resource="http://isc.sans.org/images/status.gif" height="92" width="354" y="653" align="center" visible="true" opacity="1.0" updatems="900000"/>
+    <updatingView name="sans" resourceHref="http://isc.sans.org/images/status.gif" height="92" width="354" y="653" align="center" visible="true" opacity="1.0" updatems="900000"/>
 
     <method name="_start">
         this.securityView.start();
+        this.sans.start();
     </method>
     <method name="_stop">
         this.securityView.stop();
-    </method>    
+        this.sans.stop();
+    </method>
 
     <method name="_show">
         this.nagiosView.animate("x",20,800);
