@@ -6,10 +6,10 @@
         <menuButton resource="buttonBlue" buttontext="Memorial Union" command="screen_webcams,enlargeCommand,1" />
         <menuButton resource="buttonGreen" buttontext="South Campus" command="screen_webcams,enlargeCommand,2" />
         <menuButton resource="buttonRed" buttontext=" Reser Stadium" command="screen_webcams,enlargeCommand,3">
-            <text y="125" align="center" fgcolor="white" fontsize="14" fontstyle="bold">(outside)</text>
+            <outlinedText name="test1" y="125" align="center" fgcolor="white" fontsize="14" fontstyle="bold">(outside)</outlinedText>
         </menuButton>
         <menuButton resource="buttonOrange" buttontext="Reser Stadium" command="screen_webcams,enlargeCommand,4">
-            <text y="125" align="center" fgcolor="white" fontsize="14" fontstyle="bold">(inside)</text>
+            <outlinedText name="text2" y="125" align="center" fgcolor="white" fontsize="14" fontstyle="bold">(inside)</outlinedText>
         </menuButton>
     </view>
 </menu>
