@@ -1,10 +1,7 @@
 <class name="updatingView" extends="view" clickable="false">
 
             <!-- time in ms to update the image -->        
-            <attribute name="updatems" type="number" value="500000"/>
-
-            <!-- time in ms to delay the displaying of new image -->
-            <attribute name="delayms" type="number" value="500"/>
+            <attribute name="updatems" type="number" value="500000"/>            
 
             <!-- href to the url with the image to load and refresh -->
             <attribute name="resourceHref" type="string" value=""/>
@@ -102,9 +99,8 @@
                 }
             </method>
 
-    <!-- starts the update process -->
-            <method name="start">
-                Debug.write("starting: " + this.parent );
+            <!-- starts the update process -->
+            <method name="start">                
                 if (!this.running){
                     this.running = true;
                     this.refreshTimer();
