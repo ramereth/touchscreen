@@ -1,6 +1,6 @@
 
 <screen id="screen_webcams">
-    <attribute name="duration" type="number" value="60000"/>
+    <attribute name="duration" type="number" value="600000"/>
     <attribute name="bigduration" type="number" value="30000"/>
     <attribute name="enlargeDelegate"/>           
 
@@ -13,11 +13,11 @@
     </view>
 
     <view name="fullsize" x="525" y="270" bgcolor="red" >
-        <webcam name="library" updatems="5" delayms="700"  resourceHref="http://library.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" opacity="0.0"/>
-        <webcam name="memorialunion" updatems="5" delayms="700"   resourceHref="http://mu.webcam.oregonstate.edu//axis-cgi/jpg/image.cgi" width="709" height="485" opacity="0.0"/>
-        <webcam name="southcampus" updatems="5" delayms="700"  resourceHref="http://south.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" opacity="0.0"/>
-        <webcam name="reser2" updatems="5" delayms="700" resourceHref="http://reser2.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" opacity="1.0"/>
-        <webcam name="reser" updatems="5" delayms="700"  resourceHref="http://reser1.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" opacity="0.0"/>
+        <webcam name="library" updatems="50" delayms="700"  resourceHref="http://library.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" opacity="1.0"/>
+        <webcam name="memorialunion" updatems="50" delayms="700"   resourceHref="http://mu.webcam.oregonstate.edu//axis-cgi/jpg/image.cgi" width="709" height="485" opacity="0.0"/>
+        <webcam name="southcampus" updatems="50" delayms="700"  resourceHref="http://south.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" opacity="0.0"/>
+        <webcam name="reser2" updatems="50" delayms="700" resourceHref="http://reser2.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" opacity="0.0"/>
+        <webcam name="reser" updatems="50" delayms="700"  resourceHref="http://reser1.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" opacity="0.0"/>
     </view>
 
     <attribute name="currentBig" type="number" value="0"/>
@@ -29,7 +29,7 @@
 
     <method name="enlarge" args="enlargee">
         <![CDATA[        
-        Debug.write("enlargee: " + enlargee +  "   obj: " + this.fullsize.subviews[enlargee]);
+        //Debug.write("enlargee: " + enlargee +  "   obj: " + this.fullsize.subviews[enlargee]);
         if (enlargee != this.currentBig){
             this.fullsize.subviews[enlargee].animate("opacity",1.0,0);
             this.fullsize.subviews[enlargee].start();

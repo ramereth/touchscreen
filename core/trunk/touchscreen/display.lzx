@@ -13,6 +13,7 @@
     <debug width="400" height="300" x="200" y="500" fontsize="10"/>
 
     <include href="lib/lzx/updatingView.lzx"/>
+    <include href="lib/lzx/updatingViewFrame.lzx"/>
     <include href="lib/lzx/mrtgWindow.lzx"/>
     <include href="lib/lzx/borderedBox.lzx"/>
     <include href="lib/lzx/scrollingLabel.lzx"/>

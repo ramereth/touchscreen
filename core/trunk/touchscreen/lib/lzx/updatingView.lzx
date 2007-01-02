@@ -33,7 +33,7 @@
                 <![CDATA[
                 // initialize the buffer
                 for(i=0; i<this.buffersize; i++){
-                   var newview = new LzView(this.container);
+                   var newview = new updatingViewFrame(this.container);
                    newview.animate("height",this.height,0);                   
                    newview.animate("width",this.width,0);
                    newview.stretchResource("width");
@@ -42,8 +42,7 @@
                    newview.setSource(this.getAttribute('resourceHref'));
                 }
                 // start the refresh cycle
-                this.timerDelegate = new LzDelegate(this, "refreshTimer")
-                this.swapDelegate = new LzDelegate(this, "showNextImage")
+                this.timerDelegate = new LzDelegate(this, "refreshTimer")                
                 ]]>
             </method>
 
@@ -68,15 +67,10 @@
                     var nextFrame = this.container.subviews[next];
 
                     <!-- update the image for the current (now last) view to be shown -->
-                    nextFrame.setSource(this.getAttribute('resourceHref'));    
-
-                    //Debug.write("updating view: " + this + "  with href: " + this.getAttribute('resourceHref'));
-                    //Debug.write("delay: "+ delayms);
-                    <!-- set delayed swap of new image -->
-                    LzTimer.resetTimer(this.swapDelegate, this.delayms);
+                    nextFrame.setSource(this.getAttribute('resourceHref'));                        
             </method>
 
-            <method name="showNextImage">
+            <method name="showNextImage" >
                     <!-- get the current view being displayed-->
                     var cur  = this.container.subviews[currentView];
 
@@ -91,13 +85,26 @@
                     <!-- hide the old view and show the new.                     -->
                     <!-- The show MUST be faster than the hide or you get flicker-->
                     next.animate("opacity",1.0,0);
-                    cur.animate("opacity",0.0,.5);
-                    LzTimer.resetTimer(this.timerDelegate, this.updatems )
-                    //Debug.write("next: "+ this.updatems);
+                    cur.animate("opacity",0.0,.5);                    
             </method>
 
-            <!-- starts the update process -->
+            <method name="onload" args="image">
+                var next = currentView+1;
+                if (next >= this.container.subviews.length){
+                    next = 0;
+                }
+
+                if (image == this.container.subviews[next]) {                                        
+                    if (this.running) {
+                         this.showNextImage();
+                         LzTimer.resetTimer(this.timerDelegate, this.updatems )
+                    }
+                }
+            </method>
+
+    <!-- starts the update process -->
             <method name="start">
+                Debug.write("starting: " + this.parent );
                 if (!this.running){
                     this.running = true;
                     this.refreshTimer();
