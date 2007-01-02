@@ -149,11 +149,19 @@
                 <simplelayout axis="y" spacing="15"/>
                 <text align="center" fgcolor="white" fontstyle="bold" x="0" y="60" fontsize="16">Slideshow</text>
                 <view align="center">
-                    <simplelayout axis="x" spacing="45"/>
-                    <menuButton resource="prev" width="50" height="50" command="canvas,slideShowPrev" />
-                    <menuButton resource="stop" width="50" height="50" command="canvas,slideShowStop"/>
-                    <menuButton resource="play" width="50" height="50" command="canvas,slideShowPlay"/>
-                    <menuButton resource="next" width="50" height="50" command="canvas,slideShowNext"/>
+                    <simplelayout axis="x" spacing="25"/>
+                    <menuButton width="70" height="70" command="canvas,slideShowPrev">
+                        <view resource="prev" valign="middle" align="center"/>
+                    </menuButton>
+                    <menuButton width="70" height="70" command="canvas,slideShowStop">
+                        <view resource="stop" valign="middle" align="center"/>
+                    </menuButton>
+                    <menuButton width="70" height="70" command="canvas,slideShowPlay">
+                        <view resource="play" valign="middle" align="center"/>
+                    </menuButton>
+                    <menuButton width="70" height="70" command="canvas,slideShowNext">
+                        <view resource="next" valign="middle" align="center"/>
+                    </menuButton>
                 </view>
             </view>
         </view>
