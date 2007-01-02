@@ -96,8 +96,9 @@
         </method>
 
     <view name="map" resource="ftpusermap" >
-        <borderedBox y="10" height="30" width="300" align="center" viewopacity="0.5">        
-            <text resize="true" fontsize="20" fgcolor="0xE55E00" align="center" valign="middle" font="default">Sample of ftp.osuosl.org users</text>
+        <borderedBox y="10" height="60" width="340" align="center" viewopacity="0.5">
+            <text resize="true" fontsize="20" fgcolor="0xE55E00" align="center" y="6" font="default">A Sample of OSL Users</text>
+            <text resize="true" fontsize="14" fgcolor="0xE55E00" align="center" y="33" font="default">where our users are currently downloading from</text>
         </borderedBox>
         <borderedBox name="locationBox" x="15" y="400" width="204" height="354" clip="false" viewopacity="0.5">
               <view name="container" height="350" width="200" x="2" y="2" clip="true"/>
