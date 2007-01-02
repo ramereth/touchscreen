@@ -29,7 +29,7 @@
         var offsetX = earthradius * scale * (lon*Math.PI/180) / kilometersPerPixel
         var X = primeMeridian + offsetX + pointerOffsetX;
 
-        Debug.write("lon = " + lon + ", X = " + X +"   lat = " + lat + ", Y = " + Y);
+        Debug.write("Lat = " + lat + ", Y = " + Y +"    lon = " + lon + ", X = " + X );
         
         point.animate("y",Y,1000);
         point.animate("x",X,1000);
@@ -39,6 +39,8 @@
     <view resource="map">
         <view id="point" bgcolor="red" fgcolor="red" height="3" width="3" x="50" y="50"/>
         <view x="5" y="700">
+            <text fgcolor="white" fontsize="16" y="-20">Lat</text>
+            <text fgcolor="white" fontsize="16" y="-20" x="50">Lon</text>
             <edittext id="latInput" width="50" x="0" y="0">0</edittext>
             <edittext id="lonInput" width="50" x="50" y="0">0</edittext>
             <button x="100" y="0" onclick="canvas.plot();">Plot</button>
