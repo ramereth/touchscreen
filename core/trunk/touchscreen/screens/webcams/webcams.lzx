@@ -1,8 +1,6 @@
 
 <screen id="screen_webcams">
-    <attribute name="duration" type="number" value="60000"/>
-    <attribute name="bigduration" type="number" value="30000"/>
-    <attribute name="enlargeDelegate"/>           
+    <attribute name="duration" type="number" value="60000"/>                   
 
     <view name="thumbnails" x="75" y="0">
         <webcam name="library" x="50" y="530" updatems="300000" resourceHref="http://library.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
@@ -22,6 +20,8 @@
 
     <attribute name="currentBig" type="number" value="0"/>
     <attribute name="current" type="number" value="1"/>
+    <attribute name="loopduration" type="number" value="30000"/>
+    <attribute name="enlargeDel" />
 
     <method name="enlargeCommand">
         this.enlarge(canvas.commandParams[2]);        
@@ -40,14 +40,33 @@
         ]]>
     </method>        
 
+    <method name="enlargeLoop">
+        if (canvas.slideshow) {
+            this.enlargeNext();
+            LzTimer.resetTimer(this.enlargeDel, this.loopduration)
+        }
+    </method>
+
+    <method name="enlargeNext">
+        <![CDATA[
+        var next = currentBig + 1;
+        if (next >= this.fullsize.subviews.length){
+            next = 0;
+        }
+        this.enlarge(next);
+        ]]>
+    </method>
+
     <method name="_init">
-        
+        this.enlargeDel = new LzDelegate(this, "enlargeLoop");
     </method>
 
     <method name="_start">
         <![CDATA[
         //start automatic rotations
-        //this.nextTimed();
+        if (canvas.slideshow) {
+            this.enlargeLoop();    
+        }
 
         //start feed updates
         this.fullsize.subviews[this.currentBig].start();
@@ -61,7 +80,7 @@
     <method name="_stop">
         <![CDATA[
         //stop automatic rotations
-        //LzTimer.removeTimer(this.nextDelegate);
+        LzTimer.removeTimer(this.enlargeDel);
 
         //stop feed updates
         this.fullsize.subviews[this.currentBig].stop();
