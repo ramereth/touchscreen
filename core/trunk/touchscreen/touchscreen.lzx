@@ -6,7 +6,8 @@
     <include href="lib/lzx/menu.lzx" />
     <include href="lib/lzx/animations.lzx" />
     <include href="lib/lzx/borderedBox.lzx"/>
-    
+    <include href="lib/lzx/outlinedText.lzx"/>
+
     <attribute name="menuAnimator"/>
 
     <font name="default" src="helmetr.ttf"/>
@@ -32,13 +33,13 @@
     <attribute name="buttonlock" type="boolean" value="false"/>
     <attribute name="buttonUnlockDelegate"/>
     <method name="lockbuttons" args="time">
-        Debug.write("buttons LOCKED!");
+        //Debug.write("buttons LOCKED!");
         buttonlock=true;
         LzTimer.resetTimer(canvas.buttonUnlockDelegate,time);
     </method>
     <method name="unlockbuttons">
         buttonlock=false;
-        Debug.write("buttons unlocked");
+        //Debug.write("buttons unlocked");
     </method>
 
     <!-- ========================================================== -->
