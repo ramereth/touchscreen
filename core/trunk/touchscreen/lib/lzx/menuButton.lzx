@@ -2,7 +2,12 @@
         <attribute name="command" type="string" value=""/>
         <attribute name="buttontext" type="string" value=""/>
         <attribute name="submenu" type="string" value=""/>
+        <text name="_buttontext2" resize="true" multiline="false" x="${parent._buttontext.x+1}" valign="middle" fgcolor="black" fontsize="16" fontstyle="bold" opacity="${parent.opacity}"/>
+        <text name="_buttontext3" resize="true" multiline="false" x="${parent._buttontext.x-1}" valign="middle" fgcolor="black" fontsize="16" fontstyle="bold" opacity="${parent.opacity}"/>
+        <text name="_buttontext4" resize="true" multiline="false" y="${parent._buttontext.y+1}" align="center" fgcolor="black" fontsize="16" fontstyle="bold" opacity="${parent.opacity}"/>
+        <text name="_buttontext5" resize="true" multiline="false" y="${parent._buttontext.y-1}" align="center" fgcolor="black" fontsize="16" fontstyle="bold" opacity="${parent.opacity}"/>
         <text name="_buttontext" resize="true" multiline="false" align="center" valign="middle" fgcolor="white" fontsize="16" fontstyle="bold" opacity="${parent.opacity}"/>
+
         <method event="onclick">
             <![CDATA[
             if (!canvas.buttonlock) {
@@ -34,6 +39,10 @@
         </method>
         <method event="oninit">
             this._buttontext.setText(buttontext);
+            this._buttontext2.setText(buttontext);
+            this._buttontext3.setText(buttontext);
+            this._buttontext4.setText(buttontext);
+            this._buttontext5.setText(buttontext);
         </method>
         <method name="action">
             <!-- method stub override to add other processing-->
