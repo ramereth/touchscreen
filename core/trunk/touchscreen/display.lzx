@@ -92,14 +92,15 @@
         this.showSlide(eval(canvas.commandParams[2]));
     </method>
     <method name="showSlide" args="newSlide">
-        var hidetime = canvas.currentSlide.hide();
-        canvas.currentSlide = newSlide;
-        Debug.write("showing next slide: " + newSlide);        
-        if(!hidetime){
-            Debug.write("using default wait before showing slide");
-            hidetime = 1000
+        if (newSlide != currentSlide) {
+            var hidetime = canvas.currentSlide.hide();
+            canvas.currentSlide = newSlide;
+            Debug.write("showing next slide: " + newSlide);
+            if(!hidetime){
+                hidetime = 1000
+            }
+            LzTimer.resetTimer(showNextDelegate, hidetime);
         }
-        LzTimer.resetTimer(showNextDelegate, hidetime);
     </method>
     <method name="showCurrentSlide">
         canvas.currentSlide.show();
