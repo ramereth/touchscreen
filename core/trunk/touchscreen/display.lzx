@@ -19,7 +19,8 @@
     <include href="lib/lzx/scrollingLabel.lzx"/>
 
     <font name="default" src="helmetr.ttf"/>
-
+    <resource name="cursor" src="lib/images/hiddenCursor.gif"/>
+    
     <attribute name="screenContainer"/>
 
     <method name="initServer" >
@@ -31,11 +32,31 @@
         for (var screen in canvas.screenContainer) {
             canvas.screenContainer[screen].hide();
         }
+        //init hidden cursor
+        LzCursor.setCursorGlobal('cursor');
+        canvas.cursorToggleDel = new LzDelegate(this, "toggleCursor");
+        LzKeys.callOnKeyCombo(canvas.cursorToggleDel, ["shift","c"]);
+
+
         Debug.write("Display initialized");
     </method>
 
     <resource name="bgimage" src="lib/images/background-gray-1x768.gif"/>
     <view name="background" resource="bgimage" width="1360" height="768" stretches="width"/>
+
+    <!-- ================================================= -->
+    <!--   Cursor hide/show                                -->
+    <!-- ================================================= -->
+    <attribute name="cursorToggleDel"/>
+    <attribute name="cursorShown" type="boolean" value="false"/>
+    <method name="toggleCursor">
+        if (canvas.cursorShown) {
+            LzCursor.setCursorGlobal('cursor');
+        } else {
+            LzCursor.unlock();
+        }
+        canvas.cursorShown = !canvas.cursorShown;
+    </method>
 
     <!-- ================================================= -->
     <!--   Connection and Messaging                        -->
@@ -64,7 +85,7 @@
             //create delegate for the function we want to call
             var deltest = new LzDelegate(eval(canvas.commandParams[0]), canvas.commandParams[1]);
 
-            Debug.write("context: " + canvas.commandParams[0] + "   command: " + canvas.commandParams[1]   +  "  eval: " + eval(canvas.commandParams[0]) + "   del: " + deltest );
+            //Debug.write("context: " + canvas.commandParams[0] + "   command: " + canvas.commandParams[1]   +  "  eval: " + eval(canvas.commandParams[0]) + "   del: " + deltest );
 
             //execute the function
             deltest.execute();
@@ -125,7 +146,7 @@
         while (!nextSlide.slideshow) {
             nextSlide = getNextSlide();
         }
-        Debug.write("nextSlide: " + nextSlide);
+        //Debug.write("nextSlide: " + nextSlide);
         showSlide(nextSlide);
 
     </method>
@@ -134,7 +155,7 @@
         while (!nextSlide.slideshow) {
             nextSlide = getPrevSlide();
         }
-        Debug.write("prevSlide: " + nextSlide);
+        //Debug.write("prevSlide: " + nextSlide);
         showSlide(nextSlide);
     </method>
     <!-- gets the next slide that should be shown -->
@@ -159,7 +180,7 @@
         canvas.showNextSlideDelegate = new LzDelegate(canvas, "showNextSlideLoop" );
         currentSlideIndex=-1;        
         canvas.currentSlide = getNextSlide();
-        Debug.write("first slide: " + canvas.currentSlide.id);
+        //Debug.write("first slide: " + canvas.currentSlide.id);
     </method>
 
     <method name="reset">

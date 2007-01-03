@@ -11,6 +11,7 @@
     <attribute name="menuAnimator"/>
 
     <font name="default" src="helmetr.ttf"/>
+    <resource name="cursor" src="lib/images/hiddenCursor.gif"/>
 
     <method name="clientInit">
         canvas.connection.connect();
@@ -19,8 +20,30 @@
         canvas.menuAnimator = new menuAnimator();
         canvas.resetTimerDelegate = new LzDelegate(canvas, "reset");
         LzTimer.resetTimer( canvas.resetTimerDelegate, 1000);
+
+        //init hidden cursor
+        LzCursor.setCursorGlobal('cursor');
+        canvas.cursorToggleDel = new LzDelegate(this, "toggleCursor");
+        LzKeys.callOnKeyCombo(canvas.cursorToggleDel, ["shift","c"]);
+
         canvas.buttonUnlockDelegate = new LzDelegate(canvas, "unlockbuttons");
-        mainmenu.show();
+        mainmenu.show();                        
+    </method>
+
+
+
+    <!-- ================================================= -->
+    <!--   Cursor hide/show                                -->
+    <!-- ================================================= -->
+    <attribute name="cursorToggleDel"/>
+    <attribute name="cursorShown" type="boolean" value="false"/>
+    <method name="toggleCursor">
+        if (canvas.cursorShown) {
+            LzCursor.setCursorGlobal('cursor');
+        } else {
+            LzCursor.unlock();
+        }
+        canvas.cursorShown = !canvas.cursorShown;
     </method>
 
     <!-- ========================================================== -->
