@@ -35,7 +35,7 @@
         //init hidden cursor
         LzCursor.setCursorGlobal('cursor');
         canvas.cursorToggleDel = new LzDelegate(this, "toggleCursor");
-        LzKeys.callOnKeyCombo(canvas.cursorToggleDel, ["shift","c"]);
+        LzKeys.callOnKeyCombo(canvas.cursorToggleDel, ["c"]);
 
 
         Debug.write("Display initialized");
@@ -71,7 +71,7 @@
         <handler name="ondata">
             <![CDATA[
 
-            Debug.write("receiving command");
+            //Debug.write("receiving command");
             //stop slideshow
             canvas.slideshow=false;
             LzTimer.removeTimer(canvas.showNextSlideDelegate);
@@ -116,7 +116,7 @@
         if (newSlide != currentSlide) {
             var hidetime = canvas.currentSlide.hide();
             canvas.currentSlide = newSlide;
-            Debug.write("showing next slide: " + newSlide);
+            //Debug.write("showing next slide: " + newSlide);
             if(!hidetime){
                 hidetime = 1000
             }
@@ -270,6 +270,8 @@
 
     <!-- ftp bandwidth map -->
     <include href="screens/ftpbandwidth/ftpbandwidth.lzx"/>
+
+    <view align="center" valign="middle" name="content"/>
 
 </canvas>
 

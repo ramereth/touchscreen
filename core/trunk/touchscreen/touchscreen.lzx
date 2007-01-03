@@ -24,7 +24,7 @@
         //init hidden cursor
         LzCursor.setCursorGlobal('cursor');
         canvas.cursorToggleDel = new LzDelegate(this, "toggleCursor");
-        LzKeys.callOnKeyCombo(canvas.cursorToggleDel, ["shift","c"]);
+        LzKeys.callOnKeyCombo(canvas.cursorToggleDel, ["c"]);
 
         canvas.buttonUnlockDelegate = new LzDelegate(canvas, "unlockbuttons");
         mainmenu.show();                        
@@ -106,6 +106,8 @@
     <connectiondatasource name="mycd">
         <dataset name="command" />
     </connectiondatasource>
+
+    
 
     <!-- ================================================= -->
     <!--   Context Bar                                     -->
@@ -204,7 +206,7 @@
     <!--   Menu Area                                       -->
     <!-- ================================================= -->
     <resource name="bgimage" src="lib/images/background-gray-1x824.gif"/>
-    <view width="1280" height="824" clip="true">
+    <view name="content" width="1280" height="824" clip="true">
         <view x="0" y="0" name="background" resource="bgimage" width="1280" height="824" stretches="width" clip="true" />        
         <view id="button_back" x="20" y="-150" resource="button_back">
             <!-- indicates if the slide is being shown, used by hide() to avoid unneeded calls to the animation -->
