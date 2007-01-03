@@ -17,7 +17,7 @@
         var kilometersPerPixel=29.46702941176470588235294;
         var equator=438;
         var primeMeridian=680;
-        //offset to accomidate size of pointer, we want the center of pointer to land on the point
+        //offset to accomidate size of pointer, the center of the pointer should land on the point
         var pointerOffsetX = -2;
         var pointerOffsetY = -1;
 
