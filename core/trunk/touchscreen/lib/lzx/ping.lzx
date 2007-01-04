@@ -17,7 +17,7 @@
             this.draw();
         </method>
 
-        <animator name="grow" to="100" duration="8000" attribute="radius" motion="linear" />
+        <animator name="grow" to="100" duration="8000" attribute="radius" motion="linear" start="false"/>
 
         <method name="draw" >
             <![CDATA[            
