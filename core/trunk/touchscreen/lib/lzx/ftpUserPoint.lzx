@@ -2,6 +2,7 @@
     <attribute name="lat" type="number" value="0"/>
     <attribute name="lon" type="number" value="0"/>
     <attribute name="ping"/>
+    <attribute name="dot"/>
     <method name="updatePosition">
         var lat=this.lat;
         var lon=this.lon;
@@ -23,15 +24,20 @@
         this.animate("y",Y,0);
         this.animate("x",X,0);
 
-        var tmp = new circle(this);        
-        tmp.setAttribute("color",0xa60606);
-        tmp.setAttribute("r",1);
-        tmp.setAttribute("lineWidth",2);
-        tmp.redraw();
+        this.dot = new circle(this);
+        this.dot.setAttribute("color",0xa60606);
+        this.dot.setAttribute("r",1);
+        this.dot.setAttribute("lineWidth",2);
+        this.dot.redraw();
         
         this.ping = new ping(this);
         this.ping.setAttribute("radius",1);
         this.ping.setAttribute("color",0xa60606);
         this.ping.grow.doStart();
+    </method>
+
+    <method name="destroy">
+        this.dot.destroy();
+        this.ping.destroy();
     </method>
 </class>

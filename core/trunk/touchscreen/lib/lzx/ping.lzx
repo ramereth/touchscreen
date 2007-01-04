@@ -56,4 +56,15 @@
 
 			]]>
         </method>
+
+        <method name="destroy">
+            <![CDATA[
+               for(var i=0; i<this.circles.length; i++) {
+                    if (this.circles[i]){
+                        this.circles[i].destroy();                    
+                    }
+               }
+            ]]>
+        </method>
+
     </class>
