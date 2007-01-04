@@ -15,8 +15,8 @@
     <attribute name="buffersize" type="number" value="2"/>
 
     <!-- updating view that contains the webcam images -->
-    <view name="blackbackground" width="${parent.width-2}" bgcolor="black" height="${parent.height-2}" x="1" y="1" />
-    <updatingView name="updatingview" x="1" y="1" width="${parent.width-2}" height="${parent.height-2}" resourceHref="${parent.resourceHref}" updatems="${parent.updatems}" delayms="${parent.delayms}" buffersize="${parent.buffersize}"/>
+    <view name="blackbackground" width="$once{parent.width-2}" bgcolor="black" height="$once{parent.height-2}" x="1" y="1" />
+    <updatingView name="updatingview" x="1" y="1" width="$once{parent.width-2}" height="$once{parent.height-2}" resourceHref="$once{parent.resourceHref}" updatems="$once{parent.updatems}" delayms="$once{parent.delayms}" buffersize="$once{parent.buffersize}"/>
 
 
     <!-- delegate start and stop to the updating view -->

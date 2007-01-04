@@ -1,10 +1,10 @@
 <class name="outlinedText" height="1" width="1" extends="view">
 
-    <text name="outline1" x="-1-this.width/2" y="${0-this.height/2}" resize="true" multiline="${parent.multiline}" fgcolor="${parent.outlineColor}" fontsize="${parent.fontsize}" />
-    <text name="outline2" x="1-this.width/2" y="${0-this.height/2}" resize="true" multiline="${parent.multiline}" fgcolor="${parent.outlineColor}" fontsize="${parent.fontsize}" />
-    <text name="outline3" y="1-this.height/2" x="${0-this.width/2}" resize="true" multiline="${parent.multiline}" fgcolor="${parent.outlineColor}" fontsize="${parent.fontsize}" />
-    <text name="outline4" y="-1-this.height/2" x="${0-this.width/2}" resize="true" multiline="${parent.multiline}" fgcolor="${parent.outlineColor}" fontsize="${parent.fontsize}" />
-    <text name="fgtext" x="${0-this.width/2}" y="${0-this.height/2}" resize="true" multiline="${parent.multiline}" fgcolor="${parent.fgcolor}" fontsize="${parent.fontsize}" />
+    <text name="outline1" x="-1-this.width/2" y="$once{0-this.height/2}" resize="true" multiline="$once{parent.multiline}" fgcolor="$once{parent.outlineColor}" fontsize="$once{parent.fontsize}" />
+    <text name="outline2" x="1-this.width/2" y="$once{0-this.height/2}" resize="true" multiline="$once{parent.multiline}" fgcolor="$once{parent.outlineColor}" fontsize="$once{parent.fontsize}" />
+    <text name="outline3" y="1-this.height/2" x="$once{0-this.width/2}" resize="true" multiline="$once{parent.multiline}" fgcolor="$once{parent.outlineColor}" fontsize="$once{parent.fontsize}" />
+    <text name="outline4" y="-1-this.height/2" x="$once{0-this.width/2}" resize="true" multiline="$once{parent.multiline}" fgcolor="$once{parent.outlineColor}" fontsize="$once{parent.fontsize}" />
+    <text name="fgtext" x="${0-this.width/2}" y="$once{0-this.height/2}" resize="true" multiline="$once{parent.multiline}" fgcolor="$once{parent.fgcolor}" fontsize="$once{parent.fontsize}" />
 
     <attribute name="text" type="string" value=""/>
     <attribute name="fgcolor" type="color" value="0xFFFFFF"/>
