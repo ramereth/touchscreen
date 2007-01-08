@@ -6,7 +6,7 @@
     <attribute name="maxPoints" type="number" value="100"/>
     <attribute name="points" />
     <attribute name="updateMapDelegate" />
-    <attribute name="mapRefresh" type="number" value="500" />
+    <attribute name="mapRefresh" type="number" value="1000" />
     <attribute name="scrollDeleteDelegate"/>
 
     <method name="_init">
