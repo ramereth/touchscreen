@@ -64,6 +64,7 @@
                         this.circles[i].destroy();                    
                     }
                }
+               super.destroy();
             ]]>
         </method>
 

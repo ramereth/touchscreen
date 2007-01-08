@@ -141,10 +141,9 @@
     </borderedBox >
 
     <borderedBox name="personalDonations" x="1050" y="250" width="220" clip="false" height="484" datapath="dset_sponsors:/sponsors" bgcolor="0xE55E00" viewopacity="0.0">
-        <view name="container" clip="true" x="2" y="2" height="${parent.height-4}" width="${parent.width-4}"/>
+        <scrollingBox name="scroller" clip="true" x="2" y="2" height="$once{parent.height-4}" width="$once{parent.width-4}"/>
         <attribute name="current" type="number" value="0"/>
         <attribute name="updateDelegate"/>
-        <attribute name="scrollDeleteDelegate"/>
         <attribute name="names"/>
 
         <method name="updateNames">
@@ -160,33 +159,7 @@
                 }
                 var label = this.names[current];
 
-                // create a scrolling label
-                var textBlock = new scrollingLabel(this.container);
-                                
-                textBlock.setAttribute("font","default");
-                textBlock.setAttribute("fontsize",16);
-                textBlock.setText(label);
-                textBlock.setAlign("center");
-                textBlock.animate("height",30,0);                
-                // shrink any names that are too big
-                while (textBlock.width > 216 && textBlock.fontsize > 2) {                                    
-                    textBlock.setAttribute("fontsize",textBlock.fontsize-1);
-                }
-
-                //animate the list to move 1 position                
-                if (container.subnodes.length > 1) {                    
-                    container.subnodes[0].animate("y", -30, 500);                                        
-                } else {
-                    container.subnodes[0].animate("y",480,0);
-                }
-
-                //if a label has gone past the clip plane of the box, destroy it
-                //for simplicity determine how many can fit in the box.
-                if (container.subnodes.length > 16) {
-                    //this must be done by a delegate so it happens AFTER the animation.
-                    //The animation will stop if the label is destroyed first
-                    LzTimer.resetTimer(this.scrollDeleteDelegate, 600);
-                }
+                scroller.addRow(label);
             ]]>
         </method>
 
@@ -195,18 +168,9 @@
             LzTimer.resetTimer(this.updateDelegate,1000);
         </method>
 
-        <method name="deleteFirstScrollLabel">
-            // after subnode[0] is destroyed it is removed
-            // from the array automatically. The array is then
-            // automatically shifted so that subnode[1] is now
-            // subnode[0]
-            this.container.subnodes[0].destroy();
-        </method>
-
         <method event="oninit">
             loadNames();
             this.updateDelegate = new LzDelegate(this, "scrollLoop" );
-            this.scrollDeleteDelegate = new LzDelegate(this, "deleteFirstScrollLabel" );
             LzTimer.resetTimer(this.updateDelegate, 3000);
         </method>
 

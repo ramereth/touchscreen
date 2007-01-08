@@ -39,5 +39,6 @@
     <method name="destroy">
         this.dot.destroy();
         this.ping.destroy();
+        super.destroy();
     </method>
 </class>

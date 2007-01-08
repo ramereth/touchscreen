@@ -16,7 +16,8 @@
     <include href="lib/lzx/updatingViewFrame.lzx"/>
     <include href="lib/lzx/mrtgWindow.lzx"/>
     <include href="lib/lzx/borderedBox.lzx"/>
-    <include href="lib/lzx/scrollingLabel.lzx"/>
+    <include href="lib/lzx/scrollingText.lzx"/>
+    <include href="lib/lzx/scrollingBox.lzx"/>
 
     <font name="default" src="helmetr.ttf"/>
     <resource name="cursor" src="lib/images/hiddenCursor.gif"/>
@@ -224,6 +225,9 @@
             var lat = this.xpathQuery('item[2]/title/text()');
             var lon = this.xpathQuery('item[3]/title/text()');
             screen_osl_ftpusersmap.createPoint(lat,lon, label);
+            label = null;
+            lat = null;
+            lon = null;
         </method>
     </datapointer>
     <include href="lib/lzx/circle.lzx"/>
