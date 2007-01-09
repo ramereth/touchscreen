@@ -9,8 +9,8 @@
 <!--  Author: Peter Krenesky                          -->
 <!--  Date: Aug 1, 2006                               -->
 <!-- ================================================ -->
-<canvas debug="true" oninit="initServer();" height="768" width="1360">
-    <debug width="400" height="300" x="200" y="500" fontsize="10"/>
+<canvas debug="false" oninit="initServer();" height="768" width="1360">
+    <!--debug width="400" height="300" x="200" y="500" fontsize="10"/-->
 
     <include href="lib/lzx/updatingView.lzx"/>
     <include href="lib/lzx/updatingViewFrame.lzx"/>

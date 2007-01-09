@@ -1,4 +1,4 @@
-<canvas layout="x" debug="true" oninit="clientInit()" width="1280" height="1024" >
+<canvas layout="x" debug="false" oninit="clientInit()" width="1280" height="1024" >
 
     <include href="lib/lzx/connection.lzx" />
     <include href="lib/lzx/screen.lzx" />
@@ -282,7 +282,7 @@
     </view>
 
 
-    <debug width="800" height="200" x="400" y="900" fontsize="12"/>
+    <!--debug width="800" height="200" x="400" y="900" fontsize="12"/-->
 
 </canvas>
 
