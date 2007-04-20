@@ -269,7 +269,7 @@
     <!-- OTHER STUFF -->
     <include href="screens/osl_bandwidth/general.lzx"/>
     <include href="screens/osl_bandwidth/projects.lzx"/>
-    <include href="screens/net_about.lzx"/>
+    <include href="screens/net_about/net_about.lzx"/>
     <include href="screens/rackview.lzx"/>
 
     <!-- ftp bandwidth map -->
