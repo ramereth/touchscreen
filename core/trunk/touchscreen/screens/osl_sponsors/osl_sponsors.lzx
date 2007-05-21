@@ -11,7 +11,7 @@
     </method>
 
     <borderedBox name="header" x="400" y="50" width="600" height="100">
-        <text align="center" valign="middle" fgcolor="white" font="default" fontsize="40">Thank You To Our Sponors</text>
+        <text align="center" valign="middle" fgcolor="white" font="default" fontsize="40">Thank You To Our Sponsors</text>
     </borderedBox>
 
     <borderedBox x="100" y="250" name="corporateBox" width="850" height="484" bgcolor="white" viewopacity="0.0">
