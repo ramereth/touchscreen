@@ -6,16 +6,16 @@
         <webcam name="library" x="50" y="530" updatems="300000" resourceHref="http://library.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
         <webcam name="memorialunion" x="50" y="270" updatems="300000" resourceHref="http://mu.webcam.oregonstate.edu//axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
         <webcam name="southcampus" x="50" y="10" updatems="300000" resourceHref="http://south.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
-        <webcam name="reser2" x="450" y="10" updatems="300000" resourceHref="http://reser2.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
-        <webcam name="reser" x="830" y="10" updatems="300000" resourceHref="http://reser1.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
+        <webcam name="reser2" x="450" y="10" updatems="300000" resourceHref="http://baseball.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
+        <webcam name="reser" x="830" y="10" updatems="300000" resourceHref="http://annex.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
     </view>
 
     <view name="fullsize" x="525" y="270" bgcolor="red" >
         <webcam name="library" updatems="50" delayms="700"  resourceHref="http://library.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" opacity="1.0"/>
         <webcam name="memorialunion" updatems="50" delayms="700"   resourceHref="http://mu.webcam.oregonstate.edu//axis-cgi/jpg/image.cgi" width="709" height="485" opacity="0.0"/>
         <webcam name="southcampus" updatems="50" delayms="700"  resourceHref="http://south.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" opacity="0.0"/>
-        <webcam name="reser2" updatems="50" delayms="700" resourceHref="http://reser2.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" opacity="0.0"/>
-        <webcam name="reser" updatems="50" delayms="700"  resourceHref="http://reser1.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" opacity="0.0"/>
+        <webcam name="reser2" updatems="50" delayms="700" resourceHref="http://baseball.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" opacity="0.0"/>
+        <webcam name="reser" updatems="50" delayms="700"  resourceHref="http://annex.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" opacity="0.0"/>
     </view>
 
     <attribute name="currentBig" type="number" value="0"/>
