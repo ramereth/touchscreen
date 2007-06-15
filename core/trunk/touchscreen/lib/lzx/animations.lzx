@@ -1,7 +1,9 @@
 <class name="menuAnimator">
 
     <method name="show_slide_from_left_and_right" args="buttons">
-        if (buttons.length == 4){
+        if (buttons.length == 2){
+            show_slide_from_left_and_right_2(buttons);
+        } else if (buttons.length == 4){
             show_slide_from_left_and_right_4(buttons);
         } else if (buttons.length == 5) {
             show_slide_from_left_and_right_5(buttons);
@@ -10,6 +12,49 @@
         } else if (buttons.length == 8) {
             show_slide_from_left_and_right_8(buttons);
         }
+    </method>
+
+    <method name="show_slide_from_left_and_right_2" args="buttons">
+        <![CDATA[
+            var spacing = 75;
+            var canvasWidth = 1280;
+            var height = 1024;
+            var yOffset = 0;
+            var buttonWidth = 200;
+
+            var x0 = (canvasWidth/2)-(spacing/2)-buttonWidth;
+            var x1 = (canvasWidth/2)+(spacing/2)
+
+            var y0 = yOffset;
+            var y1 = yOffset + buttonWidth + spacing;
+
+            var startX0 = 0 - buttonWidth - spacing;
+            var startX1 = canvasWidth + spacing;            
+
+            // make buttons invisibile so we can move them
+            for (i=0; i<subviews.length; i++){
+                buttons.subviews[i].animate("opacity","0.0",0);
+            }
+            // move buttons into thier starting position
+            buttons[0].animate("x",startX0,0);
+            buttons[1].animate("x",startX1,0);
+
+
+            buttons[0].animate("y",y0,0);
+            buttons[1].animate("y",y0,0);
+
+
+
+            //make buttons visible again
+            for (i=0; i<subviews.length; i++){
+            buttons[i].animate("opacity","1.0",0);
+            }
+
+            // display them
+            buttons[0].animate("x",x0,400);
+            buttons[1].animate("x",x1,800);
+
+        ]]>
     </method>
 
     <method name="show_slide_from_left_and_right_4" args="buttons">
@@ -222,7 +267,9 @@
     </method>
 
     <method name="hide_slide_to_left_and_right" args="buttons">
-        if (buttons.length == 4){
+        if (buttons.length == 2){
+            hide_slide_to_left_and_right_2(buttons);
+        } else if (buttons.length == 4){
             hide_slide_to_left_and_right_4(buttons);
         } else if (buttons.length == 5) {
             hide_slide_to_left_and_right_5(buttons);
@@ -231,6 +278,18 @@
         } else if (buttons.length == 8) {
             hide_slide_to_left_and_right_8(buttons);
         }
+    </method>
+
+    <method name="hide_slide_to_left_and_right_2" args="buttons">
+        var spacing = 75;
+        var width = 1280;
+        var buttonWidth = 200;
+
+        var startX0 = 0 - buttonWidth - spacing-75;
+        var startX1 = width + spacing;        
+        buttons[0].animate("x",startX0,400);
+        buttons[1].animate("x",startX1,800);
+
     </method>
 
     <method name="hide_slide_to_left_and_right_4" args="buttons">
