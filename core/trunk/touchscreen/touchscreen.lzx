@@ -261,7 +261,7 @@
         <menu id="mainmenu" title="Main Menu">                        
             <view name="buttons">
                 <menuButton resource="buttonOrange" buttontext="Open Source Lab" command="canvas,showSlideCommand,screen_osl_about" submenu="menu_osl"/>
-                <menuButton resource="buttonRed" buttontext="Network Engineering" command="canvas,showSlideCommand,screen_net_about"/>
+                <menuButton resource="buttonRed" buttontext="Network Engineering" command="canvas,showSlideCommand,screen_net_about" submenu="menu_net"/>
                 <menuButton resource="buttonBlue" buttontext="Data Center Map" command="canvas,showSlideCommand,screen_rackview" submenu="menu_rackview"/>
                 <menuButton resource="buttonPurple"  command="canvas,showSlideCommand,screen_webcams" buttontext="Webcams" submenu="menu_webcams"/>
                 <menuButton resource="buttonYellow" command="canvas,showSlideCommand,screen_weather" buttontext="Weather"/>
