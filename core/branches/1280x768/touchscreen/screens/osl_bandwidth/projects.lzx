@@ -27,8 +27,8 @@
     </method>
 
     <method name="_show">
-        this.Gentoo.animate("x",100,800);
-        this.Mozilla.animate("x",700,800);
+        this.Gentoo.animate("x",80,800);
+        this.Mozilla.animate("x",690,800);
     </method>
 
     <method name="_hide">

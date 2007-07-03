@@ -29,7 +29,7 @@
     <attribute name="slideshow" type="boolean" value="true"/>
 
     <!-- how many miliseconds this screen should be displayed for in the slideshow -->
-    <attribute name="duration" type="number" value="30000"/>
+    <attribute name="duration" type="number" value="60000"/>
 
     <!-- ========================================================== -->
     <!-- animation for hiding the screen. called by hide().         -->

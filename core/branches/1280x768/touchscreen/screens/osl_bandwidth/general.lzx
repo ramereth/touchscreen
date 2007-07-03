@@ -27,8 +27,8 @@
     </method>
 
     <method name="_show">
-        this.OSLServices.animate("x",100,800);
-        this.OSLGeneral.animate("x",700,800);
+        this.OSLServices.animate("x",80,800);
+        this.OSLGeneral.animate("x",690,800);
     </method>
 
     <method name="_hide">

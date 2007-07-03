@@ -9,8 +9,8 @@
 <!--  Author: Peter Krenesky                          -->
 <!--  Date: Aug 1, 2006                               -->
 <!-- ================================================ -->
-<canvas debug="false" oninit="initServer();" height="768" width="1360">
-    <!--debug width="400" height="300" x="200" y="500" fontsize="10"/-->
+<canvas debug="false" oninit="initServer();" height="768" width="1280">
+    <debug width="400" height="300" x="200" y="500" fontsize="10"/>
 
     <include href="lib/lzx/updatingView.lzx"/>
     <include href="lib/lzx/updatingViewFrame.lzx"/>
@@ -25,7 +25,6 @@
     <attribute name="screenContainer"/>
 
     <method name="initServer" >
-        canvas.connection.connect();
         slideShowInit();
         var resetDelegate = new LzDelegate(canvas, "reset");
         LzTimer.resetTimer(resetDelegate,4000);
@@ -37,7 +36,8 @@
         LzCursor.setCursorGlobal('cursor');
         canvas.cursorToggleDel = new LzDelegate(this, "toggleCursor");
         LzKeys.callOnKeyCombo(canvas.cursorToggleDel, ["c"]);
-
+        LzKeys.callOnKeyCombo(new LzDelegate(canvas, "showNextSlide"), ["n"]);
+        LzKeys.callOnKeyCombo(new LzDelegate(canvas, "showPrevSlide"), ["p"]);
 
         Debug.write("Display initialized");
     </method>
@@ -58,51 +58,6 @@
         }
         canvas.cursorShown = !canvas.cursorShown;
     </method>
-
-    <!-- ================================================= -->
-    <!--   Connection and Messaging                        -->
-    <!-- ================================================= -->
-    <include href="lib/lzx/connection.lzx" />
-    <connectiondatasource name="mycd">
-        <dataset name="command" />
-    </connectiondatasource>
-    <datapointer xpath="mycd:command:/*">
-        <!-- called when command is received, currently just -->
-        <!-- calls method with same name as command -->
-        <handler name="ondata">
-            <![CDATA[
-
-            //Debug.write("receiving command");
-            //stop slideshow
-            canvas.slideshow=false;
-            LzTimer.removeTimer(canvas.showNextSlideDelegate);
-
-            //get and parse the command
-            var raw = this.xpathQuery('/text()');
-
-            //split string into an array
-            canvas.commandParams = raw.split(",");
-
-            //create delegate for the function we want to call
-            var deltest = new LzDelegate(eval(canvas.commandParams[0]), canvas.commandParams[1]);
-
-            //Debug.write("context: " + canvas.commandParams[0] + "   command: " + canvas.commandParams[1]   +  "  eval: " + eval(canvas.commandParams[0]) + "   del: " + deltest );
-
-            //execute the function
-            deltest.execute();
-
-            ]]>
-        </handler>
-        <method event="onerror">
-            Debug.write("problems contacting server");
-        </method>
-
-        <method event="ontimeout">
-            Debug.write("server time out");
-        </method>
-    </datapointer>
-    <!-- variable for storing params in case they are needed by the function being called -->
-    <attribute name="commandParams" />
 
     <!-- ================================================= -->
     <!--   Show / Hide screen functionality                -->
@@ -143,7 +98,8 @@
     </method>
     <!-- hides the current slide and then shows the next one -->
     <method name="showNextSlide">
-        var nextSlide = getNextSlide();        
+        Debug.write("next???");
+        var nextSlide = getNextSlide();
         while (!nextSlide.slideshow) {
             nextSlide = getNextSlide();
         }
@@ -252,7 +208,8 @@
     <include href="screens/osl_about/osl-about.lzx"/>
 
     <!-- WEATHER -->
-    <dataset name="dset_weatherData" request="true" src="http://xoap.weather.com/weather/local/USOR0076?cc=*&amp;dayf=5&amp;prod=xoap&amp;par=1003666583&amp;key=4128909340a9b2fc"/>
+    <!-- USOR0275 portland,   USOR0076  corvallis -->
+    <dataset name="dset_weatherData" request="true" src="http://xoap.weather.com/weather/local/USOR0275?cc=*&amp;dayf=5&amp;prod=xoap&amp;par=1003666583&amp;key=4128909340a9b2fc"/>
     <include href="screens/weather/weather.lzx"/>
 
     <!-- NEWS -->
@@ -269,9 +226,9 @@
     <!-- OTHER STUFF -->
     <include href="screens/osl_bandwidth/general.lzx"/>
     <include href="screens/osl_bandwidth/projects.lzx"/>
-    <include href="screens/net_about/net_about.lzx"/>
-    <include href="screens/net_bandwidth.lzx"/>
-    <include href="screens/rackview.lzx"/>
+    <!--<include href="screens/net_about/net_about.lzx"/>
+    <include href="screens/net_bandwidth.lzx"/
+    <include href="screens/rackview.lzx"/-->
 
     <!-- ftp bandwidth map -->
     <include href="screens/ftpbandwidth/ftpbandwidth.lzx"/>

@@ -178,7 +178,7 @@
 
     </borderedBox>
 
-    <borderedBox name="fiveDayForecast" x="100" y="550"  height="200" width="1200" color="white" font="default" viewopacity="0.5">
+    <borderedBox name="fiveDayForecast" x="35" y="550"  height="200" width="1200" color="white" font="default" viewopacity="0.5">
         
         <view y="15" datapath="dset_weatherData:/weather/dayf/day">
             <method event="ondata">
@@ -236,8 +236,8 @@
     </method>
 
     <method name="_show">
-	    this.currentConditions.animate("x",100,800);
-	    this.maps.animate("x",708,800);
+	    this.currentConditions.animate("x",35,800);
+	    this.maps.animate("x",643,800);
 	    this.fiveDayForecast.animate("y",525,800);
     </method>
 

@@ -1,7 +1,7 @@
 <screen id="screen_osl_outages">
 
 
-    <borderedBox name="nagiosView" x="20" y="20" width="600" height="540" clickable="false" opacity="1.0" viewopacity="0.2" bgcolor="0xE55E00">
+    <borderedBox name="nagiosView" x="20" y="30" width="500" height="470" clickable="false" opacity="1.0" viewopacity="0.2" bgcolor="0xE55E00">
 
         <image src="http://osuosl.org/themes/newosl/osl.png" align="center"/>
 
@@ -43,11 +43,11 @@
          </view>
      </class>  -->
 
-    <borderedBox x="700" y="20" name="securityView" width="640" height="200"  viewopacity="0.6" >
+    <borderedBox x="600" y="30" name="debianView" width="640" height="200"  viewopacity="0.6" >
 
         <view name="container" x="20" y="20">
 
-            <view  opacity="0.0" name="debian">
+            <view name="debian">
                 <text font="default" fgcolor="0xE55E00" fontsize="18" fontstyle="bold">Latest Debian Advisories</text>
                 <image x="490" y="20" src="lib/images/debian.png"/>
                 <view y="40" layout="axis:y">
@@ -58,6 +58,7 @@
                         <text name="text2" font="default" fgcolor="white" fontsize="16" datapath="description/text()" resize="true"/>
 
                         <method event="ondata">
+                            Debug.write("outputing debian text");
                             <![CDATA[
                             String.prototype.trim = function() {
                                 var ret = this;
@@ -66,17 +67,24 @@
                                 }
                                 while(ret.charAt(ret.length-1) == ' ' || ret.charAt(ret.length-1) == '\r' || ret.charAt(ret.length-1) == '\n'){
                                     ret = ret.substr(0, ret.length-1);
-                                }                                                                
+                                }
                                 return ret;
                             };
                             var description = new String(this.datapath.xpathQuery("description/text()"));
                             this.text2.setText(description.trim());
+                            Debug.write("outputing debian text: " + description);
                             ]]>
                         </method>
                     </view>
                 </view>
             </view>
-            <view name="gentoo" opacity="0.0">
+         </view>
+     </borderedBox>
+
+     <borderedBox x="600" y="300" name="gentooView" width="640" height="200"  viewopacity="0.6" >
+
+        <view name="container" x="20" y="20">
+            <view name="gentoo">
                 <image x="500" y="30" src="lib/images/gentoo.png"/>
                 <text font="default" fgcolor="0xE55E00" fontsize="18" fontstyle="bold">Latest Gentoo Advisories</text>
                 <view y="40" layout="axis:y">
@@ -87,6 +95,7 @@
                         <text name="title" font="default" fgcolor="white" fontsize="13" resize="true" />
                         <text name="description" font="default" fgcolor="white" fontsize="13" resize="true"/>
                         <method event="ondata">
+                                Debug.write("outputing gentoo text");
                                 var titleRaw = new String(this.datapath.xpathQuery('title/text()'));
                                 var descRaw = new String(this.datapath.xpathQuery('description/text()'));
                                 var id_txt = titleRaw.substring(0, titleRaw.indexOf("("));
@@ -112,68 +121,6 @@
             </view>
         </view>
 
-        <!-- attribute determining if the update is currently running -->
-        <attribute name="running" type="boolean" value="false"/>
-
-        <!-- time in ms to update the image -->
-        <attribute name="updatems" type="number" value="10000"/>
-
-        <!-- delegates for fetching the next frame -->
-        <attribute name="timerDelegate"/>
-
-        <attribute name="currentView" type="number" value="0"/>
-
-        <!-- initialize the view, setup the view buffer, etc -->
-        <method event="oninit">
-            this.timerDelegate = new LzDelegate(this, "refreshTimer")
-            this.fetchNextView();
-        </method>
-
-        <!-- function that recursively calls itself to advance the framebuffer -->
-        <method name="refreshTimer">
-            this.fetchNextView();
-            LzTimer.resetTimer(this.timerDelegate, updatems )
-        </method>
-
-        <!-- refreshes the view -->
-        <method name="fetchNextView">
-            <!-- get the current view being displayed-->
-            var cur  = this.container.subviews[currentView];
-
-            <!-- get the next view to be shown-->
-            this.currentView = this.currentView + 1;
-            if (this.currentView >= this.container.subviews.length) {
-                <!-- start at 0 if at the end of the array -->
-                this.currentView = 0;
-            }
-            var next = this.container.subviews[currentView];
-
-            <!-- hide the old view and show the new.                     -->
-            <!-- The show MUST be faster than the hide or you get flicker-->
-            next.animate("opacity",1.0,600);
-            cur.animate("opacity",0.0,500);
-        </method>
-
-        <!-- starts the update process -->
-        <method name="start">
-            <![CDATA[
-	            if (!this.running){
-       	         this.running = true;
-              	  LzTimer.resetTimer(this.timerDelegate, updatems )
-	            }
-		     ]]>
-        </method>
-
-        <!-- stops the update process -->
-        <method name="stop">
-            <![CDATA[
-	            if (this.running){
-       	         this.running = false;
-              	  LzTimer.removeTimer(this.timerDelegate);
-	            }
-			]]>
-        </method>
-
     </borderedBox>
 
     <updatingView name="sans" resourceHref="http://isc.sans.org/images/status.gif" height="92" width="354" y="653" align="center" visible="true" opacity="1.0" updatems="900000"/>
@@ -187,27 +134,29 @@
 
     <method name="refreshOSLLoop">
         nagios.doRequest();
+        glsa.doRequest();
+        dsa.doRequest();
         LzTimer.resetTimer(this.refreshOSLDelegate, this.refreshTime);
     </method>
 
     <method name="_start">
-        this.securityView.start();
         this.sans.start();
     </method>
     <method name="_stop">
-        this.securityView.stop();
         this.sans.stop();
     </method>
 
     <method name="_show">
-        this.nagiosView.animate("x",20,800);
-        this.securityView.animate("x",700,800);
-        this.sans.animate("y",653,800);
+        this.nagiosView.animate("x",30,800);
+        this.debianView.animate("x",600,800);
+        this.gentooView.animate("x",600,800);
+        this.sans.animate("y",643,800);
     </method>
 
     <method name="_hide">
         this.nagiosView.animate("x",-650,800);
-        this.securityView.animate("x",1400,800);
+        this.debianView.animate("x",1400,800);
+        this.gentooView.animate("x",1400,800);
         this.sans.animate("y",840,800);
     </method>
 

@@ -10,7 +10,7 @@
         corporateBox.stop();
     </method>
 
-    <borderedBox name="header" x="400" y="50" width="600" height="100">
+    <borderedBox name="header" x="340" y="50" width="600" height="100">
         <text align="center" valign="middle" fgcolor="white" font="default" fontsize="40">Thank You To Our Sponsors</text>
     </borderedBox>
 
@@ -190,8 +190,8 @@
 
     <method name="_show">
           this.header.animate("y",50,800);
-          this.corporateBox.animate("x",100,800);
-          this.personalDonations.animate("x",1050,800);
+          this.corporateBox.animate("x",70,800);
+          this.personalDonations.animate("x",1000,800);
     </method>
 
     <method name="_hide">
