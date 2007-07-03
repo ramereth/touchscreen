@@ -1,0 +1,21 @@
+<!-- taken out: style="$once{silver}" -->
+<class name="mrtgWindow" extends="window" title="MRTG Graph" width="514" height="230" resizable="false" clickable="false">    
+
+    <!-- time in ms to delay the displaying of new image -->
+    <attribute name="delayms" type="number" value="500"/>
+
+    <!-- href to the url with the image to load and refresh -->
+    <attribute name="url" type="string" value=""/>
+
+    <!-- updating view that contains the webcam images -->
+    <updatingView name="updatingview" x="1" y="1" width="495" height="186" resourceHref="${parent.url}" updatems="${parent.updatems}" delayms="${parent.delayms}"/>                               
+
+    <!-- delegate start and stop to the updating view -->
+    <method name="start">
+        this.updatingview.start();
+    </method>
+    <method name="stop">
+        this.updatingview.stop();
+    </method>
+    
+</class>

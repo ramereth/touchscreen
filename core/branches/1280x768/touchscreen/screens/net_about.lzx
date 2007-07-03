@@ -1,0 +1,9 @@
+<screen id="screen_net_about">
+
+    <view x="500" y="300"  height="200" width="510" color="white">
+        <view height="${parent.height}" width="${parent.width}" bgcolor="black" opacity="0.3"/>
+        <image align="center" y="20" src="construction.gif"/>
+        <text align="center" y="80" height="50" ><font size="20" color="#ffffff">Network Services About Page</font></text>
+    </view>
+
+</screen>

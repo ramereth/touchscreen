@@ -1,0 +1,18 @@
+<!-- OSL Main Menu -->
+
+<menu id="menu_news" title="news" colorKey="context_buttonYellow">
+
+   
+    
+    <view name="buttons">
+        <menuButton resource="buttonOrange" buttontext="Slashdot" command="screen_news,show" />
+        <menuButton resource="buttonRed" buttontext="Digg" command="screen_news,show" />
+        <menuButton resource="buttonBlue" buttontext="OSL Spotlight" command="screen_news,show" />
+        <menuButton resource="buttonGreen" buttontext="OSL News" command="screen_news,show" />
+
+        <menuButton resource="buttonOrange" buttontext="University News" command="screen_news,show" />
+        <menuButton resource="buttonRed" buttontext="Local News" command="screen_news,show" />
+        <menuButton resource="buttonBlue" buttontext="Staff" command="screen_news,show" />
+        <menuButton resource="buttonGreen" buttontext="Help" command="help,show" />
+    </view>
+</menu>
