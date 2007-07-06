@@ -1,4 +1,4 @@
-<screen id="screen_osl_about" >
+<screen id="screen_osl_about" duration="90000" >
 
     <borderedBox name="osl" x="-900" y="25" bgcolor="0xE55E00" width="850" height="718" viewopacity="0">
                 <image src="http://osuosl.org/themes/newosl/osl.png" align="center"/>

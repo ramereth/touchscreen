@@ -10,7 +10,7 @@
 <!--  Date: Aug 1, 2006                               -->
 <!-- ================================================ -->
 <canvas debug="false" oninit="initServer();" height="768" width="1280">
-    <debug width="400" height="300" x="200" y="500" fontsize="10"/>
+    <!--debug width="400" height="300" x="200" y="500" fontsize="10"/-->
 
     <include href="lib/lzx/updatingView.lzx"/>
     <include href="lib/lzx/updatingViewFrame.lzx"/>
@@ -21,7 +21,7 @@
 
     <font name="default" src="helmetr.ttf"/>
     <resource name="cursor" src="lib/images/hiddenCursor.gif"/>
-    
+
     <attribute name="screenContainer"/>
 
     <method name="initServer" >
@@ -36,8 +36,9 @@
         LzCursor.setCursorGlobal('cursor');
         canvas.cursorToggleDel = new LzDelegate(this, "toggleCursor");
         LzKeys.callOnKeyCombo(canvas.cursorToggleDel, ["c"]);
-        LzKeys.callOnKeyCombo(new LzDelegate(canvas, "showNextSlide"), ["n"]);
-        LzKeys.callOnKeyCombo(new LzDelegate(canvas, "showPrevSlide"), ["p"]);
+        LzKeys.callOnKeyCombo(new LzDelegate(canvas, "slideShowNext"), ["n"]);
+        LzKeys.callOnKeyCombo(new LzDelegate(canvas, "slideShowPrev"), ["p"]);
+        LzKeys.callOnKeyCombo(new LzDelegate(canvas, "slideShowPause"), ["s"]);
 
         Debug.write("Display initialized");
     </method>
@@ -65,7 +66,7 @@
     <attribute name="currentSlide" />
     <attribute name="currentScreen" />
     <attribute name="showNextDelegate" />
-    <method name="showSlideCommand" >                      
+    <method name="showSlideCommand" >
         this.showSlide(eval(canvas.commandParams[2]));
     </method>
     <method name="showSlide" args="newSlide">
@@ -98,7 +99,6 @@
     </method>
     <!-- hides the current slide and then shows the next one -->
     <method name="showNextSlide">
-        Debug.write("next???");
         var nextSlide = getNextSlide();
         while (!nextSlide.slideshow) {
             nextSlide = getNextSlide();
@@ -135,7 +135,7 @@
     </method>
     <method name="slideShowInit">
         canvas.showNextSlideDelegate = new LzDelegate(canvas, "showNextSlideLoop" );
-        currentSlideIndex=-1;        
+        currentSlideIndex=-1;
         canvas.currentSlide = getNextSlide();
         //Debug.write("first slide: " + canvas.currentSlide.id);
     </method>
@@ -149,6 +149,7 @@
     <!-- ================================================= -->
     <method name="slideShowPrev">
         this.showPrevSlide();
+        LzTimer.resetTimer(canvas.showNextSlideDelegate, canvas.currentSlide.duration);
     </method>
 
     <method name="slideShowStop">
@@ -161,6 +162,10 @@
 
     <method name="slideShowNext">
         this.showNextSlide();
+        LzTimer.resetTimer(canvas.showNextSlideDelegate, canvas.currentSlide.duration);
+    </method>
+    <method name="slideShowPause">
+        LzTimer.resetTimer(canvas.showNextSlideDelegate, 150000);
     </method>
 
     <!-- ================================================= -->
@@ -220,8 +225,8 @@
     <include href="screens/news.lzx"/-->
 
     <!-- WEBCAMS -->
-    <include href="screens/webcams/webcam.lzx"/>
-    <include href="screens/webcams/webcams.lzx"/>
+    <!--include href="screens/webcams/webcam.lzx"/>
+    <include href="screens/webcams/webcams.lzx"/-->
 
     <!-- OTHER STUFF -->
     <include href="screens/osl_bandwidth/general.lzx"/>

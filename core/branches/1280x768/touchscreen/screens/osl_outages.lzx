@@ -51,14 +51,13 @@
                 <text font="default" fgcolor="0xE55E00" fontsize="18" fontstyle="bold">Latest Debian Advisories</text>
                 <image x="490" y="20" src="lib/images/debian.png"/>
                 <view y="40" layout="axis:y">
-                    <view name="dsaBox" datapath="dsa:/rdf:RDF/item[-4]">
+                    <view name="dsaBox" datapath="dsa:/*/item[-5]">
                         <simplelayout axis="x" spacing="1"/>
-                        <text name="text1" font="default" fgcolor="white" fontsize="16" datapath="title/text()" resize="true"/>
-                        <text name="text1" font="default" fgcolor="white" fontsize="16" resize="true">:</text>
-                        <text name="text2" font="default" fgcolor="white" fontsize="16" datapath="description/text()" resize="true"/>
+                        <text name="text1" font="default" fgcolor="white" fontsize="13" datapath="title/text()" resize="true"/>
+                        <text name="text1" font="default" fgcolor="white" fontsize="13" resize="true">:</text>
+                        <text name="text2" font="default" fgcolor="white" fontsize="13" datapath="description/text()" resize="true"/>
 
                         <method event="ondata">
-                            Debug.write("outputing debian text");
                             <![CDATA[
                             String.prototype.trim = function() {
                                 var ret = this;
@@ -72,7 +71,6 @@
                             };
                             var description = new String(this.datapath.xpathQuery("description/text()"));
                             this.text2.setText(description.trim());
-                            Debug.write("outputing debian text: " + description);
                             ]]>
                         </method>
                     </view>
@@ -95,7 +93,6 @@
                         <text name="title" font="default" fgcolor="white" fontsize="13" resize="true" />
                         <text name="description" font="default" fgcolor="white" fontsize="13" resize="true"/>
                         <method event="ondata">
-                                Debug.write("outputing gentoo text");
                                 var titleRaw = new String(this.datapath.xpathQuery('title/text()'));
                                 var descRaw = new String(this.datapath.xpathQuery('description/text()'));
                                 var id_txt = titleRaw.substring(0, titleRaw.indexOf("("));
@@ -103,7 +100,7 @@
                                 var title_txt = descRaw.substring(0, descRaw.indexOf(':')) + ":";
                                 var desc_txt = descRaw.substring(descRaw.indexOf(':')+2,descRaw.length) ;
 
-                                if (level_txt == "High"){                                    
+                                if (level_txt == "High"){
                                     this.level.setAttribute("fgcolor",0xFF0000);
                                 } else if (level_txt == "Medium"){
                                     this.level.setAttribute("fgcolor",0xE55E00);

@@ -1,4 +1,4 @@
-<screen id="screen_osl_sponsors" name="screen_sponsors" duration="30000">
+<screen id="screen_osl_sponsors" name="screen_sponsors" duration="90000">
 		
     <!-- starts the update process -->
     <method name="_start">
@@ -10,8 +10,9 @@
         corporateBox.stop();
     </method>
 
-    <borderedBox name="header" x="340" y="50" width="600" height="100">
-        <text align="center" valign="middle" fgcolor="white" font="default" fontsize="40">Thank You To Our Sponsors</text>
+    <borderedBox name="header" x="70" y="50" width="1150" height="120" viewopacity="0.6">
+        <text align="center" y="15" fgcolor="0xE55E00" font="default" fontsize="40">Thanks to all our generous donors for their continued support</text>
+        <text align="center" y="70" fgcolor="0x2d5fc4" font="default" fontsize="24">http://osuosl.org/contribute</text>
     </borderedBox>
 
     <borderedBox x="100" y="250" name="corporateBox" width="850" height="484" bgcolor="white" viewopacity="0.0">
@@ -63,8 +64,8 @@
             <![CDATA[
 
 	            if (!this.running){
-       	         this.running = true;                
-              	  LzTimer.resetTimer(this.timerDelegate, updatems )		  					  
+       	         this.running = true;
+              	  LzTimer.resetTimer(this.timerDelegate, updatems )
 	            }
 		     ]]>
         </method>
@@ -73,7 +74,7 @@
         <method name="stop">
             <![CDATA[
 	            if (this.running){
-       	         this.running = false;                
+       	         this.running = false;
               	  LzTimer.removeTimer(this.timerDelegate);
 	            }
 			]]>
@@ -134,7 +135,15 @@
                 </text>
             </view>
 
-
+            <view name="real" opacity="0.0"  height="${parent.height}" width="${parent.width}" >
+                <image align="center" y="20" src="http://osuosl.org/files/sponsors/logo_splunk_trans.gif" />
+                <text x="20" y="100" resize="true" font="default" fontsize="14" width="${parent.width-40}" multiline="true">
+                    RealNetworks, Inc. provides the universal platform for the delivery of any digital media from any point of origin across virtually any network to any person on any Internet-enabled device anywhere in the world.
+                    <p/>In 1995, RealNetworks, Inc. pioneered the entire Internet media industry, and continues to fuel its exponential growth.
+                    <p/>Because the Internet was built to handle text-based information, not audio and video and other rich media, RealNetworks, Inc. foresaw the need for specific solutions that could handle the creation, delivery and consumption of media via the Internet. That led RealNetworks, Inc. to invent and release the RealPlayer and RealAudio in 1995.
+                    <p/>Today, hundreds of millions of RealPlayers have been downloaded throughout the world take advantage of RealNetworks, Inc. world-class media creation, delivery and playback technology.
+                </text>
+            </view>
 
 
         </view>
