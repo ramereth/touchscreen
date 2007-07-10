@@ -10,9 +10,10 @@
         corporateBox.stop();
     </method>
 
-    <borderedBox name="header" x="70" y="50" width="1150" height="120" viewopacity="0.6">
-        <text align="center" y="15" fgcolor="0xE55E00" font="default" fontsize="40">Thanks to all our generous donors for their continued support</text>
-        <text align="center" y="70" fgcolor="0x2d5fc4" font="default" fontsize="24">http://osuosl.org/contribute</text>
+    <borderedBox name="header" x="70" y="50" width="1150" height="160" viewopacity="0.6">
+        <text align="center" y="15" fgcolor="0xE55E00" font="default" fontsize="36">Your contribution helps us support open software,</text>
+        <text align="center" y="60" fgcolor="0xE55E00" font="default" fontsize="36">open communities, and an open world.</text>
+        <text align="center" y="115" fgcolor="0x2d5fc4" font="default" fontsize="24">http://osuosl.org/contribute</text>
     </borderedBox>
 
     <borderedBox x="100" y="250" name="corporateBox" width="850" height="484" bgcolor="white" viewopacity="0.0">
@@ -21,7 +22,7 @@
         <attribute name="running" type="boolean" value="false"/>
 
         <!-- time in ms to update the image -->
-        <attribute name="updatems" type="number" value="10000"/>
+        <attribute name="updatems" type="number" value="15000"/>
         
         <!-- delegates for fetching the next frame -->
         <attribute name="timerDelegate"/>
@@ -136,7 +137,7 @@
             </view>
 
             <view name="real" opacity="0.0"  height="${parent.height}" width="${parent.width}" >
-                <image align="center" y="20" src="http://osuosl.org/files/sponsors/logo_splunk_trans.gif" />
+                <image align="center" y="20" src="http://osuosl.org/files/sponsors/logo_real.gif" />
                 <text x="20" y="100" resize="true" font="default" fontsize="14" width="${parent.width-40}" multiline="true">
                     RealNetworks, Inc. provides the universal platform for the delivery of any digital media from any point of origin across virtually any network to any person on any Internet-enabled device anywhere in the world.
                     <p/>In 1995, RealNetworks, Inc. pioneered the entire Internet media industry, and continues to fuel its exponential growth.
@@ -174,7 +175,7 @@
 
         <method name="scrollLoop">
             this.nextName();
-            LzTimer.resetTimer(this.updateDelegate,1000);
+            LzTimer.resetTimer(this.updateDelegate,5000);
         </method>
 
         <method event="oninit">
@@ -204,7 +205,7 @@
     </method>
 
     <method name="_hide">
-          this.header.animate("y",-150,800);
+          this.header.animate("y",-200,800);
           this.corporateBox.animate("x",-900,800);
           this.personalDonations.animate("x",1400,800);
     </method>
