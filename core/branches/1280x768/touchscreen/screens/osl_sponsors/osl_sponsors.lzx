@@ -175,7 +175,7 @@
 
         <method name="scrollLoop">
             this.nextName();
-            LzTimer.resetTimer(this.updateDelegate,5000);
+            LzTimer.resetTimer(this.updateDelegate,1800);
         </method>
 
         <method event="oninit">
