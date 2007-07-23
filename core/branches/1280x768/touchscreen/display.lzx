@@ -237,6 +237,10 @@
 
     <!-- ftp bandwidth map -->
     <include href="screens/ftpbandwidth/ftpbandwidth.lzx"/>
+    
+    <!-- wireless web of worry -->
+    <dataset name="dset_worry" request="true" src="http://floyd.osuosl.org:8080/laszlo/touchscreen/screens/worry.xml"/>
+    <include href="screens/wireless_web_worry.lzx"/>
 
     <view align="center" valign="middle" name="content"/>
 
