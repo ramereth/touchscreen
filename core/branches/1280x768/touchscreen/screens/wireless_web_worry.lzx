@@ -15,19 +15,19 @@
                 <!-- top service -->
                     <view name="service">
                     <text x="0"  font="default" fgcolor="white" fontsize="14" >Most Vulnerable service:</text>
-                    <text x="200"  font="default" fgcolor="white" datapath="most_vulnerable/service/name/text()" fontsize="14" resize="true" />
+                    <text x="200"  width="280" font="default" fgcolor="white" datapath="most_vulnerable/service/name/text()" fontsize="14" resize="false" />
                     <text name="count" x="500" font="default" fgcolor="white" datapath="most_vulnerable/service/count/text()" fontsize="14" resize="true" />
                     </view>
                 <!-- top server -->
                     <view name="server">
                     <text x="0"  font="default" fgcolor="white" fontsize="14" >Most Vulnerable server:</text>
-                    <text x="200"  font="default" fgcolor="white" datapath="most_vulnerable/server/name/text()" fontsize="14" resize="true" />
+                    <text x="200" width="280" font="default" fgcolor="white" datapath="most_vulnerable/server/name/text()" fontsize="14" resize="false" />
                     <text name="count" x="500" font="default" fgcolor="white" datapath="most_vulnerable/server/count/text()" fontsize="14" resize="true" />
                     </view>
                 <!-- top account -->
                     <view name="account">
                     <text x="0" font="default" fgcolor="white" fontsize="14">Most Vulnerable account:</text>
-                    <text x="200" font="default" fgcolor="white" datapath="most_vulnerable/account/name/text()" fontsize="14" resize="true" />
+                    <text x="200" width="280" font="default" fgcolor="white" datapath="most_vulnerable/account/name/text()" fontsize="14" resize="false" />
                     <text name="count" x="500" font="default" fgcolor="white" datapath="most_vulnerable/account/count/text()" fontsize="14" resize="true" />
                     </view>
                     
