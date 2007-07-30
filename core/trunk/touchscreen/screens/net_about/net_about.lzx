@@ -91,23 +91,29 @@
 
 	<view x="10" y="600" height="200">
 		<simplelayout axis="y" spacing="1" />
-        	<view width="130" height="120" stretches="both" resource="images/bettse.png"/>
+        	<view width="150" height="120" stretches="both" resource="images/bettse.png"/>
         	<text font="default" fontsize="16" fgcolor="white">Eric Betts </text>
 		<text font="default" fontsize="16" fgcolor="white">NET Security Student </text>
 	</view>
 
 	<view x="200" y="600" height="200">
 		<simplelayout axis="y" spacing="1" />
-        	<view width="160" height="120" stretches="both" resource="images/ed.jpg"/>
-        	<text font="default" fontsize="16" fgcolor="white">Ed Lim </text>
-		<text font="default" fontsize="16" fgcolor="white">Wireless Development</text>
-	</view>
-
-	<view x="400" y="600" height="200">
-		<simplelayout axis="y" spacing="1" />
         	<view width="105" height="120" stretches="both" resource="images/purkyk.jpg"/>
         	<text font="default" fontsize="16" fgcolor="white">Kevin Purdy </text>
 		<text font="default" fontsize="16" fgcolor="white">NET Security Student </text>
 	</view>
+	
+	<view x="400" y="600" height="200">
+		<simplelayout axis="y" spacing="1" />
+        	<view width="105" height="120" stretches="both" resource="images/markd.jpg"/>
+        	<text font="default" fontsize="16" fgcolor="white">Mark Delcambre </text>
+		<text font="default" fontsize="16" fgcolor="white">NET Security Student </text>
+	</view>
 
+	<view x="600" y="600" height="200">
+		<simplelayout axis="y" spacing="1" />
+        	<view width="160" height="120" stretches="both" resource="images/ed.jpg"/>
+        	<text font="default" fontsize="16" fgcolor="white">Ed Lim </text>
+		<text font="default" fontsize="16" fgcolor="white">Wireless Development</text>
+	</view>
 </screen>
