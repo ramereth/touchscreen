@@ -269,9 +269,14 @@
     <!-- OTHER STUFF -->
     <include href="screens/osl_bandwidth/general.lzx"/>
     <include href="screens/osl_bandwidth/projects.lzx"/>
+    <include href="screens/rackview.lzx"/>
+
+    <!-- NET STUFF -->
     <include href="screens/net_about/net_about.lzx"/>
     <include href="screens/net_bandwidth.lzx"/>
-    <include href="screens/rackview.lzx"/>
+    <include href="screens/net_wifi_usage.lzx"/>
+    <include href="screens/net_wifi_bandwidth.lzx"/>
+
 
     <!-- ftp bandwidth map -->
     <include href="screens/ftpbandwidth/ftpbandwidth.lzx"/>
