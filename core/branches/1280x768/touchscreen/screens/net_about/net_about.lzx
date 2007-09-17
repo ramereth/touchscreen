@@ -91,7 +91,7 @@
 
 	<view x="10" y="600" height="200">
 		<simplelayout axis="y" spacing="1" />
-        	<view width="130" height="120" stretches="both" resource="images/bettse.png"/>
+        	<view width="105" height="120" stretches="both" resource="images/markd.jpg"/>
         	<text font="default" fontsize="16" fgcolor="white">Eric Betts </text>
 		<text font="default" fontsize="16" fgcolor="white">NET Security Student </text>
 	</view>

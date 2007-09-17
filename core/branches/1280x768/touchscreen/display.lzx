@@ -231,16 +231,21 @@
     <!-- OTHER STUFF -->
     <include href="screens/osl_bandwidth/general.lzx"/>
     <include href="screens/osl_bandwidth/projects.lzx"/>
-    <!--<include href="screens/net_about/net_about.lzx"/>
-    <include href="screens/net_bandwidth.lzx"/
-    <include href="screens/rackview.lzx"/-->
+
+
+    <include href="screens/net_about/net_about.lzx"/>
+    <include href="screens/net_bandwidth.lzx"/>
+    <include href="screens/net_wifi_bandwidth.lzx"/>
+    <include href="screens/net_wifi_usage.lzx"/>
+
+    <!--<include href="screens/rackview.lzx"/-->
 
     <!-- ftp bandwidth map -->
     <include href="screens/ftpbandwidth/ftpbandwidth.lzx"/>
     
     <!-- wireless web of worry -->
-    <dataset name="dset_worry" request="true" src="http://floyd.osuosl.org:8080/laszlo/touchscreen/screens/worry.xml"/>
-    <include href="screens/wireless_web_worry.lzx"/>
+    <!-- <dataset name="dset_worry" request="true" src="http://floyd.osuosl.org:8080/laszlo/touchscreen/screens/worry.xml"/>-->
+    <!-- <include href="screens/wireless_web_worry.lzx"/>-->
 
     <view align="center" valign="middle" name="content"/>
 
