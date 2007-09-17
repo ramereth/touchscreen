@@ -83,7 +83,7 @@
 		<simplelayout axis="y" spacing="1" />
         	<view width="160" height="120" stretches="both" resource="images/cary.jpg"/>
         	<text font="default" fontsize="16" fgcolor="white">Cary Shufelt </text>
-		<text font="default" fontsize="16" fgcolor="white">AD and Windows Networking </text>
+		<text font="default" fontsize="16" fgcolor="white">Active Directory</text>
 	</view>
 
 
@@ -92,7 +92,7 @@
 	<view x="10" y="600" height="200">
 		<simplelayout axis="y" spacing="1" />
         	<view width="105" height="120" stretches="both" resource="images/markd.jpg"/>
-        	<text font="default" fontsize="16" fgcolor="white">Eric Betts </text>
+        	<text font="default" fontsize="16" fgcolor="white">Mark Delcambre </text>
 		<text font="default" fontsize="16" fgcolor="white">NET Security Student </text>
 	</view>
 
