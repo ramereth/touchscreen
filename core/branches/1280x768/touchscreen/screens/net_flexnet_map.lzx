@@ -1,0 +1,40 @@
+<screen id="screen_net_flexnet_map">
+
+	<view name='background' bgcolor="white" width="1360" height="768" opacity="0.0"/>
+
+	<updatingView name="flexnet_map" x="168" stretches="both" height="768" width="1024" resource="flexnet_map.png" opacity="0.0"/>
+
+    <method name="_start">
+        this.flexnet_map.start();
+    </method>
+
+    <method name="_stop">
+        this.flexnet_map.stop();
+    </method>
+
+    <animatorgroup name="hideMap" process="sequential" start="false">
+        <animator attribute="opacity" to="0.0" duration="500" target="${parent.parent.flexnet_map}"/>
+        <animator attribute="opacity" to="0.0" duration="500" target="${parent.parent.background}"/>
+        <animator attribute="y" to="-800" duration="0" target="${parent.parent.flexnet_map}"/>
+        <animator attribute="y" to="-800" duration="0" target="${parent.parent.background}"/>
+    </animatorgroup>
+
+    <animatorgroup name="showMap" process="sequential" start="false">
+        <animator attribute="y" to="0" duration="0" target="${parent.parent.flexnet_map}"/>
+        <animator attribute="y" to="0" duration="0" target="${parent.parent.background}"/>
+        <animator attribute="opacity" to="1.0" duration="500" target="${parent.parent.background}"/>
+        <animator attribute="opacity" to="1.0" duration="500" target="${parent.parent.flexnet_map}"/>
+    </animatorgroup>
+
+    <method name="_hide">
+        this.hideMap.doStart();
+        return 1500;
+    </method>
+
+    <method name="_show">
+        this.showMap.doStart();
+        return 1500;
+    </method>
+
+
+</screen>
