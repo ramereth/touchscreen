@@ -1,4 +1,4 @@
-<canvas layout="x" debug="false" oninit="clientInit()" width="1280" height="1024" bgcolor="red" >
+<canvas layout="x" debug="false" oninit="clientInit()" width="1280" height="1024" >
 
     <include href="lib/lzx/connection.lzx" />
     <include href="lib/lzx/screen.lzx" />
