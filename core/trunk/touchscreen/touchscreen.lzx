@@ -1,4 +1,4 @@
-<canvas layout="x" debug="false" oninit="clientInit()" width="1280" height="1024" >
+<canvas layout="x" debug="false" oninit="clientInit()" width="1280" height="1024" bgcolor="red" >
 
     <include href="lib/lzx/connection.lzx" />
     <include href="lib/lzx/screen.lzx" />
@@ -205,9 +205,9 @@
     <!-- ================================================= -->
     <!--   Menu Area                                       -->
     <!-- ================================================= -->
-    <resource name="bgimage" src="lib/images/background-gray-1x824.gif"/>
-    <view name="content" width="1280" height="824" clip="true">
-        <view x="0" y="0" name="background" resource="bgimage" width="1280" height="824" stretches="width" clip="true" />        
+    <resource name="foo" src="lib/images/background-gray-1x824.gif"/>
+    <view name="content" width="1280" height="824" clip="true" >
+        <view name="background" resource="foo" width="1280" height="824" stretches="width"/>
         <view id="button_back" x="20" y="-150" resource="button_back">
             <!-- indicates if the slide is being shown, used by hide() to avoid unneeded calls to the animation -->
             <attribute name="shown" type="boolean" value="false"/>
