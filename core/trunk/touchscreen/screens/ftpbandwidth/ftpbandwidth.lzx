@@ -2,7 +2,7 @@
 
     <view name='background' bgcolor="white" width="1360" height="768" opacity="0.0"/>
 
-    <updatingView name="map" x="200" y="50" width="924" height="654" stretches="both" resourceHref="http://page.osuosl.org/ftpmap/weathermap.png" opacity="0.0"/>
+    <updatingView name="map" x="200" y="50" width="924" height="654" stretches="both" resourceHref="http://larch.osuosl.org/ftpmap/weathermap.png" opacity="0.0"/>
 
     <method name="_start">
         this.map.start();

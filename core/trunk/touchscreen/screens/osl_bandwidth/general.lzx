@@ -2,14 +2,14 @@
 
     <view name="OSLServices" x="100" y="40">
         <text x="45" y="-10" fgcolor="0xE55E00" font="default" fontsize="20">OSL Services</text>
-        <mrtgWindow y="20" name="osuoslDaily" url="http://www.nero.net/NERO/images/rrdgifs/OSUOSL-Services-Normal-day-ifInOctets-1000000000-AVERAGE.png" updatems="300000" title="Daily 5-minute Avg" />
-        <mrtgWindow y="315" name="osuoslWeekly" url="http://www.nero.net/NERO/images/rrdgifs/OSUOSL-Services-Normal-week-ifInOctets-1000000000-AVERAGE.png" updatems="300000" title="Weekly 30-minute Avg" />
+        <mrtgWindow y="20" name="osuoslDaily" url="http://netfoo.nero.net/img/OSUOSL-Services-Normal-day-ifInOctets-1000000000-AVERAGE.png" updatems="300000" title="Daily 5-minute Avg" />
+        <mrtgWindow y="315" name="osuoslWeekly" url="http://netfoo.nero.net/img/OSUOSL-Services-Normal-week-ifInOctets-1000000000-AVERAGE.png" updatems="300000" title="Weekly 30-minute Avg" />
     </view>
 
     <view name="OSLGeneral" x="700" y="40">
-        <text x="45" y="-10" fgcolor="0xE55E00" font="default" fontsize="20">OSL General</text>
-        <mrtgWindow y="20" name="osuoslgeneralDaily" url="http://www.nero.net/NERO/images/rrdgifs/OSUOSL-General-Normal-day-ifInOctets-1000000000-AVERAGE.png" updatems="300000" title="Daily 5-minute Avg"/>
-        <mrtgWindow y="315" name="osuoslgeneralWeekly" url="http://www.nero.net/NERO/images/rrdgifs/OSUOSL-General-Normal-week-ifInOctets-1000000000-AVERAGE.png" updatems="300000" title="Weekly 30-minute Avg"/>
+        <text x="45" y="-10" fgcolor="0xE55E00" font="default" fontsize="20">OSL All Network Traffic</text>
+        <mrtgWindow y="20" name="osuoslgeneralDaily" url="http://netfoo.nero.net/img/OSUOSL-Normal-day-ifInOctets-1000000000-AVERAGE.png" updatems="300000" title="Daily 5-minute Avg"/>
+        <mrtgWindow y="315" name="osuoslgeneralWeekly" url="http://netfoo.nero.net/img/OSUOSL-Normal-week-ifInOctets-1000000000-AVERAGE.png" updatems="300000" title="Weekly 30-minute Avg"/>
     </view>
 
     <method name="_start">

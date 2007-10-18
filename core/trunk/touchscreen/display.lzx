@@ -241,7 +241,7 @@
     <include href="screens/osl_sponsors/osl_sponsors.lzx"/>
 
     <!-- Advisories and Outages -->
-    <dataset name="nagios" request="true" src="http://page.osuosl.org:8000/"/>
+    <dataset name="nagios" request="true" src="http://larch.osuosl.org:8000/"/>
     <dataset name="glsa" request="true" src="http://www.gentoo.org/rdf/en/glsa-index.rdf"/>
     <dataset name="dsa" request="true" src="http://www.debian.org/security/dsa"/>
     <!--  <dataset name="rt" request="true" secureport="4443" type="http" src="https://support.osuosl.org:4443/rt/Search/Results.rdf?Order=DESC&amp;Query=Owner%20%3D%20'Nobody'%20AND%20(%20Status%20%3D%20'new'%20OR%20Status%20%3D%20'open')&amp;Rows=50&amp;OrderBy=Priority&amp;Page=1&amp;Format=&amp;user=bigscreen&amp;pass=4r3e2w1q0p9o8i7u"/> -->

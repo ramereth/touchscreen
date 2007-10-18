@@ -2,14 +2,14 @@
 
     <view name="Gentoo" x="100" y="40">
         <text x="45" y="-10" fgcolor="0xE55E00" font="default" fontsize="20">Gentoo</text>
-        <mrtgWindow y="20" name="gentooDaily" url="http://www.nero.net/NERO/images/rrdgifs/OSUOSL-Gentoo-Normal-day-ifInOctets-1000000000-AVERAGE.png" updatems="300000" title="Daily 5-minute Avg" />
-        <mrtgWindow y="315" name="gentooWeekly" url="http://www.nero.net/NERO/images/rrdgifs/OSUOSL-Gentoo-Normal-week-ifInOctets-1000000000-AVERAGE.png" updatems="300000" title="Weekly 30-minute Avg" />
+        <mrtgWindow y="20" name="gentooDaily" url="http://netfoo.nero.net/img/OSUOSL-Gentoo-Normal-day-ifInOctets-1000000000-AVERAGE.png" updatems="300000" title="Daily 5-minute Avg" />
+        <mrtgWindow y="315" name="gentooWeekly" url="http://netfoo.nero.net/img/OSUOSL-Gentoo-Normal-week-ifInOctets-1000000000-AVERAGE.png" updatems="300000" title="Weekly 30-minute Avg" />
     </view>
 
     <view name="Mozilla" x="700" y="40">
-        <text x="45" y="-10" fgcolor="0xE55E00" font="default" fontsize="20">Mozilla</text>
-        <mrtgWindow y="20" name="mozillaDaily" url="http://www.nero.net/NERO/images/rrdgifs/OSUOSL-Mozilla-Normal-day-ifInOctets-1000000000-AVERAGE.png" updatems="300000" title="Daily 5-minute Avg" />
-        <mrtgWindow y="315" name="mozillaWeekly" url="http://www.nero.net/NERO/images/rrdgifs/OSUOSL-Mozilla-Normal-week-ifInOctets-1000000000-AVERAGE.png" updatems="300000" title="Weekly 30-minute Avg" />
+        <text x="45" y="-10" fgcolor="0xE55E00" font="default" fontsize="20">Apache</text>
+        <mrtgWindow y="20" name="mozillaDaily" url="http://netfoo.nero.net/img/OSUOSL-Apache-Normal-day-ifInOctets-1000000000-AVERAGE.png" updatems="300000" title="Daily 5-minute Avg" />
+        <mrtgWindow y="315" name="mozillaWeekly" url="http://netfoo.nero.net/img/OSUOSL-Apache-Normal-week-ifInOctets-1000000000-AVERAGE.png" updatems="300000" title="Weekly 30-minute Avg" />
     </view>
 
     <method name="_start">
