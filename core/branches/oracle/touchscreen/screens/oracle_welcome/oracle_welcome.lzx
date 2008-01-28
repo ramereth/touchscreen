@@ -1,0 +1,133 @@
+<screen id="screen_oracle_welcome" slideshow="true">
+
+        <!-- delegates for fetching the next frame -->
+        <attribute name="showDelegateR"/>
+        <attribute name="hideDelegateR"/>
+	<attribute name="showDelegateL"/>
+        <attribute name="hideDelegateL"/>
+
+        <!-- refreshes the view -->
+        <method name="showWelcomeR">
+            showwelcomeright.doStart();
+            LzTimer.resetTimer(this.hideDelegateR, 25000 );
+        </method>
+
+        <!-- refreshes the view -->
+        <method name="hideWelcomeR">
+            hidewelcomeright.doStart();
+            LzTimer.resetTimer(this.showDelegateL, 5000 );
+        </method>
+
+	<!-- refreshes the view -->
+        <method name="showWelcomeL">
+            showwelcomeleft.doStart();
+            LzTimer.resetTimer(this.hideDelegateL, 25000 );
+        </method>
+
+        <!-- refreshes the view -->
+        <method name="hideWelcomeL">
+            hidewelcomeleft.doStart();
+            LzTimer.resetTimer(this.showDelegateR, 5000 );
+        </method>
+
+
+
+    
+		<text name="l1" fgcolor="black" fontsize="95" fontstyle="bold" x="-300" y="170" resize="true">W
+                	<text name="c" fgcolor="0xE55E00" fontsize="90" fontstyle="bold" resize="true">W</text>
+                </text>
+                <text name="l2" fgcolor="black" fontsize="95" fontstyle="bold" x="-300" y="170" resize="true">E
+			<text name="c" fgcolor="0xE55E00" fontsize="90" fontstyle="bold" resize="true">E</text>
+		</text>
+                <text name="l3" fgcolor="black" fontsize="95" fontstyle="bold" x="-300" y="170" resize="true">L
+			<text name="c" fgcolor="0xE55E00" fontsize="90" fontstyle="bold" resize="true">L</text>
+		</text>
+                <text name="l4" fgcolor="black" fontsize="95" fontstyle="bold" x="-300" y="170" resize="true">C
+			<text name="c" fgcolor="0xE55E00" fontsize="90" fontstyle="bold" resize="true">C</text>
+		</text>
+                <text name="l5" fgcolor="black" fontsize="95" fontstyle="bold" x="-300" y="170" resize="true">O
+			<text name="c" fgcolor="0xE55E00" fontsize="90" fontstyle="bold" resize="true">O</text>
+		</text>
+                <text name="l6" fgcolor="black" fontsize="95" fontstyle="bold" x="-300" y="170" resize="true">M
+			<text name="c" fgcolor="0xE55E00" fontsize="90" fontstyle="bold" resize="true">M</text>
+		</text>
+                <text name="l7" fgcolor="black" fontsize="95" fontstyle="bold" x="-300" y="170" resize="true">E
+			<text name="c" fgcolor="0xE55E00" fontsize="90" fontstyle="bold" resize="true">E</text>
+		</text>
+    
+
+    <animatorgroup name="showwelcomeright" start="false" process="sequential">
+
+
+	<animatorgroup start="true" process="simultaneous">
+	<animator target="${parent.parent.parent.l1}" attribute="x" to="350" duration="800" motion="easein" />
+	<animator target="${parent.parent.parent.l2}" attribute="x" to="475" duration="750" motion="easein" />
+        <animator target="${parent.parent.parent.l3}" attribute="x" to="560" duration="700" motion="easein" />
+        <animator target="${parent.parent.parent.l4}" attribute="x" to="635" duration="650" motion="easein" />
+        <animator target="${parent.parent.parent.l5}" attribute="x" to="720" duration="600" motion="easein" />
+        <animator target="${parent.parent.parent.l6}" attribute="x" to="820" duration="550" motion="easein" />
+        <animator target="${parent.parent.parent.l7}" attribute="x" to="930" duration="500" motion="easein" />
+        </animatorgroup>
+
+    </animatorgroup>
+
+    <animatorgroup name="hidewelcomeright" start="false" process="simultaneous">
+	<animator target="${parent.parent.l7}" attribute="x" to="1450" duration="500" motion="easein" />
+	<animator target="${parent.parent.l6}" attribute="x" to="1450" duration="550" motion="easein" />
+	<animator target="${parent.parent.l5}" attribute="x" to="1450" duration="600" motion="easein" />
+	<animator target="${parent.parent.l4}" attribute="x" to="1450" duration="650" motion="easein" />
+	<animator target="${parent.parent.l3}" attribute="x" to="1450" duration="700" motion="easein" />
+	<animator target="${parent.parent.l2}" attribute="x" to="1450" duration="750" motion="easein" />
+	<animator target="${parent.parent.l1}" attribute="x" to="1450" duration="800" motion="easein" />
+    </animatorgroup>
+
+    <animatorgroup name="showwelcomeleft" start="false" process="simultaneous">
+	<animator target="${parent.parent.l7}" attribute="x" to="930" duration="800" motion="easein" />
+        <animator target="${parent.parent.l6}" attribute="x" to="820" duration="750" motion="easein" />
+        <animator target="${parent.parent.l5}" attribute="x" to="720" duration="700" motion="easein" />
+        <animator target="${parent.parent.l4}" attribute="x" to="635" duration="650" motion="easein" />
+        <animator target="${parent.parent.l3}" attribute="x" to="560" duration="600" motion="easein" />
+        <animator target="${parent.parent.l2}" attribute="x" to="475" duration="550" motion="easein" />
+        <animator target="${parent.parent.l1}" attribute="x" to="350" duration="500" motion="easein" />
+    </animatorgroup>
+
+    <animatorgroup name="hidewelcomeleft" start="false" process="simultaneous">
+        <animator target="${parent.parent.l1}" attribute="x" to="-300" duration="500" motion="easein" />
+        <animator target="${parent.parent.l2}" attribute="x" to="-300" duration="550" motion="easein" />
+	<animator target="${parent.parent.l3}" attribute="x" to="-300" duration="600" motion="easein" />
+	<animator target="${parent.parent.l4}" attribute="x" to="-300" duration="650" motion="easein" />
+	<animator target="${parent.parent.l5}" attribute="x" to="-300" duration="700" motion="easein" />
+	<animator target="${parent.parent.l6}" attribute="x" to="-300" duration="750" motion="easein" />
+	<animator target="${parent.parent.l7}" attribute="x" to="-300" duration="800" motion="easein" />
+    </animatorgroup>
+
+    <borderedBox x="100" y="400" name="edray" width="1144" height="180" bgcolor="white" viewopacity="0.0">
+        <view name="container"  height="143" width="1100" x="15" y="15" resource="oracle_logo" stretches="both">
+
+        </view>
+    </borderedBox>
+
+    <animatorgroup name="showgroup" start="false" process="simultaneous">
+        <animator target="${parent.parent.edray}" attribute="x" to="100" duration="800" motion="easein" />
+    </animatorgroup>
+    
+
+
+    <method name="_show">
+        this.showDelegateR = new LzDelegate(this, "showWelcomeR")
+        this.hideDelegateR = new LzDelegate(this, "hideWelcomeR")
+	this.showDelegateL = new LzDelegate(this, "showWelcomeL")
+        this.hideDelegateL = new LzDelegate(this, "hideWelcomeL")
+        showgroup.doStart();
+        LzTimer.resetTimer(this.showDelegateR, 5000 );
+        //this.osl.animate("x",50,800);
+        //this.oss.animate("x",960,800);
+        //this.edray.animate("x",960,800);
+    </method>
+
+    <method name="_hide">
+        //this.oss.animate("x",1400,800);
+        this.edray.animate("x",1400,800);
+    </method>
+
+</screen>
