@@ -1,0 +1,31 @@
+<class name="webcam" extends="view" width="329" height="225" bgcolor="white">
+    <!-- time in ms to update the image -->
+    <attribute name="updatems" type="number" value="10000"/>
+
+    <!-- time in ms to delay the displaying of new image -->
+    <attribute name="delayms" type="number" value="500"/>
+
+    <!-- href to the url with the image to load and refresh -->
+    <attribute name="resourceHref" type="string" value=""/>
+
+    <!-- number of frames in the buffer.  increase this number to reduce flicker -->
+    <!-- things to consider are how fast is the refresh (updatems) and how long  -->
+    <!-- does it take each image to load.  The buffer needs to be big enough to  -->
+    <!-- allow each frame to load before it is displayed.                        -->
+    <attribute name="buffersize" type="number" value="2"/>
+
+    <!-- updating view that contains the webcam images -->
+    <view name="blackbackground" width="$once{parent.width-2}" bgcolor="black" height="$once{parent.height-2}" x="1" y="1" />
+    <updatingView name="updatingview" x="1" y="1" width="$once{parent.width-2}" height="$once{parent.height-2}" resourceHref="$once{parent.resourceHref}" updatems="$once{parent.updatems}" delayms="$once{parent.delayms}" buffersize="$once{parent.buffersize}"/>
+
+
+    <!-- delegate start and stop to the updating view -->
+    <method name="start">
+        this.updatingview.start();
+    </method>
+    <method name="stop">
+        this.updatingview.stop();
+    </method>
+
+    
+</class>

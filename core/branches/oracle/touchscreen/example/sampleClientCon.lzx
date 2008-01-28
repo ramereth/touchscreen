@@ -1,0 +1,136 @@
+<!-- ================================================ -->
+<!--  Laszlo app intercommunication sample (Client)   -->
+<!--                                                  -->
+<!--  example of how to use AJAX and a Servlet to     -->
+<!--  communicate between two Laszlo applications     -->
+<!--  running in different browsers or even possibly  -->
+<!--  on separate machines                            -->
+<!--                                                  -->
+<!--  Author: Peter Krenesky                          -->
+<!--  Date: Aug 1, 2006                               -->
+<!-- ================================================ -->
+
+<canvas layout="x" debug="true" oninit="clientInit()">
+
+    <include href="connection.lzx" />
+
+    <method name="reset" >
+        foo.animate("opacity",1.0,500);
+        bar.animate("opacity",1.0,500);
+        noo.animate("opacity",1.0,500);
+        zoo.animate("opacity",1.0,500);
+        mycd.sendMessage("*","canvas,reset","command");
+        LzTimer.removeTimer( canvas.resetTimerDelegate );
+    </method>
+
+    <attribute name="resetTimerDelegate"/>
+    <attribute name="resetTimeout" type="number" value="30000"/>
+
+    <connectiondatasource name="mycd">
+        <dataset name="command" />
+    </connectiondatasource>
+
+    <method name="clientInit">
+        connection.connect();
+        canvas.resetTimerDelegate = new LzDelegate(canvas, "reset");
+    </method>
+
+    <class name="menuButton" width="150" height="150" clip="true" extends="text">
+        <attribute name="command" type="string" value=""/>
+        <method event="onclick">
+            <![CDATA[
+            LzTimer.resetTimer( canvas.resetTimerDelegate, canvas.resetTimeout);
+            if (this.command != '') {
+                mycd.sendMessage("*",this.command,"command");
+            }
+            action();
+		]]>
+        </method>
+        <method name="action">
+            <!-- method stub override to add other processing-->
+        </method>
+    </class>
+
+    <view width="100%" height="100%">
+
+        <text width="100%">Example Client</text>
+
+        <view y="15">
+            <menuButton id="foo" bgcolor="red" x="15">
+                <attribute name="command" value="foo,show"/>
+                <text width="100%">Foo</text>
+            </menuButton>
+            <menuButton id="bar" bgcolor="green" x="180">
+                <attribute name="command" value="bar,show"/>
+                <attribute name="shown" value="false" type="boolean"/>
+                <method name="action">
+                    Debug.write(this, 'performing extra actions');
+                    if(!shown) {
+                        show.doStart();
+                        this.submenu.a.animate("opacity", 1.0, 600)
+                        this.submenu.b.animate("opacity", 1.0, 600)
+                        this.submenu.c.animate("opacity", 1.0, 600)
+                        this.submenu.d.animate("opacity", 1.0, 600)
+                        foo.animate("opacity",0.0,200);
+                        noo.animate("opacity",0.0,200);
+                        zoo.animate("opacity",0.0,200);
+                        shown = true;
+                    }
+                </method>
+                <method name="close">
+                    _close.doStart();
+                        shown = false;
+                        this.submenu.a.animate("opacity", 0.0, 200)
+                        this.submenu.b.animate("opacity", 0.0, 200)
+                        this.submenu.c.animate("opacity", 0.0, 200)
+                        this.submenu.d.animate("opacity", 0.0, 200)
+                        canvas.reset();
+                </method>
+                <text width="100%">Bar</text>
+                <animatorgroup name="show" process="simultaneous" start="false">
+                    <animator attribute="x" to="15" duration="500"/>
+                    <animator attribute="width" to="315" duration="500"/>
+                    <animator attribute="height" to="315" duration="500"/>
+                </animatorgroup>
+                <animatorgroup name="_close" process="simultaneous" start="false">
+                    <animator attribute="x" to="180" duration="200"/>
+                    <animator attribute="width" to="150" duration="200"/>
+                    <animator attribute="height" to="150" duration="200"/>
+                    <animator attribute="height" to="150" duration="200"/>
+                </animatorgroup>
+                <view name="submenu" x="15" y="15">
+                    <menuButton name="closer" bgcolor="black" fgcolor="white" width="55" height="30" x="245" y="-15" fontsize="20" label="close">
+                        <method name="action">parent.parent.close();</method>
+                        <attribute name="command" value="canvas,reset"/>
+                    </menuButton>
+                    <menuButton name="a" bgcolor="yellow" width="100" height="100" y="40" opacity="0.0" fontsize="80" command="bar,showBio,A">
+                        A
+                    </menuButton>
+                    <menuButton name="b" bgcolor="yellow" width="100" height="100" y="40" x="180" opacity="0.0"  fontsize="80" command="bar,showBio,B">
+                        B
+                    </menuButton>
+                    <menuButton name="c" bgcolor="yellow" width="100" height="100" y="180" opacity="0.0"  fontsize="80" command="bar,showBio,C">
+                        C
+                    </menuButton>
+                    <menuButton name="d" bgcolor="yellow" width="100" height="100" x="180" y="180" opacity="0.0"  fontsize="80" command="bar,showBio,D">
+                        D
+                    </menuButton>
+                </view>
+            </menuButton>
+        </view>
+        <view y="180">
+            <menuButton id="noo" bgcolor="blue" x="15">
+                <attribute name="command" value="noo,show"/>
+                Noo
+            </menuButton>
+            <menuButton id="zoo" bgcolor="gray" x="180" command="zoo,show">
+                Zoo
+            </menuButton>
+        </view>
+    </view>
+
+    <debug width="800" height="250" x="400" y="5" fontsize="12"/>
+
+</canvas>
+
+

@@ -1,0 +1,15 @@
+<!-- taken out: style="$once{silver}" -->
+    <class name="mrtgWindow" extends="window" title="MRTG Graph" width="514" height="230" oninit="this.refreshTimer()" resizable="false" clickable="false">
+            <attribute name="url" type="string" value="http://www.nero.net/NERO/images/rrdgifs/OSUOSL-Normal-day-ifInOctets-1000000000-AVERAGE.png"/>
+            <attribute name="updatems" type="number" value="300000"/>
+            <view resource="${parent.url}" name="mrtgGraph" width="495" height="186" />
+            <method name="refreshTimer">
+                this.timerDelegate = new LzDelegate(this, "refreshMethod")
+                LzTimer.addTimer(this.timerDelegate, 300000 )
+            </method>
+            <method name="refreshMethod">
+                this.mrtgGraph.setSource(this.getAttribute('url'), this.getAttribute('updatems'))
+<!--                this.setResource("${parent.url}") -->
+                this.refreshTimer()
+            </method>
+    </class>

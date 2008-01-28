@@ -1,0 +1,289 @@
+<canvas layout="x" debug="false" oninit="clientInit()" width="1280" height="1024" >
+
+    <include href="lib/lzx/connection.lzx" />
+    <include href="lib/lzx/screen.lzx" />
+    <include href="lib/lzx/menuButton.lzx" />
+    <include href="lib/lzx/menu.lzx" />
+    <include href="lib/lzx/animations.lzx" />
+    <include href="lib/lzx/borderedBox.lzx"/>
+    <include href="lib/lzx/outlinedText.lzx"/>
+
+    <attribute name="menuAnimator"/>
+
+    <font name="default" src="helmetr.ttf"/>
+    <resource name="cursor" src="lib/images/hiddenCursor.gif"/>
+
+    <method name="clientInit">
+        canvas.connection.connect();
+        canvas.breadcrumbs = new Array();
+        canvas.breadcrumbs.push(mainmenu);
+        canvas.menuAnimator = new menuAnimator();
+        canvas.resetTimerDelegate = new LzDelegate(canvas, "reset");
+        LzTimer.resetTimer( canvas.resetTimerDelegate, 1000);
+
+        //init hidden cursor
+        LzCursor.setCursorGlobal('cursor');
+        canvas.cursorToggleDel = new LzDelegate(this, "toggleCursor");
+        LzKeys.callOnKeyCombo(canvas.cursorToggleDel, ["c"]);
+
+        canvas.buttonUnlockDelegate = new LzDelegate(canvas, "unlockbuttons");
+        mainmenu.show();                        
+    </method>
+
+
+
+    <!-- ================================================= -->
+    <!--   Cursor hide/show                                -->
+    <!-- ================================================= -->
+    <attribute name="cursorToggleDel"/>
+    <attribute name="cursorShown" type="boolean" value="false"/>
+    <method name="toggleCursor">
+        if (canvas.cursorShown) {
+            LzCursor.setCursorGlobal('cursor');
+        } else {
+            LzCursor.unlock();
+        }
+        canvas.cursorShown = !canvas.cursorShown;
+    </method>
+
+    <!-- ========================================================== -->
+    <!-- ButtonLock - methods and attributes for handling the       -->
+    <!--  locking of all buttons.  This is needed to prevent users  -->
+    <!--  from clicking multiple buttons at the same time           -->
+    <!-- ========================================================== -->
+
+    <!-- global property to lock buttons from processing clicks during animations -->
+    <attribute name="buttonlock" type="boolean" value="false"/>
+    <attribute name="buttonUnlockDelegate"/>
+    <method name="lockbuttons" args="time">
+        //Debug.write("buttons LOCKED!");
+        buttonlock=true;
+        LzTimer.resetTimer(canvas.buttonUnlockDelegate,time);
+    </method>
+    <method name="unlockbuttons">
+        buttonlock=false;
+        //Debug.write("buttons unlocked");
+    </method>
+
+    <!-- ========================================================== -->
+    <!-- Reset - methods and attributes for resetting the           -->
+    <!--  touchscreen.  When reset is called it should return to    -->
+    <!--  the main menu                                             -->
+    <!-- ========================================================== -->
+    <method name="reset" >
+        canvas.lockbuttons(500);
+
+        // if not at the main menu hide the current menu
+        var cur = canvas.breadcrumbs.pop();
+        if (cur != mainmenu) {
+            cur.hide();
+        }
+        // pop everything off the stack
+        while (cur != mainmenu)	{
+            cur = canvas.breadcrumbs.pop();
+        }
+        //push main menu on the stack
+        canvas.breadcrumbs.push(mainmenu);
+        
+        // show the main menu
+        var del = new LzDelegate(mainmenu, "show");
+        LzTimer.resetTimer( del , 1000);
+
+        mycd.sendMessage("*","canvas,reset","command");
+        LzTimer.removeTimer( canvas.resetTimerDelegate );
+
+        //hide back button
+        button_back.hide();
+    </method>
+
+    <attribute name="resetTimerDelegate"/>
+    <attribute name="resetTimeout" type="number" value="300000"/>
+    <attribute name="breadcrumbs" />
+
+    <!-- ================================================= -->
+    <!--   Connection and Messaging                        -->
+    <!-- ================================================= -->
+    <connectiondatasource name="mycd">
+        <dataset name="command" />
+    </connectiondatasource>
+
+    
+
+    <!-- ================================================= -->
+    <!--   Context Bar                                     -->
+    <!-- ================================================= -->
+    <attribute name="colorMapping"/>    
+    <method name="updateContextBar" args="name,text">
+        <![CDATA[
+		var cur = eval(name);
+		Debug.write("updating bar ["+name+"] ["+text+"]");
+		for(i=0; i<contextbars.subviews.length; i++){
+			if (contextbars.subviews[i] == cur){
+				cur.setAttribute("bartext", text);
+				cur.animate("opacity",1.0,350);
+			} else {
+				contextbars.subviews[i].setAttribute("bartext", "");
+				contextbars.subviews[i].animate("opacity",0.0,350);
+			}
+		}	
+		]]>
+    </method>
+
+    <class name="contextBar" width="${canvas.width}" height="50" bgcolor="white" opacity="0.0">
+        <attribute name="color" type="color" value="0x000000" />
+        <attribute name="bartext" type="string" value="" >
+
+        </attribute>
+        <view bgcolor="black" y="1" width="${parent.width}" height="48">
+            <view bgcolor="${parent.parent.color}" y="1" width="${parent.width}" height="46">
+                <text resize="true" valign="center" x="15" fgcolor="white" fontsize="28" text="${parent.parent.parent.bartext}"/>
+            </view>
+        </view>
+    </class>    
+
+
+    <!-- ================================================= -->
+    <!--   Media Resources                                 -->
+    <!-- ================================================= -->
+    <resource name="buttonOrange" src="buttons/final-button-shaded.png"/>
+    <resource name="buttonGreen" src="buttons/final-button-green.png"/>
+    <resource name="buttonRed" src="buttons/final-button-red.png"/>
+    <resource name="buttonBlue" src="buttons/final-button-blue.png"/>
+    <resource name="buttonPurple" src="buttons/final-button-purple.png"/>
+    <resource name="buttonYellow" src="buttons/final-button-yellow.png"/>        
+    <resource name="stop" src="buttons/stop.gif"/>
+    <resource name="stopShaded" src="buttons/stop-inactive.gif"/>
+    <resource name="play" src="buttons/play.gif"/>
+    <resource name="playShaded" src="buttons/play-inactive.gif"/>
+    <resource name="next" src="buttons/nextSlide.gif"/>
+    <resource name="prev" src="buttons/prevSlide.gif"/>
+    <resource name="osllogo" src="lib/images/osl_logo2.png"/>
+    <resource name="button_back" src="buttons/back.png"/>
+
+    
+    <!-- ================================================= -->
+    <!--   Header                                          -->
+    <!-- ================================================= -->
+
+    <simplelayout axis="y" spacing="0"/>    
+    <image src="lib/images/background-header.gif" >
+        <view y="0" width="${parent.width}" height="150">
+            <view bgcolor="black" y="0" width="${parent.width}" height="${parent.height}" opacity="0.35"/>
+            <view resource="osllogo" x="20" valign="middle"></view>
+            <view y="20" x="900" id="slideshowControls">
+                <simplelayout axis="y" spacing="15"/>
+                <text align="center" fgcolor="white" fontstyle="bold" x="0" y="60" fontsize="16">Slideshow</text>
+                <view align="center">
+                    <simplelayout axis="x" spacing="25"/>
+                    <menuButton width="70" height="70" command="canvas,slideShowPrev">
+                        <view resource="prev" valign="middle" align="center"/>
+                    </menuButton>
+                    <menuButton width="70" height="70" command="canvas,slideShowStop">
+                        <view resource="stop" valign="middle" align="center"/>
+                    </menuButton>
+                    <menuButton width="70" height="70" command="canvas,slideShowPlay">
+                        <view resource="play" valign="middle" align="center"/>
+                    </menuButton>
+                    <menuButton width="70" height="70" command="canvas,slideShowNext">
+                        <view resource="next" valign="middle" align="center"/>
+                    </menuButton>
+                </view>
+            </view>
+        </view>
+        <view id="contextbars" y="150">
+            <contextBar id="context_buttonOrange" color="0xE55E00" />
+            <contextBar id="context_buttonGreen"  color="0x0EB066" />
+            <contextBar id="context_buttonRed"    color="0xEF3333" />
+            <contextBar id="context_buttonBlue"  color="0x337EEF" />
+            <contextBar id="context_buttonPurple" color="0x7533EF" />            
+            <contextBar id="context_buttonYellow" color="0xEFBC33" />
+            <contextBar id="context_black" color="black" opacity="1.0"/>
+        </view>
+    </image>
+
+
+    <!-- ================================================= -->
+    <!--   Menu Area                                       -->
+    <!-- ================================================= -->
+    <resource name="foo" src="lib/images/background-gray-1x824.gif"/>
+    <view name="content" width="1280" height="824" clip="true" >
+        <view name="background" resource="foo" width="1280" height="824" stretches="width"/>
+        <view id="button_back" x="20" y="-150" resource="button_back">
+            <!-- indicates if the slide is being shown, used by hide() to avoid unneeded calls to the animation -->
+            <attribute name="shown" type="boolean" value="false"/>
+            <method name="show">
+                if (!this.shown) {
+                    this.animate("y",40,2000);
+                    this.shown=true;
+                }
+            </method>
+            <method name="hide">
+                if (this.shown){
+                    this.animate("y",-150,1000);
+                    this.shown=false;
+                }
+            </method>
+            <method event="onclick">
+                if (!canvas.buttonlock) {
+                    canvas.lockbuttons(800);
+                    var cur = canvas.breadcrumbs.pop();
+                    // check to make sure were not already at the main menu
+                    if (cur != mainmenu){
+                        cur.hide();
+                        // get the previous menu and show it
+                        var prev = canvas.breadcrumbs.pop();
+                        var del = new LzDelegate(prev, "show");
+                        LzTimer.resetTimer( del , 800);
+                        // now push the current menu back onto the stack so its there for the next action
+                        canvas.breadcrumbs.push(prev);
+
+                        // update timeout for the touchscreen
+                        if (prev == mainmenu) {
+                            //if were at mainmenu we don't need the timeout
+                            LzTimer.removeTimer( canvas.resetTimerDelegate );
+                            //back button also isn't needed so hide it
+                            this.hide();
+                            //mycd.sendMessage("*","canvas,reset","command");
+                        } else {
+                            LzTimer.resetTimer( canvas.resetTimerDelegate, canvas.resetTimeout);
+                        }
+                    } else {
+                        // push main menu back on
+                        canvas.breadcrumbs.push(cur);
+                    }
+                }
+            </method>
+        </view>
+
+        <!-- ================================================= -->
+        <!--   Main menu                                       -->
+        <!-- ================================================= -->
+        <menu id="mainmenu" title="Main Menu">                        
+            <view name="buttons">
+                <menuButton resource="buttonOrange" buttontext="Open Source Lab" command="canvas,showSlideCommand,screen_osl_about" submenu="menu_osl"/>
+                <menuButton resource="buttonRed" buttontext="Network Engineering" command="canvas,showSlideCommand,screen_net_about" submenu="menu_net"/>
+                <menuButton resource="buttonBlue" buttontext="Data Center Map" command="canvas,showSlideCommand,screen_rackview" submenu="menu_rackview"/>
+                <menuButton resource="buttonPurple"  command="canvas,showSlideCommand,screen_webcams" buttontext="Webcams" submenu="menu_webcams"/>
+                <menuButton resource="buttonYellow" command="canvas,showSlideCommand,screen_weather" buttontext="Weather"/>
+                <menuButton resource="buttonGreen"  buttontext="Help" submenu="menu_help"/>
+            </view>
+        </menu>
+
+        <!-- ================================================= -->
+        <!--   Submenus                                           -->
+        <!-- ================================================= -->
+        <include href="menus/menu_osl.lzx" />
+        <include href="menus/menu_osl_networkgraphs.lzx" />
+        <include href="menus/menu_news.lzx"/>
+        <include href="menus/menu_net.lzx"/>
+        <include href="menus/menu_webcam.lzx"/>
+        <include href="menus/help/menu_help.lzx"/>
+
+    </view>
+
+
+    <!--debug width="800" height="200" x="400" y="900" fontsize="12"/-->
+
+</canvas>
+
+

@@ -1,0 +1,49 @@
+<class name="outlinedText" height="1" width="1" extends="view">
+
+    <text name="outline1" x="$once{-1-this.width/2}" y="$once{0-this.height/2}" resize="true" multiline="$once{parent.multiline}" fgcolor="$once{parent.outlineColor}" fontsize="$once{parent.fontsize}" />
+    <text name="outline2" x="$once{1-this.width/2}" y="$once{0-this.height/2}" resize="true" multiline="$once{parent.multiline}" fgcolor="$once{parent.outlineColor}" fontsize="$once{parent.fontsize}" />
+    <text name="outline3" y="$once{1-this.height/2}" x="$once{0-this.width/2}" resize="true" multiline="$once{parent.multiline}" fgcolor="$once{parent.outlineColor}" fontsize="$once{parent.fontsize}" />
+    <text name="outline4" y="$once{-1-this.height/2}" x="$once{0-this.width/2}" resize="true" multiline="$once{parent.multiline}" fgcolor="$once{parent.outlineColor}" fontsize="$once{parent.fontsize}" />
+    <text name="fgtext" x="$once{0-this.width/2}" y="$once{0-this.height/2}" resize="true" multiline="$once{parent.multiline}" fgcolor="$once{parent.fgcolor}" fontsize="$once{parent.fontsize}" />
+
+    <attribute name="text" type="string" value=""/>
+    <attribute name="fgcolor" type="color" value="0xFFFFFF"/>
+    <attribute name="outlineColor" type="color" value="0x000000"/>
+    <attribute name="fontsize" value="16"/>
+    <attribute name="multiline" type="boolean" value="false"/>
+
+    <method event="ontext">
+        this.updateText();
+    </method>
+
+    <method event="oninit">
+        this.updateText();
+    </method>
+
+    <method name="setText" args="val">
+        this.fgtext.setText(val);
+        this.outline1.setText(val);
+        this.outline2.setText(val);
+        this.outline3.setText(val);
+        this.outline4.setText(val);
+        this.fgtext.animate("x",0-this.fgtext.width/2,0);
+        this.outline1.animate("x",-1-this.outline1.width/2,0);
+        this.outline2.animate("x",1-this.outline2.width/2,0);
+        this.outline3.animate("x",0-this.outline3.width/2,0);
+        this.outline4.animate("x",0-this.outline4.width/2,0);
+
+    </method>
+
+    <method name="updateText">
+        this.fgtext.setText(this.text);
+        this.outline1.setText(this.text);
+        this.outline2.setText(this.text);
+        this.outline3.setText(this.text);
+        this.outline4.setText(this.text);
+        this.fgtext.animate("x",0-this.fgtext.width/2,0);
+        this.outline1.animate("x",-1-this.outline1.width/2,0);
+        this.outline2.animate("x",1-this.outline2.width/2,0);
+        this.outline3.animate("x",0-this.outline3.width/2,0);
+        this.outline4.animate("x",0-this.outline4.width/2,0);
+    </method>
+</class>

@@ -1,0 +1,119 @@
+<screen id="screen_net_about">
+
+<!-- row one-->
+	<view x="322" y="10" height="200">
+		<simplelayout axis="y" spacing="1" />
+        	<view width="160" height="120" stretches="both" resource="images/shay.jpg"/>
+        	<text font="default" fontsize="17" fgcolor="white">Shay Dakan </text>
+		<text font="default" fontsize="17" fgcolor="white">Director of Network Services </text>
+	</view>
+
+
+	<view x="844" y="10" height="200">
+		<simplelayout axis="y" spacing="1" />
+        	<view width="160" height="120" stretches="both" resource="images/jon.jpg"/>
+        	<text font="default" fontsize="16" fgcolor="white">Jon Dolan </text>
+		<text font="default" fontsize="16" fgcolor="white">Associate Director of Network Services </text>
+	</view>
+
+
+<!-- row two-->
+	<view x="113" y="200" height="200">
+		<simplelayout axis="y" spacing="1" />
+        	<view width="160" height="120" stretches="both" resource="images/chris.jpg"/>
+        	<text font="default" fontsize="16" fgcolor="white">Chris Giem </text>
+		<text font="default" fontsize="16" fgcolor="white">Senior Network Engineer </text>
+	</view>
+
+
+	<view x="426" y="200" height="200">
+		<simplelayout axis="y" spacing="1" />
+        	<view width="160" height="120" stretches="both" resource="images/tony.jpg"/>
+        	<text font="default" fontsize="16" fgcolor="white">Tony Brock </text>
+		<text font="default" fontsize="16" fgcolor="white">Senior Network Security Engineer </text>
+	</view>
+
+	<view x="739" y="200" height="200">
+		<simplelayout axis="y" spacing="1" />
+        	<view width="160" height="120" stretches="both" resource="images/joel.jpg"/>
+        	<text font="default" fontsize="16" fgcolor="white">Joel Burks  </text>
+		<text font="default" fontsize="16" fgcolor="white">Network Analyst </text>
+	</view>
+
+
+	<view x="1053" y="200" height="200">
+		<simplelayout axis="y" spacing="1" />
+        	<view width="160" height="120" stretches="both" resource="images/gaylon.jpg"/>
+        	<text font="default" fontsize="16" fgcolor="white">Gaylon DeGeer </text>
+		<text font="default" fontsize="16" fgcolor="white">Network Analyst </text>
+	</view>
+
+<!-- row three-->
+	<view x="61" y="400" height="200">
+		<simplelayout axis="y" spacing="1" />
+        	<view width="160" height="120" stretches="both" resource="images/kirsten.jpg"/>
+        	<text font="default" fontsize="16" fgcolor="white">Kirsten Petersen </text>
+		<text font="default" fontsize="16" fgcolor="white">Unix System Admin </text>
+	</view>
+
+
+	<view x="322" y="400" height="200">
+		<simplelayout axis="y" spacing="1" />
+        	<view width="160" height="120" stretches="both" resource="images/steve.jpg"/>
+        	<text font="default" fontsize="16" fgcolor="white">Steve Heitmeyer </text>
+		<text font="default" fontsize="16" fgcolor="white">Network Monitoring </text>
+	</view>
+
+	<view x="583" y="400" height="200">
+		<simplelayout axis="y" spacing="1" />
+        	<view width="160" height="120" stretches="both" resource="images/mark.jpg"/>
+        	<text font="default" fontsize="16" fgcolor="white">Mark Keppinger </text>
+		<text font="default" fontsize="16" fgcolor="white">Network Analyst </text>
+	</view>
+
+
+	<view x="844" y="400" height="200">
+		<simplelayout axis="y" spacing="1" />
+        	<view width="160" height="120" stretches="both" resource="images/bill.jpg"/>
+        	<text font="default" fontsize="16" fgcolor="white">Bill Myers </text>
+		<text font="default" fontsize="16" fgcolor="white">Central Router Support </text>
+	</view>
+
+	<view x="1105" y="400" height="200">
+		<simplelayout axis="y" spacing="1" />
+        	<view width="160" height="120" stretches="both" resource="images/cary.jpg"/>
+        	<text font="default" fontsize="16" fgcolor="white">Cary Shufelt </text>
+		<text font="default" fontsize="16" fgcolor="white">AD and Windows Networking </text>
+	</view>
+
+
+<!-- lackys -->
+
+	<view x="10" y="600" height="200">
+		<simplelayout axis="y" spacing="1" />
+        	<view width="150" height="120" stretches="both" resource="images/bettse.png"/>
+        	<text font="default" fontsize="16" fgcolor="white">Eric Betts </text>
+		<text font="default" fontsize="16" fgcolor="white">NET Security Student </text>
+	</view>
+
+	<view x="200" y="600" height="200">
+		<simplelayout axis="y" spacing="1" />
+        	<view width="105" height="120" stretches="both" resource="images/purkyk.jpg"/>
+        	<text font="default" fontsize="16" fgcolor="white">Kevin Purdy </text>
+		<text font="default" fontsize="16" fgcolor="white">NET Security Student </text>
+	</view>
+	
+	<view x="400" y="600" height="200">
+		<simplelayout axis="y" spacing="1" />
+        	<view width="105" height="120" stretches="both" resource="images/markd.jpg"/>
+        	<text font="default" fontsize="16" fgcolor="white">Mark Delcambre </text>
+		<text font="default" fontsize="16" fgcolor="white">NET Security Student </text>
+	</view>
+
+	<view x="600" y="600" height="200">
+		<simplelayout axis="y" spacing="1" />
+        	<view width="160" height="120" stretches="both" resource="images/ed.jpg"/>
+        	<text font="default" fontsize="16" fgcolor="white">Ed Lim </text>
+		<text font="default" fontsize="16" fgcolor="white">Wireless Development</text>
+	</view>
+</screen>

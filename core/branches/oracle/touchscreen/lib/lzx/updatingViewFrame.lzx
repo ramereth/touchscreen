@@ -1,0 +1,7 @@
+<class name="updatingViewFrame" extends="view">
+
+    <method event="onload">
+        parent.parent.onload(this);
+    </method>
+
+</class>

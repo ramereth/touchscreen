@@ -1,0 +1,214 @@
+<screen id="screen_osl_outages">
+
+
+    <borderedBox name="nagiosView" x="20" y="20" width="600" height="540" clickable="false" opacity="1.0" viewopacity="0.2" bgcolor="0xE55E00">
+
+        <image src="http://osuosl.org/themes/newosl/osl.png" align="center"/>
+
+        <view x="20" y="110" layout="axis:y; spacing:20">
+            <view datapath="nagios:/rss/channel/item[-7]">
+                <text y="0" name="text1" font="default" fgcolor="white" datapath="title/text()" fontsize="18" resize="true" />
+                <text y="20" name="text2" font="default" fgcolor="black" datapath="description/text()" fontsize="16" resize="true" />
+            </view>
+        </view>
+
+    </borderedBox>
+
+
+    <!-- 	<class name="rtView" extends="view" stretches="both" width="640" height="315" clickable="false" visible="false" opacity="0.0">
+         <view name="hostBox" x="2" y="2" width="620" height="300" clip="true">
+             <simplelayout axis="y" spacing="1"/>
+             <view name="hostTitleFrame">
+                 <text name="rightBoxTitle2" font="BitstreamVeraBold" fontsize="20" resize="true" fgcolor="0x000000">RT Queue</text>
+                 <animatorgroup name="hostTitleFrameAnimator" start="false" process="sequential">
+                     <animator attribute="y" to="-35" duration="500" start="false" motion="easein" />
+                     <animator attribute="y" to="0" duration="500" start="false" motion="easeout" />
+                 </animatorgroup>
+             </view>
+             <view name="down">
+             <simplelayout axis="y" spacing="5"/>
+                 <view name="nagiosViewDown" datapath="rt:/RDF[1]/channel/item[-5]" ondata="processNagios">
+                     <state name="downState" apply="true">
+                         <simplelayout axis="y" spacing="1"/>
+                         <text name="text1" font="Myriabol" fgcolor="0xFF0000" datapath="title/text()" fontsize="18" resize="true" />
+                         <text name="text2" font="Myriabol" fgcolor="0x000000" datapath="dc:creator/text()" fontsize="16" resize="true" />
+                     </state>
+                     <method name="processNagios">
+                         this.downState.remove()
+                         canvas.hostBox.hostTitleFrame.hostTitleFrameAnimator.doStart()
+                         this.downState.apply()
+                     </method>
+                 </view>
+             </view>
+         </view>
+     </class>  -->
+
+    <borderedBox x="700" y="20" name="securityView" width="640" height="200"  viewopacity="0.6" >
+
+        <view name="container" x="20" y="20">
+
+            <view  opacity="0.0" name="debian">
+                <text font="default" fgcolor="0xE55E00" fontsize="18" fontstyle="bold">Latest Debian Advisories</text>
+                <image x="490" y="20" src="lib/images/debian.png"/>
+                <view y="40" layout="axis:y">
+                    <view name="dsaBox" datapath="dsa:/rdf:RDF/item[-4]">
+                        <simplelayout axis="x" spacing="1"/>
+                        <text name="text1" font="default" fgcolor="white" fontsize="16" datapath="title/text()" resize="true"/>
+                        <text name="text1" font="default" fgcolor="white" fontsize="16" resize="true">:</text>
+                        <text name="text2" font="default" fgcolor="white" fontsize="16" datapath="description/text()" resize="true"/>
+
+                        <method event="ondata">
+                            <![CDATA[
+                            String.prototype.trim = function() {
+                                var ret = this;
+                                while(ret.charAt(0) == ' ' || ret.charAt(0) == '\r' || ret.charAt(0) == '\n'){
+                                    ret = ret.substr(1, ret.length-1);
+                                }
+                                while(ret.charAt(ret.length-1) == ' ' || ret.charAt(ret.length-1) == '\r' || ret.charAt(ret.length-1) == '\n'){
+                                    ret = ret.substr(0, ret.length-1);
+                                }                                                                
+                                return ret;
+                            };
+                            var description = new String(this.datapath.xpathQuery("description/text()"));
+                            this.text2.setText(description.trim());
+                            ]]>
+                        </method>
+                    </view>
+                </view>
+            </view>
+            <view name="gentoo" opacity="0.0">
+                <image x="500" y="30" src="lib/images/gentoo.png"/>
+                <text font="default" fgcolor="0xE55E00" fontsize="18" fontstyle="bold">Latest Gentoo Advisories</text>
+                <view y="40" layout="axis:y">
+                    <view name="glsaBox" datapath="glsa:/*/item[-5]">
+                        <simplelayout axis="x" spacing="0"/>
+                        <text name="id" font="default" fgcolor="white" fontsize="13" resize="true" />
+                        <text name="level" font="default" fgcolor="white" fontsize="13" resize="true" />
+                        <text name="title" font="default" fgcolor="white" fontsize="13" resize="true" />
+                        <text name="description" font="default" fgcolor="white" fontsize="13" resize="true"/>
+                        <method event="ondata">
+                                var titleRaw = new String(this.datapath.xpathQuery('title/text()'));
+                                var descRaw = new String(this.datapath.xpathQuery('description/text()'));
+                                var id_txt = titleRaw.substring(0, titleRaw.indexOf("("));
+                                var level_txt = titleRaw.substring(titleRaw.indexOf('(')+1, titleRaw.indexOf(")") );
+                                var title_txt = descRaw.substring(0, descRaw.indexOf(':')) + ":";
+                                var desc_txt = descRaw.substring(descRaw.indexOf(':')+2,descRaw.length) ;
+
+                                if (level_txt == "High"){                                    
+                                    this.level.setAttribute("fgcolor",0xFF0000);
+                                } else if (level_txt == "Medium"){
+                                    this.level.setAttribute("fgcolor",0xE55E00);
+                                } else {
+                                    this.level.setAttribute("fgcolor",0xEFBC33);
+                                }
+
+                                this.id.setText( id_txt + "(" );
+                                this.level.setText( level_txt );
+                                this.title.setText( ") " + title_txt);
+                                this.description.setText( desc_txt);
+                        </method>
+                    </view>
+                </view>
+            </view>
+        </view>
+
+        <!-- attribute determining if the update is currently running -->
+        <attribute name="running" type="boolean" value="false"/>
+
+        <!-- time in ms to update the image -->
+        <attribute name="updatems" type="number" value="10000"/>
+
+        <!-- delegates for fetching the next frame -->
+        <attribute name="timerDelegate"/>
+
+        <attribute name="currentView" type="number" value="0"/>
+
+        <!-- initialize the view, setup the view buffer, etc -->
+        <method event="oninit">
+            this.timerDelegate = new LzDelegate(this, "refreshTimer")
+            this.fetchNextView();
+        </method>
+
+        <!-- function that recursively calls itself to advance the framebuffer -->
+        <method name="refreshTimer">
+            this.fetchNextView();
+            LzTimer.resetTimer(this.timerDelegate, updatems )
+        </method>
+
+        <!-- refreshes the view -->
+        <method name="fetchNextView">
+            <!-- get the current view being displayed-->
+            var cur  = this.container.subviews[currentView];
+
+            <!-- get the next view to be shown-->
+            this.currentView = this.currentView + 1;
+            if (this.currentView >= this.container.subviews.length) {
+                <!-- start at 0 if at the end of the array -->
+                this.currentView = 0;
+            }
+            var next = this.container.subviews[currentView];
+
+            <!-- hide the old view and show the new.                     -->
+            <!-- The show MUST be faster than the hide or you get flicker-->
+            next.animate("opacity",1.0,600);
+            cur.animate("opacity",0.0,500);
+        </method>
+
+        <!-- starts the update process -->
+        <method name="start">
+            <![CDATA[
+	            if (!this.running){
+       	         this.running = true;
+              	  LzTimer.resetTimer(this.timerDelegate, updatems )
+	            }
+		     ]]>
+        </method>
+
+        <!-- stops the update process -->
+        <method name="stop">
+            <![CDATA[
+	            if (this.running){
+       	         this.running = false;
+              	  LzTimer.removeTimer(this.timerDelegate);
+	            }
+			]]>
+        </method>
+
+    </borderedBox>
+
+    <updatingView name="sans" resourceHref="http://isc.sans.org/images/status.gif" height="92" width="354" y="653" align="center" visible="true" opacity="1.0" updatems="900000"/>
+
+    <attribute name="refreshOSLDelegate"/>
+    <attribute name="refreshTime" type="number" value="900000"/>
+    <method name="_init">
+        this.refreshOSLDelegate = new LzDelegate(this, "refreshOSLLoop");
+        refreshOSLLoop();
+    </method>
+
+    <method name="refreshOSLLoop">
+        nagios.doRequest();
+        LzTimer.resetTimer(this.refreshOSLDelegate, this.refreshTime);
+    </method>
+
+    <method name="_start">
+        this.securityView.start();
+        this.sans.start();
+    </method>
+    <method name="_stop">
+        this.securityView.stop();
+        this.sans.stop();
+    </method>
+
+    <method name="_show">
+        this.nagiosView.animate("x",20,800);
+        this.securityView.animate("x",700,800);
+        this.sans.animate("y",653,800);
+    </method>
+
+    <method name="_hide">
+        this.nagiosView.animate("x",-650,800);
+        this.securityView.animate("x",1400,800);
+        this.sans.animate("y",840,800);
+    </method>
+
+</screen>

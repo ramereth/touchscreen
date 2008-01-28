@@ -1,0 +1,20 @@
+<class name="scrollingLabel" extends="text" x="10" y="498" fontsize="20" resize="true">
+        <attribute name="index" type="number" value="0"/>                                  
+        <method event="oninit">
+            //get previous item
+            if (parent.subnodes.length != 1) {
+
+                this.index = parent.subnodes.length-1;
+
+                // constrain this label's y coordindate based on the
+                // label above it.  this chains the labels together
+                // so they scroll together when the first label is moved
+                var prev = parent.subnodes[this.index-1];
+                var f = function () {
+                    this.setAttribute("y", prev.y + prev.height);
+                }
+                var d = [this, 'index', prev, 'y', prev, 'height'];
+                this.applyConstraint("y",f,d);                
+            }           
+        </method>
+    </class>

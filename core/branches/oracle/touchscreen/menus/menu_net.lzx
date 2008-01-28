@@ -1,0 +1,11 @@
+<!-- NET Main Menu -->
+
+<menu id="menu_net" title="Network Engineering" colorKey="context_buttonRed">
+       
+    <view name="buttons">
+         <menuButton resource="buttonBlue" buttontext="People" command="canvas,showSlideCommand,screen_net_about"/>
+         <menuButton resource="buttonGreen" buttontext="Traffic Graphs" command="canvas,showSlideCommand,screen_net_networkgraphs_general"/>
+         <menuButton resource="buttonRed" buttontext="Wifi Usage Map" command="canvas,showSlideCommand,screen_net_wifi_usage"/>
+         <menuButton resource="buttonOrange" buttontext="Wifi Bandwidth Map" command="canvas,showSlideCommand,screen_net_wifi_bandwidth"/>
+    </view>
+</menu>
