@@ -126,8 +126,13 @@
     </method>
 
     <method name="_hide">
-        //this.oss.animate("x",1400,800);
+        LzTimer.removeTimer(this.hideDelegateL);
+        LzTimer.removeTimer(this.hideDelegateR);
+        LzTimer.removeTimer(this.showDelegateL);
+        LzTimer.removeTimer(this.showDelegateR);
+        hidewelcomeleft.doStart();         
         this.edray.animate("x",1400,800);
+        
     </method>
 
 </screen>
