@@ -3,19 +3,19 @@
     <attribute name="duration" type="number" value="60000"/>                   
 
     <view name="thumbnails" x="75" y="0">
-        <webcam name="library" x="50" y="530" updatems="300000" resourceHref="http://library.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
-        <webcam name="memorialunion" x="50" y="270" updatems="300000" resourceHref="http://mu.webcam.oregonstate.edu//axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
-        <webcam name="southcampus" x="50" y="10" updatems="300000" resourceHref="http://south.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
-        <webcam name="reser2" x="450" y="10" updatems="300000" resourceHref="http://baseball.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
-        <webcam name="reser" x="830" y="10" updatems="300000" resourceHref="http://annex.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi?camera=&amp;resolution=352x240"/>
+        <webcam name="library" x="50" y="530" updatems="300000" resourceHref="http://webcam.oregonstate.edu/live/library_current.jpg"/>
+        <webcam name="memorialunion" x="50" y="270" updatems="300000" resourceHref="http://webcam.oregonstate.edu/live/mu_current.jpg"/>
+        <webcam name="southcampus" x="50" y="10" updatems="300000" resourceHref="http://webcam.oregonstate.edu/live/south_current.jpg"/>
+        <webcam name="reser2" x="450" y="10" updatems="300000" resourceHref="http://webcam.oregonstate.edu/live/baseball_current.jpg"/>
+        <webcam name="reser" x="830" y="10" updatems="300000" resourceHref="http://webcam.oregonstate.edu/live/annex_current.jpg"/>
     </view>
 
     <view name="fullsize" x="525" y="270" bgcolor="red" >
-        <webcam name="library" updatems="50" delayms="700"  resourceHref="http://library.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" opacity="1.0"/>
-        <webcam name="memorialunion" updatems="50" delayms="700"   resourceHref="http://mu.webcam.oregonstate.edu//axis-cgi/jpg/image.cgi" width="709" height="485" opacity="0.0"/>
-        <webcam name="southcampus" updatems="50" delayms="700"  resourceHref="http://south.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" opacity="0.0"/>
-        <webcam name="reser2" updatems="50" delayms="700" resourceHref="http://baseball.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" opacity="0.0"/>
-        <webcam name="reser" updatems="50" delayms="700"  resourceHref="http://annex.webcam.oregonstate.edu/axis-cgi/jpg/image.cgi" width="709" height="485" opacity="0.0"/>
+        <webcam name="library" updatems="30000" delayms="700"  resourceHref="http://webcam.oregonstate.edu/live/library_current.jpg" width="709" height="485" opacity="1.0"/>
+        <webcam name="memorialunion" updatems="30000" delayms="700"   resourceHref="http://webcam.oregonstate.edu/live/mu_current.jpg" width="709" height="485" opacity="0.0"/>
+        <webcam name="southcampus" updatems="30000" delayms="700"  resourceHref="http://webcam.oregonstate.edu/live/south_current.jpg" width="709" height="485" opacity="0.0"/>
+        <webcam name="reser2" updatems="30000" delayms="700" resourceHref="http://webcam.oregonstate.edu/live/baseball_current.jpg" width="709" height="485" opacity="0.0"/>
+        <webcam name="reser" updatems="30000" delayms="700"  resourceHref="http://webcam.oregonstate.edu/live/annex_current.jpg" width="709" height="485" opacity="0.0"/>
     </view>
 
     <attribute name="currentBig" type="number" value="0"/>
