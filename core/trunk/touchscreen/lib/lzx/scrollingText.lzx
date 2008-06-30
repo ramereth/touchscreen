@@ -1,4 +1,4 @@
-<class name="scrollingText" extends="text" x="10" fontsize="20" resize="true" align="center">
+<class name="scrollingText" extends="text" fontsize="20" resize="true" align="center">
     <attribute name="prev"/>
     <attribute name="next"/>
 	

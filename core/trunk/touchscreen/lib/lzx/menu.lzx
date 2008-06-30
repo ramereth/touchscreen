@@ -81,7 +81,7 @@
 	</method>
 	
 	<!-- items slide in from the left and right -->
-	<method>
+	<method name="leftright">
 
 	</method>
 

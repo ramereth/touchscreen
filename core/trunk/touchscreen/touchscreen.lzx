@@ -1,6 +1,5 @@
 <canvas layout="x" debug="false" oninit="clientInit()" width="1280" height="1024" >
 
-    <include href="lib/lzx/connection.lzx" />
     <include href="lib/lzx/screen.lzx" />
     <include href="lib/lzx/menuButton.lzx" />
     <include href="lib/lzx/menu.lzx" />
@@ -27,7 +26,7 @@
         LzKeys.callOnKeyCombo(canvas.cursorToggleDel, ["c"]);
 
         canvas.buttonUnlockDelegate = new LzDelegate(canvas, "unlockbuttons");
-        mainmenu.show();                        
+        mainmenu.show();
     </method>
 
 
@@ -89,7 +88,7 @@
         var del = new LzDelegate(mainmenu, "show");
         LzTimer.resetTimer( del , 1000);
 
-        mycd.sendMessage("*","canvas,reset","command");
+        mycd.sendMessage("canvas,reset");
         LzTimer.removeTimer( canvas.resetTimerDelegate );
 
         //hide back button
@@ -103,11 +102,7 @@
     <!-- ================================================= -->
     <!--   Connection and Messaging                        -->
     <!-- ================================================= -->
-    <connectiondatasource name="mycd">
-        <dataset name="command" />
-    </connectiondatasource>
-
-    
+    <include href="lib/lzx/connection.lzx" />
 
     <!-- ================================================= -->
     <!--   Context Bar                                     -->
@@ -172,7 +167,7 @@
             <view resource="osllogo" x="20" valign="middle"></view>
             <view y="20" x="900" id="slideshowControls">
                 <simplelayout axis="y" spacing="15"/>
-                <text align="center" fgcolor="white" fontstyle="bold" x="0" y="60" fontsize="16">Slideshow</text>
+                <text align="center" fgcolor="white" fontstyle="bold" y="60" fontsize="16">Slideshow</text>
                 <view align="center">
                     <simplelayout axis="x" spacing="25"/>
                     <menuButton width="70" height="70" command="canvas,slideShowPrev">

@@ -23,7 +23,7 @@
             <!--text y="95" align="left" resize="true" fontsize="20" fgcolor="white" datapath="cc/hmid/text()"/-->
 
             <!-- misc -->
-            <view align="center" y="280" x="30"  fontsize="14" fontstyle="bold" datapath="dset_weatherData:/weather" layout="axis:x; spacing:40">
+            <view align="center" y="280" fontsize="14" fontstyle="bold" datapath="dset_weatherData:/weather" layout="axis:x; spacing:40">
                 <view>
                     <text align="left" resize="true" fgcolor="white">Wind: </text>
                     <view x="85" layout="axis:x; spacing:-1">

@@ -11,7 +11,7 @@
                 LzTimer.resetTimer( canvas.resetTimerDelegate, canvas.resetTimeout);
                 if (this.command != '') {
                     Debug.write("sending: " + this.command);
-                    mycd.sendMessage("*",this.command,"command");
+                    mycd.sendMessage(this.command);
                 }
                 
 		        if (submenu) {

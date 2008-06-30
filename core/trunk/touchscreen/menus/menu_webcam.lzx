@@ -1,15 +1,11 @@
 <!-- OSL Main Menu -->
 
-<menu id="menu_webcams" title="Open Source Lab" colorKey="context_buttonOrange">
+<menu id="menu_webcams" title="OSU Webcams" colorKey="context_buttonPurple">
     <view name="buttons">
         <menuButton resource="buttonYellow" buttontext="Valley Library" command="screen_webcams,enlargeCommand,0" />
         <menuButton resource="buttonBlue" buttontext="Memorial Union" command="screen_webcams,enlargeCommand,1" />
         <menuButton resource="buttonGreen" buttontext="South Campus" command="screen_webcams,enlargeCommand,2" />
-        <menuButton resource="buttonRed" buttontext=" Goss Stadium" command="screen_webcams,enlargeCommand,3">
-            
-        </menuButton>
-        <menuButton resource="buttonOrange" buttontext="Gill Annex" command="screen_webcams,enlargeCommand,4">
-            
-        </menuButton>
+        <menuButton resource="buttonRed" buttontext=" Goss Stadium" command="screen_webcams,enlargeCommand,3"/>
+        <menuButton resource="buttonOrange" buttontext="Gill Annex" command="screen_webcams,enlargeCommand,4"/>
     </view>
 </menu>

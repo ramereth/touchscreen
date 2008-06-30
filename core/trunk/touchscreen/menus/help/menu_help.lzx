@@ -14,9 +14,9 @@
             <image name="hand" x="120" y="122" src="menus/help/hand.png" />
         </image>
 
-        <text name="intro" x="100" y="350" align="center" fontsize="30" fgcolor="white"  font="default" resize="true" >This interactive display shows information about this facility</text>
-        <text name="step1" x="200" y="350" align="center" fontsize="30" fgcolor="white"  font="default" resize="true" >Select a choice on this touchscreen</text>
-        <text name="step2" x="130" y="350" align="center" fontsize="30" fgcolor="white"  font="default" resize="true" >Information will be displayed on the screen to your left</text>
+        <text name="intro" y="350" align="center" fontsize="30" fgcolor="white"  font="default" resize="true" >This interactive display shows information about this facility</text>
+        <text name="step1" y="350" align="center" fontsize="30" fgcolor="white"  font="default" resize="true" >Select a choice on this touchscreen</text>
+        <text name="step2" y="350" align="center" fontsize="30" fgcolor="white"  font="default" resize="true" >Information will be displayed on the screen to your left</text>
 
         <button name="playagain" align="center" y="350" fontsize="30">Play Again
             <method event="onclick">
