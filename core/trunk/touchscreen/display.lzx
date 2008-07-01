@@ -9,7 +9,7 @@
 <!--  Author: Peter Krenesky                          -->
 <!--  Date: Aug 1, 2006                               -->
 <!-- ================================================ -->
-<canvas debug="true" oninit="initServer();" height="768" width="1360">
+<canvas debug="false" oninit="initServer();" height="768" width="1360">
     <!--debug width="400" height="300" x="200" y="500" fontsize="10"/-->
 
     <include href="lib/lzx/updatingView.lzx"/>
@@ -80,7 +80,7 @@
             //start request for next command
             canvas.mycd.incoming.doRequest();
 
-            Debug.write("MESSAGE: " + raw);
+            //Debug.write("MESSAGE: " + raw);
 
             //ignore if its a timeout issue
             if (raw == "CHANNEL_ERROR_TIMEOUT"){

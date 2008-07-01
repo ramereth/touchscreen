@@ -13,17 +13,17 @@
         this.points = new Array();
         this.updateMapDelegate = new LzDelegate(this, "updateMap" );
         this.scrollDeleteDelegate = new LzDelegate(this, "deleteFirstScrollLabel" );
-        LzTimer.resetTimer(this.updateMapDelegate, 3000);        
+        LzTimer.resetTimer(this.updateMapDelegate, 3000);
         this.currentPointIndex = -1;
     </method>
 
-    <method name="updateMap">        
+    <method name="updateMap">
         dset_ftpUserMap.doRequest();
-        if (this.running){        
+        if (this.running){
             LzTimer.resetTimer(this.updateMapDelegate, this.mapRefresh);
         }
     </method>
-    
+
     <method name="createPoint" args="lat, lon, label">
         <![CDATA[
         var remove = null;
@@ -36,7 +36,7 @@
                 remove = this.maxPoints - 1 + remove;
             }
             if ( this.points[remove] ) {
-                this.points[remove].animate("fgcolor", "0xE55E00", 100);                
+                this.points[remove].animate("fgcolor", "0xE55E00", 100);
             }
         }
 
