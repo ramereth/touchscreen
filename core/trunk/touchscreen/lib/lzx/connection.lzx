@@ -5,9 +5,9 @@
 <!-- ================================================ -->
 
 <datasource name="mycd">
-    <dataset name="incoming" src="http://localhost:8080/MessageChannel/input" request="false" type="http"/>
-    <dataset name="outgoing" src="http://localhost:8080/MessageChannel/input" request="false" type="http"/>
-    <dataset name="reset" src="http://localhost:8080/MessageChannel/input" request="false" type="http"/>
+    <dataset name="incoming" src="http://localhost/MessageChannel/input" request="false" type="http"/>
+    <dataset name="outgoing" src="http://localhost/MessageChannel/input" request="false" type="http"/>
+    <dataset name="reset" src="http://localhost/MessageChannel/input" request="false" type="http"/>
     
     <attribute name="channel" type="string" value="biggerscreen"/>
     <attribute name="msgBox" />
