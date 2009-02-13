@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
+    <head>
+        <style>
+            *{
+                margin:0px;
+                padding:0px;
+            }
+
+            #screens {
+                
+                position: absolute;
+                height:100%;
+                width:100%;
+                background-color:black;
+            }            
+        </style>
+
+        <script type="text/javascript" src="{{MEDIA_URL}}/js/jquery-1.2.6.js"></script>
+
+        <script type="text/javascript">
+            /* ===============================
+             *  SLIDE SHOW
+             * =============================== */
+            
+            // initializes and starts slideshow from the first slide            
+            function SlideShow_start() {
+
+            }
+
+            // pauses the slideshow
+            function SlideShow_pause() {
+
+            }
+
+            // resumes the slideshow from the last position
+            function SlideShow_resume() {
+
+            }
+        
+            // advances to the next slide 
+            function SlideShow_next() {
+
+            }
+
+            // advances to the previous slide
+            function SlideShow_prev() {
+
+            }
+
+            /* ===============================
+             *  AJAX Messaging
+             * =============================== */
+            function Messaging_start() {
+
+            }            
+
+            /* ===============================
+             *  Initialization
+             * =============================== */ 
+            $(document).ready(function() {
+                SlideShow_start();
+                Messaging_start();
+            });
+        </script>
+    </head>
+
+    <body>
+        <div id='screens'>????{{screens}}
+        {% for key, screen in screens.items %}
+            <div id='Screen_{{screen.hash}}' class='screen'>
+                {% include screen.template %}
+            </div>
+        {% endfor %}
+        </div>
+    </body> 
