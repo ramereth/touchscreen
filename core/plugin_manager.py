@@ -1,18 +1,18 @@
 from models import *
 
 class PluginManager():
-    
     def __init__(self):
         self.screens={}
 
     """
     Register a screen with the plugin manager
     """
-    def register_screen(self, screen):
-        print '[info] PluginManager - Registering Screen: %s' % screen.name
+    def register_screen(self, screen, app):
+        print '[info] PluginManager - Registering Screen: %s_%s' % (app,screen.name)
         #make sure the screen is in the db
         try:
-            print screen, screen.hash
+            screen.app = app
+            screen.generate_hash()
             Screen.objects.get(hash=screen.hash)
         except:
             #screen wasn't found save it so default values are created
@@ -26,7 +26,7 @@ class PluginManager():
     Deregister a screen, stopping it and removing it from the manager
     """
     def deregister_screen(self, key):
-        
+
         # remove the screen from the registry
         del registry[key] 
 
@@ -74,5 +74,5 @@ class PluginManager():
             for key, plugin in module.__dict__.items():
                 if isinstance(plugin, (Screen,)):
                 #plugin_instance = object.__new__(plugin)
-                    self.register_screen(plugin)
+                    self.register_screen(plugin, app)
 

@@ -1,23 +1,8 @@
-from core.plugin_manager import *
 from core.models import *
 
 """
-Example screen #1
+create instance of screens this plugin provides
 """
-'''
-class HelloScreen(Screen):
-    template='hello.html'
-    name='HelloScreen'
-    hash='HelloScreen'
-'''
-"""
-Example screen #2
-"""
-'''
-class WorldScreen(Screen):
-    template='world.html'
-    name='WorldScreen'
-    hash='WorldScreen'
-'''
+hello_screen = Screen('hello.html', 'HelloScreen')
+world_screen = Screen('world.html', 'WorldScreen')
 
-hello_screen = Screen('world.html', 'WorldScreen')

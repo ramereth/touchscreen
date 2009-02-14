@@ -18,5 +18,9 @@ urlpatterns = patterns('',
     # (r'^admin/(.*)', admin.site.root),
 
     (r'^/*', include('core.urls')),
-
 )
+
+#The following is used to serve up local media files like images
+#if settings.LOCAL_DEV:
+urlpatterns += patterns('',
+(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root':  settings.MEDIA_ROOT}),)

@@ -34,13 +34,14 @@ class Plugin(models.Model):
     hash        = models.CharField(unique=True, max_length=255)
     enabled     = models.BooleanField(default=True)
     name        = None
+    app         = None
     description = None
 
     class Meta:
         abstract = True
 
     def generate_hash(self):
-        return 'asdfasdf%s' % self.name
+        self.hash = '%s_%s' % (self.app, self.name)
 
     def validate(self):
         if not name:
@@ -51,9 +52,11 @@ class Plugin(models.Model):
 
         return True
 
-
 class Screen(Plugin):
-    duration    = models.IntegerField(default=None, null=True)
+    duration    = models.IntegerField(default=10000, null=True)
+    hide        = models.CharField(max_length='30', default="slide")
+    show        = models.CharField(max_length='30', default="slide")
+    slideshow   = models.IntegerField(default=1)
     template    = None
     css         = None
     javascript  = None
@@ -66,8 +69,11 @@ class Screen(Plugin):
 
         return True
 
-    def __init__(self, template, name, *args, **kwargs):
+    def __init__(self, template, name, duration=10000, hide='slide', show='slide', slideshow=1, *args, **kwargs):
         Plugin.__init__(self, *args, **kwargs)
         self.name = name
+        self.duration = duration
+        self.hide = hide
+        self.show = show
+        self.slideshow = slideshow
         self.template = template
-        self.hash = self.generate_hash()
