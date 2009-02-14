@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
+    <head>
+        <style>
+            *{
+                margin:0px;
+                padding:0px;
+            }
+
+            #screens {
+                position: absolute;
+                height:100%;
+                width:100%;
+                background-color:black;
+            }
+
+            .screen {
+                position: absolute;
+                height:100%;
+                width:100%;
+            }
+
+            .background {
+                position:absolute;
+                height:100%;
+                width:100%;
+            }
+        </style>
+        <script type='text/javascript' src="{{MEDIA_URL}}/js/jquery-1.3.1.min.js"></script>
+
+        <script type="text/javascript">
+
+            /* ===============================
+             *  Shower / Hiders
+             * =============================== */
+            function slide_in(screen) {
+                id = screen['id']
+                duration = 1000;
+                $('#screen_'+id).animate({left:0}, duration );
+                return duration;
+            }
+
+            function slide_out(screen) {
+                id = screen['id']
+                duration = 1000;
+                $('#screen_'+id).animate({left:-1400}, duration );
+                return duration;
+            }
+
+            function fade_in(screen) {
+                id = screen['id']
+                $screen = $('#screen_'+id);
+
+                //first move the screen into place
+                $screen.css('left',0);
+
+                //animate fading in of background
+                $screen.children('.background').fadeIn(500, function(){
+                    $screen.children('.content').fadeIn(750);
+                });
+            }
+
+            function fade_out(screen) {
+                id = screen['id']
+                $screen = $('#screen_'+id);
+
+                //fade the contents out
+                $screen.children('.content').fadeOut(750, function(){
+                    //fade the background out
+                    $screen.children('.background').fadeOut(750, function(){
+                        //move the box off the screen 
+                        $screen.css('left',-1400);
+                    });
+                });
+
+                return 1500;
+            }
+
+            /* ===============================
+             *  Show / Hide Screen
+             * =============================== */
+            // index of screen currently displayed, or in process of being displayed
+            var current_screen_index = -1
+
+            function show_slide(screen) {
+                if (slideshow_screen_index != current_screen_index) {
+                    // hide slide if one is shown
+                    if (current_screen_index != -1){
+                        current_screen = screens[current_screen_index];
+                        console.log('hiding: ', current_screen['id']);
+                        hider = eval(hiders[current_screen['hide']]);
+                        var hidetime = hider(current_screen);
+
+                    } else {
+                        // no current slide
+                        var hidetime = 0;
+                    }
+
+                    current_screen_index = slideshow_screen_index;
+
+                    if(!hidetime) {
+                        hidetime = 1000
+                    }
+
+                    show = showers[screen['show']];
+                    console.log('showing: ', screen['id']);
+                    setTimeout(show+'(screens[current_screen_index])', hidetime)
+                }
+            }
+
+            /* ===============================
+             *  SLIDE SHOW
+             * =============================== */
+            // tracks timer for automatic slideshow, used for pausing slideshow
+            var slide_show_timer = -1;
+
+            // tracks slideshow index, may temporarily hold next or previous screen
+            var slideshow_screen_index = -1;
+
+            // initializes and starts slideshow from the first slide
+            function slide_show_start() {
+                slide_show_loop();
+            }
+
+            // loops slides automatically
+            function slide_show_loop() {
+                var screen = slide_show_next();
+
+                //set next transition to duration of current slide
+                console.log('next screen in :', screen['duration']);
+                slide_show_timer = setTimeout(slide_show_loop, screen['duration']);
+            }
+
+            // pauses the slideshow
+            function slide_show_stop() {
+                if (slide_show_timer) {
+                    clearTimeout(slide_show_timer);
+                    slide_show_timer = -1;
+                }
+            }
+
+            // advances to the next slide 
+            function slide_show_next() {
+                //get next slide
+                var screen = get_next_slide();
+                while (!screen['slideshow']) {
+                    screen = get_next_slide();
+                }
+
+                show_slide(screen);
+                return screen;
+            }
+
+            // advances to the previous slide
+            function slide_show_prev() {
+                //get next slide
+                var screen = get_prev_slide();
+                while (!screen['slideshow']) {
+                    screen = get_prev_slide();
+                }
+
+                show_slide(screen);
+            }
+
+            // gets next potential screen to be displayed
+            function get_next_slide() {
+                if (slideshow_screen_index+1 == screens.length) {
+                    slideshow_screen_index = 0;
+                } else {
+                    slideshow_screen_index = slideshow_screen_index + 1;
+                }
+                return screens[slideshow_screen_index];
+            }
+
+            // gets prev potential screen to be displayed
+            function get_prev_slide() {
+                if (slideshow_screen_index) {
+                    slideshow_screen_index = slideshow_screen_index-1 ;
+                } else {
+                    slideshow_screen_index = screens.length-1;
+                }
+                return screens[slideshow_screen_index];
+            }
+
+             /* ===============================
+             *  Slide Show Remote Commands
+             * =============================== */
+            function remote_slide_show_prev(){
+                slide_show_prev();
+            }
+
+            function remote_slide_show_stop(){
+                //do nothing its already stopped;
+            }
+
+            function remote_slide_show_play(){
+                slide_show_start();
+            }
+
+            function remote_slide_show_next() {
+                slide_show_next();
+            }
+
+
+            /* ===============================
+             *  AJAX Messaging
+             * =============================== */
+            function Messaging_start() {
+
+            }
+
+            /* ===============================
+             *  Initialization
+             * =============================== */
+
+            // setup screen datastructures
+            var screens = new Array()
+            {% for key, screen in screens.items %}
+                screens[{{forloop.counter0}}] = 
+                    {
+                        'id':         '{{key}}',                    // Screen identifier (name)
+                        'hide':       '{{screen.hide}}',            // Function for hiding the screen
+                        'show':       '{{screen.show}}',            // Function for showing the screen
+                        'duration':   {{screen.duration}},          // How long screen will be displayed
+                        'slideshow':  {{screen.slideshow}}          // Include in slideshow
+                    }
+            {% endfor %}
+
+            // setup show/hide animations
+            hiders  = {
+                        'slide':'slide_out',
+                        'fade':'fade_out'
+                      };
+            showers = {
+                        'slide':'slide_in',
+                        'fade':'fade_in'
+                      };
+
+            // hides all screens
+            function hide_all() {
+                for (i=0; i<screens.length; i++) {
+                    //get hider and call it for the screen
+                    hider_key = screens[i]['hide'];
+                    hider = hiders[hider_key];
+                    eval(hider+'(screens[i])');
+                    console.log("Hiding", screens[i]['id']);
+                }
+                console.log("All screens hidden");
+            }
+
+            // on load handler.
+            $(document).ready(function() {
+                console.log("Initializing Display");
+                hide_all();
+                slide_show_start();
+                Messaging_start();
+
+                //SLIDESHOW BUTTONS FOR DEBUGGING
+                $('#debug_start').click(function(){slide_show_stop();remote_slide_show_play();});
+                $('#debug_stop').click(function(){slide_show_stop();remote_slide_show_stop();});
+                $('#debug_next').click(function(){slide_show_stop();remote_slide_show_next();});
+                $('#debug_prev').click(function(){slide_show_stop();remote_slide_show_prev();});
+            });
+
+        </script>
+    </head>
+
+    <body>
+        <div id='debug'>
+            <button id="debug_start">Start</button>
+            <button id="debug_stop">Stop</button>
+            <button id="debug_next">Next</button>
+            <button id="debug_prev">Prev</button>
+        </div>
+        <div id='screens'>
+        {% for key, screen in screens.items %}
+            <div id='screen_{{screen.hash}}' class='screen'>
+                {% include screen.template %}
+            </div>
+        {% endfor %}
+        </div>
+    </body> 
