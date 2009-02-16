@@ -80,18 +80,6 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 )
 
-# how long will a registration key last before expiring
-ACCOUNT_ACTIVATION_DAYS = 7 
-AUTH_PROFILE_MODULE = 'repme_core.UserProfile'
-
-
-#email setup
-EMAIL_HOST='smtp.gmail.com'
-EMAIL_HOST_USER = 'repme.test@gmail.com'
-EMAIL_HOST_PASSWORD = 'dkow3Kmc2nCwlgd9bhws'
-EMAIL_PORT=587
-EMAIL_USE_TLS=True
-
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
