@@ -60,7 +60,6 @@ class Screen(Plugin):
     Plugin for screens.  A screen is a single view that can be shown
     on the display.
     """
-
     duration    = models.IntegerField(default=10000, null=True)
     hide        = models.CharField(max_length='30', default="slide")
     show        = models.CharField(max_length='30', default="slide")
