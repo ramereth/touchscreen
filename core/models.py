@@ -31,6 +31,9 @@ if not general_settings.TIMEOUT:
 
 
 class Plugin(models.Model):
+    """
+    Base model for all plugins.
+    """
     hash        = models.CharField(unique=True, max_length=255)
     enabled     = models.BooleanField(default=True)
     name        = None
@@ -53,13 +56,21 @@ class Plugin(models.Model):
         return True
 
 class Screen(Plugin):
+    """
+    Plugin for screens.  A screen is a single view that can be shown
+    on the display.
+    """
+
     duration    = models.IntegerField(default=10000, null=True)
     hide        = models.CharField(max_length='30', default="slide")
     show        = models.CharField(max_length='30', default="slide")
     slideshow   = models.IntegerField(default=1)
-    template    = None
-    css         = None
-    javascript  = None
+
+    # fields that are not parameters so they do not need to be changed on the fly
+    template    = None          # template for the screen
+    js_init = None          # javascript initialization function called on screen load
+    js_start = None         # javascript start function called on screen show
+    js_stop = None          # javascript stop function called on screen hide
 
     def validate(self):
         super.validate(self)
@@ -69,7 +80,7 @@ class Screen(Plugin):
 
         return True
 
-    def __init__(self, template, name, duration=10000, hide='slide', show='slide', slideshow=1, *args, **kwargs):
+    def __init__(self, template, name, duration=10000, hide='slide', show='slide', slideshow=1, js_init=None, js_start=None, js_stop=None, *args, **kwargs):
         Plugin.__init__(self, *args, **kwargs)
         self.name = name
         self.duration = duration
@@ -77,3 +88,6 @@ class Screen(Plugin):
         self.show = show
         self.slideshow = slideshow
         self.template = template
+        self.js_init = js_init
+        self.js_start = js_start
+        self.js_stop = js_stop
