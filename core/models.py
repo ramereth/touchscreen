@@ -1,33 +1,17 @@
 from django.db import models
 import dbsettings
-from dbsettings.loading import set_setting_value
 
 """ ================================================================
 # General Settings
 ================================================================ """
 class GeneralSettings(dbsettings.Group):
-    DISPLAY_HEIGHT     = dbsettings.IntegerValue('Screen Height', 'Height of the display screen')
-    DISPLAY_WIDTH      = dbsettings.IntegerValue('Screen Width','Width of the display screen')
-    MENU_HEIGHT        = dbsettings.IntegerValue('Menu Height', 'Height of the menu screen')
-    MENU_WIDTH         = dbsettings.IntegerValue('Menu Width','Width of the menu screen')
-    DISPLAY_DURATION   = dbsettings.IntegerValue('Default Screen Duration', 'URL of directory where pdb select files are stored')
-    TIMEOUT            = dbsettings.IntegerValue('Screen Timeout', 'Duration of time without activity before the slide show restarts')
+    DISPLAY_HEIGHT     = dbsettings.IntegerValue('Screen Height', 'Height of the display screen', default=768)
+    DISPLAY_WIDTH      = dbsettings.IntegerValue('Screen Width','Width of the display screen', default=1360)
+    MENU_HEIGHT        = dbsettings.IntegerValue('Menu Height', 'Height of the menu screen', default=768)
+    MENU_WIDTH         = dbsettings.IntegerValue('Menu Width','Width of the menu screen', default=1024)
+    DISPLAY_DURATION   = dbsettings.IntegerValue('Default Screen Duration', 'How long screens will be displayed', default=10000)
+    TIMEOUT            = dbsettings.IntegerValue('Screen Timeout', 'Duration of time without activity before the slide show restarts', default=10000)
 general_settings = GeneralSettings('General Settings')
-
-# set defaults for Generic Settings
-if not general_settings.DISPLAY_HEIGHT:
-    set_setting_value('core.models', '', 'DISPLAY_HEIGHT', 768)
-if not general_settings.DISPLAY_WIDTH:
-    set_setting_value('core.models', '', 'DISPLAY_WIDTH', 1360)
-if not general_settings.MENU_HEIGHT:
-    set_setting_value('core.models', '', 'MENU_HEIGHT', 768)
-if not general_settings.MENU_HEIGHT:
-    set_setting_value('core.models', '', 'MENU_WIDTH', 1024)
-if not general_settings.DISPLAY_DURATION:
-    set_setting_value('core.models', '', 'DISPLAY_DURATION', 10000)
-if not general_settings.TIMEOUT:
-    set_setting_value('core.models', '', 'TIMEOUT', 10000)
-
 
 
 class Plugin(models.Model):
@@ -39,6 +23,7 @@ class Plugin(models.Model):
     name        = None
     app         = None
     description = None
+    settings    = None
 
     class Meta:
         abstract = True
@@ -79,10 +64,11 @@ class Screen(Plugin):
 
         return True
 
-    def __init__(self, template, name, duration=10000, hide='slide', show='slide', slideshow=1, js_init=None, js_start=None, js_stop=None, *args, **kwargs):
+    def __init__(self, template, name, duration=10000, settings=None, hide='slide', show='slide', slideshow=True, js_init=None, js_start=None, js_stop=None, *args, **kwargs):
         Plugin.__init__(self, *args, **kwargs)
         self.name = name
         self.duration = duration
+        self.settings = settings
         self.hide = hide
         self.show = show
         self.slideshow = slideshow

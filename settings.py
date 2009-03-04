@@ -23,7 +23,7 @@ DATABASE_PORT = ''             # Set to empty string for default. Not used with 
 SITE_ROOT = ''
 
 # absolute path to the docroot of this site
-DOC_ROOT = '/home/peter/wrk/biggerscreen'
+DOC_ROOT = '/home/peter/wrk/touchscreen'
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -72,25 +72,13 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 )
 
-ROOT_URLCONF = 'biggerscreen.urls'
+ROOT_URLCONF = 'touchscreen.urls'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
 )
-
-# how long will a registration key last before expiring
-ACCOUNT_ACTIVATION_DAYS = 7 
-AUTH_PROFILE_MODULE = 'repme_core.UserProfile'
-
-
-#email setup
-EMAIL_HOST='smtp.gmail.com'
-EMAIL_HOST_USER = 'repme.test@gmail.com'
-EMAIL_HOST_PASSWORD = 'dkow3Kmc2nCwlgd9bhws'
-EMAIL_PORT=587
-EMAIL_USE_TLS=True
 
 INSTALLED_APPS = (
     'django.contrib.auth',

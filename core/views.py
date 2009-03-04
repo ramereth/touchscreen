@@ -14,16 +14,17 @@ def plugin_processor(request):
         PLUGIN_MANAGER = PluginManager()
         PLUGIN_MANAGER.autodiscover()
 
-    return {'plugin_manager':PLUGIN_MANAGER}
+    return {'plugin_manager':PLUGIN_MANAGER,
+            'settings':PLUGIN_MANAGER.get_settings()
+            }
 
 # Create your views here.
 def display(request):
-    
+
     rc = RequestContext(request, processors=[plugin_processor])
 
     return render_to_response('display.html', {
         'screens':PLUGIN_MANAGER.screens,
-        'settings':general_settings
     }, context_instance=rc)
 
 

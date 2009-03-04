@@ -243,7 +243,7 @@
                         'hide':     '{{screen.hide}}',      // Function for hiding the screen
                         'show':     '{{screen.show}}',      // Function for showing the screen
                         'duration': {{screen.duration}},    // How long screen will be displayed
-                        'slideshow':{{screen.slideshow}},   // Include in slideshow
+                        'slideshow':{% if screen.slideshow %}1{%else%}0{%endif%},   // Include in slideshow
                         'init':     '{{screen.js_init}}',   // Javascript function called when screen is first loaded
                         'start':    '{{screen.js_start}}',  // Javascript function called after showing the screen
                         'stop':     '{{screen.js_stop}}'    // Javascript function called after hiding the screen
