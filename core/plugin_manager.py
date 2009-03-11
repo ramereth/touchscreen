@@ -1,5 +1,5 @@
 from models import *
-from core.settings import general_settings
+from core.models import general_settings
 
 class PluginManager():
     def __init__(self):
@@ -29,8 +29,10 @@ class PluginManager():
         """
         touchscreen_settings = {'general':general_settings}
         for screen in self.screens.values():
+            print screen.hash, screen.settings
             if screen.settings:
                 touchscreen_settings[screen.hash] = screen.settings
+        print touchscreen_settings
         return touchscreen_settings
 
     """

@@ -3,6 +3,7 @@ from django.conf import settings
 from django.template import RequestContext
 
 from plugin_manager import *
+from models import general_settings
 
 PLUGIN_MANAGER = None
 

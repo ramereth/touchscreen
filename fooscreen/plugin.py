@@ -1,5 +1,5 @@
 from core.models import *
-from fooscreen.settings import foo_settings
+from models import foo_settings
 
 """
 create instance of screens this plugin provides
