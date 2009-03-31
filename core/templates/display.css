@@ -1,0 +1,26 @@
+*{
+    margin:0px;
+    padding:0px;
+}
+
+#screens {
+    position: absolute;
+    height:100%;
+    width:100%;
+    background-color:black;
+    background-image: url('{{MEDIA_URL}}/images/background-gray-1280x1024.gif');
+    background-repeat:repeat-x;
+}
+
+.screen {
+    position: absolute;
+    height:100%;
+    width:100%;
+}
+
+.background {
+    position:absolute;
+    height:100%;
+    width:100%;
+}
+
