@@ -15,9 +15,13 @@ urlpatterns = patterns('',
     # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-    # (r'^admin/(.*)', admin.site.root),
-
+    #(r'^admin/(.*)', admin.site.root),
+    
+    # Enable the touchscreen core
     (r'^/*', include('core.urls')),
+    
+    # Enable dbsettings
+    (r'^settings/', include('dbsettings.urls')),
 )
 
 #The following is used to serve up local media files like images

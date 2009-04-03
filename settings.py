@@ -23,7 +23,7 @@ DATABASE_PORT = ''             # Set to empty string for default. Not used with 
 SITE_ROOT = ''
 
 # absolute path to the docroot of this site
-DOC_ROOT = '/home/peter/wrk/touchscreen'
+DOC_ROOT = '/home/rob/touchscreen'
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -85,8 +85,11 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
+    'django.contrib.admin',
     'dbsettings',
     'core',
-    'helloscreen',
-    'fooscreen',
+    #'helloscreen',
+    #'fooscreen',
+	'screen_osl_about',
+	#'screen_webcams'
 )
