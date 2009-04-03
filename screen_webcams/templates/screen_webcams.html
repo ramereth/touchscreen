@@ -1,0 +1,144 @@
+<style>
+    #screen_webcams_background {
+		background-color:grey;
+		height:630px;
+    }
+
+	.screen_webcams_commonStyle {
+		position: absolute;
+		background-color:#F8F8FF; /* ghost grey */
+		border: orange double;
+	}
+
+    #screen_webcams_main {
+        top:170px;
+        left:220px;
+        width:410px;
+        height:308px;
+    }
+
+    #screen_webcams_south {
+        top:10px;
+        left:10px;
+        width:200px;
+        height:150px;
+    }
+
+    #screen_webcams_baseball {
+        top:10px;
+        left:220px;
+        width:200px;
+        height:150px;
+    }
+
+    #screen_webcams_annex {
+        top:10px;
+        left:430px;
+        width:200px;
+        height:150px;
+    }
+
+    #screen_webcams_mu {
+        top:170px;
+        left:10px;
+        width:200px;
+        height:150px;
+	}
+
+    #screen_webcams_library {
+        top:330px;
+        left:10px;
+        width:200px;
+        height:150px; 
+        //height:200px;
+    }
+</style>
+
+<script type="text/javascript">
+
+	// This function is run when this plugin initializes itself 
+    function screen_webcams_init() {
+
+        // for this example just output to firebug console
+        console.log('screen_webcams is initializing itself');
+
+		// variables to hold the addresses to the current web cam shots
+		var ADDR_SOUTH		= "http://webcam.oregonstate.edu/live/south_current.jpg";
+		var ADDR_BASEBALL	= "http://webcam.oregonstate.edu/live/baseball_current.jpg";
+		var ADDR_ANNEX		= "http://webcam.oregonstate.edu/live/annex_current";
+		var ADDR_MU			= "http://webcam.oregonstate.edu/live/mu_current.jpg";
+		var ADDR_LIBRARY	= "http://webcam.oregonstate.edu/live/library_current.jpg";
+
+		// -------------------
+		// DIV INITIALIZATIONS
+		// -------------------
+
+		// main div picture
+		$("#screen_webcams_main").html("<img src='"+ADDR_MU+"' width=410>");
+
+		// boarder div pictures
+		$("#screen_webcams_south").html("<img src='"+ADDR_SOUTH+"' width=200>");
+		$("#screen_webcams_baseball").html("<img src='"+ADDR_BASEBALL+"' width=200>");
+		//$("#screen_webcams_annex").html("<img src='"+ADDR_ANNEX+"' width=200>");
+		$("#screen_webcams_annex").html("Annex image 404'd :-(");
+		$("#screen_webcams_mu").html("<img src='"+ADDR_MU+"' width=200>");
+		$("#screen_webcams_library").html("<img src='"+ADDR_LIBRARY+"' width=200>");
+		
+		// ------------------------
+		// DIV CLICK EVENT HANDLING
+		// ------------------------
+		// NOTE: This section is for demonstration purposes only. In the future, this 
+		// div manipulation will be done via the touchscreen interface.
+		$("#screen_webcams_south").click(function(){ 
+			displayToMainDiv( ADDR_SOUTH );
+		});
+		$("#screen_webcams_baseball").click(function(){ 
+			displayToMainDiv( ADDR_BASEBALL );
+		});
+		$("#screen_webcams_annex").click(function(){ 
+			//commented out b/c annex image does not exist
+			//displayToMainDiv( ADDR_ANNEX );
+		});
+		$("#screen_webcams_mu").click(function(){ 
+			displayToMainDiv( ADDR_MU );
+		});
+		$("#screen_webcams_library").click(function(){ 
+			displayToMainDiv( ADDR_LIBRARY );
+		});
+
+		// display an image at address addr in the main div
+		function displayToMainDiv( addr ){
+			$("#screen_webcams_main").hide(function(){
+				$("#screen_webcams_main")
+					.html("<img src='"+addr+"' width=410>");
+			});
+			$("#screen_webcams_main").show("slow");
+		}
+    }
+
+    function screen_webcams_start() {
+        // for this example just output to firebug console
+        console.log('screen_webcams is starting because i was shown');
+    }
+
+    function screen_webcams_stop() {
+        // for this example just output to firebug console
+        console.log('screen_webcams is stopping because im being hidden');
+    }
+</script>
+
+<!-- set up HTML divs -->
+
+<div id="screen_webcams_background" class="background"></div>
+
+<div id="screen_webcams_main" class="screen_webcams_commonStyle"></div>
+
+<div id="screen_webcams_south" class="screen_webcams_commonStyle"></div>
+
+<div id="screen_webcams_baseball" class="screen_webcams_commonStyle"></div>
+
+<div id="screen_webcams_annex" class="screen_webcams_commonStyle" ></div>
+
+<div id="screen_webcams_mu" class="screen_webcams_commonStyle"></div>
+
+<div id="screen_webcams_library" class="screen_webcams_commonStyle"></div>
