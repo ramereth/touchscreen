@@ -72,17 +72,14 @@
     // variables for the screen's border and tile padding
     var SCREEN_BORDER   = 10; //border between the edge of the screen and the
                               //tiles
-    var TILE_PADDING    = 10; //padding between the tiles
-    var CONTENT_PADDING = 10; //padding between the tile border and content
     
     // variables to control the size of the tiles and their elements
-    var TN_TITLE_HEIGHT     = 10;  //height of the thumbnail titles
     var TN_IMG_HEIGHT       = 120; //height of the thumbnail images
-    var TN_IMG_WIDTH        = 3*TN_IMG_HEIGHT/4; //width of the thumbnail images
+    var TN_IMG_WIDTH        = 160; //width of the thumbnail images
+    var TN_IMG_WIDTH_WS     = 176; //widescreen thumnail width
     
-    var MAIN_TITLE_HEIGHT   = 14;  //height of the main title
-    var MAIN_IMG_HEIGHT     = 480; //height of the thumbnail images
-    var MAIN_IMG_WIDTH      = 3*TN_IMG_HEIGHT/4; //width of the thumbnail images
+    var MAIN_IMG_HEIGHT     = 480; //height of the main images
+    var MAIN_IMG_WIDTH      = 640; //width of the main images
 
     // ===============
     //  screen events
@@ -120,68 +117,57 @@
     // ==============
 
     function screen_webcams_initTiles(){
+    
+        // calculate the first row's tile padding (to evently distribute the top
+        // row tiles across the width of the screen)
+        var topRowTilePadding = ( {{settings.general.DISPLAY_WIDTH}} - 
+                                2 * SCREEN_BORDER - 4 * TN_IMG_WIDTH -
+                                2 * TN_IMG_WIDTH )/5;
+        
         // row 1 ---------------------------------------------------------------
+        $("#screen_webcams_monroe").css('top', SCREEN_BORDER );
+        $("#screen_webcams_monroe").css('left', SCREEN_BORDER );                                        
+        $("#screen_webcams_title_monroe").html( TITLE_MONROE );
+        $("#screen_webcams_img_monroe").attr( 'src', ADDR_MONROE );
+        $("#screen_webcams_img_monroe").height( TN_IMG_HEIGHT );
+        
+        $("#screen_webcams_reser").css('top', SCREEN_BORDER );
+        $("#screen_webcams_reser").css('left', SCREEN_BORDER + $("#screen_webcams_monroe").outerWidth(true) + topRowTilePadding );                                        
+        $("#screen_webcams_title_reser").html( TITLE_RESER );
+        $("#screen_webcams_img_reser").attr( 'src', ADDR_RESER );
+        $("#screen_webcams_img_reser").height( TN_IMG_HEIGHT );
+        
         $("#screen_webcams_mu").css('top', SCREEN_BORDER );
-        $("#screen_webcams_mu").css('left', SCREEN_BORDER );                                        
+        $("#screen_webcams_mu").css('left', SCREEN_BORDER + $("#screen_webcams_monroe").outerWidth(true) + $("#screen_webcams_reser").outerWidth(true) + topRowTilePadding * 2 );                                        
         $("#screen_webcams_title_mu").html( TITLE_MU );
         $("#screen_webcams_img_mu").attr( 'src', ADDR_MU );
         $("#screen_webcams_img_mu").height( TN_IMG_HEIGHT );
         
         $("#screen_webcams_library").css('top', SCREEN_BORDER );
-        $("#screen_webcams_library").css('left', SCREEN_BORDER + $("#screen_webcams_mu").outerWidth(true) + CONTENT_PADDING );                                        
+        $("#screen_webcams_library").css('left', SCREEN_BORDER + $("#screen_webcams_monroe").outerWidth(true) + $("#screen_webcams_reser").outerWidth(true) + $("#screen_webcams_mu").outerWidth(true) + topRowTilePadding * 3 );                                        
         $("#screen_webcams_title_library").html( TITLE_LIBRARY );
         $("#screen_webcams_img_library").attr( 'src', ADDR_LIBRARY );
         $("#screen_webcams_img_library").height( TN_IMG_HEIGHT );
         
-        $("#screen_webcams_south").css('top', SCREEN_BORDER );
-        $("#screen_webcams_south").css('left', SCREEN_BORDER + $("#screen_webcams_mu").outerWidth(true) + $("#screen_webcams_library").outerWidth(true) + CONTENT_PADDING*2 );                                        
-        $("#screen_webcams_title_south").html( TITLE_SOUTH );
-        $("#screen_webcams_img_south").attr( 'src', ADDR_SOUTH );
-        $("#screen_webcams_img_south").height( TN_IMG_HEIGHT );
-        
-        $("#screen_webcams_reser").css('top', SCREEN_BORDER );
-        $("#screen_webcams_reser").css('left', SCREEN_BORDER + $("#screen_webcams_mu").outerWidth(true) + $("#screen_webcams_library").outerWidth(true) + $("#screen_webcams_south").outerWidth(true) + CONTENT_PADDING*3 );                                        
-        $("#screen_webcams_title_reser").html( TITLE_RESER );
-        $("#screen_webcams_img_reser").attr( 'src', ADDR_RESER );
-        $("#screen_webcams_img_reser").height( TN_IMG_HEIGHT );
-        
         $("#screen_webcams_gloss").css('top', SCREEN_BORDER );
-        $("#screen_webcams_gloss").css('left', SCREEN_BORDER + $("#screen_webcams_mu").outerWidth(true) + $("#screen_webcams_library").outerWidth(true) + $("#screen_webcams_south").outerWidth(true) + $("#screen_webcams_reser").outerWidth(true) + CONTENT_PADDING*4 );                                        
+        $("#screen_webcams_gloss").css('left', SCREEN_BORDER + $("#screen_webcams_monroe").outerWidth(true) + $("#screen_webcams_reser").outerWidth(true) + $("#screen_webcams_mu").outerWidth(true) + $("#screen_webcams_library").outerWidth(true) + topRowTilePadding * 4 );                                        
         $("#screen_webcams_title_gloss").html( TITLE_GLOSS );
         $("#screen_webcams_img_gloss").attr( 'src', ADDR_GLOSS );
         $("#screen_webcams_img_gloss").height( TN_IMG_HEIGHT );
         
-        $("#screen_webcams_andrews").css('top', SCREEN_BORDER );
-        $("#screen_webcams_andrews").css('left', SCREEN_BORDER + $("#screen_webcams_mu").outerWidth(true) + $("#screen_webcams_library").outerWidth(true) + $("#screen_webcams_south").outerWidth(true) + $("#screen_webcams_reser").outerWidth(true) + $("#screen_webcams_gloss").outerWidth(true) + CONTENT_PADDING*5 );                                        
-        $("#screen_webcams_title_andrews").html( TITLE_ANDREWS );
-        $("#screen_webcams_img_andrews").attr( 'src', ADDR_ANDREWS );
-        $("#screen_webcams_img_andrews").height( TN_IMG_HEIGHT );
-        
-        $("#screen_webcams_hatfield").css('top', SCREEN_BORDER );
-        $("#screen_webcams_hatfield").css('left', SCREEN_BORDER + $("#screen_webcams_mu").outerWidth(true) + $("#screen_webcams_library").outerWidth(true) + $("#screen_webcams_south").outerWidth(true) + $("#screen_webcams_reser").outerWidth(true) + $("#screen_webcams_gloss").outerWidth(true) + $("#screen_webcams_andrews").outerWidth(true) + CONTENT_PADDING*6 );                                        
-        $("#screen_webcams_title_hatfield").html( TITLE_HATFIELD );
-        $("#screen_webcams_img_hatfield").attr( 'src', ADDR_HATFIELD );
-        $("#screen_webcams_img_hatfield").height( TN_IMG_HEIGHT );
-        
-        // row 2 ---------------------------------------------------------------      
-        $("#screen_webcams_main").css('top', SCREEN_BORDER + $("#screen_webcams_mu").outerHeight(true) + CONTENT_PADDING );
-        $("#screen_webcams_main").css('left', SCREEN_BORDER + $("#screen_webcams_mu").outerWidth(true) + CONTENT_PADDING );
-        $("#screen_webcams_title_main").html( TITLE_MU );
-        $("#screen_webcams_img_main").attr( 'src', ADDR_MU );
-        $("#screen_webcams_img_main").height( MAIN_IMG_HEIGHT );
-        
-        $("#screen_webcams_studcomp").css('top', SCREEN_BORDER + $("#screen_webcams_mu").outerHeight(true) + CONTENT_PADDING );
-        $("#screen_webcams_studcomp").css('left', SCREEN_BORDER + $("#screen_webcams_main").outerWidth(true) + CONTENT_PADDING * 2 );                                        
-        $("#screen_webcams_title_studcomp").html( "434 x 328" );
-        $("#screen_webcams_img_studcomp").attr( 'src', ADDR_STUDCOMP );
-        $("#screen_webcams_img_studcomp").height( TN_IMG_HEIGHT );
-        
-        // row 3 ---------------------------------------------------------------
-        $("#screen_webcams_wave").css('top', SCREEN_BORDER + $("#screen_webcams_mu").outerHeight(true) + $("#screen_webcams_main").outerHeight(true) + CONTENT_PADDING * 2 );
-        $("#screen_webcams_wave").css('left', SCREEN_BORDER );                                        
+        $("#screen_webcams_wave").css('top', SCREEN_BORDER );
+        $("#screen_webcams_wave").css('left', SCREEN_BORDER + $("#screen_webcams_monroe").outerWidth(true) + $("#screen_webcams_reser").outerWidth(true) + $("#screen_webcams_mu").outerWidth(true) + $("#screen_webcams_library").outerWidth(true) + $("#screen_webcams_gloss").outerWidth(true) + topRowTilePadding * 5 );                                        
         $("#screen_webcams_title_wave").html( TITLE_WAVE );
         $("#screen_webcams_img_wave").attr( 'src', ADDR_WAVE );
         $("#screen_webcams_img_wave").height( TN_IMG_HEIGHT );
+        
+        // row 2 ---------------------------------------------------------------      
+        $("#screen_webcams_main").css('top', SCREEN_BORDER + $("#screen_webcams_mu").outerHeight(true) );
+        $("#screen_webcams_main").css('left', SCREEN_BORDER + $("#screen_webcams_mu").outerWidth(true) );
+        $("#screen_webcams_title_main").html( TITLE_MU );
+        $("#screen_webcams_img_main").attr( 'src', ADDR_MU );
+        $("#screen_webcams_img_main").height( MAIN_IMG_HEIGHT );
+
     }
 
     // ==============
