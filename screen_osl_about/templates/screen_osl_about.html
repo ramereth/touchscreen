@@ -17,7 +17,7 @@
         font-size: 8pt;           /* set the text size for all tiles to 8pt */
         position: absolute;       /* set up the position type */
         background-color:#F8F8FF; /* set the background color to ghost-grey */
-        border: black double;     /* set a double-orange line boarder */
+        border: black double;     /* set a double-black line boarder */
     }
 
 </style>
@@ -25,6 +25,10 @@
 <!-- tile position, size, and animation javascript code ----------------------->
 <script type="text/javascript">
 
+    // ===============
+    //  screen events 
+    // ===============
+    
     // This function runs when this plugin initializes 
     function screen_osl_about_init() {
 
@@ -36,57 +40,8 @@
         $("#screen_osl_about_rightTop").hide();
         $("#screen_osl_about_rightBottom").hide();
 
-        // position and size the tiles -----------------------------------------
-
-        // variables for the screen's border and tile padding. These will event-
-        // ually be db settings
-        var SCREEN_BORDER = 10; //border between the edge of the screen and the
-                                //tiles
-        var TILE_PADDING  = 10; //padding between the tiles
-
-        // grab the right-top tile height and width
-        var rightTopTileHeight = $('#screen_osl_about_rightTop').outerHeight(true);
-        var rightTopTileWidth = $('#screen_osl_about_rightTop').outerWidth(true);
-
-        // position and size the left tile
-        $("#screen_osl_about_left").css('top',  SCREEN_BORDER );
-        $("#screen_osl_about_left").css('left', SCREEN_BORDER );
-        $("#screen_osl_about_left").height( {{settings.general.DISPLAY_HEIGHT}} - 
-                                            SCREEN_BORDER * 2 );
-        $("#screen_osl_about_left").width(  {{settings.general.DISPLAY_WIDTH}} - 
-                                            SCREEN_BORDER * 2 - TILE_PADDING - 
-                                            rightTopTileWidth );
-
-        // grab the left tile width now that it has been resized
-        var leftTileWidth = $('#screen_osl_about_left').outerWidth(true)
-
-        // position the right-top tile
-        $("#screen_osl_about_rightTop").css('top',  SCREEN_BORDER );
-        $("#screen_osl_about_rightTop").css('left', SCREEN_BORDER +    
-                                                    leftTileWidth + 
-                                                    TILE_PADDING );
-        $("#screen_osl_about_rightTop").height( document.
-                                                getElementById('EdRayImg').
-                                                height );
-        $("#screen_osl_about_rightTop").width( document.
-                                               getElementById('EdRayImg').
-                                               width );
-
-        // position and size the right-bottom tile
-        $("#screen_osl_about_rightBottom").css('top',    SCREEN_BORDER + 
-                                                         TILE_PADDING + 
-                                                         rightTopTileHeight );
-        $("#screen_osl_about_rightBottom").css('left',   SCREEN_BORDER + 
-                                                         TILE_PADDING + 
-                                                         leftTileWidth );
-        $("#screen_osl_about_rightBottom").height( {{settings.general.DISPLAY_HEIGHT}} - 
-                                                   SCREEN_BORDER * 2 - 
-                                                   TILE_PADDING -
-                                                   rightTopTileHeight );
-        $("#screen_osl_about_rightBottom").width( {{settings.general.DISPLAY_WIDTH}} -
-                                                   SCREEN_BORDER * 2 -
-                                                   TILE_PADDING -
-                                                   leftTileWidth );
+        //initialize the tiles
+        screen_osl_about_initTiles();
     }
 
     // called when this plugin begins showing itself
@@ -115,6 +70,65 @@
         $("#screen_osl_about_left").hide("slow");
         $("#screen_osl_about_rightTop").hide("slow");
         $("#screen_osl_about_rightBottom").hide("slow");
+    }
+    
+    // ==============
+    //  initializers
+    // ==============
+    
+    function screen_osl_about_initTiles() {
+        // variables for the screen's border and tile padding. These will event-
+        // ually be db settings
+        var SCREEN_BORDER = 10; //border between the edge of the screen and the
+                                //tiles
+        var TILE_PADDING  = 10; //padding between the tiles
+        var CONTENT_PADDING = 10; //padding between the tile border and content
+
+        // grab the right-top tile height and width
+        var rightTopTileHeight = $('#screen_osl_about_rightTop').outerHeight(true);
+        var rightTopTileWidth = $('#screen_osl_about_rightTop').outerWidth(true);
+
+        // position and size the left tile
+        $("#screen_osl_about_left").css('padding', CONTENT_PADDING );
+        $("#screen_osl_about_left").css('top',  SCREEN_BORDER );
+        $("#screen_osl_about_left").css('left', SCREEN_BORDER );
+        $("#screen_osl_about_left").height( {{settings.general.DISPLAY_HEIGHT}} - 
+                                            SCREEN_BORDER * 2 );
+        $("#screen_osl_about_left").width(  {{settings.general.DISPLAY_WIDTH}} - 
+                                            SCREEN_BORDER * 2 - TILE_PADDING - 
+                                            rightTopTileWidth );
+
+        // grab the left tile width now that it has been resized
+        var leftTileWidth = $('#screen_osl_about_left').outerWidth(true)
+
+        // position the right-top tile
+        $("#screen_osl_about_rightTop").css('top',  SCREEN_BORDER );
+        $("#screen_osl_about_rightTop").css('left', SCREEN_BORDER +    
+                                                    leftTileWidth + 
+                                                    TILE_PADDING );
+        $("#screen_osl_about_rightTop").height( document.
+                                                getElementById('EdRayImg').
+                                                height );
+        $("#screen_osl_about_rightTop").width( document.
+                                               getElementById('EdRayImg').
+                                               width );
+
+        // position and size the right-bottom tile
+        $("#screen_osl_about_rightBottom").css('padding', CONTENT_PADDING );
+        $("#screen_osl_about_rightBottom").css('top',    SCREEN_BORDER + 
+                                                         TILE_PADDING + 
+                                                         rightTopTileHeight );
+        $("#screen_osl_about_rightBottom").css('left',   SCREEN_BORDER + 
+                                                         TILE_PADDING + 
+                                                         leftTileWidth );
+        $("#screen_osl_about_rightBottom").height( {{settings.general.DISPLAY_HEIGHT}} - 
+                                                   SCREEN_BORDER * 2 - 
+                                                   TILE_PADDING -
+                                                   rightTopTileHeight );
+        $("#screen_osl_about_rightBottom").width( {{settings.general.DISPLAY_WIDTH}} -
+                                                  SCREEN_BORDER * 2 -
+                                                  TILE_PADDING -
+                                                  leftTileWidth );
     }
 </script>
 
