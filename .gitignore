@@ -1,4 +1,6 @@
+# This file tells git to ignore files who's names match the following patterns:
+
 *.pyc
 *~
 *.bkp*
-
+*swp
