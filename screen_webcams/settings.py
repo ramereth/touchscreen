@@ -1,5 +1,5 @@
-from django.db import models
 import dbsettings
+
 
 """ ================================================================
 # Settings for screen_webcams

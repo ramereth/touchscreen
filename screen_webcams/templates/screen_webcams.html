@@ -76,10 +76,12 @@
     // variables to control the size of the tiles and their elements
     var TN_IMG_HEIGHT       = 120; //height of the thumbnail images
     var TN_IMG_WIDTH        = 160; //width of the thumbnail images
-    var TN_IMG_WIDTH_WS     = 176; //widescreen thumnail width
     
     var MAIN_IMG_HEIGHT     = 480; //height of the main images
     var MAIN_IMG_WIDTH      = 640; //width of the main images
+    
+    // for image refresh
+    var IMG_REFRESH_INTERVAL = 3000; // time in ms to refresh the images
 
     // ===============
     //  screen events
@@ -94,12 +96,53 @@
 		// click event handling (NOTE: This section is for demonstration 
 		// purposes only. Eventually, these div manipulations will be done via 
 		// the touchscreen interface.
+		$("#screen_webcams_monroe").click(function(){ 
+		    displayToMainTile( TITLE_MONROE, ADDR_MONROE );
+		});
+		$("#screen_webcams_reser").click(function(){ 
+		    displayToMainTile( TITLE_RESER, ADDR_RESER );
+		});
 		$("#screen_webcams_mu").click(function(){ 
-			displayToMainTile( TITLE_MU, ADDR_MU );
+		    displayToMainTile( TITLE_MU, ADDR_MU );
+		});
+		$("#screen_webcams_library").click(function(){ 
+		    displayToMainTile( TITLE_LIBRARY, ADDR_LIBRARY );
+		});
+		$("#screen_webcams_gloss").click(function(){ 
+		    displayToMainTile( TITLE_GLOSS, ADDR_GLOSS );
+		});
+		$("#screen_webcams_wave").click(function(){ 
+		    displayToMainTile( TITLE_WAVE, ADDR_WAVE );
+		});
+		$("#screen_webcams_hatfield").click(function(){ 
+		    displayToMainTile( TITLE_HATFIELD, ADDR_HATFIELD );
+		});
+		$("#screen_webcams_agate").click(function(){ 
+		    displayToMainTile( TITLE_AGATE, ADDR_AGATE );
+		});
+		$("#screen_webcams_wecoma").click(function(){ 
+		    displayToMainTile( TITLE_WECOMA, ADDR_WECOMA );
+		});
+		$("#screen_webcams_south").click(function(){ 
+		    displayToMainTile( TITLE_SOUTH, ADDR_SOUTH );
+		});
+		$("#screen_webcams_gill").click(function(){ 
+		    displayToMainTile( TITLE_GILL, ADDR_GILL );
+		});
+		$("#screen_webcams_andrews").click(function(){ 
+		    displayToMainTile( TITLE_ANDREWS, ADDR_ANDREWS );
 		});
 		
 		// initialize the tiles
 		screen_webcams_initTiles();
+		
+		// make images refresh themselves at the specified interval
+		$('img').refreshImage({
+            interval:IMG_REFRESH_INTERVAL,
+            start:true
+        });
+        
+        alert("{{settings.screen_webcams_screen_webcams.ADDR_1}}");
     }
 
     function screen_webcams_start() {
@@ -118,71 +161,158 @@
 
     function screen_webcams_initTiles(){
     
-        // calculate the first row's tile padding (to evently distribute the top
-        // row tiles across the width of the screen)
-        var topRowTilePadding = ( {{settings.general.DISPLAY_WIDTH}} - 
-                                2 * SCREEN_BORDER - 4 * TN_IMG_WIDTH -
-                                2 * TN_IMG_WIDTH )/5;
+        // Vars for the padding between the tiles. Values will be calculated 
+        // after tiles are filled with content because they depend on tile size.
+        var tilePadding_horiz_topRow     = 0;
+        var tilePadding_vert_outerCols   = 0;
+                                
+        // fill the tiles with content -----------------------------------------
+        // Note: These have to be filled via JavaScript in order to access the
+        // tile property values defined above.       
+        fillThumbnail( "monroe",   TITLE_MONROE,   ADDR_MONROE   );
+        fillThumbnail( "reser",    TITLE_RESER,    ADDR_RESER    );
+        fillThumbnail( "mu",       TITLE_MU,       ADDR_MU       );
+        fillThumbnail( "library",  TITLE_LIBRARY,  ADDR_LIBRARY  );
+        fillThumbnail( "gloss",    TITLE_GLOSS,    ADDR_GLOSS    );
+        fillThumbnail( "wave",     TITLE_WAVE,     ADDR_WAVE     );
+        fillThumbnail( "hatfield", TITLE_HATFIELD, ADDR_HATFIELD );
+        fillThumbnail( "agate",    TITLE_AGATE,    ADDR_AGATE    );
+        fillThumbnail( "wecoma",   TITLE_WECOMA,   ADDR_WECOMA   );
+        fillThumbnail( "south",    TITLE_SOUTH,    ADDR_SOUTH    );
+        fillThumbnail( "gill",     TITLE_GILL,     ADDR_GILL     );
+        fillThumbnail( "andrews",  TITLE_ANDREWS,  ADDR_ANDREWS  );
         
-        // row 1 ---------------------------------------------------------------
+        // position the tiles --------------------------------------------------    
+        
+        // calculate the padding between the tiles to evently distribute them
+        // across the screen
+        tilePadding_horiz_topRow = 
+                               ( {{settings.general.DISPLAY_WIDTH}} - 
+                               2 * SCREEN_BORDER - 
+                               $("#screen_webcams_monroe").outerWidth(true) -
+                               $("#screen_webcams_reser").outerWidth(true) -
+                               $("#screen_webcams_mu").outerWidth(true) -
+                               $("#screen_webcams_library").outerWidth(true) -
+                               $("#screen_webcams_gloss").outerWidth(true) -
+                               $("#screen_webcams_wave").outerWidth(true)
+                               )/5;
+        
+        tilePadding_vert_outerCols =
+                               ( {{settings.general.DISPLAY_HEIGHT}} - 
+                               2 * SCREEN_BORDER - 
+                               $("#screen_webcams_monroe").outerHeight(true) -
+                               $("#screen_webcams_south").outerHeight(true) -
+                               $("#screen_webcams_gill").outerHeight(true) -
+                               $("#screen_webcams_andrews").outerHeight(true)
+                               )/3;
+        
+        // top row
         $("#screen_webcams_monroe").css('top', SCREEN_BORDER );
         $("#screen_webcams_monroe").css('left', SCREEN_BORDER );                                        
-        $("#screen_webcams_title_monroe").html( TITLE_MONROE );
-        $("#screen_webcams_img_monroe").attr( 'src', ADDR_MONROE );
-        $("#screen_webcams_img_monroe").height( TN_IMG_HEIGHT );
         
         $("#screen_webcams_reser").css('top', SCREEN_BORDER );
-        $("#screen_webcams_reser").css('left', SCREEN_BORDER + $("#screen_webcams_monroe").outerWidth(true) + topRowTilePadding );                                        
-        $("#screen_webcams_title_reser").html( TITLE_RESER );
-        $("#screen_webcams_img_reser").attr( 'src', ADDR_RESER );
-        $("#screen_webcams_img_reser").height( TN_IMG_HEIGHT );
+        $("#screen_webcams_reser").css('left', SCREEN_BORDER + $("#screen_webcams_monroe").outerWidth(true) + tilePadding_horiz_topRow );                                        
         
         $("#screen_webcams_mu").css('top', SCREEN_BORDER );
-        $("#screen_webcams_mu").css('left', SCREEN_BORDER + $("#screen_webcams_monroe").outerWidth(true) + $("#screen_webcams_reser").outerWidth(true) + topRowTilePadding * 2 );                                        
-        $("#screen_webcams_title_mu").html( TITLE_MU );
-        $("#screen_webcams_img_mu").attr( 'src', ADDR_MU );
-        $("#screen_webcams_img_mu").height( TN_IMG_HEIGHT );
+        $("#screen_webcams_mu").css('left', SCREEN_BORDER + $("#screen_webcams_monroe").outerWidth(true) + $("#screen_webcams_reser").outerWidth(true) + tilePadding_horiz_topRow * 2 );                                        
         
         $("#screen_webcams_library").css('top', SCREEN_BORDER );
-        $("#screen_webcams_library").css('left', SCREEN_BORDER + $("#screen_webcams_monroe").outerWidth(true) + $("#screen_webcams_reser").outerWidth(true) + $("#screen_webcams_mu").outerWidth(true) + topRowTilePadding * 3 );                                        
-        $("#screen_webcams_title_library").html( TITLE_LIBRARY );
-        $("#screen_webcams_img_library").attr( 'src', ADDR_LIBRARY );
-        $("#screen_webcams_img_library").height( TN_IMG_HEIGHT );
+        $("#screen_webcams_library").css('left', SCREEN_BORDER + $("#screen_webcams_monroe").outerWidth(true) + $("#screen_webcams_reser").outerWidth(true) + $("#screen_webcams_mu").outerWidth(true) + tilePadding_horiz_topRow * 3 );                                        
         
         $("#screen_webcams_gloss").css('top', SCREEN_BORDER );
-        $("#screen_webcams_gloss").css('left', SCREEN_BORDER + $("#screen_webcams_monroe").outerWidth(true) + $("#screen_webcams_reser").outerWidth(true) + $("#screen_webcams_mu").outerWidth(true) + $("#screen_webcams_library").outerWidth(true) + topRowTilePadding * 4 );                                        
+        $("#screen_webcams_gloss").css('left', SCREEN_BORDER + $("#screen_webcams_monroe").outerWidth(true) + $("#screen_webcams_reser").outerWidth(true) + $("#screen_webcams_mu").outerWidth(true) + $("#screen_webcams_library").outerWidth(true) + tilePadding_horiz_topRow * 4 );                                        
         $("#screen_webcams_title_gloss").html( TITLE_GLOSS );
         $("#screen_webcams_img_gloss").attr( 'src', ADDR_GLOSS );
         $("#screen_webcams_img_gloss").height( TN_IMG_HEIGHT );
         
         $("#screen_webcams_wave").css('top', SCREEN_BORDER );
-        $("#screen_webcams_wave").css('left', SCREEN_BORDER + $("#screen_webcams_monroe").outerWidth(true) + $("#screen_webcams_reser").outerWidth(true) + $("#screen_webcams_mu").outerWidth(true) + $("#screen_webcams_library").outerWidth(true) + $("#screen_webcams_gloss").outerWidth(true) + topRowTilePadding * 5 );                                        
+        $("#screen_webcams_wave").css('left', SCREEN_BORDER + $("#screen_webcams_monroe").outerWidth(true) + $("#screen_webcams_reser").outerWidth(true) + $("#screen_webcams_mu").outerWidth(true) + $("#screen_webcams_library").outerWidth(true) + $("#screen_webcams_gloss").outerWidth(true) + tilePadding_horiz_topRow * 5 );                                        
         $("#screen_webcams_title_wave").html( TITLE_WAVE );
         $("#screen_webcams_img_wave").attr( 'src', ADDR_WAVE );
         $("#screen_webcams_img_wave").height( TN_IMG_HEIGHT );
-        
-        // row 2 ---------------------------------------------------------------      
-        $("#screen_webcams_main").css('top', SCREEN_BORDER + $("#screen_webcams_mu").outerHeight(true) );
-        $("#screen_webcams_main").css('left', SCREEN_BORDER + $("#screen_webcams_mu").outerWidth(true) );
-        $("#screen_webcams_title_main").html( TITLE_MU );
-        $("#screen_webcams_img_main").attr( 'src', ADDR_MU );
-        $("#screen_webcams_img_main").height( MAIN_IMG_HEIGHT );
 
+        // left col
+        $("#screen_webcams_south").css('top', SCREEN_BORDER + $("#screen_webcams_monroe").outerHeight(true) + tilePadding_vert_outerCols );
+        $("#screen_webcams_south").css('left', SCREEN_BORDER );
+        
+        $("#screen_webcams_gill").css('top', SCREEN_BORDER + $("#screen_webcams_monroe").outerHeight(true) + $("#screen_webcams_south").outerHeight(true) + tilePadding_vert_outerCols * 2 );
+        $("#screen_webcams_gill").css('left', SCREEN_BORDER );  
+        
+        $("#screen_webcams_andrews").css('top', SCREEN_BORDER + $("#screen_webcams_monroe").outerHeight(true) + $("#screen_webcams_south").outerHeight(true) + $("#screen_webcams_gill").outerHeight(true) + tilePadding_vert_outerCols * 3 );
+        $("#screen_webcams_andrews").css('left', SCREEN_BORDER );  
+         
+        // right col
+        $("#screen_webcams_hatfield").css('top', SCREEN_BORDER + $("#screen_webcams_wave").outerHeight(true) + tilePadding_vert_outerCols );
+        $("#screen_webcams_hatfield").css('left', {{settings.general.DISPLAY_WIDTH}} -  $("#screen_webcams_hatfield").outerWidth(true) - SCREEN_BORDER );  
+        
+        $("#screen_webcams_agate").css('top', SCREEN_BORDER + $("#screen_webcams_wave").outerHeight(true) + $("#screen_webcams_hatfield").outerHeight(true) + tilePadding_vert_outerCols * 2 );
+        $("#screen_webcams_agate").css('left', {{settings.general.DISPLAY_WIDTH}} -  $("#screen_webcams_agate").outerWidth(true) - SCREEN_BORDER );  
+        
+        $("#screen_webcams_wecoma").css('top', SCREEN_BORDER + $("#screen_webcams_wave").outerHeight(true) + $("#screen_webcams_hatfield").outerHeight(true) + $("#screen_webcams_agate").outerHeight(true) + tilePadding_vert_outerCols * 3 );
+        $("#screen_webcams_wecoma").css('left', {{settings.general.DISPLAY_WIDTH}} -  $("#screen_webcams_wecoma").outerWidth(true) - SCREEN_BORDER ); 
+        
+        // initialize the main tile --------------------------------------------
+        displayToMainTile( TITLE_MU, ADDR_MU );
     }
 
     // ==============
     //  facilitators
     // ==============
    
+    function fillThumbnail( id, title, imgAddr, height, width ){
+        $( "#screen_webcams_title_" + id ).html( title );
+        $( "#screen_webcams_img_" + id ).attr( 'src', imgAddr );
+
+        // set height to default value unless otherwise specified
+        if( typeof height == "undefined" ) height = TN_IMG_HEIGHT;
+        $("#screen_webcams_img_" + id).height( height );
+
+        // set width to default value unless otherwise specified
+        if( typeof width == "undefined" ) height = TN_IMG_WIDTH;
+        $("#screen_webcams_img_" + id).width( TN_IMG_WIDTH );
+    }
+   
 	// display an image at the specified address with the specified title in the 
 	// main tile
 	function displayToMainTile( title, addr ){
-		$("#screen_webcams_main").hide(function(){
+	
+	    // Vars for the padding between the main tile and the left and top cols. 
+	    // Values will be calculated after main tile is filled with content 
+	    // because they depend on its size.
+	    var tilePadding_vert = 0;
+        var tilePadding_horiz = 0;
+                               
+        // fade out the main tile
+		$("#screen_webcams_main").fadeOut(function(){
+		
+		    // fill the main tile with the title and the picture of the
+		    // specified webcam shot
 			$("#screen_webcams_title_main").html( title );
             $("#screen_webcams_img_main").attr( 'src', addr );
             $("#screen_webcams_img_main").height( MAIN_IMG_HEIGHT );
+
+            // calculate the padding between the left and top columns so the 
+            // main tile appears in the center
+            tilePadding_vert = ( {{settings.general.DISPLAY_HEIGHT}} -
+                               2 * SCREEN_BORDER - 
+                               $("#screen_webcams_reser").outerHeight(true) -
+                               $("#screen_webcams_main").outerHeight(true)
+                               )/2;
+                               
+            tilePadding_horiz = ( {{settings.general.DISPLAY_WIDTH}} - 
+                               2 * SCREEN_BORDER - 
+                               $("#screen_webcams_south").outerWidth(true) -
+                               $("#screen_webcams_main").outerWidth(true) -
+                               $("#screen_webcams_hatfield").outerWidth(true)
+                               )/2
+
+            // place the tile in the middle of the screen
+            $("#screen_webcams_main").css('top', SCREEN_BORDER + $("#screen_webcams_reser").outerHeight(true) + tilePadding_vert);
+            $("#screen_webcams_main").css('left', SCREEN_BORDER + $("#screen_webcams_south").outerWidth(true) + tilePadding_horiz ); 
 		});
-		$("#screen_webcams_main").show("slow");
+		
+		// fade the main tile back in
+		$("#screen_webcams_main").fadeIn("slow");
 	}
 </script>
 
@@ -202,57 +332,52 @@
     <img id="screen_webcams_img_library" class="screen_webcams_img">
 </div>
 
-<div id="screen_webcams_monroe"             class="screen_webcams_commonStyle">
+<div id="screen_webcams_monroe" class="screen_webcams_commonStyle">
     <div id="screen_webcams_title_monroe" class="screen_webcams_tnTitle"></div>
     <img id="screen_webcams_img_monroe" class="screen_webcams_img">
 </div>
 
-<div id="screen_webcams_south"              class="screen_webcams_commonStyle">
+<div id="screen_webcams_south" class="screen_webcams_commonStyle">
     <div id="screen_webcams_title_south" class="screen_webcams_tnTitle"></div>
     <img id="screen_webcams_img_south" class="screen_webcams_img">
 </div>
 
-<div id="screen_webcams_reser"              class="screen_webcams_commonStyle">
+<div id="screen_webcams_reser" class="screen_webcams_commonStyle">
     <div id="screen_webcams_title_reser" class="screen_webcams_tnTitle"></div>
     <img id="screen_webcams_img_reser" class="screen_webcams_img">
 </div>
 
-<div id="screen_webcams_gloss"              class="screen_webcams_commonStyle">
+<div id="screen_webcams_gloss" class="screen_webcams_commonStyle">
     <div id="screen_webcams_title_gloss" class="screen_webcams_tnTitle"></div>
     <img id="screen_webcams_img_gloss" class="screen_webcams_img">
 </div>
 
-<div id="screen_webcams_gill"               class="screen_webcams_commonStyle">
+<div id="screen_webcams_gill" class="screen_webcams_commonStyle">
     <div id="screen_webcams_title_gill" class="screen_webcams_tnTitle"></div>
     <img id="screen_webcams_img_gill" class="screen_webcams_img">
 </div>
 
-<div id="screen_webcams_andrews"     class="screen_webcams_commonStyle">
+<div id="screen_webcams_andrews" class="screen_webcams_commonStyle">
     <div id="screen_webcams_title_andrews" class="screen_webcams_tnTitle"></div>
     <img id="screen_webcams_img_andrews" class="screen_webcams_img">
 </div>
 
-<div id="screen_webcams_hatfield"           class="screen_webcams_commonStyle">
+<div id="screen_webcams_hatfield" class="screen_webcams_commonStyle">
     <div id="screen_webcams_title_hatfield" class="screen_webcams_tnTitle"></div>
     <img id="screen_webcams_img_hatfield" class="screen_webcams_img">
 </div>
 
-<div id="screen_webcams_wave"            class="screen_webcams_commonStyle">
+<div id="screen_webcams_wave" class="screen_webcams_commonStyle">
     <div id="screen_webcams_title_wave" class="screen_webcams_tnTitle"></div>
     <img id="screen_webcams_img_wave" class="screen_webcams_img">
 </div>
 
-<div id="screen_webcams_wecoma"             class="screen_webcams_commonStyle">
+<div id="screen_webcams_wecoma" class="screen_webcams_commonStyle">
     <div id="screen_webcams_title_wecoma" class="screen_webcams_tnTitle"></div>
     <img id="screen_webcams_img_wecoma" class="screen_webcams_img">
 </div>
 
-<div id="screen_webcams_agate"         class="screen_webcams_commonStyle">
+<div id="screen_webcams_agate" class="screen_webcams_commonStyle">
     <div id="screen_webcams_title_agate" class="screen_webcams_tnTitle"></div>
     <img id="screen_webcams_img_agate" class="screen_webcams_img">
-</div>
-
-<div id="screen_webcams_studcomp"   class="screen_webcams_commonStyle">
-    <div id="screen_webcams_title_studcomp" class="screen_webcams_tnTitle"></div>
-    <img id="screen_webcams_img_studcomp" class="screen_webcams_img">
 </div>

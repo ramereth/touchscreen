@@ -1,4 +1,5 @@
 from core.models import *
+from models import screen_webcams_settings
 
 """
 create instance of screens this plugin provides. The parameters are as follows:
@@ -30,7 +31,7 @@ screen_webcams = Screen(
 
                     #optional params
                     duration=300000,
-                    #settings=test_settings,
+                    settings=screen_webcams_settings,
                     #hide='fade', 
                     #show='fade',
                     #slideshow=True,
