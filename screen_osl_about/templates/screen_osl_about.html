@@ -1,7 +1,7 @@
 <!--
     screen_osl_about.html
     by Rob McGuire-Dale, 3/7/2009
-    last modified by Rob McGuire-Dale, 4/2/2009
+    last modified by Rob McGuire-Dale, 4/14/2009
     
     This screen displays infomation about the Open Source Lab.
 
@@ -19,15 +19,20 @@
         background-color:#F8F8FF; /* set the background color to ghost-grey */
         border: black double;     /* set a double-black line boarder */
     }
+    
+    /* make images block objects */
+    img { display: block; }
 
 </style>
 
 <!-- tile position, size, and animation javascript code ----------------------->
 <script type="text/javascript">
 
-    // ===============
-    //  screen events 
-    // ===============
+    // ======================
+    //  SCREEN PLUGIN EVENTS
+    // ======================
+    //      Functions that are run at particular events in the screen plugin's 
+    //      life cycle.
     
     // This function runs when this plugin initializes 
     function screen_osl_about_init() {
@@ -73,8 +78,9 @@
     }
     
     // ==============
-    //  initializers
+    //  INITIALIZERS
     // ==============
+    //      Functions that initialize elements of the the screen plugin.
     
     function screen_osl_about_initTiles() {
         // variables for the screen's border and tile padding. These will event-
@@ -85,50 +91,42 @@
         var CONTENT_PADDING = 10; //padding between the tile border and content
 
         // grab the right-top tile height and width
-        var rightTopTileHeight = $('#screen_osl_about_rightTop').outerHeight(true);
-        var rightTopTileWidth = $('#screen_osl_about_rightTop').outerWidth(true);
+        var rightTopTileHeight = 
+            $('#screen_osl_about_rightTop').outerHeight(true);
+        var rightTopTileWidth = 
+            $('#screen_osl_about_rightTop').outerWidth(true);
 
         // position and size the left tile
         $("#screen_osl_about_left").css('padding', CONTENT_PADDING );
         $("#screen_osl_about_left").css('top',  SCREEN_BORDER );
         $("#screen_osl_about_left").css('left', SCREEN_BORDER );
-        $("#screen_osl_about_left").height( {{settings.general.DISPLAY_HEIGHT}} - 
-                                            SCREEN_BORDER * 2 );
-        $("#screen_osl_about_left").width(  {{settings.general.DISPLAY_WIDTH}} - 
-                                            SCREEN_BORDER * 2 - TILE_PADDING - 
-                                            rightTopTileWidth );
+        $("#screen_osl_about_left").height( 
+            {{settings.general.DISPLAY_HEIGHT}} - SCREEN_BORDER * 2 );
+        $("#screen_osl_about_left").width(
+            {{settings.general.DISPLAY_WIDTH}} - SCREEN_BORDER * 2 - 
+            TILE_PADDING - rightTopTileWidth );
 
         // grab the left tile width now that it has been resized
         var leftTileWidth = $('#screen_osl_about_left').outerWidth(true)
 
         // position the right-top tile
         $("#screen_osl_about_rightTop").css('top',  SCREEN_BORDER );
-        $("#screen_osl_about_rightTop").css('left', SCREEN_BORDER +    
-                                                    leftTileWidth + 
-                                                    TILE_PADDING );
-        $("#screen_osl_about_rightTop").height( document.
-                                                getElementById('EdRayImg').
-                                                height );
-        $("#screen_osl_about_rightTop").width( document.
-                                               getElementById('EdRayImg').
-                                               width );
+        $("#screen_osl_about_rightTop").css('left', 
+            SCREEN_BORDER + leftTileWidth + TILE_PADDING );
 
         // position and size the right-bottom tile
         $("#screen_osl_about_rightBottom").css('padding', CONTENT_PADDING );
-        $("#screen_osl_about_rightBottom").css('top',    SCREEN_BORDER + 
-                                                         TILE_PADDING + 
-                                                         rightTopTileHeight );
-        $("#screen_osl_about_rightBottom").css('left',   SCREEN_BORDER + 
-                                                         TILE_PADDING + 
-                                                         leftTileWidth );
-        $("#screen_osl_about_rightBottom").height( {{settings.general.DISPLAY_HEIGHT}} - 
-                                                   SCREEN_BORDER * 2 - 
-                                                   TILE_PADDING -
-                                                   rightTopTileHeight );
-        $("#screen_osl_about_rightBottom").width( {{settings.general.DISPLAY_WIDTH}} -
-                                                  SCREEN_BORDER * 2 -
-                                                  TILE_PADDING -
-                                                  leftTileWidth );
+        $("#screen_osl_about_rightBottom").css('top',
+            SCREEN_BORDER + TILE_PADDING + rightTopTileHeight );
+        $("#screen_osl_about_rightBottom").css('left',   
+            SCREEN_BORDER + TILE_PADDING + leftTileWidth );
+            
+        $("#screen_osl_about_rightBottom").height( 
+            {{settings.general.DISPLAY_HEIGHT}} - SCREEN_BORDER * 2 - 
+            TILE_PADDING - rightTopTileHeight );
+        $("#screen_osl_about_rightBottom").width( 
+            {{settings.general.DISPLAY_WIDTH}} - SCREEN_BORDER * 2 -
+            TILE_PADDING -leftTileWidth );
     }
 </script>
 
