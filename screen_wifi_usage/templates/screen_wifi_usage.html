@@ -1,0 +1,67 @@
+<!--
+    screen_wifi_usage.html
+    by Rob McGuire-Dale, 9/3/2009
+    
+    This screen displays a graphical representation of the number of users
+    connected to each wifi access point around campus.
+-->
+
+<style> 
+    /* set up image style */
+	#screen_wifi_usage_img {
+	    display: block;
+        margin-left: auto;
+	    margin-right: auto;
+	    vertical-align: middle;
+        border: black double;
+</style>
+
+<script type="text/javascript">
+
+    // ======================
+    //  SCREEN PLUGIN EVENTS
+    // ======================
+    //      Functions that are run at particular events in the screen plugin's 
+    //      life cycle.
+    
+    // this function runs when the plugin initializes
+    function screen_wifi_usage_init() {
+    
+        // output to the firebug console
+        console.log('screen_wifi_usage is starting');
+        
+        // When the window is resized, re-center the image. Also, if the image 
+        // is larger than the viewport, resize the image, maintaining the aspect
+        // ratio
+        window.onresize = function(){
+            console.log("screen_wifi_usage: The viewport dimensions are " +
+                "currently " + Screen.getViewportWidth() + "x" + 
+                Screen.getViewportHeight());
+
+            $("#screen_wifi_usage_img").safeResize( Screen.getViewportHeight(),
+                                                Screen.getViewportWidth(), "fill" );
+        }
+    }
+
+    function screen_wifi_usage_start() {
+    // This function is run when the screen plugin begins showing itself
+    
+        // for this example just output to firebug console
+        console.log('screen_wifi_usage is starting');
+    }
+    
+    function screen_wifi_usage_stop() {
+    // This function is run when the screen plugin hides iteslf
+    
+        // for this example just output to firebug console
+        console.log('screen_wifi_usage is stopping');
+    }
+    
+</script>
+
+<!-- set up the wifi usage map image ------------------------------------------>
+<img id="screen_wifi_usage_img"
+     src="{{settings.screen_wifi_usage_screen_wifi_usage.img_addr}}"
+
+     height="{{settings.general.DISPLAY_HEIGHT}}"
+>
