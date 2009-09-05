@@ -1,5 +1,9 @@
 # This file tells git to ignore files who's names match the following patterns:
 
+/static/js/ARCHIVE
+/screen_webcams/mockups/
+/runserver
+/settings.py
 *.pyc
 *~
 *.bkp*
