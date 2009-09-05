@@ -57,7 +57,7 @@ class screen_webcamsSettings( dbsettings.Group ):
             'Andrews Forrest image address', 
             'The web address to the current webcam shot', 
             default='http://webcam.oregonstate.edu/live/andrews_current.jpg'
-    )}{}{}[=[]"=-=][=p;][==
+    )
 
     imgAddr_gill = dbsettings.StringValue(
             'Gill Renovation image address', 
