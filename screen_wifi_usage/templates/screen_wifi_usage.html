@@ -18,6 +18,9 @@
 
 <script type="text/javascript">
 
+    // for restoring the window.resize event pointer
+    var winResizeEventPointer;
+
     function screen_wifi_usage_init() {
         console.log('screen_wifi_usage initializing...');
     
@@ -27,23 +30,28 @@
                 {{settings.screen_wifi_usage_screen_wifi_usage.imgRefreshInterval}},
             start:true
         });
-        
-        window.onresize = function(){
-            // scale the wifi usage image to fit inside the parent on window
-            $("#screen_wifi_usage_img").scale("center");
-        }
-        
+               
     }
 
     function screen_wifi_usage_start() {
         console.log('screen_wifi_usage starting...');
         
+        // capture the window.resize event pointer so it can be restored later
+        // and set window.resize event to scale the the wifi image
+        winResizeEventPointer = window.onresize;
+        window.onresize = function(){
+            $("#screen_wifi_usage_img").scale("center","stretch");
+        }
+
         // scale the wifi usage image to fit inside the parent
         $("#screen_wifi_usage_img").scale("center","stretch");
     }
     
     function screen_wifi_usage_stop() {
         console.log('screen_wifi_usage stopping');
+        
+        //restore the window.resize event pointer
+        window.onresize = winResizeEventPointer;
     }
     
 </script>

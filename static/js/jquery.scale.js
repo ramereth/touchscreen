@@ -41,6 +41,10 @@
                 
                     // capture the object
                     var obj = $(this);
+                
+                    // reset the object's size to its original size
+                    obj.removeAttr( "height" );
+                    obj.removeAttr( "width" );
                     
                     console.log( "jquery.scale: BEFORE scaling, object's size" +
                         " = " + obj.outerWidth() + "x" + obj.outerHeight() + 
