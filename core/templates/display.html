@@ -84,7 +84,7 @@
                     // hide slide if one is shown
                     if (current_screen_index != -1){
                         current_screen = screens[current_screen_index];
-                        console.log('hiding: ', current_screen['id']);
+                        safelog('hiding: ', current_screen['id']);
                         hider = eval(hiders[current_screen['hide']]);
                         var hidetime = hider(current_screen);
 
@@ -107,7 +107,7 @@
                     if (start_timer) { clearTimeout(start_timer)};
 
                     show = showers[screen['show']];
-                    console.log('showing: ', screen['id'], hidetime);
+                    safelog('showing: ', screen['id'], hidetime);
                     show_timer = setTimeout( "show_slide_animation_wrapper('"+show+"(screens[current_screen_index])',"+ current_screen_index +")", hidetime);
                 }
             }
@@ -141,7 +141,7 @@
                 var screen = slide_show_next();
 
                 //set next transition to duration of current slide
-                console.log('next screen in :', screen['duration']);
+                safelog('next screen in :', screen['duration']);
                 slide_show_timer = setTimeout(slide_show_loop, screen['duration']);
             }
 
@@ -260,9 +260,9 @@
                     hider_key = screens[i]['hide'];
                     hider = hiders[hider_key];
                     eval(hider+'(screens[i])');
-                    console.log("Hiding", screens[i]['id']);
+                    safelog("Hiding", screens[i]['id']);
                 }
-                console.log("All screens hidden");
+                safelog("All screens hidden");
             }
 
             // inits all screens
@@ -270,12 +270,12 @@
                 for (i=0; i<screens.length; i++) {
                     eval(screens[i]['init']+ '()');
                 }
-                console.log("All screens initialized");
+                safelog("All screens initialized");
             }
 
             // on load handler.
             $(document).ready(function() {
-                console.log("Initializing Display");
+                safelog("Initializing Display");
                 hide_all();
                 init_all();
                 slide_show_start();
@@ -287,33 +287,33 @@
                     function(){$(this).removeClass("ui-state-hover");}
                 );
                 $('#debug_play').click(function(){ 
-                    console.log("debug menu: playing slideshow");
+                    safelog("debug menu: playing slideshow");
                     slide_show_stop();
                     remote_slide_show_play();
                 });                
                 $('#debug_stop').click(function(){
-                    console.log("debug menu: stopping slideshow");
+                    safelog("debug menu: stopping slideshow");
                     slide_show_stop();
                     remote_slide_show_stop();
                 });
                 $('#debug_refresh').click(function(){
-                    console.log("debug menu: refreshing current slide");
+                    safelog("debug menu: refreshing current slide");
                     remote_slide_show_next();
                     remote_slide_show_prev();
                 });
                 $('#debug_next').click(function(){
-                    console.log("debug menu: going to next slide");
+                    safelog("debug menu: going to next slide");
                     slide_show_stop();
                     remote_slide_show_next();
                 });
                 $('#debug_prev').click(function(){
-                    console.log("debug menu: going to previous slide");
+                    safelog("debug menu: going to previous slide");
                     slide_show_stop();
                     remote_slide_show_prev();
                 });
                 
                 $('#debug_close').click(function(){
-                    console.log("debug menu: debug menu hiding");
+                    safelog("debug menu: debug menu hiding");
                     $("#debug_window").slideToggle("slow");
                 });
             

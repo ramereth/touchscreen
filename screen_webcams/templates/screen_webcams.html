@@ -68,7 +68,7 @@
     
     function screen_webcams_init() {
         // for this example just output to firebug console
-        console.log('screen_webcams is initializing');
+        safelog('screen_webcams is initializing');
         
         //$("#screen_webcams_main").doubleBoarderedBox();
 
@@ -86,7 +86,7 @@
     }
 
     function screen_webcams_start() {
-        console.log('screen_webcams is starting');
+        safelog('screen_webcams is starting');
         
         // capture the window.resize event pointer so it can be restored later
         // and set window.resize event to position the tiles
@@ -113,7 +113,7 @@
     }
     
     function screen_webcams_stop() {
-        console.log('screen_webcams is stopping');
+        safelog('screen_webcams is stopping');
         
         //restore the window.resize event pointer
         window.onresize = winResizeEventPointer;
@@ -358,6 +358,12 @@
             $("#screen_webcams_img_main").height( 
                 {{settings.screen_webcams_screen_webcams.mainTile_height}} 
             );
+            
+            // set max height and width
+            $("#screen_webcams_img_main").attr( 'max-height', 
+                '{{settings.screen_webcams_screen_webcams.mainTile_height}}' );
+            $("#screen_webcams_img_main").attr( 'max-width', 
+                '{{settings.screen_webcams_screen_webcams.mainTile_width}}' );
 
             // place the tile in the middle of the screen
             $("#screen_webcams_main").css('top', pHeight/2 - 
@@ -380,9 +386,7 @@
     </h1>
     
     <img id="screen_webcams_img_main" class="screen_webcams_img ui-corner-all" 
-        src="{{settings.screen_webcams_screen_webcams.imgAddr_mu}}"
-        height={{settings.screen_webcams_screen_webcams.mainTile_height}}
-        width={{settings.screen_webcams_screen_webcams.mainTile_width}}>
+        src="{{settings.screen_webcams_screen_webcams.imgAddr_mu}}">
 
 </div>
 

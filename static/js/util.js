@@ -9,6 +9,8 @@
  * Please do not link to the .js files on javascripttoolbox.com from
  * your site. Copy the files locally to your server instead.
  * 
+ * Additional functions written by Rob McGuire-Dale (rob@osuosl.org) of the OSU 
+ * Open Source Lab (http://osuosl.org/)
  */
 /* ******************************************************************* */
 /*   UTIL FUNCTIONS                                                    */
@@ -17,6 +19,13 @@ var Util = {'$VERSION':1.06};
 
 // Util functions - these are GLOBAL so they
 // look like built-in functions.
+
+// Only attempt to log to the console if one exists to avoid errors. By
+// Rob McGuire-Dale 9/18/2009. See comments above.
+function safelog( msg ){
+    if( window.console )
+        console.log( msg );
+}
 
 // Determine if an object is an array
 function isArray(o) {

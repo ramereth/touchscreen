@@ -27,7 +27,7 @@
 /* The debug menu */
 #debug_window {
     display: block;         /* change to "none" to hide, and "block" to show */
-    z-index: 1000;          /* always on top */
+    z-index: 9999;          /* always on top */
     float: left;
     padding: 2px;
     font-family: "fixed", sans-serif;

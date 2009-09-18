@@ -22,7 +22,7 @@
     var winResizeEventPointer;
 
     function screen_wifi_usage_init() {
-        console.log('screen_wifi_usage initializing...');
+        safelog('screen_wifi_usage initializing...');
     
         // make the image refresh itself at the specified interval
 		$("#screen_wifi_usage_img").refreshImage({
@@ -33,7 +33,7 @@
     }
 
     function screen_wifi_usage_start() {
-        console.log('screen_wifi_usage starting...');
+        safelog('screen_wifi_usage starting...');
         
         // capture the window.resize event pointer so it can be restored later
         // and set window.resize event to scale the the wifi image
@@ -47,7 +47,7 @@
     }
     
     function screen_wifi_usage_stop() {
-        console.log('screen_wifi_usage stopping');
+        safelog('screen_wifi_usage stopping');
         
         //restore the window.resize event pointer
         window.onresize = winResizeEventPointer;
