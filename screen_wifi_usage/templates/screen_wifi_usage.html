@@ -23,6 +23,13 @@
         
         // scale the wifi usage image to fit inside the parent
         $("#screen_wifi_usage_img").scale("center","stretch");
+    
+        // make the image refresh itself at the specified interval
+		$("#screen_wifi_usage_img").refreshImage({
+            interval:
+                {{settings.screen_wifi_usage_screen_wifi_usage.imgRefreshInterval}},
+            start:true
+        });
     }
 
     function screen_wifi_usage_start() {

@@ -26,17 +26,17 @@ create instance of screens this plugin provides. The parameters are as follows:
 """
 
 screen_webcams = Screen(
-                    'screen_wifi_usage.html',
-                    'screen_wifi_usage',
+    'screen_wifi_usage.html',
+    'screen_wifi_usage',
 
-                    #optional params
-                    duration=300000,
-                    settings=screen_wifi_usage_settings,
-                    #hide='fade', 
-                    #show='fade',
-                    slideshow=True,
-                    js_init ='screen_wifi_usage_init',
-                    js_start='screen_wifi_usage_start',
-                    js_stop ='screen_wifi_usage_stop',
+    #optional params
+    duration=300000,
+    settings=screen_wifi_usage_settings,
+    #hide='fade', 
+    #show='fade',
+    slideshow=True,
+    js_init ='screen_wifi_usage_init',
+    js_start='screen_wifi_usage_start',
+    js_stop ='screen_wifi_usage_stop',
 )
 
