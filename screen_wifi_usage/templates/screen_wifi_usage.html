@@ -18,41 +18,19 @@
 
 <script type="text/javascript">
 
-    // ======================
-    //  SCREEN PLUGIN EVENTS
-    // ======================
-    //      Functions that are run at particular events in the screen plugin's 
-    //      life cycle.
-    
-    // this function runs when the plugin initializes
     function screen_wifi_usage_init() {
-    
-        // output to the firebug console
         console.log('screen_wifi_usage initializing...');
         
-        // When the window is resized, re-center the image. Also, if the image 
-        // is larger than the viewport, resize the image, maintaining the aspect
-        // ratio
-        window.onresize = function(){
-            console.log("screen_wifi_usage: The viewport dimensions are " +
-                "currently " + Screen.getViewportWidth() + "x" + 
-                Screen.getViewportHeight());
-
-            $("#screen_wifi_usage_img").scale("center","stretch");
-        }
+        // scale the wifi usage image to fit inside the parent
+        $("#screen_wifi_usage_img").scale("center","stretch");
     }
 
     function screen_wifi_usage_start() {
-    // This function is run when the screen plugin begins showing itself
-    
-        // for this example just output to firebug console
         console.log('screen_wifi_usage starting...');
+
     }
     
     function screen_wifi_usage_stop() {
-    // This function is run when the screen plugin hides iteslf
-    
-        // for this example just output to firebug console
         console.log('screen_wifi_usage stopping');
     }
     

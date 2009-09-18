@@ -99,6 +99,7 @@
                     // match the height while maintaining the aspect ratio
                     function matchHeight(){
                         obj.removeAttr( "height" );
+                        obj.removeAttr( "width" );
                         obj.width( obj.outerWidth() * 
                             obj.parent().innerHeight()/obj.outerHeight() - 
                             (obj.outerWidth() - obj.width()));
@@ -106,6 +107,7 @@
                     
                     // match the width while maintaining the aspect ratio
                     function matchWidth(){
+                        obj.removeAttr( "height" );
                         obj.removeAttr( "width" );
                         obj.height(  obj.outerHeight() * 
                             obj.parent().innerWidth()/obj.outerWidth() - 
