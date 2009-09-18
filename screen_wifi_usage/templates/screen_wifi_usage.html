@@ -21,14 +21,18 @@
     function screen_wifi_usage_init() {
         console.log('screen_wifi_usage initializing...');
     
-        /*
         // make the image refresh itself at the specified interval
 		$("#screen_wifi_usage_img").refreshImage({
             interval:
                 {{settings.screen_wifi_usage_screen_wifi_usage.imgRefreshInterval}},
             start:true
         });
-        */
+        
+        window.onresize = function(){
+            // scale the wifi usage image to fit inside the parent on window
+            $("#screen_wifi_usage_img").scale("center");
+        }
+        
     }
 
     function screen_wifi_usage_start() {
