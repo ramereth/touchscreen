@@ -15,7 +15,7 @@
         <script type='text/javascript' src="{{MEDIA_URL}}/js/jquery.doubleBorderedBox.js"></script>
         <script type="text/javascript" src="{{MEDIA_URL}}/js/jquery.refreshimage.js"></script>
 	    <script type="text/javascript" src="{{MEDIA_URL}}/js/jquery.corner.js"></script>	
-		<script type="text/javascript" src="{{MEDIA_URL}}/js/jquery.scale.js"></script>	
+		<script type="text/javascript" src="{{MEDIA_URL}}/js/jquery.scale/jquery.scale.js"></script>	
         
          <!-- jQuery UI includes -->
         <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}/js/jquery.ui/theme/ui.all.css" />
@@ -134,12 +134,6 @@
             // initializes and starts slideshow from the first slide
             function slide_show_start() {
                 slide_show_loop();
-            }
-
-            function update_debug(){
-                $('#debug_now_showing').html(slideshow_screen_index );
-                
-                var debugTimer = setTimeout("update_debug()", 500 );
             }
             
             // loops slides automatically
@@ -286,7 +280,6 @@
                 init_all();
                 slide_show_start();
                 Messaging_start();
-                update_debug(); //start updating the debug info
 
                 //SLIDESHOW BUTTONS FOR DEBUGGING
                 $('.debug_buttons').hover(
@@ -356,10 +349,6 @@
                         <span id="debug_prev" class="debug_buttons ui-icon ui-icon-seek-prev"></span></td>
                     <td class="debug_button-cells">
                         <span id="debug_next" class="debug_buttons ui-icon ui-icon-seek-next"></span></td>
-                </tr>
-                <tr>
-                    <td colspan="4">current screen:</td>
-                    <td id="debug_now_showing"></td>
                 </tr>
             </table>
         
