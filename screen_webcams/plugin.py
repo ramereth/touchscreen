@@ -26,17 +26,17 @@ create instance of screens this plugin provides. The parameters are as follows:
 """
 
 screen_webcams = Screen(
-                    'screen_webcams.html',
-                    'screen_webcams',
+    'screen_webcams.html',
+    'screen_webcams',
 
-                    #optional params
-                    duration=300000,
-                    settings=screen_webcams_settings,
-                    #hide='fade', 
-                    #show='fade',
-                    #slideshow=True,
-                    js_init ='screen_webcams_init',
-                    js_start='screen_webcams_start',
-                    js_stop ='screen_webcams_stop',
+    #optional params
+    duration=300000,
+    settings=screen_webcams_settings,
+    #hide='fade', 
+    #show='fade',
+    #slideshow=True,
+    js_init ='screen_webcams_init',
+    js_start='screen_webcams_start',
+    js_stop ='screen_webcams_stop',
 )
 

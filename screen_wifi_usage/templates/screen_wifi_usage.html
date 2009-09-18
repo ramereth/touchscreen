@@ -28,7 +28,7 @@
     function screen_wifi_usage_init() {
     
         // output to the firebug console
-        console.log('screen_wifi_usage is starting');
+        console.log('screen_wifi_usage initializing...');
         
         // When the window is resized, re-center the image. Also, if the image 
         // is larger than the viewport, resize the image, maintaining the aspect
@@ -38,8 +38,7 @@
                 "currently " + Screen.getViewportWidth() + "x" + 
                 Screen.getViewportHeight());
 
-            $("#screen_wifi_usage_img").safeResize( Screen.getViewportHeight(),
-                                                Screen.getViewportWidth(), "fill" );
+            $("#screen_wifi_usage_img").scale("center","stretch");
         }
     }
 
@@ -47,14 +46,14 @@
     // This function is run when the screen plugin begins showing itself
     
         // for this example just output to firebug console
-        console.log('screen_wifi_usage is starting');
+        console.log('screen_wifi_usage starting...');
     }
     
     function screen_wifi_usage_stop() {
     // This function is run when the screen plugin hides iteslf
     
         // for this example just output to firebug console
-        console.log('screen_wifi_usage is stopping');
+        console.log('screen_wifi_usage stopping');
     }
     
 </script>
@@ -62,6 +61,4 @@
 <!-- set up the wifi usage map image ------------------------------------------>
 <img id="screen_wifi_usage_img"
      src="{{settings.screen_wifi_usage_screen_wifi_usage.img_addr}}"
-
-     height="{{settings.general.DISPLAY_HEIGHT}}"
 >

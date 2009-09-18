@@ -25,24 +25,24 @@ create instance of screens this plugin provides. The parameters are as follows:
 """
 
 screen_osl_about = Screen( 
-                    # Required Parameters --------------------------------------
-                    'screen_osl_about.html', # the screen's file name
-                    'screen_osl_about',      # the screen's name
+    # Required Parameters --------------------------------------
+    'screen_osl_about.html', # the screen's file name
+    'screen_osl_about',      # the screen's name
 
-                    # Optional Parameters --------------------------------------
-                    duration=300000, # how long to display the screen
-                    hide='slide',    # the hide transition
-                    show='slide',    # the show transition
-                    slideshow=True,  # include the screen in the slideshow?
+    # Optional Parameters --------------------------------------
+    duration=300000, # how long to display the screen
+    hide='slide',    # the hide transition
+    show='slide',    # the show transition
+    slideshow=True,  # include the screen in the slideshow?
 
-                    js_init ='screen_osl_about_init',  # a function to call when
-                                                       # initializing the screen
+    js_init ='screen_osl_about_init',  # a function to call when
+                                       # initializing the screen
 
-                    js_start='screen_osl_about_start', # a function to call when
-                                                       # showing the screen
+    js_start='screen_osl_about_start', # a function to call when
+                                       # showing the screen
 
-                    js_stop ='screen_osl_about_stop',  # a function to call when
-                                                       # hiding the screen
+    js_stop ='screen_osl_about_stop',  # a function to call when
+                                       # hiding the screen
 )
 
 
