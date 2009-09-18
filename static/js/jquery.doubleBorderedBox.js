@@ -37,7 +37,7 @@
             left_ = $pane.css('left');
             right_ = $pane.css('right');
             bottom_ = $pane.css('bottom');
-            console.log(top_, left_, right_, bottom_);
+            safelog(top_, left_, right_, bottom_);
 
             //modify positioning css
             $pane.css({
@@ -63,9 +63,9 @@
                 bottom:bottom_
             });
             $pane.replaceWith(div);
-            console.log($pane.css());
+            safelog($pane.css());
             div.append($pane);
-            console.log(div.html());
+            safelog(div.html());
         });
     };
 })( jQuery );

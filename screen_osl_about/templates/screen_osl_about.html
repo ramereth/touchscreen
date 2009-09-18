@@ -38,7 +38,7 @@
     function screen_osl_about_init() {
 
         // output some debug info to the firebug console
-        console.log('screen_osl_about is initializing itself');
+        safelog('screen_osl_about is initializing itself');
 
         // hide all of the tiles when plugin initializes
         $("#screen_osl_about_left").hide();
@@ -53,7 +53,7 @@
     function screen_osl_about_start() {
 
         // output some debug info to the firebug console
-        console.log('screen_osl_about is starting because i was shown');
+        safelog('screen_osl_about is starting because i was shown');
 
         // slowly show the tiles after a short delay (so the tiles don't animate 
         // off-screen)
@@ -69,7 +69,7 @@
     function screen_osl_about_stop() {
 
         // output some debug info to the firebug console
-        console.log('screen_webcams is stopping because im being hidden');
+        safelog('screen_webcams is stopping because im being hidden');
 
         // slowly hide the tiles as they slide off-screen
         $("#screen_osl_about_left").hide("slow");
