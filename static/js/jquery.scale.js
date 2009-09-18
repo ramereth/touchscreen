@@ -28,7 +28,7 @@
             return this.each( function() {
             
                 // wait for the object to be fully loaded before doing anything
-                this.onload = function(){
+                //this.onload = function(){
                 
                     // capture the object
                     var obj = $(this);
@@ -99,7 +99,6 @@
                     // match the height while maintaining the aspect ratio
                     function matchHeight(){
                         obj.removeAttr( "height" );
-                        obj.removeAttr( "width" );
                         obj.width( obj.outerWidth() * 
                             obj.parent().innerHeight()/obj.outerHeight() - 
                             (obj.outerWidth() - obj.width()));
@@ -107,7 +106,6 @@
                     
                     // match the width while maintaining the aspect ratio
                     function matchWidth(){
-                        obj.removeAttr( "height" );
                         obj.removeAttr( "width" );
                         obj.height(  obj.outerHeight() * 
                             obj.parent().innerWidth()/obj.outerWidth() - 
@@ -119,7 +117,8 @@
                         ", object's parent's size = " + 
                         obj.parent().innerWidth() + "x" + 
                         obj.parent().innerHeight() + ".'" );
-                }
+                        
+                //} //END onload
             
             });     //END matched element iterations
         

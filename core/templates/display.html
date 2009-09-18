@@ -282,11 +282,37 @@
                 Messaging_start();
 
                 //SLIDESHOW BUTTONS FOR DEBUGGING
-                $('#debug_play').click(function(){slide_show_stop();remote_slide_show_play();});
-                $('#debug_stop').click(function(){slide_show_stop();remote_slide_show_stop();});
-                $('#debug_next').click(function(){slide_show_stop();remote_slide_show_next();});
-                $('#debug_prev').click(function(){slide_show_stop();remote_slide_show_prev();});
+                $('.debug_buttons, #debug_close').hover(
+                    function(){$(this).addClass("ui-state-hover");},
+                    function(){$(this).removeClass("ui-state-hover");}
+                );
+                $('#debug_play').click(function(){ 
+                    console.log("debug menu: playing slideshow");
+                    slide_show_stop();
+                    remote_slide_show_play();
+                });                
+                $('#debug_stop').click(function(){
+                    console.log("debug menu: stopping slideshow");
+                    slide_show_stop();
+                    remote_slide_show_stop();
+                });
+                $('#debug_next').click(function(){
+                    console.log("debug menu: going to next slide");
+                    slide_show_stop();
+                    remote_slide_show_next();
+                });
+                $('#debug_prev').click(function(){
+                    console.log("debug menu: going to previous slide");
+                    slide_show_stop();
+                    remote_slide_show_prev();
+                });
+                
+                $('#debug_close').click(function(){
+                    console.log("debug menu: debug menu hiding");
+                    $("#debug_window").slideToggle("slow");
+                });
             
+                //make debug window draggable
                 $('#debug_window').draggable();
             });
 
@@ -296,13 +322,26 @@
     <body>
 
         <div id='screens'>
-
-            <div id='debug_window' class='ui-widget ui-corner-all'>
-                <span id="debug_play" class="debug_buttons ui-state-default ui-corner-all ui-icon ui-icon-play"></span>
-                <span id="debug_stop" class="debug_buttons ui-state-default ui-corner-all ui-icon ui-icon-stop"></span>
-                <span id="debug_prev" class="debug_buttons ui-state-default ui-corner-all ui-icon ui-icon-seek-prev"></span>
-                <span id="debug_next" class="debug_buttons ui-state-default ui-corner-all ui-icon ui-icon-seek-next"></span>
-            </div>
+            <table id='debug_window' class='ui-widget ui-corner-all'>
+                <tr>
+                    <td colspan="3" class="debug_button-cells">
+                        <b>debug</b>
+                    </td>
+                    <td class="debug_button-cells">
+                        <span id="debug_close" class="ui-icon ui-icon-close"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="debug_button-cells">
+                        <span id="debug_play" class="debug_buttons ui-icon ui-icon-play"></span></td>
+                    <td class="debug_button-cells">
+                        <span id="debug_stop" class="debug_buttons ui-icon ui-icon-stop"></span></td>
+                    <td class="debug_button-cells">
+                        <span id="debug_prev" class="debug_buttons ui-icon ui-icon-seek-prev"></span></td>
+                    <td class="debug_button-cells">
+                        <span id="debug_next" class="debug_buttons ui-icon ui-icon-seek-next"></span></td>
+                </tr>
+            </table>
         
             {% for key, screen in screens.items %}
                 <div id='screen_{{screen.hash}}' class='screen'>

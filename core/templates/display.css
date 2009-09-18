@@ -27,25 +27,22 @@
 /* The debug menu */
 #debug_window {
     display: block;         /* change to "none" to hide, and "block" to show */
-    float: left;
     z-index: 1000;          /* always on top */
-    height: 18px;
-    width: 78px;
+    float: left;
     padding: 2px;
     font-family: "fixed", sans-serif;
     font-size: 7pt;
     border: 1px solid orange;
     background-color: gray;
+    opacity:0.8;
 }
 
-.debug_buttons{
-    position: relative;
-    float: left;
+.debug_button-cells{
+    text-align:left;
+    vertical-align: middle;
+    height:18px;
+    width:18px;
 }
-#debug_play{left: 0px;}
-#debug_stop{left: 2px;}
-#debug_prev{left: 4px;}
-#debug_next{left: 6px;}
 
 
 
