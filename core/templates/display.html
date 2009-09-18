@@ -289,7 +289,7 @@
                 update_debug(); //start updating the debug info
 
                 //SLIDESHOW BUTTONS FOR DEBUGGING
-                $('.debug_buttons, #debug_close').hover(
+                $('.debug_buttons').hover(
                     function(){$(this).addClass("ui-state-hover");},
                     function(){$(this).removeClass("ui-state-hover");}
                 );
@@ -342,7 +342,7 @@
                         <b>debug</b>
                     </td>
                     <td class="debug_button-cells">
-                        <span id="debug_close" class="ui-icon ui-icon-close"></span>
+                        <span id="debug_close" class="debug_buttons ui-icon ui-icon-close"></span>
                     </td>
                 </tr>
                 <tr>

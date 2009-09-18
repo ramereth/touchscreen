@@ -27,24 +27,32 @@
             // iterate over current set of matched elements
             return this.each( function() {
             
-                // force element reload
-                var date = new Date();
-                var cursrc = $(this).attr("src");
-                var newsrc = cursrc;
-                if( cursrc.indexOf('?') != -1 )
-                    newsrc = cursrc.substring( 0, cursrc.indexOf('?'));
-                newsrc = newsrc + "?" + date.getTime();
-                $(this).attr( "src", newsrc );
+                console.log( "jquery.scale is starting...");
             
-                // wait for the object to be fully loaded before doing anything
-                this.onload = function(){
+                // capture the object
+                var obj = $(this);
+            
+                // force element reload if it's an image
+                if( obj.attr("src") != null ){
                 
-                    // capture the object
-                    var obj = $(this);
+                    console.log( "jquery.scale: object is an image" );
                 
-                    // reset the object's size to its original size
-                    obj.removeAttr( "height" );
-                    obj.removeAttr( "width" );
+                    var date = new Date();
+                    var cursrc = obj.attr("src");
+                    var newsrc = cursrc;
+                    if( cursrc.indexOf('?') != -1 )
+                        newsrc = cursrc.substring( 0, cursrc.indexOf('?'));
+                    newsrc = newsrc + "?" + date.getTime();
+                    obj.attr( "src", newsrc );
+                    
+                    this.onload = start();
+                } else {
+                    console.log("jquery.scale: object is NOT an image");
+                    start();
+                }
+            
+                // the main plugin function
+                function start(){
                     
                     console.log( "jquery.scale: BEFORE scaling, object's size" +
                         " = " + obj.outerWidth() + "x" + obj.outerHeight() + 
