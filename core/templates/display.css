@@ -24,3 +24,28 @@
     width:100%;
 }
 
+/* The debug menu */
+#debug_window {
+    display: block;         /* change to "none" to hide, and "block" to show */
+    float: left;
+    z-index: 1000;          /* always on top */
+    height: 18px;
+    width: 78px;
+    padding: 2px;
+    font-family: "fixed", sans-serif;
+    font-size: 7pt;
+    border: 1px solid orange;
+    background-color: gray;
+}
+
+.debug_buttons{
+    position: relative;
+    float: left;
+}
+#debug_play{left: 0px;}
+#debug_stop{left: 2px;}
+#debug_prev{left: 4px;}
+#debug_next{left: 6px;}
+
+
+

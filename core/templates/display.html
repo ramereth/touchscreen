@@ -7,12 +7,21 @@
         <style>
             {% include "display.css" %}
         </style>
+
+        <script type="text/javascript" src="{{MEDIA_URL}}/js/util.js"></script>
+		
+        <!-- jQuery includes -->
         <script type='text/javascript' src="{{MEDIA_URL}}/js/jquery-1.3.2.min.js"></script>
         <script type='text/javascript' src="{{MEDIA_URL}}/js/jquery.doubleBorderedBox.js"></script>
         <script type="text/javascript" src="{{MEDIA_URL}}/js/jquery.refreshimage.js"></script>
 	    <script type="text/javascript" src="{{MEDIA_URL}}/js/jquery.corner.js"></script>	
 		<script type="text/javascript" src="{{MEDIA_URL}}/js/jquery.scale.js"></script>	
-		<script type="text/javascript" src="{{MEDIA_URL}}/js/util.js"></script>
+        
+         <!-- jQuery UI includes -->
+        <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}/js/jquery.ui/theme/ui.all.css" />
+        <script type="text/javascript" src="{{MEDIA_URL}}/js/jquery.ui/jquery.ui.core-1.7.2.js"></script>
+		<script type="text/javascript" src="{{MEDIA_URL}}/js/jquery.ui/jquery.ui.draggable-1.7.2.js"></script>
+        
 		<script type="text/javascript">
 
             /* ===============================
@@ -273,27 +282,32 @@
                 Messaging_start();
 
                 //SLIDESHOW BUTTONS FOR DEBUGGING
-                $('#debug_start').click(function(){slide_show_stop();remote_slide_show_play();});
+                $('#debug_play').click(function(){slide_show_stop();remote_slide_show_play();});
                 $('#debug_stop').click(function(){slide_show_stop();remote_slide_show_stop();});
                 $('#debug_next').click(function(){slide_show_stop();remote_slide_show_next();});
                 $('#debug_prev').click(function(){slide_show_stop();remote_slide_show_prev();});
+            
+                $('#debug_window').draggable();
             });
 
         </script>
     </head>
 
     <body>
-        <div id='debug'>
-            <button id="debug_start">Start</button>
-            <button id="debug_stop">Stop</button>
-            <button id="debug_next">Next</button>
-            <button id="debug_prev">Prev</button>
-        </div>
+
         <div id='screens'>
-        {% for key, screen in screens.items %}
-            <div id='screen_{{screen.hash}}' class='screen'>
-                {% include screen.template %}
+
+            <div id='debug_window' class='ui-widget ui-corner-all'>
+                <span id="debug_play" class="debug_buttons ui-state-default ui-corner-all ui-icon ui-icon-play"></span>
+                <span id="debug_stop" class="debug_buttons ui-state-default ui-corner-all ui-icon ui-icon-stop"></span>
+                <span id="debug_prev" class="debug_buttons ui-state-default ui-corner-all ui-icon ui-icon-seek-prev"></span>
+                <span id="debug_next" class="debug_buttons ui-state-default ui-corner-all ui-icon ui-icon-seek-next"></span>
             </div>
-        {% endfor %}
+        
+            {% for key, screen in screens.items %}
+                <div id='screen_{{screen.hash}}' class='screen'>
+                    {% include screen.template %}
+                </div>
+            {% endfor %}
         </div>
     </body> 
