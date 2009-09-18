@@ -136,6 +136,12 @@
                 slide_show_loop();
             }
 
+            function update_debug(){
+                $('#debug_now_showing').html(slideshow_screen_index );
+                
+                var debugTimer = setTimeout("update_debug()", 500 );
+            }
+            
             // loops slides automatically
             function slide_show_loop() {
                 var screen = slide_show_next();
@@ -280,6 +286,7 @@
                 init_all();
                 slide_show_start();
                 Messaging_start();
+                update_debug(); //start updating the debug info
 
                 //SLIDESHOW BUTTONS FOR DEBUGGING
                 $('.debug_buttons, #debug_close').hover(
@@ -295,6 +302,11 @@
                     console.log("debug menu: stopping slideshow");
                     slide_show_stop();
                     remote_slide_show_stop();
+                });
+                $('#debug_refresh').click(function(){
+                    console.log("debug menu: refreshing current slide");
+                    remote_slide_show_next();
+                    remote_slide_show_prev();
                 });
                 $('#debug_next').click(function(){
                     console.log("debug menu: going to next slide");
@@ -314,6 +326,8 @@
             
                 //make debug window draggable
                 $('#debug_window').draggable();
+                
+
             });
 
         </script>
@@ -324,7 +338,7 @@
         <div id='screens'>
             <table id='debug_window' class='ui-widget ui-corner-all'>
                 <tr>
-                    <td colspan="3" class="debug_button-cells">
+                    <td colspan="4" class="debug_button-cells">
                         <b>debug</b>
                     </td>
                     <td class="debug_button-cells">
@@ -337,9 +351,15 @@
                     <td class="debug_button-cells">
                         <span id="debug_stop" class="debug_buttons ui-icon ui-icon-stop"></span></td>
                     <td class="debug_button-cells">
+                        <span id="debug_refresh" class="debug_buttons ui-icon ui-icon-refresh"></span></td>
+                    <td class="debug_button-cells">
                         <span id="debug_prev" class="debug_buttons ui-icon ui-icon-seek-prev"></span></td>
                     <td class="debug_button-cells">
                         <span id="debug_next" class="debug_buttons ui-icon ui-icon-seek-next"></span></td>
+                </tr>
+                <tr>
+                    <td colspan="4">current screen:</td>
+                    <td id="debug_now_showing"></td>
                 </tr>
             </table>
         
