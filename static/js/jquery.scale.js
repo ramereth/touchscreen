@@ -34,9 +34,7 @@
             
                 // force element reload if it's an image
                 if( obj.attr("src") != null ){
-                
                     console.log( "jquery.scale: object is an image" );
-                
                     var date = new Date();
                     var cursrc = obj.attr("src");
                     var newsrc = cursrc;
