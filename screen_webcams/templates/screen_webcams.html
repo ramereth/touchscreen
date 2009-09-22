@@ -16,6 +16,12 @@
         border: black double;
 	}
 	
+	#screen_webcams_wrapper {
+	    position: absolute;
+	    width: 100%;
+	    height: 100%; 
+	}
+	
     #screen_webcams_main{
         padding:5px;
 	    border: 1px solid orange;
@@ -379,145 +385,147 @@
 </script>
 
 <!-- set up HTML divs for each tile ------------------------------------------->
-<div id="screen_webcams_main" class="screen_webcams_commonStyle ui-corner-all">
+<div id="screen_webcams_wrapper">
+    <div id="screen_webcams_main" class="screen_webcams_commonStyle ui-corner-all">
 
-    <h1 id="screen_webcams_title_main">
-        {{settings.screen_webcams_screen_webcams.title_mu}}
-    </h1>
-    
-    <img id="screen_webcams_img_main" class="screen_webcams_img ui-corner-all" 
-        src="{{settings.screen_webcams_screen_webcams.imgAddr_mu}}">
-
-</div>
-
-<div id="screen_webcams_mu" class="thumb screen_webcams_commonStyle ui-corner-all">
-
-    <h2>{{settings.screen_webcams_screen_webcams.title_mu}}</h2>
-    
-    <img id="screen_webcams_img_mu" class="screen_webcams_img"
-        src="{{settings.screen_webcams_screen_webcams.imgAddr_mu}}"
-        height={{settings.screen_webcams_screen_webcams.thumbnail_height}}
-        width={{settings.screen_webcams_screen_webcams.thumbnail_width}}>
-
-</div>
-
-<div id="screen_webcams_library" class="thumb screen_webcams_commonStyle ui-corner-all">
-
-    <h2>{{settings.screen_webcams_screen_webcams.title_library}}</h2>
-    
-    <img id="screen_webcams_img_library" class="screen_webcams_img"
-        src="{{settings.screen_webcams_screen_webcams.imgAddr_library}}"
-        height={{settings.screen_webcams_screen_webcams.thumbnail_height}}
-        width={{settings.screen_webcams_screen_webcams.thumbnail_width}}>
-
-</div>
-
-<div id="screen_webcams_monroe" class="thumb screen_webcams_commonStyle ui-corner-all">
-
-    <h2>{{settings.screen_webcams_screen_webcams.title_monroe}}</h2>
-    
-    <img id="screen_webcams_img_monroe" class="screen_webcams_img"
-        src="{{settings.screen_webcams_screen_webcams.imgAddr_monroe}}"
-        height={{settings.screen_webcams_screen_webcams.thumbnail_height}}
-        width={{settings.screen_webcams_screen_webcams.thumbnail_width}}>
-
-</div>
-
-<div id="screen_webcams_south" class="thumb screen_webcams_commonStyle ui-corner-all">
-
-    <h2>{{settings.screen_webcams_screen_webcams.title_south}}</h2>
-    
-    <img id="screen_webcams_img_south" class="screen_webcams_img"
-        src="{{settings.screen_webcams_screen_webcams.imgAddr_south}}"
-        height={{settings.screen_webcams_screen_webcams.thumbnail_height}}
-        width={{settings.screen_webcams_screen_webcams.thumbnail_width}}>
-
-</div>
-
-<div id="screen_webcams_reser" class="thumb screen_webcams_commonStyle ui-corner-all">
-
-    <h2>{{settings.screen_webcams_screen_webcams.title_reser}}</h2>
-    
-    <img id="screen_webcams_img_reser" class="screen_webcams_img"
-        src="{{settings.screen_webcams_screen_webcams.imgAddr_reser}}"
-        height={{settings.screen_webcams_screen_webcams.thumbnail_height}}
-        width={{settings.screen_webcams_screen_webcams.thumbnail_width}}>
-
-</div>
-
-<div id="screen_webcams_gloss" class="thumb screen_webcams_commonStyle ui-corner-all">
-
-    <h2>{{settings.screen_webcams_screen_webcams.title_gloss}}</h2>
-    
-    <img id="screen_webcams_img_gloss" class="screen_webcams_img"
-        src="{{settings.screen_webcams_screen_webcams.imgAddr_gloss}}"
-        height={{settings.screen_webcams_screen_webcams.thumbnail_height}}
-        width={{settings.screen_webcams_screen_webcams.thumbnail_width}}>
-
-</div>
-
-<div id="screen_webcams_gill" class="thumb screen_webcams_commonStyle ui-corner-all">
-
-    <h2>{{settings.screen_webcams_screen_webcams.title_gill}}</h2>
-    
-    <img id="screen_webcams_img_gill" class="screen_webcams_img"
-        src="{{settings.screen_webcams_screen_webcams.imgAddr_gill}}"
-        height={{settings.screen_webcams_screen_webcams.thumbnail_height}}
-        width={{settings.screen_webcams_screen_webcams.thumbnail_width}}>
-
-</div>
-
-<div id="screen_webcams_andrews" class="thumb screen_webcams_commonStyle ui-corner-all">
-
-    <h2>{{settings.screen_webcams_screen_webcams.title_andrews}}</h2>
-    
-    <img id="screen_webcams_img_andrews" class="screen_webcams_img"
-        src="{{settings.screen_webcams_screen_webcams.imgAddr_andrews}}"
-        height={{settings.screen_webcams_screen_webcams.thumbnail_height}}
-        width={{settings.screen_webcams_screen_webcams.thumbnail_width}}>
-
-</div>
-
-<div id="screen_webcams_hatfield" class="thumb screen_webcams_commonStyle ui-corner-all">
-
-    <h2>{{settings.screen_webcams_screen_webcams.title_hatfield}}</h2>
-    
-    <img id="screen_webcams_img_hatfield" class="screen_webcams_img"
-        src="{{settings.screen_webcams_screen_webcams.imgAddr_hatfield}}"
-        height={{settings.screen_webcams_screen_webcams.thumbnail_height}}
-        width={{settings.screen_webcams_screen_webcams.thumbnail_width}}>
-
-</div>
-
-<div id="screen_webcams_wave" class="thumb screen_webcams_commonStyle ui-corner-all">
-
-    <h2>{{settings.screen_webcams_screen_webcams.title_wave}}</h2>
-    
-    <img id="screen_webcams_img_wave" class="screen_webcams_img"
-        src=  "{{settings.screen_webcams_screen_webcams.imgAddr_wave}}"
-        height={{settings.screen_webcams_screen_webcams.thumbnail_height}}
-        width= {{settings.screen_webcams_screen_webcams.thumbnail_width}}>
-
-</div>
-
-<div id="screen_webcams_wecoma" class="thumb screen_webcams_commonStyle ui-corner-all">
-
-    <h2>{{settings.screen_webcams_screen_webcams.title_wecoma}}</h2>
-    
-    <img id="screen_webcams_img_wecoma" class="screen_webcams_img"
-        src="{{settings.screen_webcams_screen_webcams.imgAddr_wecoma}}"
-        height={{settings.screen_webcams_screen_webcams.thumbnail_height}}
-        width={{settings.screen_webcams_screen_webcams.thumbnail_width}}>
+        <h1 id="screen_webcams_title_main">
+            {{settings.screen_webcams_screen_webcams.title_mu}}
+        </h1>
         
-</div>
+        <img id="screen_webcams_img_main" class="screen_webcams_img ui-corner-all" 
+            src="{{settings.screen_webcams_screen_webcams.imgAddr_mu}}">
 
-<div id="screen_webcams_agate" class="thumb screen_webcams_commonStyle ui-corner-all">
+    </div>
 
-    <h2>{{settings.screen_webcams_screen_webcams.title_agate}}</h2>
-    
-    <img id="screen_webcams_img_agate" class="screen_webcams_img"
-        src="{{settings.screen_webcams_screen_webcams.imgAddr_agate}}"
-        height={{settings.screen_webcams_screen_webcams.thumbnail_height}}
-        width={{settings.screen_webcams_screen_webcams.thumbnail_width}}>
+    <div id="screen_webcams_mu" class="thumb screen_webcams_commonStyle ui-corner-all">
+
+        <h2>{{settings.screen_webcams_screen_webcams.title_mu}}</h2>
         
+        <img id="screen_webcams_img_mu" class="screen_webcams_img"
+            src="{{settings.screen_webcams_screen_webcams.imgAddr_mu}}"
+            height={{settings.screen_webcams_screen_webcams.thumbnail_height}}
+            width={{settings.screen_webcams_screen_webcams.thumbnail_width}}>
+
+    </div>
+
+    <div id="screen_webcams_library" class="thumb screen_webcams_commonStyle ui-corner-all">
+
+        <h2>{{settings.screen_webcams_screen_webcams.title_library}}</h2>
+        
+        <img id="screen_webcams_img_library" class="screen_webcams_img"
+            src="{{settings.screen_webcams_screen_webcams.imgAddr_library}}"
+            height={{settings.screen_webcams_screen_webcams.thumbnail_height}}
+            width={{settings.screen_webcams_screen_webcams.thumbnail_width}}>
+
+    </div>
+
+    <div id="screen_webcams_monroe" class="thumb screen_webcams_commonStyle ui-corner-all">
+
+        <h2>{{settings.screen_webcams_screen_webcams.title_monroe}}</h2>
+        
+        <img id="screen_webcams_img_monroe" class="screen_webcams_img"
+            src="{{settings.screen_webcams_screen_webcams.imgAddr_monroe}}"
+            height={{settings.screen_webcams_screen_webcams.thumbnail_height}}
+            width={{settings.screen_webcams_screen_webcams.thumbnail_width}}>
+
+    </div>
+
+    <div id="screen_webcams_south" class="thumb screen_webcams_commonStyle ui-corner-all">
+
+        <h2>{{settings.screen_webcams_screen_webcams.title_south}}</h2>
+        
+        <img id="screen_webcams_img_south" class="screen_webcams_img"
+            src="{{settings.screen_webcams_screen_webcams.imgAddr_south}}"
+            height={{settings.screen_webcams_screen_webcams.thumbnail_height}}
+            width={{settings.screen_webcams_screen_webcams.thumbnail_width}}>
+
+    </div>
+
+    <div id="screen_webcams_reser" class="thumb screen_webcams_commonStyle ui-corner-all">
+
+        <h2>{{settings.screen_webcams_screen_webcams.title_reser}}</h2>
+        
+        <img id="screen_webcams_img_reser" class="screen_webcams_img"
+            src="{{settings.screen_webcams_screen_webcams.imgAddr_reser}}"
+            height={{settings.screen_webcams_screen_webcams.thumbnail_height}}
+            width={{settings.screen_webcams_screen_webcams.thumbnail_width}}>
+
+    </div>
+
+    <div id="screen_webcams_gloss" class="thumb screen_webcams_commonStyle ui-corner-all">
+
+        <h2>{{settings.screen_webcams_screen_webcams.title_gloss}}</h2>
+        
+        <img id="screen_webcams_img_gloss" class="screen_webcams_img"
+            src="{{settings.screen_webcams_screen_webcams.imgAddr_gloss}}"
+            height={{settings.screen_webcams_screen_webcams.thumbnail_height}}
+            width={{settings.screen_webcams_screen_webcams.thumbnail_width}}>
+
+    </div>
+
+    <div id="screen_webcams_gill" class="thumb screen_webcams_commonStyle ui-corner-all">
+
+        <h2>{{settings.screen_webcams_screen_webcams.title_gill}}</h2>
+        
+        <img id="screen_webcams_img_gill" class="screen_webcams_img"
+            src="{{settings.screen_webcams_screen_webcams.imgAddr_gill}}"
+            height={{settings.screen_webcams_screen_webcams.thumbnail_height}}
+            width={{settings.screen_webcams_screen_webcams.thumbnail_width}}>
+
+    </div>
+
+    <div id="screen_webcams_andrews" class="thumb screen_webcams_commonStyle ui-corner-all">
+
+        <h2>{{settings.screen_webcams_screen_webcams.title_andrews}}</h2>
+        
+        <img id="screen_webcams_img_andrews" class="screen_webcams_img"
+            src="{{settings.screen_webcams_screen_webcams.imgAddr_andrews}}"
+            height={{settings.screen_webcams_screen_webcams.thumbnail_height}}
+            width={{settings.screen_webcams_screen_webcams.thumbnail_width}}>
+
+    </div>
+
+    <div id="screen_webcams_hatfield" class="thumb screen_webcams_commonStyle ui-corner-all">
+
+        <h2>{{settings.screen_webcams_screen_webcams.title_hatfield}}</h2>
+        
+        <img id="screen_webcams_img_hatfield" class="screen_webcams_img"
+            src="{{settings.screen_webcams_screen_webcams.imgAddr_hatfield}}"
+            height={{settings.screen_webcams_screen_webcams.thumbnail_height}}
+            width={{settings.screen_webcams_screen_webcams.thumbnail_width}}>
+
+    </div>
+
+    <div id="screen_webcams_wave" class="thumb screen_webcams_commonStyle ui-corner-all">
+
+        <h2>{{settings.screen_webcams_screen_webcams.title_wave}}</h2>
+        
+        <img id="screen_webcams_img_wave" class="screen_webcams_img"
+            src=  "{{settings.screen_webcams_screen_webcams.imgAddr_wave}}"
+            height={{settings.screen_webcams_screen_webcams.thumbnail_height}}
+            width= {{settings.screen_webcams_screen_webcams.thumbnail_width}}>
+
+    </div>
+
+    <div id="screen_webcams_wecoma" class="thumb screen_webcams_commonStyle ui-corner-all">
+
+        <h2>{{settings.screen_webcams_screen_webcams.title_wecoma}}</h2>
+        
+        <img id="screen_webcams_img_wecoma" class="screen_webcams_img"
+            src="{{settings.screen_webcams_screen_webcams.imgAddr_wecoma}}"
+            height={{settings.screen_webcams_screen_webcams.thumbnail_height}}
+            width={{settings.screen_webcams_screen_webcams.thumbnail_width}}>
+            
+    </div>
+
+    <div id="screen_webcams_agate" class="thumb screen_webcams_commonStyle ui-corner-all">
+
+        <h2>{{settings.screen_webcams_screen_webcams.title_agate}}</h2>
+        
+        <img id="screen_webcams_img_agate" class="screen_webcams_img"
+            src="{{settings.screen_webcams_screen_webcams.imgAddr_agate}}"
+            height={{settings.screen_webcams_screen_webcams.thumbnail_height}}
+            width={{settings.screen_webcams_screen_webcams.thumbnail_width}}>
+            
+    </div>
 </div>

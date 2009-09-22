@@ -84,7 +84,7 @@
                     // hide slide if one is shown
                     if (current_screen_index != -1){
                         current_screen = screens[current_screen_index];
-                        safelog('hiding: ', current_screen['id']);
+                        safelog('hiding: ' + current_screen['id']);
                         hider = eval(hiders[current_screen['hide']]);
                         var hidetime = hider(current_screen);
 
@@ -107,7 +107,7 @@
                     if (start_timer) { clearTimeout(start_timer)};
 
                     show = showers[screen['show']];
-                    safelog('showing: ', screen['id'], hidetime);
+                    safelog('showing: ' + screen['id'] + hidetime);
                     show_timer = setTimeout( "show_slide_animation_wrapper('"+show+"(screens[current_screen_index])',"+ current_screen_index +")", hidetime);
                 }
             }
@@ -141,7 +141,7 @@
                 var screen = slide_show_next();
 
                 //set next transition to duration of current slide
-                safelog('next screen in :', screen['duration']);
+                safelog('next screen in:' + screen['duration']);
                 slide_show_timer = setTimeout(slide_show_loop, screen['duration']);
             }
 
@@ -230,7 +230,7 @@
             // setup screen datastructures
             var screens = new Array()
             {% for key, screen in screens.items %}
-                screens[{{forloop.counter0}}] = 
+                screens[{{forloop.counter0}}] =
                     {
                         'id':       '{{key}}',              // Screen identifier (name)
                         'hide':     '{{screen.hide}}',      // Function for hiding the screen
@@ -260,7 +260,7 @@
                     hider_key = screens[i]['hide'];
                     hider = hiders[hider_key];
                     eval(hider+'(screens[i])');
-                    safelog("Hiding", screens[i]['id']);
+                    safelog("Hiding" + screens[i]['id']);
                 }
                 safelog("All screens hidden");
             }
@@ -319,7 +319,6 @@
             
                 //make debug window draggable
                 $('#debug_window').draggable();
-                
 
             });
 

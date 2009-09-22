@@ -32,8 +32,10 @@
                 // capture the object
                 var obj = $(this);
             
+                safelog( this.height + "x" + this.width );
                 // get the object back to its original size
-                obj.removeAttr( 'height' ); obj.removeAttr( 'width' );
+                this.removeAttribute( 'height' ); this.removeAttribute( 'width' );
+                safelog( this.height + "x" + this.width );
             
                 // force element reload if it's an image
                 if( obj.attr('src') != null ){
@@ -45,7 +47,8 @@
                         newsrc = cursrc.substring( 0, cursrc.indexOf('?'));
                     newsrc = newsrc + "?" + date.getTime();
                     obj.attr( "src", newsrc );
-                    
+                    safelog( "jquery.scale: img src changed to " + newsrc + 
+                        " to force a reload");
                     this.onload = start;
                      
                 } else {
@@ -81,28 +84,24 @@
                              obj.outerHeight() < obj.parent().innerHeight() &&
                              (arg1 == "stretch" || arg2 == "stretch") ){
                       
-                        if( Math.abs(obj.parent().innerHeight() - 
-                                     obj.outerHeight()) <= 
-                            Math.abs(obj.parent().innerWidth() - 
-                                     obj.outerWidth()) ){
+                        if( obj.parent().innerHeight()/obj.outerHeight() <= 
+                            obj.parent().innerWidth()/obj.outerWidth() ){
                             
                             matchHeight();
                             
                         } else matchWidth();
                     
-                    // Object too tall and wide. Need to match the dimenstion 
+                    // Object too tall and wide. Need to match the dimension 
                     // that is further from being correct.
                     } else if( obj.outerWidth() > obj.parent().innerWidth() && 
                                obj.outerHeight() > obj.parent().innerHeight() ){
                                
-                        if( Math.abs(obj.parent().innerHeight() - 
-                                     obj.outerHeight()) > 
-                            Math.abs(obj.parent().innerWidth() - 
-                                     obj.outerWidth()) ){
+                        if( obj.parent().innerHeight()/obj.outerHeight() >
+                            obj.parent().innerWidth()/obj.outerWidth() ){
                             
-                            matchHeight();
+                            matchWidth();
                             
-                        } else matchWidth();
+                        } else matchHeight();
 
                     }//else, object is the same size  as the parent. Do nothing.
 

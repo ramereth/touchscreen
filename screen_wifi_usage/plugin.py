@@ -25,7 +25,7 @@ create instance of screens this plugin provides. The parameters are as follows:
 
 """
 
-screen_webcams = Screen(
+screen_wifi_usage = Screen(
     'screen_wifi_usage.html',
     'screen_wifi_usage',
 
