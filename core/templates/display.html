@@ -93,7 +93,7 @@
                         //before the screen was shown and hide the screen
                         window.onresize = winResizeEventPointer;
                         safelog( "core: window.resize pointer restored to " + window.resize );
-                        eval(current_screen['stop'])();
+                        eval(current_screen['stop']);
                         
                     } else {
                         // no current slide
@@ -114,9 +114,9 @@
                     //event for the current screen
                     winResizeEventPointer = window.onresize;
                     window.onresize = function(){ 
-                        eval(screens[current_screen_index]['onWinResize'])();
+                        eval(screens[current_screen_index]['onWinResize']);
                     }         
-                    safelog( "core: window.resize changed from " + winResizeEventPointer + " to " + window.onresize ); 
+                    safelog( "core: window.resize changed from " + winResizeEventPointer + " to " + window.onresize );
                     
                     show = showers[screen['show']];
                     safelog('core: showing ' + screen['id']);
@@ -131,7 +131,7 @@
             */
             function show_slide_animation_wrapper (func, screen_index) {
                 start_timer = showtime = eval(func);
-                setTimeout(screens[screen_index]['start']+'()');
+                setTimeout(screens[screen_index]['start']);
             }
 
             /* ===============================
@@ -280,9 +280,34 @@
 
             // inits all screens
             function init_all() {
+
+                // check for the existance of event functions in the screens,
+                // void them if they don't exist, and validate if they do           
                 for (i=0; i<screens.length; i++) {
-                    eval(screens[i]['init']+ '()');
+                    if( screens[i]['init'] == "None" )
+                        screens[i]['init'] = void(0);
+                    else{
+                        screens[i]['init'] += '()';
+                        eval(screens[i]['init']);
+                    }
+                        
+                    if( screens[i]['start'] == "None" )
+                        screens[i]['start'] = void(0);
+                    else
+                        screens[i]['start'] += '()';
+                        
+                    if( screens[i]['stop'] == "None" )
+                        screens[i]['stop'] = void(0);
+                    else
+                        screens[i]['stop'] += '()';
+                        
+                    if( screens[i]['onWinResize'] == "None" )
+                        screens[i]['onWinResize'] = void(0);
+                    else
+                        screens[i]['onWinResize'] += '()';
+
                 }
+
                 safelog("core: All screens initialized");
             }
 
