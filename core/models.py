@@ -55,6 +55,7 @@ class Screen(Plugin):
     js_init = None          # javascript initialization function called on screen load
     js_start = None         # javascript start function called on screen show
     js_stop = None          # javascript stop function called on screen hide
+    js_onWinResize = None   # javascript function called when window is resized
 
     def validate(self):
         super.validate(self)
@@ -64,7 +65,7 @@ class Screen(Plugin):
 
         return True
 
-    def __init__(self, template, name, duration=10000, settings=None, hide='slide', show='slide', slideshow=True, js_init=None, js_start=None, js_stop=None, *args, **kwargs):
+    def __init__(self, template, name, duration=10000, settings=None, hide='slide', show='slide', slideshow=True, js_init=None, js_start=None, js_stop=None, js_onWinResize=None, *args, **kwargs):
         Plugin.__init__(self, *args, **kwargs)
         self.name = name
         self.duration = duration
@@ -76,3 +77,4 @@ class Screen(Plugin):
         self.js_init = js_init
         self.js_start = js_start
         self.js_stop = js_stop
+        self.js_onWinResize = js_onWinResize

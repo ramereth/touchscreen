@@ -17,12 +17,8 @@
 </style>
 
 <script type="text/javascript">
-
-    // for restoring the window.resize event pointer
-    var winResizeEventPointer;
-
     function screen_wifi_bandwidth_init() {
-        safelog('screen_wifi_bandwidth initializing...');
+        safelog('screen_wifi_bandwidth: initializing...');
     
         // make the image refresh itself at the specified interval
 		$("#screen_wifi_bandwidth_img").refreshImage({
@@ -33,24 +29,20 @@
     }
 
     function screen_wifi_bandwidth_start() {
-        safelog('screen_wifi_bandwidth starting...');
-        
-        // capture the window.resize event pointer so it can be restored later
-        // and set window.resize event to scale the the wifi image
-        winResizeEventPointer = window.onresize;
-        window.onresize = function(){
-            $("#screen_wifi_bandwidth_img").scale("center","stretch");
-        }
+        safelog('screen_wifi_bandwidth: starting...');
 
         // scale the wifi bandwidth image to fit inside the parent
         $("#screen_wifi_bandwidth_img").scale("center","stretch");
     }
     
     function screen_wifi_bandwidth_stop() {
-        safelog('screen_wifi_bandwidth stopping');
+        safelog('screen_wifi_bandwidth: stopping');
+    }
+    
+    function screen_wifi_bandwidth_onWinResize() {
+        safelog("screen_wifi_bandwidth: window was resized");
         
-        //restore the window.resize event pointer
-        window.onresize = winResizeEventPointer;
+        $("#screen_wifi_bandwidth_img").scale("center","stretch");
     }
     
 </script>

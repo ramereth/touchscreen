@@ -24,6 +24,9 @@
     
         scale: function( arg1, arg2 ){// declare plugin name and parameter
         
+            // turn logging on/off
+            DEBUG_MODE = false;
+        
             // iterate over current set of matched elements
             return this.each( function() {
                 safelog( "jquery.scale is starting...");
@@ -197,7 +200,7 @@
                 
                 // a function to safely log
                 function safelog( msg ){ 
-                    if( window.console ) console.log( msg );
+                    if( window.console && DEBUG_MODE ) console.log( msg );
                 }
                             
             });     //END matched element iterations
