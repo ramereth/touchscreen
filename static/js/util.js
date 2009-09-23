@@ -23,8 +23,11 @@ var Util = {'$VERSION':1.06};
 // Only attempt to log to the console if one exists to avoid errors. By
 // Rob McGuire-Dale 9/18/2009. See comments above.
 function safelog( msg ){
+    var date = new Date();
     if( window.console )
-        console.log( msg );
+        console.log( date.getFullYear() + "/" + date.getMonth() + "/" +
+            date.getDay() + " " + date.getHours() + ":" + date.getMinutes() + 
+            ":" + date.getSeconds() + " " + msg );
 }
 
 // Determine if an object is an array

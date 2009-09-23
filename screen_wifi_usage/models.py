@@ -2,7 +2,7 @@ from django.db import models
 import dbsettings
 
 """ ================================================================
-# Settings for screen_webcams
+# Settings for screen_wifi_usage
 ================================================================ """
 class screen_wifi_usageSettings( dbsettings.Group ):
     

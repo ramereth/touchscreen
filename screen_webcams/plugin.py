@@ -38,5 +38,6 @@ screen_webcams = Screen(
     js_init ='screen_webcams_init',
     js_start='screen_webcams_start',
     js_stop ='screen_webcams_stop',
+    js_onWinResize = 'screen_webcams_onWinResize'
 )
 

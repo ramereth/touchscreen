@@ -38,5 +38,6 @@ screen_wifi_usage = Screen(
     js_init ='screen_wifi_usage_init',
     js_start='screen_wifi_usage_start',
     js_stop ='screen_wifi_usage_stop',
+    js_onWinResize = 'screen_wifi_usage_onScreenResize'
 )
 

@@ -63,9 +63,6 @@
 
 <script type="text/javascript">
 
-    // for restoring the window.resize event pointer
-    var winResizeEventPointer;
-
     // ======================
     //  SCREEN PLUGIN EVENTS
     // ======================
@@ -74,7 +71,7 @@
     
     function screen_webcams_init() {
         // for this example just output to firebug console
-        safelog('screen_webcams is initializing');
+        safelog('screen_webcams: initializing...');
         
         //$("#screen_webcams_main").doubleBoarderedBox();
 
@@ -92,21 +89,7 @@
     }
 
     function screen_webcams_start() {
-        safelog('screen_webcams is starting');
-        
-        // capture the window.resize event pointer so it can be restored later
-        // and set window.resize event to position the tiles
-        winResizeEventPointer = window.onresize;
-        window.onresize = function(){
-            // position the thumbnail tiles
-		    screen_webcams_positionTiles();
-		
-	        //  initialize the main tile
-	        screen_webcams_displayToMainTile( 
-	            "{{settings.screen_webcams_screen_webcams.title_mu}}",
-	            "{{settings.screen_webcams_screen_webcams.imgAddr_mu}}"
-	        );
-        }
+        safelog('screen_webcams: starting...');
         
         // position the thumbnail tiles
 		screen_webcams_positionTiles();
@@ -119,10 +102,20 @@
     }
     
     function screen_webcams_stop() {
-        safelog('screen_webcams is stopping');
-        
-        //restore the window.resize event pointer
-        window.onresize = winResizeEventPointer;
+        safelog('screen_webcams: stopping...');
+    }
+    
+    function screen_webcams_onWinResize() {
+        safelog('screen_webcams: window was resized');      
+            
+            // position the thumbnail tiles
+		    screen_webcams_positionTiles();
+		
+	        //  initialize the main tile
+	        screen_webcams_displayToMainTile( 
+	            "{{settings.screen_webcams_screen_webcams.title_mu}}",
+	            "{{settings.screen_webcams_screen_webcams.imgAddr_mu}}"
+	        );
     }
 
     // ==============

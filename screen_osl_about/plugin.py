@@ -43,6 +43,9 @@ screen_osl_about = Screen(
 
     js_stop ='screen_osl_about_stop',  # a function to call when
                                        # hiding the screen
+                                       
+    js_onWinResize = 'screen_osl_about_onWinResize', # a function to call when
+                                                     # the window gets resized
 )
 
 

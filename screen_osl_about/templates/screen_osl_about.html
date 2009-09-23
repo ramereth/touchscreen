@@ -1,7 +1,7 @@
 <!--
     screen_osl_about.html
     by Rob McGuire-Dale, 3/7/2009
-    last modified by Rob McGuire-Dale, 4/14/2009
+    last modified by Rob McGuire-Dale, 9/23/2009
     
     This screen displays infomation about the Open Source Lab.
 
@@ -14,14 +14,17 @@
 
     /* a common style for the tiles */
     .screen_osu_about_commonStyle {
-        font-size: 8pt;           /* set the text size for all tiles to 8pt */
-        position: absolute;       /* set up the position type */
-        background-color:#F8F8FF; /* set the background color to ghost-grey */
-        border: black double;     /* set a double-black line boarder */
+        position: absolute;
+        margin: 10px;
+        padding: 10px;
+        font-size: 8pt;
+        background-color:#F8F8FF;
+        border: 1px solid orange;
     }
-    
-    /* make images block objects */
-    img { display: block; }
+
+    #screen_osu_about_rightTop {
+        background-color: black;
+    }
 
 </style>
 
@@ -38,22 +41,17 @@
     function screen_osl_about_init() {
 
         // output some debug info to the firebug console
-        safelog('screen_osl_about is initializing itself');
-
-        // hide all of the tiles when plugin initializes
-        $("#screen_osl_about_left").hide();
-        $("#screen_osl_about_rightTop").hide();
-        $("#screen_osl_about_rightBottom").hide();
+        safelog('screen_osl_about: initializing...');
 
         //initialize the tiles
-        screen_osl_about_initTiles();
+        screen_osl_about_positionTiles();
     }
 
     // called when this plugin begins showing itself
     function screen_osl_about_start() {
 
         // output some debug info to the firebug console
-        safelog('screen_osl_about is starting because i was shown');
+        safelog('screen_osl_about: starting...');
 
         // slowly show the tiles after a short delay (so the tiles don't animate 
         // off-screen)
@@ -61,15 +59,15 @@
         setTimeout("$('#screen_osl_about_left').show('slow')", delay );
         setTimeout("$('#screen_osl_about_rightTop').show('slow')", delay );
         setTimeout("$('#screen_osl_about_rightBottom').show('slow')", delay );
-
-        //alert( Screen.getViewportHeight() );
+        
+        screen_osl_about_positionTiles();
     }
 
     // called when this plugin begins hiding itself
     function screen_osl_about_stop() {
 
         // output some debug info to the firebug console
-        safelog('screen_webcams is stopping because im being hidden');
+        safelog('screen_webcams: stopping...');
 
         // slowly hide the tiles as they slide off-screen
         $("#screen_osl_about_left").hide("slow");
@@ -77,61 +75,51 @@
         $("#screen_osl_about_rightBottom").hide("slow");
     }
     
+    function screen_osl_about_onWinResize() {
+        safelog("screen_webcams: window was resized");
+        
+        screen_osl_about_positionTiles();
+    }
+    
     // ==============
     //  INITIALIZERS
     // ==============
     //      Functions that initialize elements of the the screen plugin.
     
-    function screen_osl_about_initTiles() {
-        // variables for the screen's border and tile padding. These will event-
-        // ually be db settings
-        var SCREEN_BORDER = 10; //border between the edge of the screen and the
-                                //tiles
-        var TILE_PADDING  = 10; //padding between the tiles
-        var CONTENT_PADDING = 10; //padding between the tile border and content
-
-        // grab the right-top tile height and width
-        var rightTopTileHeight = 
-            $('#screen_osl_about_rightTop').outerHeight(true);
-        var rightTopTileWidth = 
-            $('#screen_osl_about_rightTop').outerWidth(true);
+    function screen_osl_about_positionTiles() {
 
         // position and size the left tile
-        $("#screen_osl_about_left").css('padding', CONTENT_PADDING );
-        $("#screen_osl_about_left").css('top',  SCREEN_BORDER );
-        $("#screen_osl_about_left").css('left', SCREEN_BORDER );
+        $("#screen_osl_about_left").width( 
+            $("#screen_osl_about_left").parent().innerWidth() -
+            $('#screen_osl_about_rightTop').outerWidth(true) -
+            ( $("#screen_osl_about_left").outerWidth(true) - 
+            $("#screen_osl_about_left").width() ) );
         $("#screen_osl_about_left").height( 
-            {{settings.general.DISPLAY_HEIGHT}} - SCREEN_BORDER * 2 );
-        $("#screen_osl_about_left").width(
-            {{settings.general.DISPLAY_WIDTH}} - SCREEN_BORDER * 2 - 
-            TILE_PADDING - rightTopTileWidth );
-
-        // grab the left tile width now that it has been resized
-        var leftTileWidth = $('#screen_osl_about_left').outerWidth(true)
+            $("#screen_osl_about_rightBottom").outerHeight(true) +
+            $("#screen_osl_about_rightTop").outerHeight(true) - 
+            ($("#screen_osl_about_left").outerHeight(true) - 
+            $("#screen_osl_about_left").height()) );
+        $("#screen_osl_about_left").css('top', 
+            $("#screen_osl_about_left").parent().innerHeight()/2 -
+            $("#screen_osl_about_left").outerHeight(true)/2 );
 
         // position the right-top tile
-        $("#screen_osl_about_rightTop").css('top',  SCREEN_BORDER );
-        $("#screen_osl_about_rightTop").css('left', 
-            SCREEN_BORDER + leftTileWidth + TILE_PADDING );
-
+        $("#screen_osl_about_rightTop").css('right', 0 );
+        $("#screen_osl_about_rightTop").css('top',  
+            $("#screen_osl_about_left").css('top') ); 
+              
         // position and size the right-bottom tile
-        $("#screen_osl_about_rightBottom").css('padding', CONTENT_PADDING );
-        $("#screen_osl_about_rightBottom").css('top',
-            SCREEN_BORDER + TILE_PADDING + rightTopTileHeight );
-        $("#screen_osl_about_rightBottom").css('left',   
-            SCREEN_BORDER + TILE_PADDING + leftTileWidth );
-            
-        $("#screen_osl_about_rightBottom").height( 
-            {{settings.general.DISPLAY_HEIGHT}} - SCREEN_BORDER * 2 - 
-            TILE_PADDING - rightTopTileHeight );
+        $("#screen_osl_about_rightBottom").css('top', 
+            parseInt($("#screen_osl_about_left").css('top')) +
+            $('#screen_osl_about_rightTop').outerHeight(true));
+        $("#screen_osl_about_rightBottom").css('right', 0);
         $("#screen_osl_about_rightBottom").width( 
-            {{settings.general.DISPLAY_WIDTH}} - SCREEN_BORDER * 2 -
-            TILE_PADDING -leftTileWidth );
+            $("#screen_osl_about_rightTop").width() );
     }
 </script>
 
 <!-- set up html divs for each tile ------------------------------------------->
-<div id="screen_osl_about_left" class="screen_osu_about_commonStyle">
+<div id="screen_osl_about_left" class="screen_osu_about_commonStyle ui-widget ui-content ui-corner-all">
     <b>What is the Open Source Lab?</b><br><br>
     <p>
     The Oregon State University Open Source Lab is a global, world-class 
@@ -203,7 +191,7 @@
 </div>
 <!-- end left tile div -->
 
-<div id="screen_osl_about_rightTop" class="screen_osu_about_commonStyle">
+<div id="screen_osl_about_rightTop" class="screen_osu_about_commonStyle ui-widget ui-content ui-corner-all">
     <!-- 
         Display an image inside the top-right tile. The image is stored in a 
         folder called "static" inside the screen plugin's directory. Any folder
@@ -214,7 +202,7 @@
 </div>
 <!-- end top-right tile div -->
 
-<div id="screen_osl_about_rightBottom" class="screen_osu_about_commonStyle">
+<div id="screen_osl_about_rightBottom" class="screen_osu_about_commonStyle ui-widget ui-content ui-corner-all">
     <b>What is Open Source Software?</b><br><br>
 
     <p>
@@ -245,4 +233,3 @@
     to choose their preferred applications.
     </p>    
 </div>
-
