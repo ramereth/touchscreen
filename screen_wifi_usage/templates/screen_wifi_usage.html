@@ -6,16 +6,6 @@
     connected to each wifi access point around campus.
 -->
 
-<style> 
-    /* set up image style */
-	#screen_wifi_usage_img {
-	    display: block;
-        margin-left: auto;
-	    margin-right: auto;
-	    vertical-align: middle;
-        border: black double;
-</style>
-
 <script type="text/javascript">
 
     function screen_wifi_usage_init() {
@@ -33,7 +23,7 @@
         safelog('screen_wifi_usage: starting...');
 
         // scale the wifi usage image to fit inside the parent
-        $("#screen_wifi_usage_img").scale("center","stretch");
+        $("#screen_wifi_usage_img").scale("center");
     }
     
     function screen_wifi_usage_stop() {
@@ -44,12 +34,12 @@
         safelog('screen_wifi_usage: window was resized');
         
         // re-scale every time the window is resized
-        $("#screen_wifi_usage_img").scale("center","stretch");
+        $("#screen_wifi_usage_img").scale("center");
     }
     
 </script>
 
 <!-- set up the wifi usage map image ------------------------------------------>
 <img id="screen_wifi_usage_img"
-     src="{{settings.screen_wifi_usage_screen_wifi_usage.img_addr}}"
->
+     src="{{settings.screen_wifi_usage_screen_wifi_usage.img_addr}}" 
+     class="display_tile display_img">

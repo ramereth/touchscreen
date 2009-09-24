@@ -1,65 +1,11 @@
 <!--
     screen_webcams.html
     by Rob McGuire-Dale, 3/7/2009
-    last modified by Rob McGuire-Dale, 9/18/2009
+    last modified by Rob McGuire-Dale, 9/23/2009
     
     This screen displays the current shots of the different webcams around OSU's
     facilities.
 -->
-
-<style> 
-
-    /* set up common style */
-	.screen_webcams_commonStyle {
-	    position: absolute;
-        background-color: black;
-        border: black double;
-	}
-	
-	#screen_webcams_wrapper {
-	    position: absolute;
-	    width: 100%;
-	    height: 100%; 
-	}
-	
-    #screen_webcams_main{
-        padding:5px;
-	    border: 1px solid orange;
-	}
-	
-	#screen_webcams_img_main{
-	    display: block;
-	    margin-left: auto;
-	    margin-right: auto;
-	}
-
-    .thumb{
-	    padding: 2px;
-        border: 1px solid black;
-	}
-	
-    h1, h2 {
-        color: #CC5900;
-        display: block;
-        text-align:center;
-        font-weight:bold;
-        font-family:'verdana','geneva','arial','helvetica',sans-serif;
-    }
-    
-    h1{
-        font-size: 14px;
-        padding-bottom: 5px;
-    }
-    
-    h2{ 
-        font-size: 10px;
-        padding-bottom: 2px; 
-    }
-    
-    /* image style */
-    .screen_webcams_img { display: block; }
-
-</style>
 
 <script type="text/javascript">
 
@@ -124,19 +70,11 @@
     //      Functions that initialize elements of the the screen plugin.
 
     function screen_webcams_positionTiles(){
-    
-        // Grab the parent height and width (at the time of writing this, the
-        // parent is the window)
-        pWidth = $("#screen_webcams_main").parent().innerWidth();
-        pHeight = $("#screen_webcams_main").parent().innerHeight();
-        
-        //  position the tiles -------------------------------------------------
         
         // calculate the padding between the tiles to evently distribute them
         // across the screen
         var tilePadding_horiz = (
-            pWidth - 2 * 
-            {{settings.screen_webcams_screen_webcams.screen_border}} - 
+            $("#screen_webcams_main").parent().innerWidth() - 
             $("#screen_webcams_monroe").outerWidth(true) -
             $("#screen_webcams_reser").outerWidth(true) -
             $("#screen_webcams_mu").outerWidth(true) -
@@ -145,49 +83,29 @@
             $("#screen_webcams_wave").outerWidth(true) )/5;
         
         // top row
-        $("#screen_webcams_monroe").css('top', 
-            {{settings.screen_webcams_screen_webcams.screen_border}} );
-        $("#screen_webcams_monroe").css('left', 
-            {{settings.screen_webcams_screen_webcams.screen_border}} );                                        
-        
-        $("#screen_webcams_reser").css('top', 
-            {{settings.screen_webcams_screen_webcams.screen_border}} );
-        $("#screen_webcams_reser").css('left', 
-            {{settings.screen_webcams_screen_webcams.screen_border}} + 
+        $("#screen_webcams_reser").css('left',
             $("#screen_webcams_monroe").outerWidth(true) + 
             tilePadding_horiz );                                        
-        
-        $("#screen_webcams_mu").css('top', 
-            {{settings.screen_webcams_screen_webcams.screen_border}} );
+
         $("#screen_webcams_mu").css('left', 
-            {{settings.screen_webcams_screen_webcams.screen_border}} + 
             $("#screen_webcams_monroe").outerWidth(true) + 
             $("#screen_webcams_reser").outerWidth(true) + 
             tilePadding_horiz * 2 );                                        
-        
-        $("#screen_webcams_library").css('top', 
-            {{settings.screen_webcams_screen_webcams.screen_border}} );
+
         $("#screen_webcams_library").css('left', 
-            {{settings.screen_webcams_screen_webcams.screen_border}} + 
             $("#screen_webcams_monroe").outerWidth(true) + 
             $("#screen_webcams_reser").outerWidth(true) + 
             $("#screen_webcams_mu").outerWidth(true) + 
             tilePadding_horiz * 3 );                                        
         
-        $("#screen_webcams_gloss").css('top', 
-            {{settings.screen_webcams_screen_webcams.screen_border}} );
         $("#screen_webcams_gloss").css('left', 
-            {{settings.screen_webcams_screen_webcams.screen_border}} + 
             $("#screen_webcams_monroe").outerWidth(true) + 
             $("#screen_webcams_reser").outerWidth(true) + 
             $("#screen_webcams_mu").outerWidth(true) + 
             $("#screen_webcams_library").outerWidth(true) + 
             tilePadding_horiz * 4 );
         
-        $("#screen_webcams_wave").css('top', 
-            {{settings.screen_webcams_screen_webcams.screen_border}} );
         $("#screen_webcams_wave").css('left', 
-            {{settings.screen_webcams_screen_webcams.screen_border}} + 
             $("#screen_webcams_monroe").outerWidth(true) + 
             $("#screen_webcams_reser").outerWidth(true) + 
             $("#screen_webcams_mu").outerWidth(true) + 
@@ -196,49 +114,36 @@
             tilePadding_horiz * 5 );                                        
 
         // bottom row
-        $("#screen_webcams_south").css('bottom', 
-            {{settings.screen_webcams_screen_webcams.screen_border}} );
-        $("#screen_webcams_south").css('left', 
-            {{settings.screen_webcams_screen_webcams.screen_border}} );                                        
+        $("#screen_webcams_south").css('bottom', 0 );                                      
         
-        $("#screen_webcams_gill").css('bottom', 
-            {{settings.screen_webcams_screen_webcams.screen_border}} );
+        $("#screen_webcams_gill").css('bottom', 0 );
         $("#screen_webcams_gill").css('left', 
-            {{settings.screen_webcams_screen_webcams.screen_border}} + 
             $("#screen_webcams_south").outerWidth(true) + 
             tilePadding_horiz );                                        
         
-        $("#screen_webcams_andrews").css('bottom', 
-            {{settings.screen_webcams_screen_webcams.screen_border}} );
+        $("#screen_webcams_andrews").css('bottom', 0 );
         $("#screen_webcams_andrews").css('left', 
-            {{settings.screen_webcams_screen_webcams.screen_border}} + 
             $("#screen_webcams_south").outerWidth(true) + 
             $("#screen_webcams_gill").outerWidth(true) + 
             tilePadding_horiz * 2 );                                        
         
-        $("#screen_webcams_hatfield").css('bottom', 
-            {{settings.screen_webcams_screen_webcams.screen_border}} );
+        $("#screen_webcams_hatfield").css('bottom', 0 );
         $("#screen_webcams_hatfield").css('left', 
-            {{settings.screen_webcams_screen_webcams.screen_border}} + 
             $("#screen_webcams_south").outerWidth(true) + 
             $("#screen_webcams_gill").outerWidth(true) + 
             $("#screen_webcams_andrews").outerWidth(true) + 
             tilePadding_horiz * 3 );                                        
         
-        $("#screen_webcams_agate").css('bottom', 
-            {{settings.screen_webcams_screen_webcams.screen_border}} );
+        $("#screen_webcams_agate").css('bottom', 0 );
         $("#screen_webcams_agate").css('left', 
-            {{settings.screen_webcams_screen_webcams.screen_border}} + 
             $("#screen_webcams_south").outerWidth(true) + 
             $("#screen_webcams_gill").outerWidth(true) + 
             $("#screen_webcams_andrews").outerWidth(true) + 
             $("#screen_webcams_hatfield").outerWidth(true) + 
             tilePadding_horiz * 4 );
         
-        $("#screen_webcams_wecoma").css('bottom', 
-            {{settings.screen_webcams_screen_webcams.screen_border}} );
+        $("#screen_webcams_wecoma").css('bottom', 0 );
         $("#screen_webcams_wecoma").css('left', 
-            {{settings.screen_webcams_screen_webcams.screen_border}} + 
             $("#screen_webcams_south").outerWidth(true) + 
             $("#screen_webcams_gill").outerWidth(true) + 
             $("#screen_webcams_andrews").outerWidth(true) + 
@@ -366,9 +271,9 @@
 
             // place the tile in the middle of the screen
             $("#screen_webcams_main").css('top', pHeight/2 - 
-                $("#screen_webcams_main").outerHeight()/2);
+                $("#screen_webcams_main").outerHeight(true)/2);
             $("#screen_webcams_main").css('left', pWidth/2 - 
-                $("#screen_webcams_main").outerWidth()/2);
+                $("#screen_webcams_main").outerWidth(true)/2);
 		});
 		
 		// fade the main tile back in
@@ -378,21 +283,23 @@
 </script>
 
 <!-- set up HTML divs for each tile ------------------------------------------->
-<div id="screen_webcams_wrapper">
-    <div id="screen_webcams_main" class="screen_webcams_commonStyle ui-corner-all">
+<div class="display_screen_wrapper">
+    <div id="screen_webcams_main" class="display_img display_tile ">
 
-        <h1 id="screen_webcams_title_main">
+        <div id="screen_webcams_title_main" class="display_img_caption">
             {{settings.screen_webcams_screen_webcams.title_mu}}
-        </h1>
+        </div>
         
-        <img id="screen_webcams_img_main" class="screen_webcams_img ui-corner-all" 
+        <img id="screen_webcams_img_main" class="screen_webcams_img " 
             src="{{settings.screen_webcams_screen_webcams.imgAddr_mu}}">
 
     </div>
 
-    <div id="screen_webcams_mu" class="thumb screen_webcams_commonStyle ui-corner-all">
+    <div id="screen_webcams_mu" class="display_img_thumb display_tile ">
 
-        <h2>{{settings.screen_webcams_screen_webcams.title_mu}}</h2>
+        <div class="display_img_thumb_caption">
+            {{settings.screen_webcams_screen_webcams.title_mu}}
+        </div>
         
         <img id="screen_webcams_img_mu" class="screen_webcams_img"
             src="{{settings.screen_webcams_screen_webcams.imgAddr_mu}}"
@@ -401,9 +308,11 @@
 
     </div>
 
-    <div id="screen_webcams_library" class="thumb screen_webcams_commonStyle ui-corner-all">
+    <div id="screen_webcams_library" class="display_img_thumb display_tile ">
 
-        <h2>{{settings.screen_webcams_screen_webcams.title_library}}</h2>
+        <div class="display_img_thumb_caption">
+            {{settings.screen_webcams_screen_webcams.title_library}}
+        </div>
         
         <img id="screen_webcams_img_library" class="screen_webcams_img"
             src="{{settings.screen_webcams_screen_webcams.imgAddr_library}}"
@@ -412,9 +321,11 @@
 
     </div>
 
-    <div id="screen_webcams_monroe" class="thumb screen_webcams_commonStyle ui-corner-all">
+    <div id="screen_webcams_monroe" class="display_img_thumb display_tile ">
 
-        <h2>{{settings.screen_webcams_screen_webcams.title_monroe}}</h2>
+        <div class="display_img_thumb_caption">
+            {{settings.screen_webcams_screen_webcams.title_monroe}}
+        </div>
         
         <img id="screen_webcams_img_monroe" class="screen_webcams_img"
             src="{{settings.screen_webcams_screen_webcams.imgAddr_monroe}}"
@@ -423,9 +334,11 @@
 
     </div>
 
-    <div id="screen_webcams_south" class="thumb screen_webcams_commonStyle ui-corner-all">
+    <div id="screen_webcams_south" class="display_img_thumb display_tile ">
 
-        <h2>{{settings.screen_webcams_screen_webcams.title_south}}</h2>
+        <div class="display_img_thumb_caption">
+            {{settings.screen_webcams_screen_webcams.title_south}}
+        </div>
         
         <img id="screen_webcams_img_south" class="screen_webcams_img"
             src="{{settings.screen_webcams_screen_webcams.imgAddr_south}}"
@@ -434,9 +347,11 @@
 
     </div>
 
-    <div id="screen_webcams_reser" class="thumb screen_webcams_commonStyle ui-corner-all">
+    <div id="screen_webcams_reser" class="display_img_thumb display_tile ">
 
-        <h2>{{settings.screen_webcams_screen_webcams.title_reser}}</h2>
+        <div class="display_img_thumb_caption">
+            {{settings.screen_webcams_screen_webcams.title_reser}}
+        </div>
         
         <img id="screen_webcams_img_reser" class="screen_webcams_img"
             src="{{settings.screen_webcams_screen_webcams.imgAddr_reser}}"
@@ -445,9 +360,11 @@
 
     </div>
 
-    <div id="screen_webcams_gloss" class="thumb screen_webcams_commonStyle ui-corner-all">
+    <div id="screen_webcams_gloss" class="display_img_thumb display_tile ">
 
-        <h2>{{settings.screen_webcams_screen_webcams.title_gloss}}</h2>
+        <div class="display_img_thumb_caption">
+            {{settings.screen_webcams_screen_webcams.title_gloss}}
+        </div>
         
         <img id="screen_webcams_img_gloss" class="screen_webcams_img"
             src="{{settings.screen_webcams_screen_webcams.imgAddr_gloss}}"
@@ -456,9 +373,11 @@
 
     </div>
 
-    <div id="screen_webcams_gill" class="thumb screen_webcams_commonStyle ui-corner-all">
+    <div id="screen_webcams_gill" class="display_img_thumb display_tile ">
 
-        <h2>{{settings.screen_webcams_screen_webcams.title_gill}}</h2>
+        <div class="display_img_thumb_caption">
+            {{settings.screen_webcams_screen_webcams.title_gill}}
+        </div>
         
         <img id="screen_webcams_img_gill" class="screen_webcams_img"
             src="{{settings.screen_webcams_screen_webcams.imgAddr_gill}}"
@@ -467,9 +386,11 @@
 
     </div>
 
-    <div id="screen_webcams_andrews" class="thumb screen_webcams_commonStyle ui-corner-all">
+    <div id="screen_webcams_andrews" class="display_img_thumb display_tile ">
 
-        <h2>{{settings.screen_webcams_screen_webcams.title_andrews}}</h2>
+        <div class="display_img_thumb_caption">
+            {{settings.screen_webcams_screen_webcams.title_andrews}}
+        </div>
         
         <img id="screen_webcams_img_andrews" class="screen_webcams_img"
             src="{{settings.screen_webcams_screen_webcams.imgAddr_andrews}}"
@@ -478,9 +399,11 @@
 
     </div>
 
-    <div id="screen_webcams_hatfield" class="thumb screen_webcams_commonStyle ui-corner-all">
+    <div id="screen_webcams_hatfield" class="display_img_thumb display_tile ">
 
-        <h2>{{settings.screen_webcams_screen_webcams.title_hatfield}}</h2>
+        <div class="display_img_thumb_caption">
+            {{settings.screen_webcams_screen_webcams.title_hatfield}}
+        </div>
         
         <img id="screen_webcams_img_hatfield" class="screen_webcams_img"
             src="{{settings.screen_webcams_screen_webcams.imgAddr_hatfield}}"
@@ -489,9 +412,11 @@
 
     </div>
 
-    <div id="screen_webcams_wave" class="thumb screen_webcams_commonStyle ui-corner-all">
+    <div id="screen_webcams_wave" class="display_img_thumb display_tile ">
 
-        <h2>{{settings.screen_webcams_screen_webcams.title_wave}}</h2>
+        <div class="display_img_thumb_caption">
+            {{settings.screen_webcams_screen_webcams.title_wave}}
+        </div>
         
         <img id="screen_webcams_img_wave" class="screen_webcams_img"
             src=  "{{settings.screen_webcams_screen_webcams.imgAddr_wave}}"
@@ -500,9 +425,11 @@
 
     </div>
 
-    <div id="screen_webcams_wecoma" class="thumb screen_webcams_commonStyle ui-corner-all">
+    <div id="screen_webcams_wecoma" class="display_img_thumb display_tile ">
 
-        <h2>{{settings.screen_webcams_screen_webcams.title_wecoma}}</h2>
+        <div class="display_img_thumb_caption">
+            {{settings.screen_webcams_screen_webcams.title_wecoma}}
+        </div>
         
         <img id="screen_webcams_img_wecoma" class="screen_webcams_img"
             src="{{settings.screen_webcams_screen_webcams.imgAddr_wecoma}}"
@@ -511,10 +438,12 @@
             
     </div>
 
-    <div id="screen_webcams_agate" class="thumb screen_webcams_commonStyle ui-corner-all">
+    <div id="screen_webcams_agate" class="display_img_thumb display_tile ">
 
-        <h2>{{settings.screen_webcams_screen_webcams.title_agate}}</h2>
-        
+        <div class="display_img_thumb_caption">
+            {{settings.screen_webcams_screen_webcams.title_agate}}
+        </div>
+         
         <img id="screen_webcams_img_agate" class="screen_webcams_img"
             src="{{settings.screen_webcams_screen_webcams.imgAddr_agate}}"
             height={{settings.screen_webcams_screen_webcams.thumbnail_height}}

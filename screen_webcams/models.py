@@ -10,12 +10,6 @@ class screen_webcamsSettings( dbsettings.Group ):
     #  general settings
     # ==================
     
-    screen_border = dbsettings.IntegerValue(
-            'Screen Border', 
-            'The space between the edges of the screen and the tiles', 
-            default=10
-    )
-    
     imgRefreshInterval = dbsettings.IntegerValue(
             'Image Refresh Interval', 
             'The time interval to refresh the images, in milliseconds', 

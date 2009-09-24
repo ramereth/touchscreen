@@ -9,25 +9,6 @@
     tutorial (http://trac.osuosl.org/trac/touchscreen/wiki/plugins/screens)
 -->
 
-<!-- Set up styles, which include positions and colors of the tiles ----------->
-<style>
-
-    /* a common style for the tiles */
-    .screen_osu_about_commonStyle {
-        position: absolute;
-        margin: 10px;
-        padding: 10px;
-        font-size: 8pt;
-        background-color:#F8F8FF;
-        border: 1px solid orange;
-    }
-
-    #screen_osu_about_rightTop {
-        background-color: black;
-    }
-
-</style>
-
 <!-- tile position, size, and animation javascript code ----------------------->
 <script type="text/javascript">
 
@@ -114,13 +95,16 @@
             $('#screen_osl_about_rightTop').outerHeight(true));
         $("#screen_osl_about_rightBottom").css('right', 0);
         $("#screen_osl_about_rightBottom").width( 
-            $("#screen_osl_about_rightTop").width() );
+            $("#screen_osl_about_rightTop").outerWidth(true) -
+            ($("#screen_osl_about_rightBottom").outerWidth(true) -
+            $("#screen_osl_about_rightBottom").width()));
+
     }
 </script>
 
 <!-- set up html divs for each tile ------------------------------------------->
-<div id="screen_osl_about_left" class="screen_osu_about_commonStyle ui-widget ui-content ui-corner-all">
-    <b>What is the Open Source Lab?</b><br><br>
+<div id="screen_osl_about_left" class="display_content display_tile">
+    <h1>What is the Open Source Lab?</h1>
     <p>
     The Oregon State University Open Source Lab is a global, world-class 
     facility and data center for Open Source Software (OSS) knowledge, 
@@ -132,8 +116,8 @@
     universities, governments, and private sector business, the OSU Open 
     Source Lab is quickly becoming a critical worldwide center for services 
     related to open source software.
-    </p><br>
-    <b>Why the Open Source Lab?</b><br><br>
+    </p>
+    <h1>Why the Open Source Lab?</h1>
     <p>
     Our goal is to help promote collaboration through the nurturing and 
     development of software projects across like-minded institutions. Our 
@@ -142,23 +126,32 @@
     with investments in open source software that leverage open standards. 
     The more people we can have working together, the more value we can 
     help the world realize.
-    </p><br>
+    </p>
 
     <p>
     The core mission of the OSU Open Source Lab can be summed up with the 
     following:
-    <br><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;• Create an atmosphere of innovation for 
+    
+    <ul>
+        <li>
+        Create an atmosphere of innovation for 
         students, faculty and staff by providing an open, diverse 
         environment for development and collaboration.
-        <br>
-        &nbsp;&nbsp;&nbsp;&nbsp;• Collaborate with public and private 
+        </li>
+
+        <li>
+        Collaborate with public and private 
         institutions to better understand and develop open source software.
-        <br>
-        &nbsp;&nbsp;&nbsp;&nbsp;• Bolster the return on investment to the 
+        </li>
+
+        <li>
+        Bolster the return on investment to the 
         State and local economy by helping promote and build tools and 
-        products that our constituents can use. 
-    </p><br>
+        products that our constituents can use.
+        </li>
+    </ul>
+    
+    </p>
 
     <p>
     Open source projects today are held together by shoe string budgets and 
@@ -166,7 +159,7 @@
     grow upon and the OSL brings that in the form of development 
     experience, world-class infrastructure, and the willingness to always 
     do the right thing for the community.
-    </p><br>
+    </p>
 
     <p>
     Bringing the open source community together both physically and 
@@ -176,7 +169,7 @@
     the open source transaction time with innovative tools and a globally-
     distributed infrastructure that services these communities 24 hours a 
     day, 7 days a week and 365 days a year.
-    </p><br>
+    </p>
 
     <p>
     The open source community has grown by leaps and bounds over the past 5 
@@ -191,7 +184,7 @@
 </div>
 <!-- end left tile div -->
 
-<div id="screen_osl_about_rightTop" class="screen_osu_about_commonStyle ui-widget ui-content ui-corner-all">
+<div id="screen_osl_about_rightTop" class="display_img display_tile">
     <!-- 
         Display an image inside the top-right tile. The image is stored in a 
         folder called "static" inside the screen plugin's directory. Any folder
@@ -202,17 +195,17 @@
 </div>
 <!-- end top-right tile div -->
 
-<div id="screen_osl_about_rightBottom" class="screen_osu_about_commonStyle ui-widget ui-content ui-corner-all">
-    <b>What is Open Source Software?</b><br><br>
+<div id="screen_osl_about_rightBottom" class="display_content display_tile">
+    <h1>What is Open Source Software?</h1>
 
     <p>
     "Open source" means that the building blocks for a program are freely 
     available to use, modify, and improve. This provides for rapid software 
     development by contributors worldwide, and the resulting program is 
     available for anyone to use, anywhere, free of charge.
-    </p><br>
+    </p>
 
-    <b>Why Open Source?</b><br><br>
+    <h1>Why Open Source?</h1>
 
     <p>
     Open source software allows the user to freely take their own best 
@@ -222,7 +215,7 @@
     application's security implementation or find that some feature is 
     missing, you can dive in and fix the code yourself. You can then give 
     those changes back to the community so that others may benefit.
-    </p><br>
+    </p>
 
     <p>
     The reason open source has become so successful is that it leverages 

@@ -6,16 +6,6 @@
     the wifi access points around campus.
 -->
 
-<style> 
-    /* set up image style */
-	#screen_wifi_bandwidth_img {
-	    display: block;
-        margin-left: auto;
-	    margin-right: auto;
-	    vertical-align: middle;
-        border: black double;
-</style>
-
 <script type="text/javascript">
     function screen_wifi_bandwidth_init() {
         safelog('screen_wifi_bandwidth: initializing...');
@@ -50,4 +40,5 @@
 <!-- set up the wifi bandwidth map image -------------------------------------->
 <img id="screen_wifi_bandwidth_img"
      src="{{settings.screen_wifi_bandwidth_screen_wifi_bandwidth.img_addr}}"
+     class="display_tile display_img"
 >
