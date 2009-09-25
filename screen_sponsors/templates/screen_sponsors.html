@@ -1,0 +1,196 @@
+<!--
+    screen_sponsors.html
+    by Rob McGuire-Dale, 9/3/2009
+    
+    This screen displays a graphical representation of the number of users
+    connected to each wifi access point around campus.
+-->
+
+<script type="text/javascript">
+
+    function screen_sponsors_init() {
+        safelog('screen_sponsors: initializing...');
+    }
+
+    function screen_sponsors_start() {
+        safelog('screen_sponsors: starting...');
+        
+        screen_sponsors_positionTiles();
+    }
+    
+    function screen_sponsors_stop() {
+        safelog('screen_sponsors: stopping');
+    }
+    
+    function screen_sponsors_onScreenResize() {
+        safelog('screen_sponsors: window was resized');
+        
+        screen_sponsors_positionTiles();
+    }
+    
+    function screen_sponsors_positionTiles(){    
+        $('#screen_sponsors_title').width( 
+            $('#screen_sponsors_title').parent().innerWidth() -
+            ($('#screen_sponsors_title').outerWidth( true ) - 
+            $('#screen_sponsors_title').width()));
+        
+        $('#screen_sponsors_friends').width(150);
+        $('#screen_sponsors_friends').css('right', 0 );
+        $('#screen_sponsors_friends').css('top', 
+            parseInt($('#screen_sponsors_title').css('top')) + 
+            $('#screen_sponsors_title').outerHeight(true));
+        $('#screen_sponsors_friends').height(
+            $('#screen_sponsors_friends').parent().innerHeight() -
+            $('#screen_sponsors_title').outerHeight(true) -
+            $('#screen_sponsors_friends').outerHeight(true) +
+            $('#screen_sponsors_friends').height());
+        
+        $('#screen_sponsors_sponsors').css('top', 
+            parseInt($('#screen_sponsors_title').css('top')) + 
+            $('#screen_sponsors_title').outerHeight(true));   
+        $('#screen_sponsors_sponsors').width( 
+            $('#screen_sponsors_sponsors').parent().innerWidth() -
+            $('#screen_sponsors_friends').outerWidth(true) -
+            $('#screen_sponsors_sponsors').outerWidth(true) +
+            $('#screen_sponsors_sponsors').width());
+        $('#screen_sponsors_sponsors').height(
+            $('#screen_sponsors_sponsors').parent().innerHeight() -
+            $('#screen_sponsors_title').outerHeight(true) -
+            $('#screen_sponsors_sponsors').outerHeight(true) +
+            $('#screen_sponsors_sponsors').height());
+    }
+    
+</script>
+
+<!-- set up the wifi usage map image ------------------------------------------>
+<div class="display_screen_wrapper">
+    <div id='screen_sponsors_title' class="display_tile display_title">Sponsors</div>
+    <div id='screen_sponsors_sponsors' class="display_tile display_content">
+        <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ante metus, vehicula eu posuere eu, rutrum eu ligula. Nullam cursus tristique quam ut sagittis. Vestibulum consequat semper accumsan. Proin facilisis hendrerit est, sed euismod nibh convallis sit amet. Nulla tincidunt felis ipsum. Donec nunc lorem, cursus eget tristique a, scelerisque id tortor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean at orci nibh. Mauris aliquam risus eget elit tempus bibendum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Praesent commodo lacus id massa pellentesque vehicula. Cras pulvinar sapien a purus euismod sed auctor augue laoreet.
+        </p>
+        <p>
+        Curabitur aliquet dictum mi, sed laoreet ante sollicitudin sed. Pellentesque gravida, nisi ut sodales tristique, eros sapien varius dui, laoreet consequat libero erat eget mauris. Proin eu dictum mauris. Maecenas facilisis, turpis ut viverra facilisis, justo mi hendrerit tellus, in convallis purus eros euismod enim. Suspendisse tristique euismod interdum. Vestibulum aliquet urna iaculis turpis gravida at aliquet metus bibendum. Vivamus tincidunt urna porta libero accumsan id scelerisque mauris faucibus. Nulla nunc dui, rutrum nec mattis laoreet, tempus nec nisl. Integer ac eros purus. Donec eros leo, fringilla ut adipiscing auctor, hendrerit eget nibh. Fusce aliquet, libero eget feugiat dictum, nibh urna viverra justo, sit amet semper tortor nisl eget ligula.
+        </p>
+
+        <p>
+        Phasellus ultrices, urna quis fringilla molestie, lectus leo lobortis ipsum, at cursus dui felis vel neque. Aliquam massa diam, tristique auctor placerat id, pellentesque ac risus. Sed accumsan rutrum lectus posuere iaculis. Pellentesque nisi mauris, placerat vel faucibus vitae, fringilla nec dolor. Pellentesque venenatis odio a urna feugiat pellentesque. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Phasellus interdum ipsum id sapien semper a congue turpis congue. Duis pharetra porta semper. Morbi in hendrerit turpis. Sed velit libero, venenatis eu interdum quis, egestas et tortor. Morbi sit amet ipsum lobortis turpis tristique rhoncus. Donec ac tortor id nisi sollicitudin ultricies. Praesent purus orci, semper ut adipiscing nec, feugiat a nisl. Pellentesque ligula tellus, feugiat sed consectetur ac, egestas id turpis. Integer et blandit metus. Quisque a turpis non augue cursus luctus. Vestibulum at viverra eros. Vivamus nulla ligula, iaculis ac elementum vel, porta nec sapien. Suspendisse hendrerit blandit felis pellentesque ornare. Aenean blandit lectus quis enim mattis interdum.
+        </p>
+        <p>
+        Etiam enim metus, mollis ut scelerisque eu, sagittis in diam. Vivamus sodales hendrerit mauris vel auctor. Suspendisse euismod justo quis est scelerisque et sollicitudin risus aliquet. Proin quis tortor a erat aliquet fringilla id eu elit. Mauris dui velit, placerat in tincidunt nec, feugiat non dolor. Pellentesque dictum nisl ac elit pharetra non ultrices neque auctor. Proin mollis arcu ut nibh dictum sed tincidunt leo posuere. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas condimentum nisi tortor. In hac habitasse platea dictumst. Curabitur mauris orci, interdum nec aliquet non, adipiscing at eros. Donec interdum magna sit amet magna ultricies et sollicitudin ante pulvinar. Aliquam erat volutpat. Integer semper rutrum nulla, quis iaculis justo venenatis quis.
+        </p>
+        <p>
+        Suspendisse potenti. Donec commodo nibh nec purus aliquet aliquet. Aenean nulla elit, interdum quis interdum eget, blandit eu metus. Sed tristique, dolor non placerat pharetra, risus dui scelerisque ipsum, in iaculis mi ligula fermentum metus. Donec ultricies interdum leo, vitae ultricies nulla consequat vitae. Proin nec lorem ut nunc viverra porttitor in molestie est. Integer neque ipsum, placerat at laoreet vitae, porttitor vel ipsum. Nunc dignissim ligula nec augue posuere tempor. Aenean dictum tincidunt mollis. Morbi tincidunt augue quis augue tempus at tincidunt eros viverra. Curabitur dictum, quam sit amet feugiat fermentum, eros tortor convallis mauris, a rhoncus felis purus ut nunc. Praesent at risus in dolor fringilla aliquam non at ipsum.
+        </p>
+        <p>
+        Nunc eleifend orci at sem condimentum faucibus. Donec pulvinar feugiat nisi. Nulla mattis nisi quis urna vulputate convallis. Donec ut viverra arcu. Duis porta enim quis nunc convallis non posuere nisl pellentesque. Nam vehicula condimentum lectus, ut fringilla ipsum egestas in. Etiam mi nunc, sagittis pulvinar placerat quis, scelerisque sit amet erat. Duis vitae sem neque. Nam sit amet eros lectus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer et lacus sapien. Phasellus ac nibh urna.
+        </p>
+        <p>
+        Quisque ante orci, tempor vitae viverra sed, mattis vel purus. Pellentesque aliquam mattis turpis in egestas. In ullamcorper mi in metus feugiat ac adipiscing felis lacinia. Sed mollis ligula sed arcu tincidunt dapibus. Vestibulum fermentum risus ac risus volutpat venenatis. Morbi et augue sagittis felis tempus semper in eleifend tortor. Mauris mollis aliquam justo, ut malesuada diam venenatis in. Fusce interdum, lacus a mollis interdum, lectus ante molestie velit, in scelerisque massa est vitae justo. Vestibulum in lacus ut risus sagittis iaculis vitae non urna. Integer non urna odio, sit amet lobortis dui. Proin id libero vulputate ipsum pretium porttitor interdum ac urna. Aliquam erat volutpat. Cras nec dui et ligula mattis elementum sed ac erat. Donec sed mi quis justo rutrum porta vel in elit. Praesent in mauris libero, ac blandit mi.
+        </p>
+        <p>
+        Quisque non nisl eros, nec adipiscing mi. Integer nec euismod eros. Aenean blandit dolor id sem mattis dignissim. Nam pretium, elit quis egestas porttitor, nulla orci pharetra neque, sed varius leo eros non est. Nunc condimentum justo vitae justo porta luctus. Ut sagittis fermentum dapibus. Nam suscipit mauris sed mi dictum id malesuada metus vehicula. Sed eu dui id velit eleifend scelerisque. Maecenas feugiat arcu adipiscing lacus venenatis sit amet lacinia augue posuere. Vivamus lectus magna, dignissim id lobortis in, mollis et eros. Sed in turpis at massa congue facilisis. Proin risus sapien, viverra at pretium vel, aliquam ac leo. Vivamus egestas accumsan massa ac bibendum. Morbi non purus sit amet neque tincidunt euismod non id elit. Etiam a lacus quis velit sollicitudin ultricies. Vestibulum congue, ipsum id ornare lacinia, ligula purus ultricies erat, vitae volutpat eros turpis sit amet nibh. Ut id dui tellus, in iaculis nisl. Cras in tortor felis, eu consequat tortor.
+        </p>
+        <p>
+        Nulla facilisi. Vestibulum in malesuada odio. Praesent ac nisl quam. Donec accumsan, purus vel eleifend pulvinar, felis eros ultricies tellus, et vestibulum lectus ipsum in justo. Fusce aliquet tempor diam, eu ultrices mi laoreet id. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Pellentesque facilisis congue arcu, a varius neque pellentesque id. Cras feugiat massa ipsum, vel luctus nulla. Proin eget lorem at metus venenatis bibendum eu quis neque. Donec viverra enim eget felis rutrum in pellentesque est egestas. Ut suscipit placerat nunc vitae vulputate. Proin ante justo, feugiat in auctor id, rhoncus at mauris. Aliquam erat volutpat.
+        </p>
+        <p>
+        Praesent rhoncus consectetur diam, in cursus ipsum feugiat vitae. Vestibulum et eros enim. Ut nisl tortor, pulvinar nec tincidunt ac, bibendum vitae risus. Integer sollicitudin accumsan sapien vel venenatis. Aenean ligula felis, sodales ac ultricies iaculis, suscipit quis felis. Ut mi dolor, posuere pulvinar sollicitudin et, vehicula nec enim. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Phasellus sed mauris at diam porta dignissim. Etiam purus urna, pellentesque vel lacinia vitae, eleifend sit amet metus. Vivamus nec quam eu felis sollicitudin tempor vel in lectus. Proin mauris diam, semper sit amet ullamcorper sed, auctor sed ante. Aliquam nisl lorem, pellentesque vel scelerisque in, adipiscing et libero. Suspendisse posuere malesuada quam in tempus. Praesent odio dolor, faucibus et pulvinar ac, posuere vel libero. Etiam laoreet rutrum fringilla. Vestibulum a massa eu elit posuere luctus eget non dolor. Etiam rhoncus nunc quis nisi sollicitudin in eleifend tellus ornare. Sed sed tellus augue.
+        </p>
+        <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ante metus, vehicula eu posuere eu, rutrum eu ligula. Nullam cursus tristique quam ut sagittis. Vestibulum consequat semper accumsan. Proin facilisis hendrerit est, sed euismod nibh convallis sit amet. Nulla tincidunt felis ipsum. Donec nunc lorem, cursus eget tristique a, scelerisque id tortor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean at orci nibh. Mauris aliquam risus eget elit tempus bibendum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Praesent commodo lacus id massa pellentesque vehicula. Cras pulvinar sapien a purus euismod sed auctor augue laoreet.
+        </p>
+        <p>
+        Curabitur aliquet dictum mi, sed laoreet ante sollicitudin sed. Pellentesque gravida, nisi ut sodales tristique, eros sapien varius dui, laoreet consequat libero erat eget mauris. Proin eu dictum mauris. Maecenas facilisis, turpis ut viverra facilisis, justo mi hendrerit tellus, in convallis purus eros euismod enim. Suspendisse tristique euismod interdum. Vestibulum aliquet urna iaculis turpis gravida at aliquet metus bibendum. Vivamus tincidunt urna porta libero accumsan id scelerisque mauris faucibus. Nulla nunc dui, rutrum nec mattis laoreet, tempus nec nisl. Integer ac eros purus. Donec eros leo, fringilla ut adipiscing auctor, hendrerit eget nibh. Fusce aliquet, libero eget feugiat dictum, nibh urna viverra justo, sit amet semper tortor nisl eget ligula.
+        </p>
+        <p>
+        Phasellus ultrices, urna quis fringilla molestie, lectus leo lobortis ipsum, at cursus dui felis vel neque. Aliquam massa diam, tristique auctor placerat id, pellentesque ac risus. Sed accumsan rutrum lectus posuere iaculis. Pellentesque nisi mauris, placerat vel faucibus vitae, fringilla nec dolor. Pellentesque venenatis odio a urna feugiat pellentesque. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Phasellus interdum ipsum id sapien semper a congue turpis congue. Duis pharetra porta semper. Morbi in hendrerit turpis. Sed velit libero, venenatis eu interdum quis, egestas et tortor. Morbi sit amet ipsum lobortis turpis tristique rhoncus. Donec ac tortor id nisi sollicitudin ultricies. Praesent purus orci, semper ut adipiscing nec, feugiat a nisl. Pellentesque ligula tellus, feugiat sed consectetur ac, egestas id turpis. Integer et blandit metus. Quisque a turpis non augue cursus luctus. Vestibulum at viverra eros. Vivamus nulla ligula, iaculis ac elementum vel, porta nec sapien. Suspendisse hendrerit blandit felis pellentesque ornare. Aenean blandit lectus quis enim mattis interdum.
+        </p>
+        <p>
+        Etiam enim metus, mollis ut scelerisque eu, sagittis in diam. Vivamus sodales hendrerit mauris vel auctor. Suspendisse euismod justo quis est scelerisque et sollicitudin risus aliquet. Proin quis tortor a erat aliquet fringilla id eu elit. Mauris dui velit, placerat in tincidunt nec, feugiat non dolor. Pellentesque dictum nisl ac elit pharetra non ultrices neque auctor. Proin mollis arcu ut nibh dictum sed tincidunt leo posuere. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas condimentum nisi tortor. In hac habitasse platea dictumst. Curabitur mauris orci, interdum nec aliquet non, adipiscing at eros. Donec interdum magna sit amet magna ultricies et sollicitudin ante pulvinar. Aliquam erat volutpat. Integer semper rutrum nulla, quis iaculis justo venenatis quis.
+        </p>
+        <p>
+        Suspendisse potenti. Donec commodo nibh nec purus aliquet aliquet. Aenean nulla elit, interdum quis interdum eget, blandit eu metus. Sed tristique, dolor non placerat pharetra, risus dui scelerisque ipsum, in iaculis mi ligula fermentum metus. Donec ultricies interdum leo, vitae ultricies nulla consequat vitae. Proin nec lorem ut nunc viverra porttitor in molestie est. Integer neque ipsum, placerat at laoreet vitae, porttitor vel ipsum. Nunc dignissim ligula nec augue posuere tempor. Aenean dictum tincidunt mollis. Morbi tincidunt augue quis augue tempus at tincidunt eros viverra. Curabitur dictum, quam sit amet feugiat fermentum, eros tortor convallis mauris, a rhoncus felis purus ut nunc. Praesent at risus in dolor fringilla aliquam non at ipsum.
+        </p>
+        <p>
+        Nunc eleifend orci at sem condimentum faucibus. Donec pulvinar feugiat nisi. Nulla mattis nisi quis urna vulputate convallis. Donec ut viverra arcu. Duis porta enim quis nunc convallis non posuere nisl pellentesque. Nam vehicula condimentum lectus, ut fringilla ipsum egestas in. Etiam mi nunc, sagittis pulvinar placerat quis, scelerisque sit amet erat. Duis vitae sem neque. Nam sit amet eros lectus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer et lacus sapien. Phasellus ac nibh urna.
+        </p>
+        <p>
+        Quisque ante orci, tempor vitae viverra sed, mattis vel purus. Pellentesque aliquam mattis turpis in egestas. In ullamcorper mi in metus feugiat ac adipiscing felis lacinia. Sed mollis ligula sed arcu tincidunt dapibus. Vestibulum fermentum risus ac risus volutpat venenatis. Morbi et augue sagittis felis tempus semper in eleifend tortor. Mauris mollis aliquam justo, ut malesuada diam venenatis in. Fusce interdum, lacus a mollis interdum, lectus ante molestie velit, in scelerisque massa est vitae justo. Vestibulum in lacus ut risus sagittis iaculis vitae non urna. Integer non urna odio, sit amet lobortis dui. Proin id libero vulputate ipsum pretium porttitor interdum ac urna. Aliquam erat volutpat. Cras nec dui et ligula mattis elementum sed ac erat. Donec sed mi quis justo rutrum porta vel in elit. Praesent in mauris libero, ac blandit mi.
+        </p>
+        <p>
+        Quisque non nisl eros, nec adipiscing mi. Integer nec euismod eros. Aenean blandit dolor id sem mattis dignissim. Nam pretium, elit quis egestas porttitor, nulla orci pharetra neque, sed varius leo eros non est. Nunc condimentum justo vitae justo porta luctus. Ut sagittis fermentum dapibus. Nam suscipit mauris sed mi dictum id malesuada metus vehicula. Sed eu dui id velit eleifend scelerisque. Maecenas feugiat arcu adipiscing lacus venenatis sit amet lacinia augue posuere. Vivamus lectus magna, dignissim id lobortis in, mollis et eros. Sed in turpis at massa congue facilisis. Proin risus sapien, viverra at pretium vel, aliquam ac leo. Vivamus egestas accumsan massa ac bibendum. Morbi non purus sit amet neque tincidunt euismod non id elit. Etiam a lacus quis velit sollicitudin ultricies. Vestibulum congue, ipsum id ornare lacinia, ligula purus ultricies erat, vitae volutpat eros turpis sit amet nibh. Ut id dui tellus, in iaculis nisl. Cras in tortor felis, eu consequat tortor.
+        </p>
+        <p>
+        Nulla facilisi. Vestibulum in malesuada odio. Praesent ac nisl quam. Donec accumsan, purus vel eleifend pulvinar, felis eros ultricies tellus, et vestibulum lectus ipsum in justo. Fusce aliquet tempor diam, eu ultrices mi laoreet id. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Pellentesque facilisis congue arcu, a varius neque pellentesque id. Cras feugiat massa ipsum, vel luctus nulla. Proin eget lorem at metus venenatis bibendum eu quis neque. Donec viverra enim eget felis rutrum in pellentesque est egestas. Ut suscipit placerat nunc vitae vulputate. Proin ante justo, feugiat in auctor id, rhoncus at mauris. Aliquam erat volutpat.
+        </p>
+        <p>
+        Praesent rhoncus consectetur diam, in cursus ipsum feugiat vitae. Vestibulum et eros enim. Ut nisl tortor, pulvinar nec tincidunt ac, bibendum vitae risus. Integer sollicitudin accumsan sapien vel venenatis. Aenean ligula felis, sodales ac ultricies iaculis, suscipit quis felis. Ut mi dolor, posuere pulvinar sollicitudin et, vehicula nec enim. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Phasellus sed mauris at diam porta dignissim. Etiam purus urna, pellentesque vel lacinia vitae, eleifend sit amet metus. Vivamus nec quam eu felis sollicitudin tempor vel in lectus. Proin mauris diam, semper sit amet ullamcorper sed, auctor sed ante. Aliquam nisl lorem, pellentesque vel scelerisque in, adipiscing et libero. Suspendisse posuere malesuada quam in tempus. Praesent odio dolor, faucibus et pulvinar ac, posuere vel libero. Etiam laoreet rutrum fringilla. Vestibulum a massa eu elit posuere luctus eget non dolor. Etiam rhoncus nunc quis nisi sollicitudin in eleifend tellus ornare. Sed sed tellus augue.
+        </p>
+    </div>
+    <div id='screen_sponsors_friends' class="display_tile display_content">
+        <p class="punny-name">Patty O’Furniture</p >
+        <p class="punny-name">Ann Chovey</p >
+        <p class="punny-name">Hazel Nutt</p >
+        <p class="punny-name">Chris P. Bacon</p >
+        <p class="punny-name">Marsha Mellow</p >
+        <p class="punny-name">Olive Yew</p >
+        <p class="punny-name">Barb Akew</p >
+        <p class="punny-name">Aida Bugg</p >
+        <p class="punny-name">Maureen Biologist</p >
+        <p class="punny-name">Teri Dactyl</p >
+        <p class="punny-name">Peg Legge</p >
+        <p class="punny-name">Allie Grater</p >
+        <p class="punny-name">Liz Erd</p >
+        <p class="punny-name">A. Mused</p >
+        <p class="punny-name">Constance Noring</p >
+        <p class="punny-name">Lois Di Nominator</p >
+        <p class="punny-name">Minnie Van Ryder</p >
+        <p class="punny-name">Lynn O’Leeum</p >
+        <p class="punny-name">P. Ann O’Recital</p >
+        <p class="punny-name">Ray O’Sun</p >
+        <p class="punny-name">Ray Sin</p >
+        <p class="punny-name">Isabelle Ringing</p >
+        <p class="punny-name">Eileen Sideways</p >
+        <p class="punny-name">Rita Book</p >
+        <p class="punny-name">Paige Turner</p >
+        <p class="punny-name">Rhoda Report</p >
+        <p class="punny-name">Augusta Wind</p >
+        <p class="punny-name">Chris Anthemum</p >
+        <p class="punny-name">Anne Teak</p >
+        <p class="punny-name">U.R. Nice</p >
+        <p class="punny-name">Anita Bath</p >
+        <p class="punny-name">Harriet Upp</p >
+        <p class="punny-name">I.M. Tired</p >
+        <p class="punny-name">I. Missy Ewe</p >
+        <p class="punny-name">Ivana B. Withew</p >
+        <p class="punny-name">Anita Letterback</p >
+        <p class="punny-name">Hope Furaletter</p >
+        <p class="punny-name">B. Homesoon</p >
+        <p class="punny-name">Bea Mine</p >
+        <p class="punny-name">Bess Twishes</p >
+        <p class="punny-name">C. Yasoon</p >
+        <p class="punny-name">Audie Yose</p >
+        <p class="punny-name">Dee End</p >
+        <p class="punny-name">Amanda Hug</p >
+        <p class="punny-name">Frank Furter</p >
+        <p class="punny-name">Ben Dover</p >
+        <p class="punny-name">Eileen Dover</p >
+        <p class="punny-name">Willie Makit</p >
+        <p class="punny-name">Willie Findit</p >
+        <p class="punny-name">Barry Cuda</p >
+        <p class="punny-name">Barry Mundy</p >
+        <p class="punny-name">John Dory</p >
+        <p class="punny-name">Addie Minstra</p >
+        <p class="punny-name">Anne Ortha</p >
+        <p class="punny-name">Dave Allippa</p >
+        <p class="punny-name">Dee Zynah</p >
+        <p class="punny-name">Hugh Mannerizorsa</p >
+        <p class="punny-name">Loco Lyzayta</p >
+        <p class="punny-name">Manny Jah</p >
+        <p class="punny-name">Mark Ateer</p >
+        <p class="punny-name">Reeve Ewer</p >
+        <p class="punny-name">Tex Ryta</p >
+        <p class="punny-name">Theresa Green</p >
+    </div>
+</div>
