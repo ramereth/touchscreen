@@ -6,16 +6,16 @@ import dbsettings
 ================================================================ """
 class screen_sponsorsSettings( dbsettings.Group ):
     
-    img_addr = dbsettings.StringValue(
-            'Campus WiFi usage map URL', 
-            'URL of the WiFi usage map', 
-            default='http://oregonstate.edu/net/wifi_map/sponsors_map.png'
+    sponsors_RSS_feed_URL = dbsettings.StringValue(
+            'OSL Sponsors RSS Feed URL', 
+            'URL of the RSS feed of the OSL sponsors', 
+            default='http://osuosl.org/members/rss.xml'
     )
     
-    imgRefreshInterval = dbsettings.IntegerValue(
-            'Image Refresh Interval', 
-            'The time interval to refresh the images, in milliseconds', 
-            default=30000
+    friends_Page_URL = dbsettings.StringValue(
+            'OSL Friends Page URL', 
+            'URL of the page listing the friends of the OSL', 
+            default='http://osuosl.org/friends/members'
     )
 
 screen_sponsors_settings = screen_sponsorsSettings('screen_sponsors Settings')

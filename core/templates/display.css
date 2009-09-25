@@ -49,13 +49,13 @@
 .display_screen_wrapper, .display_tile{ position: absolute; }
 
 .display_screen_wrapper{
-    border: 1px solid red;
     width: 100%;
     height: 100%;
 }
 
 .display_tile{
     -moz-border-radius:4px;
+    overflow:hidden;
     margin:10px;
     background-color: black;
     font-family:'verdana','geneva','arial','helvetica',sans-serif;
