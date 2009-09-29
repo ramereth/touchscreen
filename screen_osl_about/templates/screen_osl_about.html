@@ -70,8 +70,7 @@
     function screen_osl_about_positionTiles() {
 
         // position and size the left tile
-        $("#screen_osl_about_left").width( 
-            $("#screen_osl_about_left").parent().innerWidth() -
+        $("#screen_osl_about_left").width( screenWidth() -
             $('#screen_osl_about_rightTop').outerWidth(true) -
             ( $("#screen_osl_about_left").outerWidth(true) - 
             $("#screen_osl_about_left").width() ) );
@@ -80,8 +79,7 @@
             $("#screen_osl_about_rightTop").outerHeight(true) - 
             ($("#screen_osl_about_left").outerHeight(true) - 
             $("#screen_osl_about_left").height()) );
-        $("#screen_osl_about_left").css('top', 
-            $("#screen_osl_about_left").parent().innerHeight()/2 -
+        $("#screen_osl_about_left").css('top', screenHeight()/2 -
             $("#screen_osl_about_left").outerHeight(true)/2 );
 
         // position the right-top tile

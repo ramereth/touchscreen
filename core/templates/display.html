@@ -8,8 +8,6 @@
             {% include "display.css" %}
         </style>
 
-        <script type="text/javascript" src="{{MEDIA_URL}}/js/util.js"></script>
-		
         <!-- jQuery includes -->
         <script type='text/javascript' src="{{MEDIA_URL}}/js/jquery-1.3.2.min.js"></script>
         <script type='text/javascript' src="{{MEDIA_URL}}/js/jquery.doubleBorderedBox.js"></script>
@@ -22,6 +20,9 @@
         <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}/js/jquery.ui/theme/ui.all.css" />
         <script type="text/javascript" src="{{MEDIA_URL}}/js/jquery.ui/jquery.ui.core-1.7.2.js"></script>
 		<script type="text/javascript" src="{{MEDIA_URL}}/js/jquery.ui/jquery.ui.draggable-1.7.2.js"></script>
+
+        <!-- other includes -->
+        <script type="text/javascript" src="{{MEDIA_URL}}/js/util.js"></script>
         
 		<script type="text/javascript">
 
@@ -267,6 +268,10 @@
                         'fade':'fade_in'
                       };
 
+            // global functions for querying the size of the viewport
+            function screenHeight(){ return Screen.getViewportHeight(); }
+            function screenWidth(){ return Screen.getViewportWidth(); }
+
             // hides all screens
             function hide_all() {
                 for (i=0; i<screens.length; i++) {
@@ -285,13 +290,6 @@
                 // check for the existance of event functions in the screens,
                 // void them if they don't exist, and validate if they do           
                 for (i=0; i<screens.length; i++) {
-                    if( screens[i]['init'] == "None" )
-                        screens[i]['init'] = void(0);
-                    else{
-                        screens[i]['init'] += '()';
-                        eval(screens[i]['init']);
-                    }
-                        
                     if( screens[i]['start'] == "None" )
                         screens[i]['start'] = void(0);
                     else
@@ -307,6 +305,12 @@
                     else
                         screens[i]['onWinResize'] += '()';
 
+                    if( screens[i]['init'] == "None" )
+                        screens[i]['init'] = void(0);
+                    else{
+                        screens[i]['init'] += '()';
+                        eval(screens[i]['init']);
+                    }
                 }
 
                 safelog("core: All screens initialized");
@@ -367,6 +371,8 @@
     <body>
 
         <div id='screens'>
+        
+            <!-- debug window -->
             <table id='debug_window' class='ui-widget ui-corner-all'>
                 <tr>
                     <td colspan="4" class="debug_button-cells">
@@ -390,10 +396,12 @@
                 </tr>
             </table>
         
+            <!-- create screen divs -->
             {% for key, screen in screens.items %}
                 <div id='screen_{{screen.hash}}' class='screen'>
                     {% include screen.template %}
                 </div>
             {% endfor %}
+            
         </div>
     </body> 
