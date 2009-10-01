@@ -2,9 +2,9 @@ from django.db import models
 import dbsettings
 
 """ ================================================================
-# Settings for screen_FTP_traffic
+# Settings for screen_ftp_traffic
 ================================================================ """
-class screen_FTP_trafficSettings( dbsettings.Group ):
+class screen_ftp_trafficSettings( dbsettings.Group ):
     
     img_addr = dbsettings.StringValue(
             'FTP traffic map URL', 
@@ -18,5 +18,5 @@ class screen_FTP_trafficSettings( dbsettings.Group ):
             default=30000
     )
 
-screen_FTP_traffic_settings = screen_FTP_trafficSettings('screen_FTP_traffic Settings')
+screen_ftp_traffic_settings = screen_ftp_trafficSettings('screen_ftp_traffic Settings')
 

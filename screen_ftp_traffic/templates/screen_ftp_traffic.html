@@ -1,0 +1,42 @@
+<!--
+    screen_ftp_traffic.html
+    by Rob McGuire-Dale, 9/23/2009
+    
+    This screen displays a map of the FTP traffic
+-->
+
+<script type="text/javascript">
+
+    function screen_ftp_traffic_init() {
+        safelog('screen_ftp_traffic: initializing...');
+    
+        // make the image refresh itself at the specified interval
+		$("#screen_ftp_traffic_img").refreshImage({
+            interval:
+                {{settings.screen_ftp_traffic_screen_ftp_traffic.imgRefreshInterval}},
+            start:true
+        });
+    }
+
+    function screen_ftp_traffic_start() {
+        safelog('screen_ftp_traffic: starting...');
+
+        // scale the wifi usage image to fit inside the parent
+        $("#screen_ftp_traffic_img").scale("center");
+    }
+    
+    function screen_ftp_traffic_stop() {
+        safelog('screen_ftp_traffic: stopping');
+    }
+    
+    function screen_ftp_traffic_onScreenResize() {
+        safelog('screen_ftp_traffic: window was resized');
+        
+        // re-scale every time the window is resized
+        $("#screen_ftp_traffic_img").scale("center");
+    }
+    
+</script>
+<img id="screen_ftp_traffic_img"
+     src="{{settings.screen_ftp_traffic_screen_ftp_traffic.img_addr}}"
+     class="display_tile display_img">

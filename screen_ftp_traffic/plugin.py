@@ -1,5 +1,5 @@
 from core.models import *
-from models import screen_FTP_traffic_settings
+from models import screen_ftp_traffic_settings
 
 """
 create instance of screens this plugin provides. The parameters are as follows:
@@ -25,19 +25,19 @@ create instance of screens this plugin provides. The parameters are as follows:
 
 """
 
-screen_FTP_traffic = Screen(
-    'screen_FTP_traffic.html',
-    'screen_FTP_traffic',
+screen_ftp_traffic = Screen(
+    'screen_ftp_traffic.html',
+    'screen_ftp_traffic',
 
     #optional params
     duration=300000,
-    settings=screen_FTP_traffic_settings,
+    settings=screen_ftp_traffic_settings,
     #hide='fade', 
     #show='fade',
     slideshow=True,
-    js_init ='screen_FTP_traffic_init',
-    js_start='screen_FTP_traffic_start',
-    js_stop ='screen_FTP_traffic_stop',
-    js_onWinResize = 'screen_FTP_traffic_onScreenResize'
+    js_init ='screen_ftp_traffic_init',
+    js_start='screen_ftp_traffic_start',
+    js_stop ='screen_ftp_traffic_stop',
+    js_onWinResize = 'screen_ftp_traffic_onScreenResize'
 )
 
