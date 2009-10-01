@@ -1,0 +1,305 @@
+<!--
+    screen_osl_bandwidth.html
+    by Rob McGuire-Dale, 3/7/2009
+    last modified by Rob McGuire-Dale, 9/23/2009
+    
+    This screen displays osl bandwidth graphs
+-->
+
+<script type="text/javascript">
+
+    // ======================
+    //  SCREEN PLUGIN EVENTS
+    // ======================
+    //      Functions that are run at particular events in the screen plugin's 
+    //      life cycle.
+    
+    function screen_osl_bandwidth_init() {
+        // for this example just output to firebug console
+        safelog('screen_osl_bandwidth: initializing...');
+        
+        //$("#screen_osl_bandwidth_main").doubleBoarderedBox();
+
+		// intitialize tile click event handling. NOTE: This section is for 
+		// demonstration purposes only. Eventually, these div manipulations will
+		// be done via the touchscreen interface.
+        screen_osl_bandwidth_initTileClickEvents();
+		
+		// make images refresh themselves at the specified interval
+		$(".screen_osl_bandwidth_img").refreshImage({
+            interval:
+                {{settings.screen_osl_bandwidth_screen_osl_bandwidth.imgRefreshInterval}},
+            start:true
+        });
+    }
+
+    function screen_osl_bandwidth_start() {
+        safelog('screen_osl_bandwidth: starting...');
+        
+        // position the thumbnail tiles
+		screen_osl_bandwidth_positionTiles();
+		
+	    //  initialize the main tile
+	    screen_osl_bandwidth_displayToMainTile( 
+	        "{{settings.screen_osl_bandwidth_screen_osl_bandwidth.title_1}}",
+	        "{{settings.screen_osl_bandwidth_screen_osl_bandwidth.imgAddr_0t}}",
+	        "{{settings.screen_osl_bandwidth_screen_osl_bandwidth.imgAddr_0b}}"
+	    );
+    }
+    
+    function screen_osl_bandwidth_stop() {
+        safelog('screen_osl_bandwidth: stopping...');
+    }
+    
+    function screen_osl_bandwidth_onWinResize() {
+        safelog('screen_osl_bandwidth: window was resized');      
+            
+            // position the thumbnail tiles
+		    screen_osl_bandwidth_positionTiles();
+		
+	        //  initialize the main tile
+	        screen_osl_bandwidth_displayToMainTile( 
+	            "{{settings.screen_osl_bandwidth_screen_osl_bandwidth.title_1}}",
+	            "{{settings.screen_osl_bandwidth_screen_osl_bandwidth.imgAddr_0t}}",
+	            "{{settings.screen_osl_bandwidth_screen_osl_bandwidth.imgAddr_0b}}"
+	        );
+    }
+
+    // ==============
+    //  INITIALIZERS
+    // ==============
+    //      Functions that initialize elements of the the screen plugin.
+
+    function screen_osl_bandwidth_positionTiles(){
+        
+        // calculate the padding between the tiles to evently distribute them
+        // across the screen
+        var tilePadding_horiz = (
+            screenWidth() - 
+            $("#screen_osl_bandwidth_monroe").outerWidth(true) -
+            $("#screen_osl_bandwidth_reser").outerWidth(true) -
+            $("#screen_osl_bandwidth_mu").outerWidth(true) -
+            $("#screen_osl_bandwidth_library").outerWidth(true) -
+            $("#screen_osl_bandwidth_gloss").outerWidth(true) -
+            $("#screen_osl_bandwidth_wave").outerWidth(true) )/5;
+        
+        // top row
+        $("#screen_osl_bandwidth_reser").css('left',
+            $("#screen_osl_bandwidth_monroe").outerWidth(true) + 
+            tilePadding_horiz );                                        
+
+        $("#screen_osl_bandwidth_mu").css('left', 
+            $("#screen_osl_bandwidth_monroe").outerWidth(true) + 
+            $("#screen_osl_bandwidth_reser").outerWidth(true) + 
+            tilePadding_horiz * 2 );                                        
+
+        $("#screen_osl_bandwidth_library").css('left', 
+            $("#screen_osl_bandwidth_monroe").outerWidth(true) + 
+            $("#screen_osl_bandwidth_reser").outerWidth(true) + 
+            $("#screen_osl_bandwidth_mu").outerWidth(true) + 
+            tilePadding_horiz * 3 );                                        
+        
+        $("#screen_osl_bandwidth_gloss").css('left', 
+            $("#screen_osl_bandwidth_monroe").outerWidth(true) + 
+            $("#screen_osl_bandwidth_reser").outerWidth(true) + 
+            $("#screen_osl_bandwidth_mu").outerWidth(true) + 
+            $("#screen_osl_bandwidth_library").outerWidth(true) + 
+            tilePadding_horiz * 4 );
+        
+        $("#screen_osl_bandwidth_wave").css('left', 
+            $("#screen_osl_bandwidth_monroe").outerWidth(true) + 
+            $("#screen_osl_bandwidth_reser").outerWidth(true) + 
+            $("#screen_osl_bandwidth_mu").outerWidth(true) + 
+            $("#screen_osl_bandwidth_library").outerWidth(true) + 
+            $("#screen_osl_bandwidth_gloss").outerWidth(true) + 
+            tilePadding_horiz * 5 );                                        
+
+        // bottom row
+        $("#screen_osl_bandwidth_south").css('bottom', 0 );                                      
+        
+        $("#screen_osl_bandwidth_gill").css('bottom', 0 );
+        $("#screen_osl_bandwidth_gill").css('left', 
+            $("#screen_osl_bandwidth_south").outerWidth(true) + 
+            tilePadding_horiz );                                        
+        
+        $("#screen_osl_bandwidth_andrews").css('bottom', 0 );
+        $("#screen_osl_bandwidth_andrews").css('left', 
+            $("#screen_osl_bandwidth_south").outerWidth(true) + 
+            $("#screen_osl_bandwidth_gill").outerWidth(true) + 
+            tilePadding_horiz * 2 );                                        
+        
+        $("#screen_osl_bandwidth_hatfield").css('bottom', 0 );
+        $("#screen_osl_bandwidth_hatfield").css('left', 
+            $("#screen_osl_bandwidth_south").outerWidth(true) + 
+            $("#screen_osl_bandwidth_gill").outerWidth(true) + 
+            $("#screen_osl_bandwidth_andrews").outerWidth(true) + 
+            tilePadding_horiz * 3 );                                        
+        
+        $("#screen_osl_bandwidth_agate").css('bottom', 0 );
+        $("#screen_osl_bandwidth_agate").css('left', 
+            $("#screen_osl_bandwidth_south").outerWidth(true) + 
+            $("#screen_osl_bandwidth_gill").outerWidth(true) + 
+            $("#screen_osl_bandwidth_andrews").outerWidth(true) + 
+            $("#screen_osl_bandwidth_hatfield").outerWidth(true) + 
+            tilePadding_horiz * 4 );
+        
+        $("#screen_osl_bandwidth_wecoma").css('bottom', 0 );
+        $("#screen_osl_bandwidth_wecoma").css('left', 
+            $("#screen_osl_bandwidth_south").outerWidth(true) + 
+            $("#screen_osl_bandwidth_gill").outerWidth(true) + 
+            $("#screen_osl_bandwidth_andrews").outerWidth(true) + 
+            $("#screen_osl_bandwidth_hatfield").outerWidth(true) + 
+            $("#screen_osl_bandwidth_agate").outerWidth(true) + 
+            tilePadding_horiz * 5 );
+
+    }
+    
+    function screen_osl_bandwidth_initTileClickEvents() {
+    	// click event handling (NOTE: This section is for demonstration 
+		// purposes only. Eventually, these tile manipulations will be done via 
+		// the touchscreen interface.
+		
+		$("#screen_osl_bandwidth_monroe").click(function(){ 
+		    screen_osl_bandwidth_displayToMainTile( 
+		        "{{settings.screen_osl_bandwidth_screen_osl_bandwidth.title_monroe}}",
+		        "{{settings.screen_osl_bandwidth_screen_osl_bandwidth.imgAddr_monroe}}" 
+		    );
+		});
+		$("#screen_osl_bandwidth_reser").click(function(){ 
+		    screen_osl_bandwidth_displayToMainTile( 
+		        "{{settings.screen_osl_bandwidth_screen_osl_bandwidth.title_reser}}", 
+		        "{{settings.screen_osl_bandwidth_screen_osl_bandwidth.imgAddr_reser}}"
+		    );
+		});
+		$("#screen_osl_bandwidth_mu").click(function(){ 
+		    screen_osl_bandwidth_displayToMainTile( 
+		        "{{settings.screen_osl_bandwidth_screen_osl_bandwidth.title_mu}}", 
+		        "{{settings.screen_osl_bandwidth_screen_osl_bandwidth.imgAddr_mu}}"
+		    );
+		});
+		$("#screen_osl_bandwidth_library").click(function(){ 
+		    screen_osl_bandwidth_displayToMainTile( 
+		        "{{settings.screen_osl_bandwidth_screen_osl_bandwidth.title_library}}",
+		        "{{settings.screen_osl_bandwidth_screen_osl_bandwidth.imgAddr_library}}"
+		    );
+		});
+		$("#screen_osl_bandwidth_gloss").click(function(){ 
+		    screen_osl_bandwidth_displayToMainTile( 
+		        "{{settings.screen_osl_bandwidth_screen_osl_bandwidth.title_gloss}}", 
+		        "{{settings.screen_osl_bandwidth_screen_osl_bandwidth.imgAddr_gloss}}"
+		    );
+		});
+		$("#screen_osl_bandwidth_wave").click(function(){ 
+		    screen_osl_bandwidth_displayToMainTile( 
+		        "{{settings.screen_osl_bandwidth_screen_osl_bandwidth.title_wave}}",
+		        "{{settings.screen_osl_bandwidth_screen_osl_bandwidth.imgAddr_wave}}"
+		    );
+		});
+		$("#screen_osl_bandwidth_hatfield").click(function(){ 
+		    screen_osl_bandwidth_displayToMainTile( 
+		        "{{settings.screen_osl_bandwidth_screen_osl_bandwidth.title_hatfield}}",
+		        "{{settings.screen_osl_bandwidth_screen_osl_bandwidth.imgAddr_hatfield}}"
+		    );
+		});
+		$("#screen_osl_bandwidth_agate").click(function(){ 
+		    screen_osl_bandwidth_displayToMainTile( 
+		        "{{settings.screen_osl_bandwidth_screen_osl_bandwidth.title_agate}}",
+		        "{{settings.screen_osl_bandwidth_screen_osl_bandwidth.imgAddr_agate}}"
+		    );
+		});
+		$("#screen_osl_bandwidth_wecoma").click(function(){ 
+		    screen_osl_bandwidth_displayToMainTile( 
+		        "{{settings.screen_osl_bandwidth_screen_osl_bandwidth.title_wecoma}}",
+		        "{{settings.screen_osl_bandwidth_screen_osl_bandwidth.imgAddr_wecoma}}"
+		    );
+		});
+		$("#screen_osl_bandwidth_south").click(function(){ 
+		    screen_osl_bandwidth_displayToMainTile( 
+		        "{{settings.screen_osl_bandwidth_screen_osl_bandwidth.title_south}}",
+		        "{{settings.screen_osl_bandwidth_screen_osl_bandwidth.imgAddr_south}}"
+		    );
+		});
+		$("#screen_osl_bandwidth_gill").click(function(){ 
+		    screen_osl_bandwidth_displayToMainTile( 
+		        "{{settings.screen_osl_bandwidth_screen_osl_bandwidth.title_gill}}",
+		        "{{settings.screen_osl_bandwidth_screen_osl_bandwidth.imgAddr_gill}}"
+		    );
+		});
+		$("#screen_osl_bandwidth_andrews").click(function(){ 
+		    screen_osl_bandwidth_displayToMainTile( 
+		        "{{settings.screen_osl_bandwidth_screen_osl_bandwidth.title_andrews}}",
+		        "{{settings.screen_osl_bandwidth_screen_osl_bandwidth.imgAddr_andrews}}"
+		    );
+		});
+    }
+
+    // ==============
+    //  FACILITATORS
+    // ==============
+    //      Functions responsible for manipulating the tiles
+
+    // Display an image at the specified address with the specified title in the 
+	// main tile   
+	function screen_osl_bandwidth_displayToMainTile( title, addr_t, addr_b ){
+                               
+        // fade out the main tile
+		$("#screen_osl_bandwidth_main").fadeOut(function(){
+		
+		    // fill the main tile with the title and the picture of the
+		    // specified webcam shot
+			$("#screen_osl_bandwidth_title_main").html( title + 
+			    " Bandwidth Usage" );
+            $("#screen_osl_bandwidth_img_main_t").attr( 'src', addr_t );
+            $("#screen_osl_bandwidth_img_main_b").attr( 'src', addr_b );
+            $("#screen_osl_bandwidth_img_main").height( 
+                {{settings.screen_osl_bandwidth_screen_osl_bandwidth.mainTile_height}} 
+            );
+            
+            // set max height and width
+            $("#screen_osl_bandwidth_img_main").attr( 'max-height', 
+                '{{settings.screen_osl_bandwidth_screen_osl_bandwidth.mainTile_height}}' );
+            $("#screen_osl_bandwidth_img_main").attr( 'max-width', 
+                '{{settings.screen_osl_bandwidth_screen_osl_bandwidth.mainTile_width}}' );
+
+            // place the tile in the middle of the screen
+            $("#screen_osl_bandwidth_main").css('top', screenHeight()/2 - 
+                $("#screen_osl_bandwidth_main").outerHeight(true)/2);
+            $("#screen_osl_bandwidth_main").css('left', screenWidth()/2 - 
+                $("#screen_osl_bandwidth_main").outerWidth(true)/2);
+		});
+		
+		// fade the main tile back in
+		$("#screen_osl_bandwidth_main").fadeIn("slow");
+	}
+	
+</script>
+
+<!-- set up HTML divs for each tile ------------------------------------------->
+<div id="screen_osl_bandwidth_main" class="display_img display_tile ">
+
+    <div id="screen_osl_bandwidth_title_main" class="display_img_caption">
+        {{settings.screen_osl_bandwidth_screen_osl_bandwidth.title_1}}
+    </div>
+    
+    <img id="screen_osl_bandwidth_img_main_t"
+        src="{{settings.screen_osl_bandwidth_screen_osl_bandwidth.imgAddr_0t}}">
+        
+    <img id="screen_osl_bandwidth_img_main_b" 
+        src="{{settings.screen_osl_bandwidth_screen_osl_bandwidth.imgAddr_0b}}">
+
+</div>
+
+<div id="screen_osl_bandwidth_thumb_1" class="display_img_thumb display_tile ">
+
+    <div class="display_img_img_caption">
+        {{settings.screen_osl_bandwidth_screen_osl_bandwidth.title_1}}
+    </div>
+    
+    <img src="{{settings.screen_osl_bandwidth_screen_osl_bandwidth.imgAddr_0t}}"
+        height={{settings.screen_osl_bandwidth_screen_osl_bandwidth.thumbnail_height}}
+        width={{settings.screen_osl_bandwidth_screen_osl_bandwidth.thumbnail_width}}>
+    <img src="{{settings.screen_osl_bandwidth_screen_osl_bandwidth.imgAddr_0b}}"
+        height={{settings.screen_osl_bandwidth_screen_osl_bandwidth.thumbnail_height}}
+        width={{settings.screen_osl_bandwidth_screen_osl_bandwidth.thumbnail_width}}>
+
+</div>
