@@ -155,7 +155,8 @@
                 var screen = slide_show_next();
 
                 //set next transition to duration of current slide
-                safelog('core: next screen in ' + parseInt(screen['duration'])/1000 + " seconds");
+                safelog('core: next screen in ' + 
+                    parseInt(screen['duration'])/1000 + " seconds");
                 slide_show_timer = setTimeout(slide_show_loop, screen['duration']);
             }
 
