@@ -17,7 +17,7 @@ class screen_osl_bandwidthSettings( dbsettings.Group ):
     )
 
     # =====================
-    #  image size settings
+    #  tile size settings
     # =====================
 
     thumbnail_height = dbsettings.IntegerValue(
@@ -46,8 +46,7 @@ class screen_osl_bandwidthSettings( dbsettings.Group ):
 
     # ============================
     #  image addresses and titles
-    # ============================
-    
+    # ============================    
     imgAddr_0t = dbsettings.StringValue(
             'Tile 0\'s Top Image Address', 
             'Source image address of the 0th tile\'s top image', 
@@ -61,7 +60,7 @@ class screen_osl_bandwidthSettings( dbsettings.Group ):
     )
 
 
-    title_1 = dbsettings.StringValue(
+    title_0 = dbsettings.StringValue(
             'Tile 0\'s Title', 
             'The title of the 0th tile', 
             default='Apache'
