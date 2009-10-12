@@ -8,20 +8,20 @@ class GeneralSettings(dbsettings.Group):
 
     DISPLAY_HEIGHT     = dbsettings.IntegerValue(
         'Screen Height', 
-        'Height of the display screen. ** DEPRECIATED ** Please dynamically query the screen size [ i.e. $("#foo").parent().innerHeight() ]', 
+        'Height of the display screen. ** DEPRECIATED ** Please dynamically query the screen width with screenHeight()', 
         default=768)
     
     DISPLAY_WIDTH      = dbsettings.IntegerValue(
         'Screen Width',
-        'Width of the display screen ** DEPRECIATED ** Please dynamically query the screen size [ i.e. $("#foo").parent().innerHeight() ]', 
+        'Width of the display screen ** DEPRECIATED ** Please dynamically query the screen width with screenWidth()', 
         default=1360)
     
     MENU_HEIGHT        = dbsettings.IntegerValue(
-        'Menu Height', 'Height of the menu screen ** DEPRECIATED ** Please dynamically query the screen size [ i.e. $("#foo").parent().innerHeight() ]', 
+        'Menu Height', 'Height of the menu screen ** DEPRECIATED ** Please dynamically query the menu size [ i.e. $("#foo").parent().innerHeight() ]', 
         default=768)
     
     MENU_WIDTH         = dbsettings.IntegerValue(
-        'Menu Width','Width of the menu screen ** DEPRECIATED ** Please dynamically query the screen size [ i.e. $("#foo").parent().innerHeight() ]', 
+        'Menu Width','Width of the menu screen ** DEPRECIATED ** Please dynamically query the menu size [ i.e. $("#foo").parent().innerHeight() ]', 
         default=1024)
     
     DISPLAY_DURATION   = dbsettings.IntegerValue(
@@ -74,7 +74,7 @@ class Screen(Plugin):
     slideshow   = models.IntegerField(default=1)
 
     # fields that are not parameters so they do not need to be changed on the fly
-    template    = None          # template for the screen
+    template    = None      # template for the screen
     js_init = None          # javascript initialization function called on screen load
     js_start = None         # javascript start function called on screen show
     js_stop = None          # javascript stop function called on screen hide
