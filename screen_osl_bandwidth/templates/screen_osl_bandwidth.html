@@ -44,6 +44,7 @@
     //      Functions that initialize elements of the the screen plugin.
 
     function screen_osl_bandwidth_initTiles(){
+    
         // write the main div
         $("#screen_osl_bandwidth_wrapper").append((<r><![CDATA[ //<-- required
             //for multi-line strings
@@ -73,21 +74,17 @@
             $("#screen_osl_bandwidth_wrapper").append('                                                             \
                 <div id="screen_osl_bandwidth_thumb_' + i + '" class="display_img_thumb display_tile ">             \
                                                                                                                     \
-                    <div class="display_img_thumb_caption">                                                         \
-                        {{settings.screen_osl_bandwidth_screen_osl_bandwidth.title_0}}                              \
-                    </div>                                                                                          \
+                    <div id="screen_osl_bandwidth_title_' + i + '" class="display_img_thumb_caption"></div>         \
                                                                                                                     \
                     <table>                                                                                         \
                         <tr>                                                                                        \
                             <td>                                                                                    \
                                 <img id="screen_osl_bandwidth_img_' + i + 'a" class="screen_osl_bandwidth_img"      \
-                                src="{{settings.screen_osl_bandwidth_screen_osl_bandwidth.imgAddr_0a}}"             \
                                 height={{settings.screen_osl_bandwidth_screen_osl_bandwidth.thumbnail_img_height}}  \
                                 width={{settings.screen_osl_bandwidth_screen_osl_bandwidth.thumbnail_img_width}}>   \
                             </td>                                                                                   \
                             <td>                                                                                    \
                                 <img id="screen_osl_bandwidth_img_' + i + 'b" class="screen_osl_bandwidth_img"      \
-                                src="{{settings.screen_osl_bandwidth_screen_osl_bandwidth.imgAddr_0b}}"             \
                                 height={{settings.screen_osl_bandwidth_screen_osl_bandwidth.thumbnail_img_height}}  \
                                 width={{settings.screen_osl_bandwidth_screen_osl_bandwidth.thumbnail_img_width}}>   \
                             </td>                                                                                   \
@@ -96,6 +93,46 @@
                 </div>                                                                                              \
             ');
         }
+        
+        THUMB_SETTINGS_TITLES = [
+            '{{settings.screen_osl_bandwidth_screen_osl_bandwidth.title_0}}',
+            '{{settings.screen_osl_bandwidth_screen_osl_bandwidth.title_1}}',
+            '{{settings.screen_osl_bandwidth_screen_osl_bandwidth.title_2}}',
+            '{{settings.screen_osl_bandwidth_screen_osl_bandwidth.title_3}}',
+            '{{settings.screen_osl_bandwidth_screen_osl_bandwidth.title_4}}',
+            '{{settings.screen_osl_bandwidth_screen_osl_bandwidth.title_5}}'
+        ];
+        
+        THUMB_SETTINGS_A_IMAGES = [
+            '{{settings.screen_osl_bandwidth_screen_osl_bandwidth.imgAddr_0a}}',
+            '{{settings.screen_osl_bandwidth_screen_osl_bandwidth.imgAddr_1a}}',
+            '{{settings.screen_osl_bandwidth_screen_osl_bandwidth.imgAddr_2a}}',
+            '{{settings.screen_osl_bandwidth_screen_osl_bandwidth.imgAddr_3a}}',
+            '{{settings.screen_osl_bandwidth_screen_osl_bandwidth.imgAddr_4a}}',
+            '{{settings.screen_osl_bandwidth_screen_osl_bandwidth.imgAddr_5a}}'
+        ];
+        
+        THUMB_SETTINGS_B_IMAGES = [
+            '{{settings.screen_osl_bandwidth_screen_osl_bandwidth.imgAddr_0b}}',
+            '{{settings.screen_osl_bandwidth_screen_osl_bandwidth.imgAddr_1b}}',
+            '{{settings.screen_osl_bandwidth_screen_osl_bandwidth.imgAddr_2b}}',
+            '{{settings.screen_osl_bandwidth_screen_osl_bandwidth.imgAddr_3b}}',
+            '{{settings.screen_osl_bandwidth_screen_osl_bandwidth.imgAddr_4b}}',
+            '{{settings.screen_osl_bandwidth_screen_osl_bandwidth.imgAddr_5b}}'
+        ];
+            
+        
+        // Add images and titles to each thumbnail
+        for( var i = 0; i < THUMB_SETTINGS_TITLES.length; i++ ){
+            $("#screen_osl_bandwidth_title_" + i).append( 
+                THUMB_SETTINGS_TITLES[i] );
+            $("#screen_osl_bandwidth_img_" + i + "a").attr( 'src', 
+                THUMB_SETTINGS_A_IMAGES[i]);
+            $("#screen_osl_bandwidth_img_" + i + "b").attr( 'src', 
+                THUMB_SETTINGS_B_IMAGES[i]);
+        }
+        
+        
 
         // make images refresh themselves at the specified interval
         $(".screen_osl_bandwidth_img").refreshImage({
