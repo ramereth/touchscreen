@@ -16,12 +16,6 @@ class screen_osl_bandwidthSettings( dbsettings.Group ):
             default=30000
     )
 
-    numThumbs = dbsettings.IntegerValue(
-            'Number of Thumbnails', 
-            'The number of thumbnails on this screen', 
-            default=6
-    )
-
     # =====================
     #  tile size settings
     # =====================
