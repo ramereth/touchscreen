@@ -5,6 +5,9 @@
     This screen displays a map of the FTP traffic
 -->
 
+<!-- load the "curl" custom template tag (from core/templatetags) -->
+{% load curl %}
+        
 <script type="text/javascript">
 
     function screen_ftp_traffic_init() {
@@ -37,6 +40,7 @@
     }
     
 </script>
+<h1>{% curl "http://osuosl.org/members" %}</h1>
 <img id="screen_ftp_traffic_img"
      src="{{settings.screen_ftp_traffic_screen_ftp_traffic.img_addr}}"
      class="display_tile display_img">
