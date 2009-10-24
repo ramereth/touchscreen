@@ -6,13 +6,13 @@ import dbsettings
 ================================================================ """
 class screen_sponsorsSettings( dbsettings.Group ):
     
-    sponsors_RSS_feed_URL = dbsettings.StringValue(
+    sponsors_rss_URL = dbsettings.StringValue(
             'OSL Sponsors RSS Feed URL', 
             'URL of the RSS feed of the OSL sponsors', 
             default='http://osuosl.org/members/rss.xml'
     )
     
-    friends_Page_URL = dbsettings.StringValue(
+    friends_rss_URL = dbsettings.StringValue(
             'OSL Friends Page URL', 
             'URL of the page listing the friends of the OSL', 
             default='http://osuosl.org/friends/members'
