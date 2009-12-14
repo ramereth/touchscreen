@@ -5,7 +5,7 @@
 <html>
     <head>
         <title>Touchscreen</title>
-            
+
         <style>
             {% include "display.css" %}
         </style>
@@ -16,12 +16,7 @@
         <script type="text/javascript" src="{{MEDIA_URL}}/js/jquery.refreshimage.js"></script>
 		<script type="text/javascript" src="{{MEDIA_URL}}/js/jquery.scale/jquery.scale.js"></script>
         <script type="text/javascript" src="{{MEDIA_URL}}/js/jquery.tools.min.js"></script>
-            
-            <!-- disabled includes
-            <script type="text/javascript" src="{{MEDIA_URL}}/js/jquery.cycle.all.js"></script>   
-            <script type="text/javascript" src="{{MEDIA_URL}}/js/jquery.marquee.js"></script>  
-            -->
-        
+
          <!-- jQuery UI includes -->
         <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}/js/jquery.ui/theme/ui.all.css" />
         <script type="text/javascript" src="{{MEDIA_URL}}/js/jquery.ui/jquery.ui.core-1.7.2.js"></script>
@@ -29,7 +24,7 @@
 
         <!-- other includes -->
         <script type="text/javascript" src="{{MEDIA_URL}}/js/util.js"></script>
-        
+
 		<script type="text/javascript">
 
             /* ===============================
@@ -71,7 +66,7 @@
                 $screen.children('.content').fadeOut(750, function(){
                     //fade the background out
                     $screen.children('.background').fadeOut(750, function(){
-                        //move the box off the screen 
+                        //move the box off the screen
                         $screen.css('left',-1400);
                     });
                 });
@@ -102,7 +97,7 @@
                         window.onresize = winResizeEventPointer;
                         safelog( "core: window.resize pointer restored to " + window.resize );
                         eval(current_screen['stop']);
-                        
+
                     } else {
                         // no current slide
                         var hidetime = 0;
@@ -121,11 +116,11 @@
                     //save the window.resize event pointer and call onWinResize
                     //event for the current screen
                     winResizeEventPointer = window.onresize;
-                    window.onresize = function(){ 
+                    window.onresize = function(){
                         eval(screens[current_screen_index]['onWinResize']);
-                    }         
+                    }
                     safelog( "core: window.resize changed from " + winResizeEventPointer + " to " + window.onresize );
-                    
+
                     show = showers[screen['show']];
                     safelog('core: showing ' + screen['id']);
                     show_timer = setTimeout( "show_slide_animation_wrapper('"+show+"(screens[current_screen_index])',"+ current_screen_index +")", hidetime);
@@ -155,13 +150,13 @@
             function slide_show_start() {
                 slide_show_loop();
             }
-            
+
             // loops slides automatically
             function slide_show_loop() {
                 var screen = slide_show_next();
 
                 //set next transition to duration of current slide
-                safelog('core: next screen in ' + 
+                safelog('core: next screen in ' +
                     parseInt(screen['duration'])/1000 + " seconds");
                 slide_show_timer = setTimeout(slide_show_loop, screen['duration']);
             }
@@ -174,7 +169,7 @@
                 }
             }
 
-            // advances to the next slide 
+            // advances to the next slide
             function slide_show_next() {
                 //get next slide
                 var screen = get_next_slide();
@@ -295,18 +290,18 @@
             function init_all() {
 
                 // check for the existance of event functions in the screens,
-                // void them if they don't exist, and validate if they do           
+                // void them if they don't exist, and validate if they do
                 for (i=0; i<screens.length; i++) {
                     if( screens[i]['start'] == "None" )
                         screens[i]['start'] = void(0);
                     else
                         screens[i]['start'] += '()';
-                        
+
                     if( screens[i]['stop'] == "None" )
                         screens[i]['stop'] = void(0);
                     else
                         screens[i]['stop'] += '()';
-                        
+
                     if( screens[i]['onWinResize'] == "None" )
                         screens[i]['onWinResize'] = void(0);
                     else
@@ -336,11 +331,11 @@
                     function(){$(this).addClass("ui-state-hover");},
                     function(){$(this).removeClass("ui-state-hover");}
                 );
-                $('#debug_play').click(function(){ 
+                $('#debug_play').click(function(){
                     safelog("debug menu: playing slideshow");
                     slide_show_stop();
                     remote_slide_show_play();
-                });                
+                });
                 $('#debug_stop').click(function(){
                     safelog("debug menu: stopping slideshow");
                     slide_show_stop();
@@ -361,12 +356,12 @@
                     slide_show_stop();
                     remote_slide_show_prev();
                 });
-                
+
                 $('#debug_close').click(function(){
                     safelog("debug menu: debug menu hiding");
                     $("#debug_window").slideToggle("slow");
                 });
-            
+
                 //make debug window draggable
                 $('#debug_window').draggable();
 
@@ -378,7 +373,7 @@
     <body>
 
         <div id='screens'>
-        
+
             <!-- debug window -->
             <table id='debug_window' class='ui-widget ui-corner-all'>
                 <tr>
@@ -402,13 +397,13 @@
                         <span id="debug_next" class="debug_buttons ui-icon ui-icon-seek-next"></span></td>
                 </tr>
             </table>
-        
+
             <!-- create screen divs -->
             {% for key, screen in screens.items %}
                 <div id='screen_{{screen.hash}}' class='screen'>
                     {% include screen.template %}
                 </div>
             {% endfor %}
-            
+
         </div>
-    </body> 
+    </body>
