@@ -2,26 +2,35 @@
     screen_sponsors.html
     by Rob McGuire-Dale, 9/3/2009
 
-    This screen displays a graphical representation of the number of users
-    connected to each wifi access point around campus.
+    This screen displays a list of sponsors and friends. Each sponsors
 -->
+
+<style>
+    .scrollable {
+        /* required settings */
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .items {
+        /* this cannot be too large */
+        height:   20000em;
+        position: absolute;
+        clear:    both;
+    }
+</style>
 
 <script type="text/javascript">
 
+    // event functions -------------------------------------------------
     function screen_sponsors_init() {
         safelog('screen_sponsors: initializing...');
-        
-        var curlcont = "<title>testing</title>";
-        $(curlcont).find("title").each(function(){
-            $("screen_sponsors_sponsors").append( "<h1>This is a test!</h1>" );
-        });
     }
 
     function screen_sponsors_start() {
         safelog('screen_sponsors: starting...');
 
         screen_sponsors_setupTiles();
-        $("screen_sponsors_sponsors").append( "<h1>This is a test!</h1>" );
     }
 
     function screen_sponsors_stop() {
@@ -34,40 +43,68 @@
         screen_sponsors_setupTiles();
     }
 
+    // tile setup functions --------------------------------------------
     function screen_sponsors_setupTiles(){
         screen_sponsors_positionTiles();
-        screen_sponsors_setupCycles();
-        
-        // call positionTiles again to conform around the content
-        screen_sponsors_positionTiles();
+        screen_sponsors_setupScrollers();
     }
 
+    function screen_sponsors_setupScrollers(){
+        // initialize scrollable 
+        $("div.scrollable").scrollable({
+            vertical:true
+        }).autoscroll({
+            interval:1000,
+            autopause:false, // don't stop scrolling on mouseover
+            autoplay:true
+        }).circular();
+    }
+    
     function screen_sponsors_positionTiles(){
-        $('#screen_sponsors_title').width( screenWidth() -
-            ($('#screen_sponsors_title').outerWidth( true ) -
-            $('#screen_sponsors_title').width()));
-
-        $('#screen_sponsors_friends').width(150);
-        $('#screen_sponsors_friends').css('right', 0 );
+        
+        // set the width of the bottom tiles per the settings
+        $('#screen_sponsors_sponsors').width(
+            {{settings.screen_sponsors_screen_sponsors.sponsors_max_width}});
+        $('#screen_sponsors_friends').width(
+            {{settings.screen_sponsors_screen_sponsors.friends_width}});
+        
+        // if the total tile width is too large to fit in the window,
+        // resize the sponsors tile dynamically
+        if( $('#screen_sponsors_friends').outerWidth( true ) + 
+            $('#screen_sponsors_sponsors').outerWidth( true ) > 
+            screenWidth() ){
+                
+            $('#screen_sponsors_sponsors').width( screenWidth() -
+                $('#screen_sponsors_friends').outerWidth( true ) -
+                ( $('#screen_sponsors_sponsors').outerWidth( true ) -
+                $('#screen_sponsors_sponsors').width() ) );
+        }
+        
+        // position the bottom tiles
         $('#screen_sponsors_friends').css('top',
-            parseInt($('#screen_sponsors_title').css('top')) +
-            $('#screen_sponsors_title').outerHeight(true));
-        $('#screen_sponsors_friends').height( screenHeight() -
-            $('#screen_sponsors_title').outerHeight(true) -
-            $('#screen_sponsors_friends').outerHeight(true) +
-            $('#screen_sponsors_friends').height());
-
+            $('#screen_sponsors_title').outerHeight( true ) );
+        $('#screen_sponsors_friends').css('left', 0 );
         $('#screen_sponsors_sponsors').css('top',
-            parseInt($('#screen_sponsors_title').css('top')) +
-            $('#screen_sponsors_title').outerHeight(true));
-        $('#screen_sponsors_sponsors').width( screenWidth() -
-            $('#screen_sponsors_friends').outerWidth(true) -
-            $('#screen_sponsors_sponsors').outerWidth(true) +
-            $('#screen_sponsors_sponsors').width());
+            $('#screen_sponsors_title').outerHeight( true ) );
+        $('#screen_sponsors_sponsors').css('left',
+            $('#screen_sponsors_friends').outerWidth( true ) );
+        
+        // set the height of the bottom tiles
         $('#screen_sponsors_sponsors').height( screenHeight() -
             $('#screen_sponsors_title').outerHeight(true) -
             $('#screen_sponsors_sponsors').outerHeight(true) +
             $('#screen_sponsors_sponsors').height());
+        $('#screen_sponsors_friends').height( screenHeight() -
+            $('#screen_sponsors_title').outerHeight(true) -
+            $('#screen_sponsors_friends').outerHeight(true) +
+            $('#screen_sponsors_friends').height());
+        
+        // size the title width to match the width of the bottom tiles
+        $('#screen_sponsors_title').width( 
+            $('#screen_sponsors_friends').outerWidth( true ) + 
+            $('#screen_sponsors_sponsors').outerWidth( true ) -
+            ( $('#screen_sponsors_title').outerWidth( true ) -
+            $('#screen_sponsors_title').width() ) );
     }
 </script>
 
@@ -123,68 +160,70 @@
         </p>
     </div>
 </div>
-<div id='screen_sponsors_friends' class="display_tile display_content">
-    <p class="punny-name">Patty O’Furniture</p >
-    <p class="punny-name">Ann Chovey</p >
-    <p class="punny-name">Hazel Nutt</p >
-    <p class="punny-name">Chris P. Bacon</p >
-    <p class="punny-name">Marsha Mellow</p >
-    <p class="punny-name">Olive Yew</p >
-    <p class="punny-name">Barb Akew</p >
-    <p class="punny-name">Aida Bugg</p >
-    <p class="punny-name">Maureen Biologist</p >
-    <p class="punny-name">Teri Dactyl</p >
-    <p class="punny-name">Peg Legge</p >
-    <p class="punny-name">Allie Grater</p >
-    <p class="punny-name">Liz Erd</p >
-    <p class="punny-name">A. Mused</p >
-    <p class="punny-name">Constance Noring</p >
-    <p class="punny-name">Lois Di Nominator</p >
-    <p class="punny-name">Minnie Van Ryder</p >
-    <p class="punny-name">Lynn O’Leeum</p >
-    <p class="punny-name">P. Ann O’Recital</p >
-    <p class="punny-name">Ray O’Sun</p >
-    <p class="punny-name">Ray Sin</p >
-    <p class="punny-name">Isabelle Ringing</p >
-    <p class="punny-name">Eileen Sideways</p >
-    <p class="punny-name">Rita Book</p >
-    <p class="punny-name">Paige Turner</p >
-    <p class="punny-name">Rhoda Report</p >
-    <p class="punny-name">Augusta Wind</p >
-    <p class="punny-name">Chris Anthemum</p >
-    <p class="punny-name">Anne Teak</p >
-    <p class="punny-name">U.R. Nice</p >
-    <p class="punny-name">Anita Bath</p >
-    <p class="punny-name">Harriet Upp</p >
-    <p class="punny-name">I.M. Tired</p >
-    <p class="punny-name">I. Missy Ewe</p >
-    <p class="punny-name">Ivana B. Withew</p >
-    <p class="punny-name">Anita Letterback</p >
-    <p class="punny-name">Hope Furaletter</p >
-    <p class="punny-name">B. Homesoon</p >
-    <p class="punny-name">Bea Mine</p >
-    <p class="punny-name">Bess Twishes</p >
-    <p class="punny-name">C. Yasoon</p >
-    <p class="punny-name">Audie Yose</p >
-    <p class="punny-name">Dee End</p >
-    <p class="punny-name">Amanda Hug</p >
-    <p class="punny-name">Frank Furter</p >
-    <p class="punny-name">Ben Dover</p >
-    <p class="punny-name">Eileen Dover</p >
-    <p class="punny-name">Willie Makit</p >
-    <p class="punny-name">Willie Findit</p >
-    <p class="punny-name">Barry Cuda</p >
-    <p class="punny-name">Barry Mundy</p >
-    <p class="punny-name">John Dory</p >
-    <p class="punny-name">Addie Minstra</p >
-    <p class="punny-name">Anne Ortha</p >
-    <p class="punny-name">Dave Allippa</p >
-    <p class="punny-name">Dee Zynah</p >
-    <p class="punny-name">Hugh Mannerizorsa</p >
-    <p class="punny-name">Loco Lyzayta</p >
-    <p class="punny-name">Manny Jah</p >
-    <p class="punny-name">Mark Ateer</p >
-    <p class="punny-name">Reeve Ewer</p >
-    <p class="punny-name">Tex Ryta</p >
-    <p class="punny-name">Theresa Green</p >
+<div id='screen_sponsors_friends' class="display_tile display_content scrollable">
+    <div class='items'>
+        <p class="punny-name">Patty O’Furniture</p >
+        <p class="punny-name">Ann Chovey</p >
+        <p class="punny-name">Hazel Nutt</p >
+        <p class="punny-name">Chris P. Bacon</p >
+        <p class="punny-name">Marsha Mellow</p >
+        <p class="punny-name">Olive Yew</p >
+        <p class="punny-name">Barb Akew</p >
+        <p class="punny-name">Aida Bugg</p >
+        <p class="punny-name">Maureen Biologist</p >
+        <p class="punny-name">Teri Dactyl</p >
+        <p class="punny-name">Peg Legge</p >
+        <p class="punny-name">Allie Grater</p >
+        <p class="punny-name">Liz Erd</p >
+        <p class="punny-name">A. Mused</p >
+        <p class="punny-name">Constance Noring</p >
+        <p class="punny-name">Lois Di Nominator</p >
+        <p class="punny-name">Minnie Van Ryder</p >
+        <p class="punny-name">Lynn O’Leeum</p >
+        <p class="punny-name">P. Ann O’Recital</p >
+        <p class="punny-name">Ray O’Sun</p >
+        <p class="punny-name">Ray Sin</p >
+        <p class="punny-name">Isabelle Ringing</p >
+        <p class="punny-name">Eileen Sideways</p >
+        <p class="punny-name">Rita Book</p >
+        <p class="punny-name">Paige Turner</p >
+        <p class="punny-name">Rhoda Report</p >
+        <p class="punny-name">Augusta Wind</p >
+        <p class="punny-name">Chris Anthemum</p >
+        <p class="punny-name">Anne Teak</p >
+        <p class="punny-name">U.R. Nice</p >
+        <p class="punny-name">Anita Bath</p >
+        <p class="punny-name">Harriet Upp</p >
+        <p class="punny-name">I.M. Tired</p >
+        <p class="punny-name">I. Missy Ewe</p >
+        <p class="punny-name">Ivana B. Withew</p >
+        <p class="punny-name">Anita Letterback</p >
+        <p class="punny-name">Hope Furaletter</p >
+        <p class="punny-name">B. Homesoon</p >
+        <p class="punny-name">Bea Mine</p >
+        <p class="punny-name">Bess Twishes</p >
+        <p class="punny-name">C. Yasoon</p >
+        <p class="punny-name">Audie Yose</p >
+        <p class="punny-name">Dee End</p >
+        <p class="punny-name">Amanda Hug</p >
+        <p class="punny-name">Frank Furter</p >
+        <p class="punny-name">Ben Dover</p >
+        <p class="punny-name">Eileen Dover</p >
+        <p class="punny-name">Willie Makit</p >
+        <p class="punny-name">Willie Findit</p >
+        <p class="punny-name">Barry Cuda</p >
+        <p class="punny-name">Barry Mundy</p >
+        <p class="punny-name">John Dory</p >
+        <p class="punny-name">Addie Minstra</p >
+        <p class="punny-name">Anne Ortha</p >
+        <p class="punny-name">Dave Allippa</p >
+        <p class="punny-name">Dee Zynah</p >
+        <p class="punny-name">Hugh Mannerizorsa</p >
+        <p class="punny-name">Loco Lyzayta</p >
+        <p class="punny-name">Manny Jah</p >
+        <p class="punny-name">Mark Ateer</p >
+        <p class="punny-name">Reeve Ewer</p >
+        <p class="punny-name">Tex Ryta</p >
+        <p class="punny-name">Theresa Green</p >
+    </div>
 </div>
