@@ -29,15 +29,16 @@
     
     function screen_sponsors_init() {
         safelog('screen_sponsors: initializing...');
-        
-        screen_sponsors_positionTiles();
-        screen_sponsors_aggregateFriends();
+
+        // initialize tiles
+        screen_sponsors_initTiles();
     }
 
     function screen_sponsors_start() {
         safelog('screen_sponsors: starting...');
 
-        screen_sponsors_setupTiles();
+        // re-position tiles
+        screen_sponsors_positionTiles();
     }
 
     function screen_sponsors_stop() {
@@ -47,51 +48,23 @@
     function screen_sponsors_onScreenResize() {
         safelog('screen_sponsors: window was resized');
         
-        screen_sponsors_setupTiles();
-    }
-
-    ///////////////////////////
-    // aggregation functions //
-    ///////////////////////////
-
-    function screen_sponsors_aggregateFriends(){
-        screen_sponsors_friend_count = 0;
-        var friendsPerPage = 0
-        $(".screen_sponsors_friends_items").html("");
-        
-        ////////////////////////////////
-        // TEMPORARY TEST aggregation //
-        ////////////////////////////////
-        
-        // if friends don't completely fill the tile, repeat friends 
-        // until they do
-        do{
-            
-            for( var ii = 0; ii < 10; ii++ ){
-                
-                $(".screen_sponsors_friends_items").append(
-                    "<p class='screen_sponsors_friends_item'>" + 
-                    ii +"</p>"
-                );
-                
-                screen_sponsors_friend_count++;
-            }
-            
-            // get the number of friends that can fit on one tile page
-            friendsPerPage = Math.floor( 
-                $(".screen_sponsors_friends").height() /
-                $(".screen_sponsors_friends_item").outerHeight( true ) );
-
-            
-        } while( screen_sponsors_friend_count <= friendsPerPage )
+        // re-position tiles
+        screen_sponsors_positionTiles();
     }
 
     //////////////////////////
     // tile setup functions //
     //////////////////////////
-    
-    function screen_sponsors_setupTiles(){
+
+    function screen_sponsors_initTiles(){
+        // position and size the tiles. The aggregate functions rely
+        // on tile sizes.
         screen_sponsors_positionTiles();
+        
+        // fill the tiles with aggregated data.
+        screen_sponsors_aggregateFriends();
+        
+        // setup scrollers for the friends and sponsors tiles.
         screen_sponsors_setupScrollers();
     }
 
@@ -166,6 +139,52 @@
         $('.screen_sponsors_sponsors').css( 'left', 
             parseInt( $('.screen_sponsors_title').css( 'left' ) ) +
             $('.screen_sponsors_friends').outerWidth( true ) );
+    }
+    
+    ///////////////////////////
+    // aggregation functions //
+    ///////////////////////////
+
+    function screen_sponsors_aggregateFriends(){
+        
+        // number of friends aggregated
+        screen_sponsors_friend_count = 0;
+        
+        // number of friends that can fit on one tile page
+        var friendsPerPage = 0; 
+        
+        // number of times the friends list is repeated
+        var repeatCount = 0;
+        
+        // clear the friends list
+        $(".screen_sponsors_friends_items").html("");
+        
+        // if friends list doesn't completely fill the tile, repeat 
+        // friends list until it does
+        do{
+            
+            // TEMPORARY TEST aggregation
+            for( var ii = 0; ii < 10; ii++ ){
+                
+                $(".screen_sponsors_friends_items").append(
+                    "<p class='screen_sponsors_friends_item'>" + 
+                    ii +"</p>"
+                );
+                
+                screen_sponsors_friend_count++;
+            }
+            
+            // get the number of friends that can fit on one tile page.
+            // Must be calulated after at least one friend is 
+            // aggregated since it relys on friends list size.
+            friendsPerPage = Math.floor( 
+                $(".screen_sponsors_friends").height() /
+                $(".screen_sponsors_friends_item").outerHeight( true ) );
+
+            // increment the number of times the list is repeated
+            repeatCount++;
+            
+        } while( screen_sponsors_friend_count <= friendsPerPage )
     }
 </script>
 
