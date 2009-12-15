@@ -6,14 +6,8 @@
 -->
 
 <style>
-    .screen_sponsors_friends {
-        /* required settings */
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .screen_sponsors_friends_items {
-        /* this cannot be too large */
+    /* required css class for auto scroller tool */
+    .screen_sponsors_scrollable_items {
         height:   20000em;
         position: absolute;
         clear:    both;
@@ -22,6 +16,7 @@
 
 <script type="text/javascript">
     var screen_sponsors_friend_count = 0;
+    var screen_sponsors_sponsor_count = 0;
     
     /////////////////////
     // event functions //
@@ -70,19 +65,33 @@
 
     function screen_sponsors_setupScrollers(){            
 
+        // setup friends scrollers
         $(".screen_sponsors_friends").scrollable({ 
             vertical:true,
-            loop: true,
+            speed:1000,
+            loop:true,
             size: screen_sponsors_friend_count,    // page size
         });
-        
-        $(".screen_sponsors_friends").circular();
-
         $(".screen_sponsors_friends").autoscroll({
-            interval:1000,
+            interval:5000,  // time to show each item.
             autopause:true, // pause on mouseover?
             autoplay:true,  // begin playing immediately?
         });
+        $(".screen_sponsors_friends").circular();
+        
+        // setup sponsors scrollers
+        $(".screen_sponsors_sponsors").scrollable({ 
+            vertical:true,
+            speed:2000,
+            loop:true,
+            size: 5,    // page size
+        });
+        $(".screen_sponsors_sponsors").autoscroll({
+            interval:10000,  // time to show each item.
+            autopause:true, // pause on mouseover?
+            autoplay:true,  // begin playing immediately?
+        });
+        $(".screen_sponsors_sponsors").circular();
     }
     
     function screen_sponsors_positionTiles(){
@@ -157,7 +166,7 @@
         var repeatCount = 0;
         
         // clear the friends list
-        $(".screen_sponsors_friends_items").html("");
+        $(".screen_sponsors_friends").children().html("");
         
         // if friends list doesn't completely fill the tile, repeat 
         // friends list until it does
@@ -166,7 +175,7 @@
             // TEMPORARY TEST aggregation
             for( var ii = 0; ii < 10; ii++ ){
                 
-                $(".screen_sponsors_friends_items").append(
+                $(".screen_sponsors_friends").children().append(
                     "<p class='screen_sponsors_friends_item'>" + 
                     ii +"</p>"
                 );
@@ -185,6 +194,54 @@
             repeatCount++;
             
         } while( screen_sponsors_friend_count <= friendsPerPage )
+        
+        safelog( "screen_sponsors: Friends list repeated " +
+            repeatCount + " times." );
+    }
+    
+    function screen_sponsors_aggregateSponsors(){
+        
+        // number of sponsors aggregated
+        screen_sponsors_sponsor_count = 0;
+        
+        // number of sponsors that can fit on one tile page
+        var sponsorsPerPage = 0; 
+        
+        // number of times the sponsors list is repeated
+        var repeatCount = 0;
+        
+        // clear the sponsors list
+        $(".screen_sponsors_sponsors").children().html("");
+        
+        // if sponsors list doesn't completely fill the tile, repeat 
+        // sponsors list until it does
+        do{
+            
+            // TEMPORARY TEST aggregation
+            for( var ii = 0; ii < 10; ii++ ){
+                
+                $(".screen_sponsors_friends").children().append(
+                    "<p class='screen_sponsors_friends_item'>" + 
+                    ii +"</p>"
+                );
+                
+                screen_sponsors_friend_count++;
+            }
+            
+            // get the number of sponsors that can fit on one tile page.
+            // Must be calulated after at least one friend is 
+            // aggregated since it relys on friends list size.
+            friendsPerPage = Math.floor( 
+                $(".screen_sponsors_friends").height() /
+                $(".screen_sponsors_friends_item").outerHeight( true ) );
+
+            // increment the number of times the list is repeated
+            repeatCount++;
+            
+        } while( screen_sponsors_sponsors_count <= sponsorsPerPage )
+        
+        safelog( "screen_sponsors: Friends list repeated " +
+            repeatCount + " times." );
     }
 </script>
 
@@ -193,13 +250,13 @@
 </div>
 
 <div class="screen_sponsors_friends display_tile display_content">
-    <div class='screen_sponsors_friends_items'>
+    <div class='screen_sponsors_scrollable_items'>
         <!-- This will be auto-filled by the downloaded friends -->
     </div>
 </div>
 
 <div class="screen_sponsors_sponsors display_tile display_content">
-    <div class='screen_sponsors_sponsors_items'>
+    <div class='screen_sponsors_scrollable_items'>
         <div>
             <h1>Lorem</h1>
             <p>

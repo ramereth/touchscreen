@@ -109,8 +109,7 @@
     padding: 10px;
 }
 
-// required for scrollable tools. See screen_sponsors for an example.
-.display_scrollable_items{
+.display_scrollable_items {
     height:   20000em;
     position: absolute;
     clear:    both;
