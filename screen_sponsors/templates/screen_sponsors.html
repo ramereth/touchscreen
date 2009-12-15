@@ -2,7 +2,7 @@
     screen_sponsors.html
     by Rob McGuire-Dale, 9/3/2009
 
-    This screen displays a list of sponsors and friends. Each sponsors
+    This screen displays a list of sponsors and friends. 
 -->
 
 <style>
@@ -30,8 +30,8 @@
     function screen_sponsors_init() {
         safelog('screen_sponsors: initializing...');
         
-        // download and aggregate friends
-        screen_sponsors_aggregate_friends();
+        screen_sponsors_positionTiles();
+        screen_sponsors_aggregateFriends();
     }
 
     function screen_sponsors_start() {
@@ -46,7 +46,7 @@
 
     function screen_sponsors_onScreenResize() {
         safelog('screen_sponsors: window was resized');
-
+        
         screen_sponsors_setupTiles();
     }
 
@@ -54,18 +54,36 @@
     // aggregation functions //
     ///////////////////////////
 
-    function screen_sponsors_aggregate_friends(){
+    function screen_sponsors_aggregateFriends(){
         screen_sponsors_friend_count = 0;
+        var friendsPerPage = 0
+        $(".screen_sponsors_friends_items").html("");
         
-        // temporary test aggregation
-        for( var i = 0; i < 10; i++ ){
+        ////////////////////////////////
+        // TEMPORARY TEST aggregation //
+        ////////////////////////////////
+        
+        // if friends don't completely fill the tile, repeat friends 
+        // until they do
+        do{
             
-            $(".screen_sponsors_friends_items").append(
-                "<p class='screen_sponsors_friends_item'>" + i +"</p>"
-            );
+            for( var ii = 0; ii < 10; ii++ ){
+                
+                $(".screen_sponsors_friends_items").append(
+                    "<p class='screen_sponsors_friends_item'>" + 
+                    ii +"</p>"
+                );
+                
+                screen_sponsors_friend_count++;
+            }
             
-            screen_sponsors_friend_count++;
-        }
+            // get the number of friends that can fit on one tile page
+            friendsPerPage = Math.floor( 
+                $(".screen_sponsors_friends").height() /
+                $(".screen_sponsors_friends_item").outerHeight( true ) );
+
+            
+        } while( screen_sponsors_friend_count <= friendsPerPage )
     }
 
     //////////////////////////
@@ -77,34 +95,21 @@
         screen_sponsors_setupScrollers();
     }
 
-    function screen_sponsors_setupScrollers(){
-    /*
-        // get the number of friends that can fit on one tile page
-        var friendsPerPage = Math.round( 
-            $(".screen_sponsors_friends").height() /
-            $(".screen_sponsors_friends_item").outerHeight( true ) );
-            
-        // grab the page size for the friends tile. 
-        var friendsPageSize = Math.min( 
-            screen_sponsors_friend_count, 
-            friendsPerPage );
-        
-        safelog( ">>" +  friendsPageSize );
-            
+    function screen_sponsors_setupScrollers(){            
+
         $(".screen_sponsors_friends").scrollable({ 
             vertical:true,
             loop: true,
-            size: friendsPageSize,    // page size
+            size: screen_sponsors_friend_count,    // page size
         });
         
         $(".screen_sponsors_friends").circular();
 
         $(".screen_sponsors_friends").autoscroll({
-            interval:5000,
+            interval:1000,
             autopause:true, // pause on mouseover?
             autoplay:true,  // begin playing immediately?
         });
-    */
     }
     
     function screen_sponsors_positionTiles(){
@@ -152,6 +157,15 @@
             $('.screen_sponsors_sponsors').outerWidth( true ) -
             ( $('.screen_sponsors_title').outerWidth( true ) -
             $('.screen_sponsors_title').width() ) );
+            
+        // center the tiles
+        $('.screen_sponsors_title').css( 'left', screenWidth()/2 - 
+            $('.screen_sponsors_title').outerWidth( true )/2 );
+        $('.screen_sponsors_friends').css( 'left', 
+            parseInt( $('.screen_sponsors_title').css( 'left' ) ) );
+        $('.screen_sponsors_sponsors').css( 'left', 
+            parseInt( $('.screen_sponsors_title').css( 'left' ) ) +
+            $('.screen_sponsors_friends').outerWidth( true ) );
     }
 </script>
 
