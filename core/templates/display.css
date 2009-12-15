@@ -24,7 +24,10 @@
     width:100%;
 }
 
-/* The debug menu */
+/*//////////////
+// debug menu //
+//////////////*/
+
 #debug_window {
     display: block;         /* change to "none" to hide, and "block" to show */
     z-index: 9999;          /* always on top */
@@ -44,9 +47,13 @@
     width:18px;
 }
 
-/* Global styles -------------------------------------------------------------*/
+/*/////////////////
+// global styles //
+/////////////////*/
 
-.display_screen_wrapper, .display_tile{ position: absolute; }
+.display_screen_wrapper, .display_tile{ 
+    position: absolute; 
+}
 
 .display_screen_wrapper{
     width: 100%;
@@ -100,6 +107,13 @@
 
 .display_content{
     padding: 10px;
+}
+
+// required for scrollable tools. See screen_sponsors for an example.
+.display_scrollable_items{
+    height:   20000em;
+    position: absolute;
+    clear:    both;
 }
 
 img, p, li, h1{ display: block; }
