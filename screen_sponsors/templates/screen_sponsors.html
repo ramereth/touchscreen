@@ -63,7 +63,7 @@
         screen_sponsors_setupScrollers();
     }
 
-    function screen_sponsors_setupScrollers(){            
+    function screen_sponsors_setupScrollers(){
 
         // setup friends scrollers
         $(".screen_sponsors_friends").scrollable({ 
@@ -151,7 +151,7 @@
             parseInt( $('.screen_sponsors_title').css( 'left' ) ) +
             $('.screen_sponsors_friends').outerWidth( true ) );
         
-        // position and size gradients
+        // position and size gradient overlays
         $('#screen_sponsors_sponsors_gradient').css( 'z-index', 1 );
         $('#screen_sponsors_sponsors_gradient').css( 'top', 
             -( $('#screen_sponsors_sponsors_gradient').outerHeight( true ) - 
@@ -160,9 +160,9 @@
             -( $('#screen_sponsors_sponsors_gradient').outerWidth( true ) - 
             $('#screen_sponsors_sponsors_gradient').width() ) );
         $('#screen_sponsors_sponsors_gradient').height(
-            $('.screen_sponsors_sponsors').outerHeight( true ) );
+            $('.screen_sponsors_sponsors').outerHeight( ) );
         $('#screen_sponsors_sponsors_gradient').width(
-            $('.screen_sponsors_sponsors').outerWidth( true ) );
+            $('.screen_sponsors_sponsors').outerWidth( ) );
 
         $('#screen_sponsors_friends_gradient').css( 'z-index', 1 );
         $('#screen_sponsors_friends_gradient').css( 'top', 
@@ -172,9 +172,9 @@
             -( $('#screen_sponsors_friends_gradient').outerWidth( true ) - 
             $('#screen_sponsors_friends_gradient').width() ) );
         $('#screen_sponsors_friends_gradient').height(
-            $('.screen_sponsors_friends').outerHeight( true ) );
+            $('.screen_sponsors_friends').outerHeight( ) );
         $('#screen_sponsors_friends_gradient').width(
-            $('.screen_friends_sponsors').outerWidth( true ) );
+            $('.screen_sponsors_friends').outerWidth( ) );
     }
     
     ///////////////////////////
@@ -278,6 +278,7 @@
 
 <div class="screen_sponsors_friends display_tile display_content">
     <img id='screen_sponsors_friends_gradient'
+         class='display_gradient'
          src="{{SITE_ROOT}}/static/screen_sponsors/gradient.png">
     <div class='screen_sponsors_scrollable_items'>
         <!-- This will be auto-filled by the downloaded friends -->
@@ -286,6 +287,7 @@
 
 <div class="screen_sponsors_sponsors display_tile display_content">
     <img id='screen_sponsors_sponsors_gradient'
+         class='display_gradient'
          src="{{SITE_ROOT}}/static/screen_sponsors/gradient.png">
     <div class='screen_sponsors_scrollable_items'>
         <div>
