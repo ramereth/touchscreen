@@ -39,6 +39,26 @@ class screen_sponsorsSettings( dbsettings.Group ):
         'Sponsors Tile Maximum Width',
         'The sponsors tile maximum width. Will dynamically resize if the width of the sponsors and friends tiles exceeds that of the browser window.',
         default=750)
+        
+    friends_scroll_interval = dbsettings.IntegerValue(
+        'Friends Scroll Interval',
+        'Time between scrolling of a friend (in milliseconds)',
+        default=3000)
+    
+    friends_scroll_speed = dbsettings.IntegerValue(
+        'Friends Scroll Speed',
+        'Time it takes to scroll a single item (in milliseconds)',
+        default=1000)
+        
+    sponsors_scroll_interval = dbsettings.IntegerValue(
+        'Sponsors Scroll Interval',
+        'Time between scrolling of a sponsor (in milliseconds)',
+        default=10000)
+        
+    sponsors_scroll_speed = dbsettings.IntegerValue(
+        'Sponsors Scroll Speed',
+        'Time it takes to scroll a single item (in milliseconds)',
+        default=2000)
 
 screen_sponsors_settings = screen_sponsorsSettings('screen_sponsors Settings')
 

@@ -116,6 +116,7 @@
     padding: 10px;
 }
 
+/* required css class for auto scroller tool */
 .display_scrollable_items {
     height:   20000em;
     position: absolute;

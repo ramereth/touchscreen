@@ -4,36 +4,27 @@
 
     This screen displays a list of sponsors and friends. 
 -->
-
 <style>
-    /* required css class for auto scroller tool */
-    .screen_sponsors_scrollable_items {
-        height:   20000em;
-        position: absolute;
-        clear:    both;
-    }
+    /* testing purposes */
+    .cloned{ color:red; }
 </style>
-
-<script type="text/javascript">
-    var screen_sponsors_friend_count = 0;
-    var screen_sponsors_sponsor_count = 0;
-    
-    /////////////////////
-    // event functions //
-    /////////////////////
+<script type="text/javascript">    
+    ///////////////////
+    // Screen Events //
+    ///////////////////
     
     function screen_sponsors_init() {
         safelog('screen_sponsors: initializing...');
 
         // initialize tiles
-        screen_sponsors_initTiles();
+        //screen_sponsors_initTiles();
     }
 
     function screen_sponsors_start() {
         safelog('screen_sponsors: starting...');
 
         // re-position tiles
-        screen_sponsors_positionTiles();
+        screen_sponsors_initTiles();
     }
 
     function screen_sponsors_stop() {
@@ -41,60 +32,133 @@
     }
 
     function screen_sponsors_onScreenResize() {
-        safelog('screen_sponsors: window was resized');
+        safelog('screen_sponsors: window resized to ' + screenWidth() + "x" +
+            screenHeight());
         
         // re-position tiles
         screen_sponsors_positionTiles();
     }
 
-    //////////////////////////
-    // tile setup functions //
-    //////////////////////////
+    ////////////////
+    // Tile Setup //
+    ////////////////
 
     function screen_sponsors_initTiles(){
-        // position and size the tiles. The aggregate functions rely
-        // on tile sizes.
+        // position and size the tiles. Must be done before additional setup
         screen_sponsors_positionTiles();
         
-        // fill the tiles with aggregated data.
-        screen_sponsors_aggregateFriends();
+        safelog( $('.screen_sponsors_friends').height() );
         
-        // setup scrollers for the friends and sponsors tiles.
-        screen_sponsors_setupScrollers();
+        // set up friends tile
+        screen_sponsors_friends_setupScrollers( 
+            screen_sponsors_aggregateFriends() );
+            
+        // set up sponsors scrollers
+        screen_sponsors_sponsors_setupScrollers( 5 );
     }
 
-    function screen_sponsors_setupScrollers(){
+    function screen_sponsors_friends_setupScrollers( pageSize ){
 
         // setup friends scrollers
         $(".screen_sponsors_friends").scrollable({ 
             vertical:true,
-            items:".screen_sponsors_scrollable_items",
-            speed:1000,
+            items:".display_scrollable_items",
+            speed:{{settings.screen_sponsors_screen_sponsors.friends_scroll_speed}},
             loop:true,
-            size: screen_sponsors_friend_count,    // page size
+            size: pageSize,    // page size
         });
         $(".screen_sponsors_friends").autoscroll({
-            interval:5000,  // time to show each item.
+            interval:{{settings.screen_sponsors_screen_sponsors.friends_scroll_interval}},
             autopause:true, // pause on mouseover?
             autoplay:true,  // begin playing immediately?
         });
         $(".screen_sponsors_friends").circular();
-        
+    }
+    
+    function screen_sponsors_sponsors_setupScrollers( pageSize ){
         // setup sponsors scrollers
         $(".screen_sponsors_sponsors").scrollable({ 
             vertical:true,
-            items:".screen_sponsors_scrollable_items",
-            speed:2000,
+            items:".display_scrollable_items",
+            speed:{{settings.screen_sponsors_screen_sponsors.sponsors_scroll_speed}},
             loop:true,
-            size: 5,    // page size
+            size: pageSize,    // page size
         });
         $(".screen_sponsors_sponsors").autoscroll({
-            interval:10000,  // time to show each item.
+            interval:{{settings.screen_sponsors_screen_sponsors.sponsors_scroll_interval}},  // time to show each item.
             autopause:true, // pause on mouseover?
             autoplay:true,  // begin playing immediately?
         });
         $(".screen_sponsors_sponsors").circular();
     }
+    
+    ///////////////////////
+    // Data Aggregation  //
+    ///////////////////////
+
+    // _aggregateFriends: Aggregates friend data. Returns how many friends can
+    // fit on one friends tile page.
+    function screen_sponsors_aggregateFriends(){
+        
+        var curHeight = 0;
+        var totalHeight = 0; // running total of the hight of the written list
+        
+        var itemCount = 0; // items written
+        
+        var tileHeight = $(".screen_sponsors_friends").outerHeight( true );
+        
+        // clear the friends list
+        $(".screen_sponsors_friends > .display_scrollable_items").html("");
+        
+        // load data
+        var friendsList = new Array( 
+            "Charles Montgomery Burns 0123456798",
+            "Gladys Bouvier",
+            "Carl Carlson",
+            "Maude Flanders",
+            "Professor John Frink",
+            "Santa's Little Helper",
+            "Kent Brockman",
+            "Fat Tony",
+            "Apu Nahasapeemapetilon",
+            "Arnie Pye" );
+        
+        // Fill up friends tile with friends, repeating if necessary to 
+        // completely fill it.
+        do {
+
+            safelog( "screen_sponsors: writing friend # " + itemCount );
+
+            $(".screen_sponsors_friends > .display_scrollable_items").append(
+                "<p class='screen_sponsors_friend'>" + 
+                friendsList[ itemCount % friendsList.length ] +"</p>"
+            );
+            
+            curHeight = $(".screen_sponsors_friend:last").outerHeight( true );
+            
+            // keep track of the size of the friends list
+            totalHeight += curHeight;
+            
+            safelog( "screen_sponsors: current friend height: " + curHeight );
+            
+            safelog( "screen_sponsors: current friend list height: " + totalHeight );
+            
+            safelog( "screen_sponsors: friend tile height: " + tileHeight );
+            
+            // increment the number of items in the written list
+            itemCount++;
+            
+        } while( totalHeight <= tileHeight + curHeight )
+        
+        safelog( "screen_sponsors: Friends written: "+ itemCount );
+        
+        // return the friends scroller page size
+        return itemCount;
+    }
+    
+    //////////////////////
+    // Tile Positioning //
+    //////////////////////
     
     function screen_sponsors_positionTiles(){
         
@@ -176,100 +240,6 @@
         $('#screen_sponsors_friends_gradient').width(
             $('.screen_sponsors_friends').outerWidth( ) );
     }
-    
-    ///////////////////////////
-    // aggregation functions //
-    ///////////////////////////
-
-    function screen_sponsors_aggregateFriends(){
-        
-        // number of friends aggregated
-        screen_sponsors_friend_count = 0;
-        
-        // number of friends that can fit on one tile page
-        var friendsPerPage = 0; 
-        
-        // number of times the friends list is repeated
-        var repeatCount = 0;
-        
-        // clear the friends list
-        $(".screen_sponsors_friends").children().html("");
-        
-        // if friends list doesn't completely fill the tile, repeat 
-        // friends list until it does
-        do{
-            
-            // TEMPORARY TEST aggregation
-            for( var ii = 0; ii < 10; ii++ ){
-                
-                $(".screen_sponsors_friends").children().append(
-                    "<p class='screen_sponsors_friends_item'>" + 
-                    ii +"</p>"
-                );
-                
-                screen_sponsors_friend_count++;
-            }
-            
-            // get the number of friends that can fit on one tile page.
-            // Must be calulated after at least one friend is 
-            // aggregated since it relys on friends list size.
-            friendsPerPage = Math.floor( 
-                $(".screen_sponsors_friends").height() /
-                $(".screen_sponsors_friends_item").outerHeight( true ) );
-
-            // increment the number of times the list is repeated
-            repeatCount++;
-            
-        } while( screen_sponsors_friend_count <= friendsPerPage )
-        
-        safelog( "screen_sponsors: Friends list repeated " +
-            repeatCount + " times." );
-    }
-    
-    function screen_sponsors_aggregateSponsors(){
-        
-        // number of sponsors aggregated
-        screen_sponsors_sponsor_count = 0;
-        
-        // number of sponsors that can fit on one tile page
-        var sponsorsPerPage = 0; 
-        
-        // number of times the sponsors list is repeated
-        var repeatCount = 0;
-        
-        // clear the sponsors list
-        $(".screen_sponsors_sponsors").children().html("");
-        
-        // if sponsors list doesn't completely fill the tile, repeat 
-        // sponsors list until it does
-        do{
-            
-            // TEMPORARY TEST aggregation
-            for( var ii = 0; ii < 10; ii++ ){
-                
-                $(".screen_sponsors_friends").children().append(
-                    "<p class='screen_sponsors_friends_item'>" + 
-                    ii +"</p>"
-                );
-                
-                screen_sponsors_friend_count++;
-            }
-            
-            // get the number of sponsors that can fit on one tile page.
-            // Must be calulated after at least one friend is 
-            // aggregated since it relys on friends list size.
-            friendsPerPage = Math.floor( 
-                $(".screen_sponsors_friends").height() /
-                $(".screen_sponsors_friends_item").outerHeight( true ) );
-
-            // increment the number of times the list is repeated
-            repeatCount++;
-            
-        } while( screen_sponsors_sponsors_count <= sponsorsPerPage )
-        
-        safelog( "screen_sponsors: Friends list repeated " +
-            repeatCount + " times." );
-    }
 </script>
 
 <div class="display_tile display_title screen_sponsors_title">
@@ -280,7 +250,7 @@
     <img id='screen_sponsors_friends_gradient'
          class='display_gradient'
          src="{{SITE_ROOT}}/static/screen_sponsors/gradient.png">
-    <div class='screen_sponsors_scrollable_items'>
+    <div class='display_scrollable_items'>
         <!-- This will be auto-filled by the downloaded friends -->
     </div>
 </div>
@@ -289,7 +259,7 @@
     <img id='screen_sponsors_sponsors_gradient'
          class='display_gradient'
          src="{{SITE_ROOT}}/static/screen_sponsors/gradient.png">
-    <div class='screen_sponsors_scrollable_items'>
+    <div class='display_scrollable_items'>
         <div>
             <h1>Lorem</h1>
             <p>
