@@ -8,23 +8,40 @@
     /* testing purposes */
     .cloned{ color:red; }
 </style>
-<script type="text/javascript">    
+<script type="text/javascript">
+    /////////////////
+    // Global Data //
+    /////////////////
+    
+    // data to be filled by the loadData function
+    var screen_sponsors_data = new function(){
+        
+        // an array of friends
+        this.friends = null;
+        
+        // sponsors
+        this.sponsors = new function(){
+            this.title = null;
+            this.body = null;
+            this.imgURL = null;
+        };
+    };
+
     ///////////////////
     // Screen Events //
     ///////////////////
-    
     function screen_sponsors_init() {
         safelog('screen_sponsors: initializing...');
 
-        // initialize tiles
-        //screen_sponsors_initTiles();
+        // load sponsors data
+        screen_sponsors_loadData();
     }
 
     function screen_sponsors_start() {
         safelog('screen_sponsors: starting...');
 
         // re-position tiles
-        screen_sponsors_initTiles();
+        screen_sponsors_setupTiles();
     }
 
     function screen_sponsors_stop() {
@@ -36,25 +53,24 @@
             screenHeight());
         
         // re-position tiles
-        screen_sponsors_positionTiles();
+        screen_sponsors_setupTiles();
     }
 
     ////////////////
     // Tile Setup //
     ////////////////
 
-    function screen_sponsors_initTiles(){
+    function screen_sponsors_setupTiles(){
+        
         // position and size the tiles. Must be done before additional setup
         screen_sponsors_positionTiles();
-        
-        safelog( $('.screen_sponsors_friends').height() );
         
         // set up friends tile
         screen_sponsors_friends_setupScrollers( 
             screen_sponsors_aggregateFriends() );
             
         // set up sponsors scrollers
-        screen_sponsors_sponsors_setupScrollers( 5 );
+        //screen_sponsors_sponsors_setupScrollers( 5 );
     }
 
     function screen_sponsors_friends_setupScrollers( pageSize ){
@@ -70,11 +86,12 @@
         $(".screen_sponsors_friends").autoscroll({
             interval:{{settings.screen_sponsors_screen_sponsors.friends_scroll_interval}},
             autopause:true, // pause on mouseover?
-            autoplay:true,  // begin playing immediately?
+            autoplay:false,  // begin playing immediately?
         });
         $(".screen_sponsors_friends").circular();
     }
     
+    /*
     function screen_sponsors_sponsors_setupScrollers( pageSize ){
         // setup sponsors scrollers
         $(".screen_sponsors_sponsors").scrollable({ 
@@ -91,6 +108,7 @@
         });
         $(".screen_sponsors_sponsors").circular();
     }
+    */
     
     ///////////////////////
     // Data Aggregation  //
@@ -110,19 +128,6 @@
         // clear the friends list
         $(".screen_sponsors_friends > .display_scrollable_items").html("");
         
-        // load data
-        var friendsList = new Array( 
-            "Charles Montgomery Burns 0123456798",
-            "Gladys Bouvier",
-            "Carl Carlson",
-            "Maude Flanders",
-            "Professor John Frink",
-            "Santa's Little Helper",
-            "Kent Brockman",
-            "Fat Tony",
-            "Apu Nahasapeemapetilon",
-            "Arnie Pye" );
-        
         // Fill up friends tile with friends, repeating if necessary to 
         // completely fill it.
         do {
@@ -130,25 +135,25 @@
             safelog( "screen_sponsors: writing friend # " + itemCount );
 
             $(".screen_sponsors_friends > .display_scrollable_items").append(
-                "<p class='screen_sponsors_friend'>" + 
-                friendsList[ itemCount % friendsList.length ] +"</p>"
+                "<p class='screen_sponsors_friend_"+itemCount+"'>" + 
+                screen_sponsors_data.friends[ 
+                    itemCount % screen_sponsors_data.friends.length ] +
+                "</p>"
             );
             
-            curHeight = $(".screen_sponsors_friend:last").outerHeight( true );
+            curHeight = $(".screen_sponsors_friend_" + itemCount ).outerHeight( true );
             
             // keep track of the size of the friends list
             totalHeight += curHeight;
             
             safelog( "screen_sponsors: current friend height: " + curHeight );
-            
             safelog( "screen_sponsors: current friend list height: " + totalHeight );
-            
             safelog( "screen_sponsors: friend tile height: " + tileHeight );
             
             // increment the number of items in the written list
             itemCount++;
             
-        } while( totalHeight <= tileHeight + curHeight )
+        } while( totalHeight <= tileHeight )
         
         safelog( "screen_sponsors: Friends written: "+ itemCount );
         
@@ -240,6 +245,27 @@
         $('#screen_sponsors_friends_gradient').width(
             $('.screen_sponsors_friends').outerWidth( ) );
     }
+    
+    //////////////////
+    // Data Loading //
+    //////////////////
+    
+    function screen_sponsors_loadData(){
+        
+        // load friends data
+        screen_sponsors_data.friends = new Array( 
+            "Charles Montgomery Burns 0123456798",
+            "Gladys Bouvier",
+            "Carl Carlson",
+            "Maude Flanders",
+            "Professor John Frink",
+            "Santa's Little Helper",
+            "Kent Brockman",
+            "Fat Tony",
+            "Apu Nahasapeemapetilon",
+            "Arnie Pye" );
+    }
+
 </script>
 
 <div class="display_tile display_title screen_sponsors_title">
