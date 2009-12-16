@@ -115,7 +115,11 @@
     clear:    both;
 }
 
-img, p, li, h1{ display: block; }
+img, p, li, h1{ 
+    display: block; 
+}
+
+img{ position: absolute; }
 
 h1{
     font-size: 14px;

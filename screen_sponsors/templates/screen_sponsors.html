@@ -68,6 +68,7 @@
         // setup friends scrollers
         $(".screen_sponsors_friends").scrollable({ 
             vertical:true,
+            items:".screen_sponsors_scrollable_items",
             speed:1000,
             loop:true,
             size: screen_sponsors_friend_count,    // page size
@@ -149,6 +150,31 @@
         $('.screen_sponsors_sponsors').css( 'left', 
             parseInt( $('.screen_sponsors_title').css( 'left' ) ) +
             $('.screen_sponsors_friends').outerWidth( true ) );
+        
+        // position and size gradients
+        $('#screen_sponsors_sponsors_gradient').css( 'z-index', 1 );
+        $('#screen_sponsors_sponsors_gradient').css( 'top', 
+            -( $('#screen_sponsors_sponsors_gradient').outerHeight( true ) - 
+            $('#screen_sponsors_sponsors_gradient').height() ) );
+        $('#screen_sponsors_sponsors_gradient').css( 'left',
+            -( $('#screen_sponsors_sponsors_gradient').outerWidth( true ) - 
+            $('#screen_sponsors_sponsors_gradient').width() ) );
+        $('#screen_sponsors_sponsors_gradient').height(
+            $('.screen_sponsors_sponsors').outerHeight( true ) );
+        $('#screen_sponsors_sponsors_gradient').width(
+            $('.screen_sponsors_sponsors').outerWidth( true ) );
+
+        $('#screen_sponsors_friends_gradient').css( 'z-index', 1 );
+        $('#screen_sponsors_friends_gradient').css( 'top', 
+            -( $('#screen_sponsors_friends_gradient').outerHeight( true ) - 
+            $('#screen_sponsors_friends_gradient').height() ) );
+        $('#screen_sponsors_friends_gradient').css( 'left',
+            -( $('#screen_sponsors_friends_gradient').outerWidth( true ) - 
+            $('#screen_sponsors_friends_gradient').width() ) );
+        $('#screen_sponsors_friends_gradient').height(
+            $('.screen_sponsors_friends').outerHeight( true ) );
+        $('#screen_sponsors_friends_gradient').width(
+            $('.screen_friends_sponsors').outerWidth( true ) );
     }
     
     ///////////////////////////
@@ -251,13 +277,16 @@
 </div>
 
 <div class="screen_sponsors_friends display_tile display_content">
+    <img id='screen_sponsors_friends_gradient'
+         src="{{SITE_ROOT}}/static/screen_sponsors/gradient.png">
     <div class='screen_sponsors_scrollable_items'>
         <!-- This will be auto-filled by the downloaded friends -->
     </div>
 </div>
 
 <div class="screen_sponsors_sponsors display_tile display_content">
-    <img src="{{SITE_ROOT}}/static/screen_sponsors/horiz-gradient.png">
+    <img id='screen_sponsors_sponsors_gradient'
+         src="{{SITE_ROOT}}/static/screen_sponsors/gradient.png">
     <div class='screen_sponsors_scrollable_items'>
         <div>
             <h1>Lorem</h1>
