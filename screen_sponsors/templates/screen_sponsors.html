@@ -17,13 +17,13 @@
     var screen_sponsors_data = new function(){
         
         // an array of friends
-        this.friends = null;
+        this.friends = new Array();
         
         // sponsors
         this.sponsors = new function(){
-            this.title = null;
-            this.body = null;
-            this.imgURL = null;
+            this.title = new Array();
+            this.body = new Array();
+            this.imgURL = new Array();
         };
     };
 
@@ -53,7 +53,7 @@
             screenHeight());
         
         // re-position tiles
-        screen_sponsors_setupTiles();
+        //screen_sponsors_setupTiles();
     }
 
     ////////////////
@@ -80,15 +80,10 @@
             vertical:true,
             items:".display_scrollable_items",
             speed:{{settings.screen_sponsors_screen_sponsors.friends_scroll_speed}},
-            loop:true,
+            loop:false,
+            keyboard:false,
             size: pageSize,    // page size
-        });
-        $(".screen_sponsors_friends").autoscroll({
-            interval:{{settings.screen_sponsors_screen_sponsors.friends_scroll_interval}},
-            autopause:true, // pause on mouseover?
-            autoplay:false,  // begin playing immediately?
-        });
-        $(".screen_sponsors_friends").circular();
+        }).circular();
     }
     
     /*
@@ -118,20 +113,20 @@
     // fit on one friends tile page.
     function screen_sponsors_aggregateFriends(){
         
-        var curHeight = 0;
-        var totalHeight = 0; // running total of the hight of the written list
+        var curHeight = 0;   // to hold the height of the current item
+        var totalHeight = 0; // total height of the items written
+        var itemCount = 0;   // number of items written
         
-        var itemCount = 0; // items written
-        
-        var tileHeight = $(".screen_sponsors_friends").outerHeight( true );
+        // grab the height of the container tile
+        var tileHeight = $(".screen_sponsors_friends").height();
+        safelog( "screen_sponsors: tile height: " + tileHeight );
         
         // clear the friends list
         $(".screen_sponsors_friends > .display_scrollable_items").html("");
         
-        // Fill up friends tile with friends, repeating if necessary to 
-        // completely fill it.
-        do {
-
+        // Fill up the tile with items, repeating if necessary
+        while( totalHeight < tileHeight ){
+        
             safelog( "screen_sponsors: writing friend # " + itemCount );
 
             $(".screen_sponsors_friends > .display_scrollable_items").append(
@@ -141,19 +136,22 @@
                 "</p>"
             );
             
-            curHeight = $(".screen_sponsors_friend_" + itemCount ).outerHeight( true );
+            // the *actual* height each item takes up, as positioned by the 
+            // scollable plugin (as observed by firebug)
+            curHeight = 
+                $(".screen_sponsors_friend_" + itemCount ).innerHeight() +
+                ($(".screen_sponsors_friend_" + itemCount ).outerHeight(true)-
+                $(".screen_sponsors_friend_" + itemCount ).innerHeight())/2;
             
-            // keep track of the size of the friends list
+            // add to the running height total
             totalHeight += curHeight;
             
-            safelog( "screen_sponsors: current friend height: " + curHeight );
-            safelog( "screen_sponsors: current friend list height: " + totalHeight );
-            safelog( "screen_sponsors: friend tile height: " + tileHeight );
+            safelog( "screen_sponsors: current itemheight: " + curHeight );
+            safelog( "screen_sponsors: current total height: " + totalHeight );
             
             // increment the number of items in the written list
             itemCount++;
-            
-        } while( totalHeight <= tileHeight )
+        }
         
         safelog( "screen_sponsors: Friends written: "+ itemCount );
         
@@ -273,9 +271,9 @@
 </div>
 
 <div class="screen_sponsors_friends display_tile display_content">
-    <img id='screen_sponsors_friends_gradient'
+    <!-- img id='screen_sponsors_friends_gradient'
          class='display_gradient'
-         src="{{SITE_ROOT}}/static/screen_sponsors/gradient.png">
+         src="{{SITE_ROOT}}/static/screen_sponsors/gradient.png" -->
     <div class='display_scrollable_items'>
         <!-- This will be auto-filled by the downloaded friends -->
     </div>
