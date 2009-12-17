@@ -7,8 +7,10 @@
 <style>
     /* testing purposes */
     .cloned{ color:red; }
+    .active{ color:blue; }
 </style>
 <script type="text/javascript">
+
     /////////////////
     // Global Data //
     /////////////////
@@ -27,127 +29,74 @@
         };
     };
 
-     var screen_sponsors_scrollables = null;
+    // scroller plugin APIs for the friends and sponsors tiles
+    var screen_sponsors_friends_scrollAPI = null;
 
     ///////////////////
     // Screen Events //
     ///////////////////
-    function screen_sponsors_init() {
+    
+    function screen_sponsors_init() 
+    {
         safelog('screen_sponsors: initializing...');
-
-        // load sponsors data
-        screen_sponsors_loadData();
         
-        // init test
-        var target = ".screen_sponsors_friends";
-        var scrollSpeed = {{settings.screen_sponsors_screen_sponsors.friends_scroll_speed}};
-        
-        screen_sponsors_scrollables = 
-            $( target ).scrollable({ 
-                vertical:true,
-                items:".display_scrollable_items",
-                speed:scrollSpeed,
-                api:true,
-            });
+        screen_sponsors_loadData(); // load friends and sponsors data
+        screen_sponsors_initTiles(); // initialize the tiles
+        screen_sponsors_friends_scrollAPI.click( 0 );
+        screen_sponsors_autoAdvanceTiles();
     }
 
-    function screen_sponsors_start() {
+    function screen_sponsors_start() 
+    {
         safelog('screen_sponsors: starting...');
-
-        // initialize tiles
-        //screen_sponsors_initTiles();
-        //refreshTest();
+        
+        screen_sponsors_refreshTiles();
     }
 
-    function screen_sponsors_stop() {
+    function screen_sponsors_stop() 
+    {
         safelog('screen_sponsors: stopping');
     }
 
-    function screen_sponsors_onScreenResize() {
+    function screen_sponsors_onScreenResize() 
+    {
         safelog('screen_sponsors: window resized to ' + screenWidth() + "x" +
             screenHeight());
         
-        //screen_sponsors_refreshTiles();
-        refreshTest();
-    }
-
-    function refreshTest(){
-        screen_sponsors_positionTiles();
-        var newPageSize = screen_sponsors_processFriends();
-        screen_sponsors_scrollables.getConf().size = newPageSize; 
-        screen_sponsors_scrollables.reload();
-        $( ".screen_sponsors_friends" ).circular();
+        screen_sponsors_refreshTiles();
     }
 
     ////////////////
     // Tile Setup //
     ////////////////
 
-    /*
-    function screen_sponsors_initTiles(){
-        
-        // position and size the tiles. Must be done before additional setup
-        screen_sponsors_positionTiles();
-        
-        // set up friends tile
-        screen_sponsors_friends_setupScroller( 
-            ".screen_sponsors_friends",
-            {{settings.screen_sponsors_screen_sponsors.friends_scroll_speed}},
-            screen_sponsors_processFriends() );
-    }
-
-    function screen_sponsors_refreshTiles(){
-        
-        // position and size the tiles. Must be done before additional setup
-        screen_sponsors_positionTiles();
-        
-        screen_sponsors_scrollables.getConf().pageSize = 
-            screen_sponsors_processFriends() ;
-    }
-    
-    function screen_sponsors_friends_setupScroller( 
-        target,         // the container for the items to be scrolled
-        scrollSpeed,    // how fast each scroll takes to complete
-        pageSize ){     // how many items can fit in the container
-
-        screen_sponsors_scrollables = 
-            $( target ).scrollable({ 
+    function screen_sponsors_initTiles()
+    {
+        // initialize the scroller plugin for the friends tile
+        screen_sponsors_friends_scrollAPI = 
+            $( ".screen_sponsors_friends" ).scrollable({ 
                 vertical:true,
                 items:".display_scrollable_items",
-                speed:scrollSpeed,
-                loop:false,
-                keyboard:false,
-                size: pageSize,    // page size
-            }).circular({ api:true })
-        ;
+                speed:{{settings.screen_sponsors_screen_sponsors.friends_scroll_speed}},
+                api:true,
+            });
     }
-    
-    /*
-    function screen_sponsors_sponsors_setupScrollers( pageSize ){
-        // setup sponsors scrollers
-        $(".screen_sponsors_sponsors").scrollable({ 
-            vertical:true,
-            items:".display_scrollable_items",
-            speed:{{settings.screen_sponsors_screen_sponsors.sponsors_scroll_speed}},
-            loop:true,
-            size: pageSize,    // page size
-        });
-        $(".screen_sponsors_sponsors").autoscroll({
-            interval:{{settings.screen_sponsors_screen_sponsors.sponsors_scroll_interval}},  // time to show each item.
-            autopause:true, // pause on mouseover?
-            autoplay:true,  // begin playing immediately?
-        });
-        $(".screen_sponsors_sponsors").circular();
+
+    function screen_sponsors_refreshTiles()
+    {
+        // reposition the tiles
+        screen_sponsors_positionTiles();
+        
+        // populate the friends tile and return the friends per tile page
+        screen_sponsors_updateFriendsTile();
     }
-    */
     
     //////////////////////
     // Data Processing  //
     //////////////////////
 
-    // _processFriends: Aggregates friend data. Returns how many friends can
-    // fit on one friends tile page.
-    function screen_sponsors_processFriends(){
+    // _updateFriendsTile: fill the friends tile and update scroller info
+    function screen_sponsors_updateFriendsTile(){
         
         var curHeight = 0;   // to hold the height of the current item
         var totalHeight = 0; // total height of the items written
@@ -158,15 +107,15 @@
         safelog( "screen_sponsors: tile height: " + tileHeight );
         
         // clear the friends list
-        //$(".screen_sponsors_friends > .display_scrollable_items").html("");
-        screen_sponsors_scrollables.getItems().remove();
+        screen_sponsors_friends_scrollAPI.getItems().remove();
         
-        // Fill up the tile with items, repeating if necessary
+        // Fill up the tile with items, wrapping if necessary
         while( totalHeight < tileHeight ){
         
             safelog( "screen_sponsors: writing friend # " + itemCount );
 
-            screen_sponsors_scrollables.getItemWrap().append(
+            // Add the next item, wrapping to the first if necessary
+            screen_sponsors_friends_scrollAPI.getItemWrap().append(
                 "<p class='screen_sponsors_friend_"+itemCount+"'>" + 
                 screen_sponsors_data.friends[ 
                     itemCount % screen_sponsors_data.friends.length ] +
@@ -179,21 +128,34 @@
                 $(".screen_sponsors_friend_" + itemCount ).innerHeight() +
                 ($(".screen_sponsors_friend_" + itemCount ).outerHeight(true)-
                 $(".screen_sponsors_friend_" + itemCount ).innerHeight())/2;
+            safelog( "screen_sponsors: current itemheight: " + curHeight );
             
             // add to the running height total
             totalHeight += curHeight;
-            
-            safelog( "screen_sponsors: current itemheight: " + curHeight );
             safelog( "screen_sponsors: current total height: " + totalHeight );
             
             // increment the number of items in the written list
             itemCount++;
         }
         
+        // update the scroller to include the new items
+        screen_sponsors_friends_scrollAPI.reload();
+        
+        // set new tile page size for the scroller
+        screen_sponsors_friends_scrollAPI.getConf().size = itemCount; 
         safelog( "screen_sponsors: Friends written: "+ itemCount );
         
-        // return the friends scroller page size
-        return itemCount;
+        // make the scroller circular
+        $( ".screen_sponsors_friends" ).circular();        
+    }
+    
+    function screen_sponsors_autoAdvanceTiles(){
+        
+        screen_sponsors_friends_scrollAPI.click( 
+            screen_sponsors_friends_scrollAPI.getClickIndex() + 1 );
+        //alert( screen_sponsors_friends_scrollAPI.getClickIndex() );
+
+        setTimeout('screen_sponsors_autoAdvanceTiles()',3000);
     }
     
     //////////////////////
