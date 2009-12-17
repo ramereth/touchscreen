@@ -1,3 +1,6 @@
+import httplib2
+from django.http import HttpResponse
+
 from django.shortcuts import render_to_response
 from django.conf import settings
 from django.template import RequestContext
@@ -27,6 +30,12 @@ def display(request):
         'screens':PLUGIN_MANAGER.screens,
     }, context_instance=rc)
 
+# A simple proxy
+def proxy(request):
+    connection = httplib2.Http()
+    url = request.GET['url']
+    response, content = connection.request( url, "GET" )
+    return HttpResponse( content )
 
 def menu(request):
    pass

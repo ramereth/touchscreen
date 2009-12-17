@@ -5,6 +5,7 @@
 # it'll only successfully run when invoked via the command line.
 
 import urllib
+from django.http import HttpResponse
 
 localFile = open( "sponsors.xml", 'w' )
 remoteFile = urllib.urlopen( "http://osuosl.org/members/rss.xml" )

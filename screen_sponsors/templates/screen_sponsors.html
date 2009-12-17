@@ -9,9 +9,9 @@
 {% load curl %}
 
 <style>
-    /* debug colors for scrollers
+    /* debug colors for scrollers */
     .cloned{ color:red; }
-    .active{ color:yellow; }  */
+    .active{ color:yellow; } 
 </style>
 
 <script type="text/javascript">
@@ -390,9 +390,14 @@
             "Arnie Pye"
         ];
         
+        $.get('/proxy/?={{settings.screen_sponsors_screen_sponsors.sponsors_rss_URL}}', 
+            function(xml){
+                alert( xml );
+            });
+        
         // load the sponsors XML file
         var sponsors_XML = (<r><![CDATA[
-            {% curl "http://osuosl.org/members/rss.xml" %} // <-- SHOULD NOT BE HARDCODED. FIGURE OUT HOW TO EXTRACT FROM DBSETTINGS
+            {% curl settings.screen_sponsors_screen_sponsors.sponsors_rss_URL %} // <-- SHOULD NOT BE HARDCODED. FIGURE OUT HOW TO EXTRACT FROM DBSETTINGS
         ]]></r>).toString();
         
         $(sponsors_XML).find("item").each(function(){
@@ -400,6 +405,13 @@
             
             var pattern = /\<p\>.*<\/p\>/g;
             var body = $(this).find("description").text().match( pattern );
+            
+            /*
+            while( body.match( /\<p\>/ ) != null ){
+                
+                safelog( "screen_sponsors: loading sponsor body: " + body );
+            }
+            */
             
             safelog( "screen_sponsors: loading sponsor body: " + body );
         });
