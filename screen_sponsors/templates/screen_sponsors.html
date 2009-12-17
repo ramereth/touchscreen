@@ -5,9 +5,9 @@
     This screen displays a list of sponsors and friends. 
 -->
 <style>
-    /* debug colors for scrollers */
+    /* debug colors for scrollers
     .cloned{ color:red; }
-    .active{ color:yellow; }
+    .active{ color:yellow; } */
 </style>
 
 <script type="text/javascript">
@@ -16,7 +16,7 @@
     // Global Data //
     /////////////////
     
-    // data to be filled by the loadData function
+    // sponsor and friend content data. See _loadData below.
     var screen_sponsors_friendsData = null;
     var screen_sponsors_sponsorsData = null;
 
@@ -62,7 +62,7 @@
 
     function screen_sponsors_initTiles()
     {
-        // initialize the scroller plugin for the friends tile
+        // initialize the scroller plugin for the tiles
         screen_sponsors_friends_scrollAPI = 
             $( ".screen_sponsors_friends" ).scrollable({ 
                 vertical:true,
@@ -70,8 +70,17 @@
                 speed:{{settings.screen_sponsors_screen_sponsors.friends_scroll_speed}},
                 api:true,
             });
-            
-        screen_sponsors_friends_initAutoAdvance(); // initialize auto tile advancement
+        screen_sponsors_sponsors_scrollAPI = 
+            $( ".screen_sponsors_sponsors" ).scrollable({ 
+                vertical:true,
+                items:".display_scrollable_items",
+                speed:{{settings.screen_sponsors_screen_sponsors.sponsors_scroll_speed}},
+                api:true,
+            });
+        
+        // initialize auto tile advancement
+        screen_sponsors_friends_initAutoAdvance(); 
+        screen_sponsors_sponsors_initAutoAdvance(); 
     }
 
     function screen_sponsors_friends_initAutoAdvance(){
@@ -103,6 +112,36 @@
 
         setTimeout('screen_sponsors_friends_initAutoAdvance()', interval );
     }
+    
+    function screen_sponsors_sponsors_initAutoAdvance()
+    {
+        // grab the scroll interval value
+        var interval = 
+            {{settings.screen_sponsors_screen_sponsors.sponsors_scroll_interval}};
+        
+        // Ensure the interval is at least 50 ms > than the advancement speed
+        if( {{settings.screen_sponsors_screen_sponsors.sponsors_scroll_speed}} >
+            interval - 50 )
+            
+            interval = 
+                {{settings.screen_sponsors_screen_sponsors.sponsors_scroll_speed}}
+                + 50;
+            
+        
+        // Make sure scolling starts in the middle of the list
+        if( screen_sponsors_sponsors_scrollAPI.getClickIndex() == -1 )
+            screen_sponsors_sponsors_scrollAPI.click( 
+                screen_sponsors_sponsors_scrollAPI.getConf().size/2 );
+        
+        // Otherwise, advance to the next friend. Tuned to work with circular
+        // plugin.
+        else
+            screen_sponsors_sponsors_scrollAPI.click( 
+                screen_sponsors_sponsors_scrollAPI.getClickIndex() - 
+                 screen_sponsors_sponsors_scrollAPI.getConf().size + 1 );
+
+        setTimeout('screen_sponsors_sponsors_initAutoAdvance()', interval );
+    }
 
     function screen_sponsors_refreshTiles()
     {
@@ -111,6 +150,7 @@
         
         // populate the friends tile and return the friends per tile page
         screen_sponsors_updateFriendsTile();
+        screen_sponsors_updateSponsorsTile();
     }
     
     //////////////////////
@@ -169,6 +209,72 @@
         
         // make the scroller circular
         $( ".screen_sponsors_friends" ).circular();
+    }
+    
+    // _updateSponsorsTile: fill the sponsors tile and update scroller info
+    function screen_sponsors_updateSponsorsTile(){
+        
+        var curHeight = 0;   // to hold the height of the current item
+        var totalHeight = 0; // total height of the items written
+        var itemCount = 0;   // number of items written
+        
+        // grab the size of the data
+        var dataLength = screen_sponsors_sponsorsData.length;
+        
+        // grab the height of the container tile
+        var tileHeight = $(".screen_sponsors_sponsors").height();
+        safelog( "screen_sponsors: sponsors tile height: " + tileHeight );
+        
+        // clear the sponsors list
+        screen_sponsors_sponsors_scrollAPI.getItems().remove();
+        
+        // Fill up the tile with items, wrapping if necessary
+        while( totalHeight < tileHeight ){
+        
+            safelog( "screen_sponsors: writing sponsor # " + itemCount );
+
+            // Add the next title, wrapping to the first if necessary
+            screen_sponsors_sponsors_scrollAPI.getItemWrap().append(
+                "<div class='screen_sponsors_sponsor_"+itemCount+"'><h1>" + 
+                screen_sponsors_sponsorsData[ 
+                    itemCount % dataLength ].title +
+                "</h1></div>"
+            );
+            
+            // Add the next bodies, wrapping to the first if necessary
+            for( var i = 0; i < (screen_sponsors_sponsorsData[itemCount%dataLength].body.length); i++ ){
+                $(".screen_sponsors_sponsor_"+itemCount).append(
+                    "<p>" + 
+                    screen_sponsors_sponsorsData[itemCount%dataLength].body[i] +
+                    "</p>"
+                );
+            }
+            
+            // the *actual* height each item takes up, as positioned by the 
+            // scollable plugin (as observed by firebug)
+            curHeight = 
+                $(".screen_sponsors_sponsor_" + itemCount ).innerHeight() +
+                ($(".screen_sponsors_sponsor_" + itemCount ).outerHeight(true)-
+                $(".screen_sponsors_sponsor_" + itemCount ).innerHeight())/2;
+            safelog( "screen_sponsors: current sponsor height: " + curHeight );
+            
+            // add to the running height total
+            totalHeight += curHeight;
+            safelog( "screen_sponsors: current sponsors total height: " + totalHeight );
+            
+            // increment the number of items in the written list
+            itemCount++;
+        }
+        
+        // update the scroller to include the new items
+        screen_sponsors_sponsors_scrollAPI.reload();
+        
+        // set new tile page size for the scroller
+        screen_sponsors_sponsors_scrollAPI.getConf().size = itemCount; 
+        safelog( "screen_sponsors: Sponsors written: "+ itemCount );
+        
+        // make the scroller circular
+        $( ".screen_sponsors_sponsors" ).circular();
     }
     
     //////////////////////
@@ -324,7 +430,7 @@
          class='display_gradient'
          src="{{SITE_ROOT}}/static/screen_sponsors/gradient.png">
     <div class='display_scrollable_items'>
-        <!-- This will be auto-filled by the downloaded friends -->
+        <!-- to be filled by refresh code above -->
     </div>
 </div>
 
@@ -333,54 +439,6 @@
          class='display_gradient'
          src="{{SITE_ROOT}}/static/screen_sponsors/gradient.png">
     <div class='display_scrollable_items'>
-        <div>
-            <h1>Lorem</h1>
-            <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer id lacus vehicula ante suscipit porttitor. Ut ullamcorper condimentum lobortis. Duis elit libero, posuere congue sagittis consectetur, laoreet consequat purus. Nullam ut nibh tellus. In hac habitasse platea dictumst. Etiam rhoncus mattis eros, sit amet iaculis tellus commodo at. In sit amet neque erat. Donec mollis diam dapibus tortor venenatis in volutpat sem ullamcorper.
-            </p>
-            <p>
-            Aliquam eros diam, dictum non euismod ac, porttitor quis nunc. Vivamus a nulla vel tortor adipiscing lobortis nec et velit. Fusce id porta ipsum. Morbi libero dolor, pharetra at tempor facilisis, porttitor ac velit. Nunc vestibulum varius posuere. Nulla eu pellentesque augue. Aenean ligula odio, luctus ac tincidunt nec, luctus eget nibh. Pellentesque posuere dui quis urna egestas suscipit. In ligula neque, posuere ac adipiscing a, congue in arcu. 
-            </p>
-        </div>
-        
-        <div>
-            <h1>Integer</h1>
-            <p>
-            Integer pretium dolor id enim convallis ac euismod odio auctor. Proin quis mi lectus. Nunc ut pulvinar est. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Curabitur ornare feugiat tortor vel sollicitudin. Vestibulum ut turpis odio, non ultrices diam. Integer est metus, iaculis ornare tristique eu, viverra in enim.
-            </p>
-            <p>
-            Mauris semper commodo consectetur. Praesent pharetra diam nec arcu pretium vitae pretium augue consequat. Duis semper dolor vestibulum ipsum rutrum eget tristique leo scelerisque. Mauris odio ipsum, feugiat sit amet mollis et, varius id velit. Integer malesuada adipiscing urna, eget laoreet erat rutrum tincidunt. 
-            </p>
-        </div>
-        
-        <div>
-            <h1>Duis</h1>
-            <p>
-            Duis porttitor diam eget eros suscipit mattis eu ac purus. Etiam ac nibh nisl, at porttitor lacus. Donec ornare mi at sapien scelerisque eleifend. Nam commodo justo sed augue dignissim ut imperdiet turpis convallis. Proin consectetur ultricies leo, at imperdiet nisl semper id. In a purus massa. Fusce eu lorem eu tortor fermentum volutpat. Nam vel nibh imperdiet urna egestas placerat non at quam. Donec nulla leo, congue vitae accumsan eget, fermentum vel turpis. Ut sit amet leo dolor. Sed vestibulum, nulla a tristique tristique, velit lacus scelerisque eros, vitae scelerisque massa dui a nisi. In neque felis, rutrum in varius ullamcorper, ultricies ut mi.
-            </p>
-            <p>
-            Donec elit elit, aliquet ut euismod id, sollicitudin sed odio. Maecenas id risus arcu, non suscipit enim. Vestibulum at nibh consequat sapien egestas semper. Pellentesque ornare, massa tempor placerat condimentum, libero ante mollis augue, eget vehicula justo felis quis metus. Integer pulvinar lacinia luctus. Praesent odio arcu, feugiat eget commodo ut, gravida non felis. Proin eget odio quam. Mauris ut nisi dolor, ac gravida nulla. 
-            </p>
-        </div>
-        
-        <div>
-            <h1>Sed</h1>
-            <p>
-            Sed ut elit eu velit hendrerit adipiscing. Duis dapibus ornare porttitor. Duis suscipit commodo sapien vitae mattis. Donec consectetur scelerisque augue, et porttitor mauris sollicitudin vel. Cras pretium pellentesque enim quis porttitor. Sed condimentum, urna in dignissim commodo, nunc risus elementum magna, in euismod odio magna ut lectus.
-            </p>
-            <p>
-            Sed convallis magna in purus consequat a posuere diam ullamcorper. Vestibulum id ante vel metus iaculis egestas. Pellentesque erat erat, gravida ut aliquet eu, dignissim ac mauris. Quisque magna odio, blandit ac cursus sed, feugiat tincidunt tellus. Maecenas mollis elit ac ipsum aliquam at rhoncus est ultricies. Morbi non ipsum vitae est pellentesque dignissim quis eu velit. In hac habitasse platea dictumst. 
-            </p>
-        </div>
-        
-        <div>
-            <h1>Nam</h1>
-            <p>
-            Nam facilisis luctus sagittis. Fusce cursus ligula vitae nibh consequat feugiat. Praesent luctus urna cursus ligula malesuada iaculis. Ut nibh purus, tristique sed consectetur in, hendrerit sit amet lacus. In interdum pulvinar ipsum eu lobortis. Maecenas in lacus quis lacus blandit aliquam. Aenean non suscipit nisl. Sed nibh risus, interdum nec posuere eget, rutrum quis ipsum. Aliquam arcu est, eleifend feugiat rutrum eget, viverra non erat. Suspendisse suscipit pellentesque placerat.
-            </p>
-            <p>
-            Donec vehicula auctor eleifend. Ut suscipit pretium ipsum, quis aliquam est tempor sed. Aliquam rutrum odio vitae turpis feugiat vestibulum. Duis fermentum pellentesque aliquam. Suspendisse eu lorem mauris. Aliquam sed justo in mauris porttitor ornare sit amet tristique mi. Quisque semper quam at nulla lobortis ut vulputate dui suscipit. Sed ac dui vel purus mattis sollicitudin quis eget leo. Maecenas vulputate, massa eu tristique viverra, lorem metus pulvinar orci, in aliquam nisi nisi a neque. Cras non ligula quis metus pretium dictum. 
-            </p>
-        </div>
+        <!-- to be filled by refresh code above -->
     </div>
 </div>
