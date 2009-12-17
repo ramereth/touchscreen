@@ -7,8 +7,9 @@
 <style>
     /* debug colors for scrollers */
     .cloned{ color:red; }
-    .active{ color:blue; }
+    .active{ color:yellow; }
 </style>
+
 <script type="text/javascript">
 
     /////////////////
@@ -41,7 +42,7 @@
         safelog('screen_sponsors: initializing...');
         
         screen_sponsors_loadData(); // load friends and sponsors data
-        screen_sponsors_initFriendTile(); // initialize the tiles
+        screen_sponsors_initTiles(); // initialize the tiles
     }
 
     function screen_sponsors_start() 
@@ -68,7 +69,7 @@
     // Tile Setup //
     ////////////////
 
-    function screen_sponsors_initFriendTile()
+    function screen_sponsors_initTiles()
     {
         // initialize the scroller plugin for the friends tile
         screen_sponsors_friends_scrollAPI = 
@@ -84,6 +85,19 @@
 
     function screen_sponsors_friends_initAutoAdvance(){
         
+        // grab the scroll interval value
+        var interval = 
+            {{settings.screen_sponsors_screen_sponsors.friends_scroll_interval}};
+        
+        // Ensure the interval is at least 50 ms > than the advancement speed
+        if( {{settings.screen_sponsors_screen_sponsors.friends_scroll_speed}} >
+            interval - 50 )
+            
+            interval = 
+                {{settings.screen_sponsors_screen_sponsors.friends_scroll_speed}}
+                + 50;
+            
+        
         // Make sure scolling starts in the middle of the list
         if( screen_sponsors_friends_scrollAPI.getClickIndex() == -1 )
             screen_sponsors_friends_scrollAPI.click( 
@@ -96,8 +110,7 @@
                 screen_sponsors_friends_scrollAPI.getClickIndex() - 
                  screen_sponsors_friends_scrollAPI.getConf().size + 1 );
 
-        setTimeout('screen_sponsors_friends_initAutoAdvance()', 
-            {{settings.screen_sponsors_screen_sponsors.friends_scroll_interval}});
+        setTimeout('screen_sponsors_friends_initAutoAdvance()', interval );
     }
 
     function screen_sponsors_refreshTiles()
@@ -279,9 +292,9 @@
 </div>
 
 <div class="screen_sponsors_friends display_tile display_content">
-    <!-- img id='screen_sponsors_friends_gradient'
+    <img id='screen_sponsors_friends_gradient'
          class='display_gradient'
-         src="{{SITE_ROOT}}/static/screen_sponsors/gradient.png" -->
+         src="{{SITE_ROOT}}/static/screen_sponsors/gradient.png">
     <div class='display_scrollable_items'>
         <!-- This will be auto-filled by the downloaded friends -->
     </div>
