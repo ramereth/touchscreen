@@ -17,21 +17,12 @@
     /////////////////
     
     // data to be filled by the loadData function
-    var screen_sponsors_data = new function(){
-        
-        // an array of friends
-        this.friends = new Array();
-        
-        // sponsors
-        this.sponsors = new function(){
-            this.title = new Array();
-            this.body = new Array();
-            this.imgURL = new Array();
-        };
-    };
+    var screen_sponsors_friendsData = null;
+    var screen_sponsors_sponsorsData = null;
 
     // scroller plugin APIs for the friends and sponsors tiles
     var screen_sponsors_friends_scrollAPI = null;
+    var screen_sponsors_sponsors_scrollAPI = null;
 
     ///////////////////
     // Screen Events //
@@ -148,8 +139,8 @@
             // Add the next item, wrapping to the first if necessary
             screen_sponsors_friends_scrollAPI.getItemWrap().append(
                 "<p class='screen_sponsors_friend_"+itemCount+"'>" + 
-                screen_sponsors_data.friends[ 
-                    itemCount % screen_sponsors_data.friends.length ] +
+                screen_sponsors_friendsData[ 
+                    itemCount % screen_sponsors_friendsData.length ] +
                 "</p>"
             );
             
@@ -272,7 +263,7 @@
     function screen_sponsors_loadData(){
         
         // load friends data
-        screen_sponsors_data.friends = new Array( 
+        screen_sponsors_friendsData = [ 
             "Charles Montgomery Burns 0123456798",
             "Gladys Bouvier",
             "Carl Carlson",
@@ -282,7 +273,44 @@
             "Kent Brockman",
             "Fat Tony",
             "Apu Nahasapeemapetilon",
-            "Arnie Pye" );
+            "Arnie Pye"
+        ];
+            
+        // load sponsors data
+        screen_sponsors_sponsorsData = [
+            {   title: "Lorem", 
+                body: [
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer id lacus vehicula ante suscipit porttitor. Ut ullamcorper condimentum lobortis. Duis elit libero, posuere congue sagittis consectetur, laoreet consequat purus. Nullam ut nibh tellus. In hac habitasse platea dictumst. Etiam rhoncus mattis eros, sit amet iaculis tellus commodo at. In sit amet neque erat. Donec mollis diam dapibus tortor venenatis in volutpat sem ullamcorper.",
+                    "Aliquam eros diam, dictum non euismod ac, porttitor quis nunc. Vivamus a nulla vel tortor adipiscing lobortis nec et velit. Fusce id porta ipsum. Morbi libero dolor, pharetra at tempor facilisis, porttitor ac velit. Nunc vestibulum varius posuere. Nulla eu pellentesque augue. Aenean ligula odio, luctus ac tincidunt nec, luctus eget nibh. Pellentesque posuere dui quis urna egestas suscipit. In ligula neque, posuere ac adipiscing a, congue in arcu."
+                ]
+            },
+            {   title: "Integer", 
+                body: [
+                    "Integer pretium dolor id enim convallis ac euismod odio auctor. Proin quis mi lectus. Nunc ut pulvinar est. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Curabitur ornare feugiat tortor vel sollicitudin. Vestibulum ut turpis odio, non ultrices diam. Integer est metus, iaculis ornare tristique eu, viverra in enim.",
+                    "Mauris semper commodo consectetur. Praesent pharetra diam nec arcu pretium vitae pretium augue consequat. Duis semper dolor vestibulum ipsum rutrum eget tristique leo scelerisque. Mauris odio ipsum, feugiat sit amet mollis et, varius id velit. Integer malesuada adipiscing urna, eget laoreet erat rutrum tincidunt."
+                ]
+            },
+            {   title: "Duis", 
+                body: [
+                    "Duis porttitor diam eget eros suscipit mattis eu ac purus. Etiam ac nibh nisl, at porttitor lacus. Donec ornare mi at sapien scelerisque eleifend. Nam commodo justo sed augue dignissim ut imperdiet turpis convallis. Proin consectetur ultricies leo, at imperdiet nisl semper id. In a purus massa. Fusce eu lorem eu tortor fermentum volutpat. Nam vel nibh imperdiet urna egestas placerat non at quam. Donec nulla leo, congue vitae accumsan eget, fermentum vel turpis. Ut sit amet leo dolor. Sed vestibulum, nulla a tristique tristique, velit lacus scelerisque eros, vitae scelerisque massa dui a nisi. In neque felis, rutrum in varius ullamcorper, ultricies ut mi.",
+                    "Donec elit elit, aliquet ut euismod id, sollicitudin sed odio. Maecenas id risus arcu, non suscipit enim. Vestibulum at nibh consequat sapien egestas semper. Pellentesque ornare, massa tempor placerat condimentum, libero ante mollis augue, eget vehicula justo felis quis metus. Integer pulvinar lacinia luctus. Praesent odio arcu, feugiat eget commodo ut, gravida non felis. Proin eget odio quam. Mauris ut nisi dolor, ac gravida nulla."
+                ]
+            },
+            {   title: "Sed", 
+                body: [
+                    "Sed ut elit eu velit hendrerit adipiscing. Duis dapibus ornare porttitor. Duis suscipit commodo sapien vitae mattis. Donec consectetur scelerisque augue, et porttitor mauris sollicitudin vel. Cras pretium pellentesque enim quis porttitor. Sed condimentum, urna in dignissim commodo, nunc risus elementum magna, in euismod odio magna ut lectus.",
+                    "Sed convallis magna in purus consequat a posuere diam ullamcorper. Vestibulum id ante vel metus iaculis egestas. Pellentesque erat erat, gravida ut aliquet eu, dignissim ac mauris. Quisque magna odio, blandit ac cursus sed, feugiat tincidunt tellus. Maecenas mollis elit ac ipsum aliquam at rhoncus est ultricies. Morbi non ipsum vitae est pellentesque dignissim quis eu velit. In hac habitasse platea dictumst."
+                ]
+            },
+            {   title:"Nam", 
+                body: [
+                    "Nam facilisis luctus sagittis. Fusce cursus ligula vitae nibh consequat feugiat. Praesent luctus urna cursus ligula malesuada iaculis. Ut nibh purus, tristique sed consectetur in, hendrerit sit amet lacus. In interdum pulvinar ipsum eu lobortis. Maecenas in lacus quis lacus blandit aliquam. Aenean non suscipit nisl. Sed nibh risus, interdum nec posuere eget, rutrum quis ipsum. Aliquam arcu est, eleifend feugiat rutrum eget, viverra non erat. Suspendisse suscipit pellentesque placerat.",
+                    "Donec vehicula auctor eleifend. Ut suscipit pretium ipsum, quis aliquam est tempor sed. Aliquam rutrum odio vitae turpis feugiat vestibulum. Duis fermentum pellentesque aliquam. Suspendisse eu lorem mauris. Aliquam sed justo in mauris porttitor ornare sit amet tristique mi. Quisque semper quam at nulla lobortis ut vulputate dui suscipit. Sed ac dui vel purus mattis sollicitudin quis eget leo. Maecenas vulputate, massa eu tristique viverra, lorem metus pulvinar orci, in aliquam nisi nisi a neque. Cras non ligula quis metus pretium dictum."
+                ]
+            },
+        ];
+            
+        //alert( screen_sponsors_sponsorsData[0].body[1]);
     }
 
 </script>
