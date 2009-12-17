@@ -42,22 +42,22 @@ class screen_sponsorsSettings( dbsettings.Group ):
         
     friends_scroll_interval = dbsettings.IntegerValue(
         'Friends Scroll Interval',
-        'Time between scrolling of a friend (in milliseconds)',
+        'Time between scrolling of a friend (in milliseconds). Must be at least 50 greater than scroll speed.',
         default=3000)
     
     friends_scroll_speed = dbsettings.IntegerValue(
         'Friends Scroll Speed',
-        'Time it takes to scroll a single item (in milliseconds)',
+        'Time it takes to scroll a single item (in milliseconds). Must be at least 50 less than scroll interval.',
         default=1000)
         
     sponsors_scroll_interval = dbsettings.IntegerValue(
         'Sponsors Scroll Interval',
-        'Time between scrolling of a sponsor (in milliseconds)',
+        'Time between scrolling of a sponsor (in milliseconds). Must be at least 50 greater than scroll speed.',
         default=10000)
         
     sponsors_scroll_speed = dbsettings.IntegerValue(
         'Sponsors Scroll Speed',
-        'Time it takes to scroll a single item (in milliseconds)',
+        'Time it takes to scroll a single item (in milliseconds). Must be at least 50 less than scroll interval.',
         default=2000)
 
 screen_sponsors_settings = screen_sponsorsSettings('screen_sponsors Settings')

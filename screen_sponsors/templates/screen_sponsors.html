@@ -5,7 +5,7 @@
     This screen displays a list of sponsors and friends. 
 -->
 <style>
-    /* testing purposes */
+    /* debug colors for scrollers */
     .cloned{ color:red; }
     .active{ color:blue; }
 </style>
@@ -41,9 +41,7 @@
         safelog('screen_sponsors: initializing...');
         
         screen_sponsors_loadData(); // load friends and sponsors data
-        screen_sponsors_initTiles(); // initialize the tiles
-        screen_sponsors_friends_scrollAPI.click( 0 );
-        screen_sponsors_autoAdvanceTiles();
+        screen_sponsors_initFriendTile(); // initialize the tiles
     }
 
     function screen_sponsors_start() 
@@ -70,7 +68,7 @@
     // Tile Setup //
     ////////////////
 
-    function screen_sponsors_initTiles()
+    function screen_sponsors_initFriendTile()
     {
         // initialize the scroller plugin for the friends tile
         screen_sponsors_friends_scrollAPI = 
@@ -80,6 +78,26 @@
                 speed:{{settings.screen_sponsors_screen_sponsors.friends_scroll_speed}},
                 api:true,
             });
+            
+        screen_sponsors_friends_initAutoAdvance(); // initialize auto tile advancement
+    }
+
+    function screen_sponsors_friends_initAutoAdvance(){
+        
+        // Make sure scolling starts in the middle of the list
+        if( screen_sponsors_friends_scrollAPI.getClickIndex() == -1 )
+            screen_sponsors_friends_scrollAPI.click( 
+                screen_sponsors_friends_scrollAPI.getConf().size/2 );
+        
+        // Otherwise, advance to the next friend. Tuned to work with circular
+        // plugin.
+        else
+            screen_sponsors_friends_scrollAPI.click( 
+                screen_sponsors_friends_scrollAPI.getClickIndex() - 
+                 screen_sponsors_friends_scrollAPI.getConf().size + 1 );
+
+        setTimeout('screen_sponsors_friends_initAutoAdvance()', 
+            {{settings.screen_sponsors_screen_sponsors.friends_scroll_interval}});
     }
 
     function screen_sponsors_refreshTiles()
@@ -146,16 +164,7 @@
         safelog( "screen_sponsors: Friends written: "+ itemCount );
         
         // make the scroller circular
-        $( ".screen_sponsors_friends" ).circular();        
-    }
-    
-    function screen_sponsors_autoAdvanceTiles(){
-        
-        screen_sponsors_friends_scrollAPI.click( 
-            screen_sponsors_friends_scrollAPI.getClickIndex() + 1 );
-        //alert( screen_sponsors_friends_scrollAPI.getClickIndex() );
-
-        setTimeout('screen_sponsors_autoAdvanceTiles()',3000);
+        $( ".screen_sponsors_friends" ).circular();
     }
     
     //////////////////////
