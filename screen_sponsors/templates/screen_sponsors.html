@@ -4,6 +4,7 @@
 
     This screen displays a list of sponsors and friends. 
 -->
+
 <style>
     /* debug colors for scrollers
     .cloned{ color:red; }
@@ -17,8 +18,8 @@
     /////////////////
     
     // sponsor and friend content data. See _loadData below.
-    var screen_sponsors_friendsData = null;
-    var screen_sponsors_sponsorsData = null;
+    var screen_sponsors_friendsData = null; // simple list of friends
+    var screen_sponsors_sponsorsData = null; // [ title, body[] ]
 
     // scroller plugin APIs for the friends and sponsors tiles
     var screen_sponsors_friends_scrollAPI = null;
@@ -56,9 +57,9 @@
         screen_sponsors_refreshTiles();
     }
 
-    ////////////////
-    // Tile Setup //
-    ////////////////
+    /////////////////////////
+    // Tile Initialization //
+    /////////////////////////
 
     function screen_sponsors_initTiles()
     {
@@ -78,13 +79,17 @@
                 api:true,
             });
         
-        // initialize auto tile advancement
+        // initialize tile auto scrolling
         screen_sponsors_friends_initAutoAdvance(); 
         screen_sponsors_sponsors_initAutoAdvance(); 
     }
 
-    function screen_sponsors_friends_initAutoAdvance(){
-        
+    ////////////////////////////////////////////
+    // Tile Initialization - Auto Advancement //
+    ////////////////////////////////////////////
+
+    function screen_sponsors_friends_initAutoAdvance()
+    {  
         // grab the scroll interval value
         var interval = 
             {{settings.screen_sponsors_screen_sponsors.friends_scroll_interval}};
@@ -143,6 +148,10 @@
         setTimeout('screen_sponsors_sponsors_initAutoAdvance()', interval );
     }
 
+    //////////////////
+    // Tile Refresh //
+    //////////////////
+
     function screen_sponsors_refreshTiles()
     {
         // reposition the tiles
@@ -152,14 +161,9 @@
         screen_sponsors_updateFriendsTile();
         screen_sponsors_updateSponsorsTile();
     }
-    
-    //////////////////////
-    // Data Processing  //
-    //////////////////////
 
-    // _updateFriendsTile: fill the friends tile and update scroller info
-    function screen_sponsors_updateFriendsTile(){
-        
+    function screen_sponsors_updateFriendsTile()
+    {
         var curHeight = 0;   // to hold the height of the current item
         var totalHeight = 0; // total height of the items written
         var itemCount = 0;   // number of items written
@@ -174,7 +178,7 @@
         // Fill up the tile with items, wrapping if necessary
         while( totalHeight < tileHeight ){
         
-            safelog( "screen_sponsors: writing friend # " + itemCount );
+            //safelog( "screen_sponsors: writing friend # " + itemCount );
 
             // Add the next item, wrapping to the first if necessary
             screen_sponsors_friends_scrollAPI.getItemWrap().append(
@@ -190,15 +194,16 @@
                 $(".screen_sponsors_friend_" + itemCount ).innerHeight() +
                 ($(".screen_sponsors_friend_" + itemCount ).outerHeight(true)-
                 $(".screen_sponsors_friend_" + itemCount ).innerHeight())/2;
-            safelog( "screen_sponsors: current itemheight: " + curHeight );
+            //safelog( "screen_sponsors: current itemheight: " + curHeight );
             
             // add to the running height total
             totalHeight += curHeight;
-            safelog( "screen_sponsors: current total height: " + totalHeight );
+            //safelog( "screen_sponsors: current total height: " + totalHeight );
             
             // increment the number of items in the written list
             itemCount++;
         }
+        safelog( "screen_sponsors: total friends height: " + totalHeight );
         
         // update the scroller to include the new items
         screen_sponsors_friends_scrollAPI.reload();
@@ -211,9 +216,8 @@
         $( ".screen_sponsors_friends" ).circular();
     }
     
-    // _updateSponsorsTile: fill the sponsors tile and update scroller info
-    function screen_sponsors_updateSponsorsTile(){
-        
+    function screen_sponsors_updateSponsorsTile()
+    {
         var curHeight = 0;   // to hold the height of the current item
         var totalHeight = 0; // total height of the items written
         var itemCount = 0;   // number of items written
@@ -231,7 +235,7 @@
         // Fill up the tile with items, wrapping if necessary
         while( totalHeight < tileHeight ){
         
-            safelog( "screen_sponsors: writing sponsor # " + itemCount );
+            //safelog( "screen_sponsors: writing sponsor # " + itemCount );
 
             // Add the next title, wrapping to the first if necessary
             screen_sponsors_sponsors_scrollAPI.getItemWrap().append(
@@ -256,15 +260,16 @@
                 $(".screen_sponsors_sponsor_" + itemCount ).innerHeight() +
                 ($(".screen_sponsors_sponsor_" + itemCount ).outerHeight(true)-
                 $(".screen_sponsors_sponsor_" + itemCount ).innerHeight())/2;
-            safelog( "screen_sponsors: current sponsor height: " + curHeight );
+            //safelog( "screen_sponsors: current sponsor height: " + curHeight );
             
             // add to the running height total
             totalHeight += curHeight;
-            safelog( "screen_sponsors: current sponsors total height: " + totalHeight );
+            //safelog( "screen_sponsors: current sponsors total height: " + totalHeight );
             
             // increment the number of items in the written list
             itemCount++;
         }
+        safelog( "screen_sponsors: total sponsors height: " + totalHeight );
         
         // update the scroller to include the new items
         screen_sponsors_sponsors_scrollAPI.reload();
@@ -281,8 +286,8 @@
     // Tile Positioning //
     //////////////////////
     
-    function screen_sponsors_positionTiles(){
-        
+    function screen_sponsors_positionTiles()
+    {
         // set the width of the bottom tiles per the settings
         $('.screen_sponsors_sponsors').width(
             {{settings.screen_sponsors_screen_sponsors.sponsors_max_width}});
@@ -366,8 +371,8 @@
     // Data Loading //
     //////////////////
     
-    function screen_sponsors_loadData(){
-        
+    function screen_sponsors_loadData()
+    {
         // load friends data
         screen_sponsors_friendsData = [ 
             "Charles Montgomery Burns 0123456798",
@@ -415,10 +420,17 @@
                 ]
             },
         ];
+        
+        /*
+        // Logging test data
+        for( var i = 0; i < screen_sponsors_sponsorsData.length; i++ ){
+            safelog( "screen_sponsors: sponsor #"+i+" title: "+ screen_sponsors_sponsorsData[i].title);
             
-        //alert( screen_sponsors_sponsorsData[0].body[1]);
+            for( var ii = 0; ii < screen_sponsors_sponsorsData[i].body.length; ii++ )
+                safelog( "screen_sponsors: sponsor #"+i+" body #"+ii+": "+ screen_sponsors_sponsorsData[i].body[ii] );
+        }
+        */
     }
-
 </script>
 
 <div class="display_tile display_title screen_sponsors_title">
