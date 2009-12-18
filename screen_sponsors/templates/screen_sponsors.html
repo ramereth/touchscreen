@@ -5,9 +5,6 @@
     This screen displays a list of sponsors and friends.
 -->
 
-<!-- load the "curl" custom template tag (from core/templatetags) -->
-{% load curl %}
-
 <style>
     /* debug colors for scrollers */
     .cloned{ color:red; }
@@ -21,8 +18,16 @@
     /////////////////
 
     // sponsor and friend content data. See _loadData below.
-    var screen_sponsors_friendsData = null; // simple list of friends
-    var screen_sponsors_sponsorsData = null; // [ title, body[] ]
+    var screen_sponsors_friendsData = new Array(); // simple list of friends
+    var screen_sponsors_sponsorsData = new Array(); // [ title, body[] ]
+    function screen_sponsors_sponsorsDataRecord( title, bodyParagraphs ){
+        this.title = title; this.body = bodyParagraphs }
+    
+    /*
+    function screen_sponsors_sponsorsData( title, bodyParagraphs ){
+        this.title = 
+    }
+    */
 
     // scroller plugin APIs for the friends and sponsors tiles
     var screen_sponsors_friends_scrollAPI = null;
@@ -377,7 +382,7 @@
     function screen_sponsors_loadData()
     {
         // load friends data
-        screen_sponsors_friendsData = [
+        screen_sponsors_friendsData.push(
             "Charles Montgomery Burns 0123456798",
             "Gladys Bouvier",
             "Carl Carlson",
@@ -388,34 +393,56 @@
             "Fat Tony",
             "Apu Nahasapeemapetilon",
             "Arnie Pye"
-        ];
+        );
         
-        $.get('/proxy/?={{settings.screen_sponsors_screen_sponsors.sponsors_rss_URL}}', 
-            function(xml){
-                alert( xml );
-            });
-        
-        // load the sponsors XML file
-        var sponsors_XML = (<r><![CDATA[
-            {% curl settings.screen_sponsors_screen_sponsors.sponsors_rss_URL %} // <-- SHOULD NOT BE HARDCODED. FIGURE OUT HOW TO EXTRACT FROM DBSETTINGS
-        ]]></r>).toString();
-        
-        $(sponsors_XML).find("item").each(function(){
-            safelog( "screen_sponsors: loading sponsor title: " + $(this).find("title").text() );
-            
-            var pattern = /\<p\>.*<\/p\>/g;
-            var body = $(this).find("description").text().match( pattern );
-            
-            /*
-            while( body.match( /\<p\>/ ) != null ){
-                
-                safelog( "screen_sponsors: loading sponsor body: " + body );
-            }
-            */
-            
-            safelog( "screen_sponsors: loading sponsor body: " + body );
-        });
+        // grab and load sponsors XML file through a simple proxy to circumvent 
+        // browser security model restrictions regarding AJAX GET requests to  
+        // remote servers
+        $.get('/proxy/?url={{settings.screen_sponsors_screen_sponsors.sponsors_rss_URL}}', function( sponsors_XML ){
 
+            // RegEx object representing the body and it's delimiters
+            var bodyPattern = /\<p\>.*<\/p\>/g;
+            
+            // temporary title and body storage
+            var parsedTitle = null;
+            var parsedBody = null;
+            
+            // for each item...
+            $(sponsors_XML).find("item").each( function( curItemIndex ){
+                
+                // load the title
+                parsedTitle = $(this).find("title").text();
+                safelog( "screen_sponsors: loading sponsor title: " + 
+                    parsedTitle );
+                
+                // load the body's paragraph(s)
+                parsedBody = 
+                    $(this).find("description").text().match(bodyPattern);
+                safelog( "screen_sponsors: loading sponsor body: " + 
+                    parsedBody );
+                
+                //while( body.match( /\<p\>/ ) != null ){
+                    //safelog( "screen_sponsors: loading sponsor body: " + body );
+                //}
+
+                // push a new record
+                screen_sponsors_sponsorsData.push(
+                    new screen_sponsors_sponsorsDataRecord( parsedTitle, parsedBody ) );
+            });
+            
+        });
+        
+        /*
+        screen_sponsors_sponsorsData.push(
+            new screen_sponsors_sponsorsDataRecord( "Lorem", new Array(
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer id lacus vehicula ante suscipit porttitor. Ut ullamcorper condimentum lobortis. Duis elit libero, posuere congue sagittis consectetur, laoreet consequat purus. Nullam ut nibh tellus. In hac habitasse platea dictumst. Etiam rhoncus mattis eros, sit amet iaculis tellus commodo at. In sit amet neque erat. Donec mollis diam dapibus tortor venenatis in volutpat sem ullamcorper.",
+                "Aliquam eros diam, dictum non euismod ac, porttitor quis nunc. Vivamus a nulla vel tortor adipiscing lobortis nec et velit. Fusce id porta ipsum. Morbi libero dolor, pharetra at tempor facilisis, porttitor ac velit. Nunc vestibulum varius posuere. Nulla eu pellentesque augue. Aenean ligula odio, luctus ac tincidunt nec, luctus eget nibh. Pellentesque posuere dui quis urna egestas suscipit. In ligula neque, posuere ac adipiscing a, congue in arcu."
+                )
+            )
+        )
+        */
+        
+        /*
         // load sponsors data
         screen_sponsors_sponsorsData = [
             {   title: "Lorem",
@@ -449,6 +476,7 @@
                 ]
             },
         ];
+        */
 
         /*
         // Log sponsors data
