@@ -414,7 +414,8 @@
             var bodyPattern = /\<\s*p\s*\>.*<\s*\/\s*p\s*\>/g;
             
             // RegEx opject representing anchor tags
-            var anchorPattern = /\<\s*a.*\>.*<\s*\/\s*a\s*\>/g;
+            var anchorOpen = /<\s*a.*?>/g;
+            var anchorClose = /<\s*\/\s*a\s*>/g;
             
             // temporary title and body storage
             var parsedTitle = null;
@@ -428,12 +429,12 @@
                 safelog( "screen_sponsors: loading sponsor title: " + 
                     parsedTitle );
                 
-                // load the body's paragraph(s)
+                // load the body
                 parsedBody = 
-                    $(this).find("description").text().match(bodyPattern);
-                    
-                // strip anchor tags
-                //parsedBody = parsedBody.toString().replace(anchorPattern, "");
+                    $(this).find("description").text()
+                    .replace(anchorOpen, "") // strip opening anchor tags
+                    .replace(anchorClose, "")
+                    .match(bodyPattern);
                 
                 safelog( "screen_sponsors: loading sponsor body: " + 
                     parsedBody );
