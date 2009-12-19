@@ -6,9 +6,13 @@
 -->
 
 <style>
-    /* debug colors for scrollers */
+    /* debug colors for scrollers
     .cloned{ color:red; }
-    .active{ color:yellow; }
+    .active{ color:yellow; } */
+
+    .screen_sponsors_sponsor{
+        margin-bottom: 1.5em;
+    }
 </style>
 
 <script type="text/javascript">
@@ -19,10 +23,10 @@
 
     // a simple friends list
     var screen_sponsors_friends_data = new Array();
-    
+
     // a list of sponsor records
     var screen_sponsors_sponsors_data = new Array();
-    
+
     // a sponsors records class
     function screen_sponsors_sponsors_record( title, bodyParagraphs ){
         this.title = title; this.body = bodyParagraphs }
@@ -30,7 +34,7 @@
     // scroller plugin APIs for the friends and sponsors tiles
     var screen_sponsors_friends_scroller = null;
     var screen_sponsors_sponsors_scroller = null;
-    
+
     // autoscroll timers
     var screen_sponsors_friends_autoScrollTimer = null;
     var screen_sponsors_sponsors_autoScrollTimer = null;
@@ -60,7 +64,7 @@
             });
 
         // load friends and sponsors data
-        screen_sponsors_loadData(); 
+        screen_sponsors_loadData();
     }
 
     function screen_sponsors_start()
@@ -68,7 +72,7 @@
         safelog('screen_sponsors: starting...');
 
         screen_sponsors_refreshTiles();
-        
+
         // start auto scrolling
         screen_sponsors_friends_startAutoAdvance();
         screen_sponsors_sponsors_startAutoAdvance();
@@ -77,7 +81,7 @@
     function screen_sponsors_stop()
     {
         safelog('screen_sponsors: stopping');
-        
+
         // stop autoscrolling
         clearTimeout(screen_sponsors_friends_autoScrollTimer);
         clearTimeout(screen_sponsors_sponsors_autoScrollTimer);
@@ -122,7 +126,7 @@
                 screen_sponsors_friends_scroller.getClickIndex() -
                  screen_sponsors_friends_scroller.getConf().size + 1 );
 
-        screen_sponsors_friends_autoScrollTimer = 
+        screen_sponsors_friends_autoScrollTimer =
             setTimeout('screen_sponsors_friends_startAutoAdvance()', interval );
     }
 
@@ -153,7 +157,7 @@
                 screen_sponsors_sponsors_scroller.getClickIndex() -
                  screen_sponsors_sponsors_scroller.getConf().size + 1 );
 
-        screen_sponsors_sponsors_autoScrollTimer = 
+        screen_sponsors_sponsors_autoScrollTimer =
             setTimeout('screen_sponsors_sponsors_startAutoAdvance()', interval );
     }
 
@@ -164,14 +168,14 @@
     function screen_sponsors_refreshTiles()
     {
         safelog( "screen_sponsors: refreshing tiles." );
-        
+
         // reposition the tiles
         screen_sponsors_positionTiles();
 
         // if the data is loaded, fill the tiles
-        var dataLoaded = screen_sponsors_sponsors_data.length > 0 && 
+        var dataLoaded = screen_sponsors_sponsors_data.length > 0 &&
             screen_sponsors_friends_data.length > 0;
-            
+
         if( dataLoaded ){
             screen_sponsors_updateFriendsTile();
             screen_sponsors_updateSponsorsTile();
@@ -257,8 +261,8 @@
 
             // Add the next title, wrapping to the first if necessary
             screen_sponsors_sponsors_scroller.getItemWrap().append(
-                "<div class='screen_sponsors_sponsor_"+itemCount+"'><h1>" +
-                screen_sponsors_sponsors_data[
+                "<div class='screen_sponsors_sponsor screen_sponsors_sponsor_" +
+                itemCount+"'><h1>" + screen_sponsors_sponsors_data[
                     itemCount % dataLength ].title +
                 "</h1></div>"
             );
@@ -391,7 +395,7 @@
 
     function screen_sponsors_loadData()
     {
-        // load friends data
+        // load friends TEST data
         screen_sponsors_friends_data.push(
             "Charles Montgomery Burns 0123456798",
             "Gladys Bouvier",
@@ -404,46 +408,52 @@
             "Apu Nahasapeemapetilon",
             "Arnie Pye"
         );
-        
-        // grab and load sponsors XML file through a simple proxy to circumvent 
-        // browser security model restrictions regarding AJAX GET requests to  
+
+        $.get('/proxy/?url={{settings.screen_sponsors_screen_sponsors.sponsors_URL}}', function( sponsors_XML ){
+            
+            // force a refresh the tiles after the data is loaded
+            screen_sponsors_refreshTiles();
+        });
+
+        // grab and load sponsors XML file through a simple proxy to circumvent
+        // browser security model restrictions regarding AJAX GET requests to
         // remote servers
-        $.get('/proxy/?url={{settings.screen_sponsors_screen_sponsors.sponsors_rss_URL}}', function( sponsors_XML ){
+        $.get('/proxy/?url={{settings.screen_sponsors_screen_sponsors.sponsors_URL}}', function( sponsors_XML ){
 
             // RegEx object representing the body and it's <p></p> delimiters
             var bodyPattern = /\<\s*p\s*\>.*<\s*\/\s*p\s*\>/g;
-            
+
             // RegEx opject representing anchor tags
             var anchorOpen = /<\s*a.*?>/g;
             var anchorClose = /<\s*\/\s*a\s*>/g;
-            
+
             // temporary title and body storage
             var parsedTitle = null;
             var parsedBody = null;
-            
+
             // for each item...
             $(sponsors_XML).find("item").each( function( curItemIndex ){
-                
+
                 // load the title
                 parsedTitle = $(this).find("title").text();
-                safelog( "screen_sponsors: loading sponsor title: " + 
+                safelog( "screen_sponsors: loading sponsor title: " +
                     parsedTitle );
-                
+
                 // load the body
-                parsedBody = 
+                parsedBody =
                     $(this).find("description").text()
                     .replace(anchorOpen, "") // strip opening anchor tags
                     .replace(anchorClose, "")
                     .match(bodyPattern);
-                
-                safelog( "screen_sponsors: loading sponsor body: " + 
+
+                safelog( "screen_sponsors: loading sponsor body: " +
                     parsedBody );
 
                 // push a new record with the loaded data
                 screen_sponsors_sponsors_data.push(
                     new screen_sponsors_sponsors_record( parsedTitle, parsedBody ) );
             });
-            
+
             // force a refresh the tiles after the data is loaded
             screen_sponsors_refreshTiles();
         });
