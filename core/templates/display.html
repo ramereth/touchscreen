@@ -235,9 +235,55 @@
             /* ===============================
              *  AJAX Messaging
              * =============================== */
-            function Messaging_start() {
+	    function get_message() {
+		$.post('/proxy/',{'url':'http://localhost:9000/?c=0&q=biggerscreen'}, message_received);
+	    }
 
-            }
+	    /*
+		Process message into command
+		        
+		command messages are formated: <object/screen>,<command>[,args]+
+		a timeout will return '0'
+		an error will return '-1'
+		    
+		timeouts will occur if no message is received after 4 minutes.
+		This happens whenever there is noone interacting with the screen
+		timeouts should be ignored and the next message should be
+		requested immediately.
+	    */
+	    function message_received(response) {
+		if (response == '0' || response == '-1') {
+		    //console.log('no message in queue')
+		} else {
+		    
+		    split = response.split(',');
+		    if (split.length >= 2) {
+			obj = split[0];
+			command = split[1];
+			
+			// process args into string
+			args = '';
+			if (split.length > 2) {
+			    for (i=2;i<split.length; i++) {
+				if (i > 2){
+				    args += ',';
+				}
+				args += '"'+split[i]+'"'
+			    }
+			}
+			
+			// Build command string to evaluate - For now all commands
+			// are global.  ignore the obj variable that is passed in.
+			cmd_string = command+'('+args+')';
+			// use setTimeout to asynchronously call the function.
+			// This allows immediate return.  It also prevents
+			// exceptions in the called function from causing an
+			// exception here.
+			setTimeout(cmd_string,0);
+		    }
+		}
+		get_message();
+	    }
 
             /* ===============================
              *  Initialization
@@ -286,33 +332,25 @@
                 safelog("core: All screens hidden");
             }
 
+	    // fixes a mapped function
+	    function fix_function(func) {
+		if( func == "None" )
+		    return void(0);
+		else
+		    return func + '()';
+	    }
+
             // inits all screens
             function init_all() {
 
                 // check for the existance of event functions in the screens,
                 // void them if they don't exist, and validate if they do
                 for (i=0; i<screens.length; i++) {
-                    if( screens[i]['start'] == "None" )
-                        screens[i]['start'] = void(0);
-                    else
-                        screens[i]['start'] += '()';
-
-                    if( screens[i]['stop'] == "None" )
-                        screens[i]['stop'] = void(0);
-                    else
-                        screens[i]['stop'] += '()';
-
-                    if( screens[i]['onWinResize'] == "None" )
-                        screens[i]['onWinResize'] = void(0);
-                    else
-                        screens[i]['onWinResize'] += '()';
-
-                    if( screens[i]['init'] == "None" )
-                        screens[i]['init'] = void(0);
-                    else{
-                        screens[i]['init'] += '()';
-                        eval(screens[i]['init']);
-                    }
+		    scr = screens[i];
+		    scr['start'] = fix_function(scr['start']);
+		    scr['stop'] = fix_function(scr['stop']);
+		    scr['onWinResize'] = fix_function(scr['onWinResize']);
+		    scr['init'] = fix_function(scr['init']);
                 }
 
                 safelog("core: All screens initialized");
@@ -324,7 +362,7 @@
                 hide_all();
                 init_all();
                 slide_show_start();
-                Messaging_start();
+                get_message();
 
                 //SLIDESHOW BUTTONS FOR DEBUGGING
                 $('.debug_buttons').hover(

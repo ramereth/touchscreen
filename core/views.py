@@ -33,7 +33,7 @@ def display(request):
 # A simple proxy
 def proxy(request):
     connection = httplib2.Http()
-    url = request.GET['url']
+    url = request.POST['url']
     response, content = connection.request( url, "GET" )
     return HttpResponse( content )
 
