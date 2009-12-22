@@ -14,23 +14,46 @@ Parameters:
 Example:
    http://localhost:9000/?c=1&q=foo_queue&m=bar_message
    http://localhost:9000/?c=0&q=foo_queue
+   
+
+Starting Server:
+   twistd -y messenger.tac
 """
 
 from __future__ import with_statement
 
 from twisted.web import server, resource
 from twisted.application import service, internet
+from twisted.internet import reactor
+from twisted.internet.defer import Deferred
 from threading import Lock
 
+TIMEOUT = 240
 MESSAGE_QUEUES = {}
 QUEUE_LOCK = Lock()
 
+def get_queue(name):
+    """
+    Threadsafe Helper function for retreiving a queue.  If the queue does not
+    exist yet it is created.
+    """
+    global MESSAGE_QUEUES
+    global QUEUE_LOCK
+    
+    with QUEUE_LOCK:
+        try:
+            queue = MESSAGE_QUEUES[name]
+        except:
+            #queue doesn't exist, create it
+            queue = {'messages':[], 'requests':[], 'lock':Lock()}
+            MESSAGE_QUEUES[name] = queue
+    return queue
+
+
 class Simple(resource.Resource):
-    isLeaf = True
+    isLeaf = True    
 
     def render_GET(self, request):
-        global MESSAGE_QUEUES
-        global QUEUE_LOCK
 
         try:
             command = int(request.args['c'][0])
@@ -44,38 +67,47 @@ class Simple(resource.Resource):
                     #missing parameter, return error code
                     return '-1'
 
-                try:
-                    queue = MESSAGE_QUEUES[queue_name]
-                except:
-                    #queue doesn't exist, create it
-                    queue = {'messages':[], 'lock':Lock()}
-
-                    with QUEUE_LOCK:
-                        MESSAGE_QUEUES[queue_name] = queue
-
-                with  queue['lock']:
-                    queue['messages'].append(message)
-
+                queue = get_queue(queue_name)
+                with queue['lock']:
+                    # if there are waiting requests, process the first request
+                    # that has not timed out.  otherwise queue the message
+                    if queue['requests']:
+                        waiting = queue['requests'].pop(0)
+                        waiting.write(message)
+                        waiting.finish()
+                    else:
+                        queue['messages'].append(message)
                 # return success
                 return '1'
 
             else:
                 #get command, pop message out of the queue
-                try:
-                    queue = MESSAGE_QUEUES[queue_name]
-
-                    with queue['lock']:
-                        message = queue['messages'].pop(0)
-
-                except (IndexError,KeyError):
-                    #empty or uninitialized queue, return 0
-                    return '0'
-
-                return message
-
+                queue = get_queue(queue_name)
+                with queue['lock']:
+                    try:
+                        return queue['messages'].pop(0)
+                    except:
+                        reactor.callLater(TIMEOUT, self.timeout, queue, request)
+                        queue['requests'].append(request)
+                        return server.NOT_DONE_YET
         except KeyError:
             #missing parameter, return error code
             return '-1'
+
+
+    def timeout(self, queue, request):
+        """
+        Times out a request that waited too long for a message.  This is called
+        using reactor.callLater(...) and must be called prior to the HTTP
+        response timing out.  This lets the client handle the error in a
+        better way since jquery ajax functions do not handle errors.
+        """
+        with queue['lock']:
+            if not request.finished:
+                request.write('0')
+                request.finish()
+                queue['requests'].remove(request)
+
 
 def getMessageService():
     site = server.Site(Simple())
