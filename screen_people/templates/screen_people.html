@@ -1,0 +1,141 @@
+<!--
+    screen_people.html
+    by Rob McGuire-Dale, 12/28/2009
+    
+    This screen displays the people that work at the OSL
+-->
+
+<script type="text/javascript">
+
+    /////////////////
+    // Global Data //
+    /////////////////
+
+    // a list of people
+    var screen_people_people = new Array();
+
+    // a person class
+    function screen_people_person( name, title, bodyParagraphs, image )
+    {
+        this.name = name;
+        this.title = title; 
+        this.body = bodyParagraphs; 
+        this.image = image 
+    }
+        
+
+    ///////////////////
+    // Screen Events //
+    ///////////////////
+    
+    function screen_people_init()
+    {
+        safelog('screen_people: initializing...');
+        
+        screen_people_loadData();
+    }
+
+    function screen_people_start()
+    {
+        safelog('screen_people: starting...');
+        
+        screen_people_positionTiles();
+    }
+    
+    function screen_people_stop()
+    {
+        safelog('screen_people: stopping');
+    }
+    
+    function screen_people_onScreenResize()
+    {
+        safelog('screen_people: window resized to ' + screenWidth() + "x" +
+            screenHeight());
+            
+        screen_people_positionTiles();
+    }
+    
+    function screen_people_positionTiles()
+    {
+        // position title
+        $("#screen_people_title").width( screenWidth()-
+            ( $("#screen_people_title").outerWidth( true )-
+            $("#screen_people_title").width() ) );
+        
+        // position scroller
+        $(".screen_people_scroller").css('bottom', 0 );
+        $(".screen_people_scroller").width( screenWidth()-
+            ( $(".screen_people_scroller").outerWidth( true )-
+            $(".screen_people_scroller").width() ) );
+    }
+    
+    //////////////////
+    // Data Loading //
+    //////////////////
+    
+    function screen_people_loadData()
+    {            
+        // load the people data
+        $.post('/proxy/',
+            {'url':'{{settings.screen_people_screen_people.people_URL}}' },
+            function( peoplePage ){
+            
+            // for each person encountered...
+            $( peoplePage ).find(".staff-profile").each( function( personIndex ){
+                
+                // temp data storage
+                var parsedName = null;
+                var parsedTitle = null;
+                var parsedBody = new Array();
+                var parsedImage = null;
+                
+                // load the person's name
+                parsedName = $(this).find(".profile-header").text()
+                    .replace(/,.*$/g, "");
+                
+                // load the person's title
+                parsedTitle = $(this).find(".profile-header").text()
+                    .replace(/.*?,/g, "");
+                
+                // load the person's discription
+                $(this).find("p").each( function(){
+                    parsedBody.push( $(this).text() );
+                });
+                
+                // load the image URL
+                parsedImage = 
+                    "http://" + 
+                    "{{settings.screen_people_screen_people.people_URL}}"
+                    .replace(/http:\/\//g,"").replace(/\/.*/g,"") + 
+                    $(this).find("img").attr("src");
+                
+                // push this record onto the people stack
+                screen_people_people.push( 
+                    new screen_people_person( parsedName, parsedTitle,
+                        parsedBody, parsedImage ) ) ;
+                
+                safelog( "screen_people: loading name:" + 
+                    screen_people_people[ personIndex ].name );
+                safelog( "screen_people: loading title:" + 
+                    screen_people_people[ personIndex ].title );
+                safelog( "screen_people: loading body:" +
+                    screen_people_people[ personIndex ].body );
+                safelog( "screen_people: loading image:" +
+                    screen_people_people[ personIndex ].image );
+            });
+            
+            // force a refresh after the data is loaded
+            screen_people_positionTiles();
+        });
+    }
+    
+</script>
+
+<div id="screen_people_title" 
+    class="display_tile display_title screen_sponsors_title"> People </div>
+
+<div class="screen_people_scroller display_tile display_content">
+    <div class='display_scrollable_items'>
+        <!-- to be filled by refresh code above -->
+    </div>
+</div>
