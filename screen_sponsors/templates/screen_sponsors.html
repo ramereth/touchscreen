@@ -395,41 +395,19 @@
 
     function screen_sponsors_loadData()
     {
-        // load friends TEST data
-        screen_sponsors_friends_data.push(
-            "Charles Montgomery Burns 0123456798",
-            "Gladys Bouvier",
-            "Carl Carlson",
-            "Maude Flanders",
-            "Professor John Frink",
-            "Santa's Little Helper",
-            "Kent Brockman",
-            "Fat Tony",
-            "Apu Nahasapeemapetilon",
-            "Arnie Pye"
-        );
+        // RegEx object representing the body and it's <p></p> delimiters
+        var bodyPattern = /\<\s*p\s*\>.*<\s*\/\s*p\s*\>/g;
 
-        /*
-        $.get('/proxy/?url={{settings.screen_sponsors_screen_sponsors.sponsors_URL}}', function( sponsors_XML ){
-            
-            // force a refresh the tiles after the data is loaded
-            screen_sponsors_refreshTiles();
-        });
-        */
+        // RegEx opject representing anchor tags
+        var anchorOpenPattern = /<\s*a.*?>/g;
+        var anchorClosePattern = /<\s*\/\s*a\s*>/g;
 
         // grab and load sponsors XML file through a simple proxy to circumvent
         // browser security model restrictions regarding AJAX GET requests to
         // remote servers
-        $.post('/proxy/',{'url':'{{settings.screen_sponsors_screen_sponsors.sponsors_URL}}' }, function( sponsors_XML ){
-        
-        //$.get('/proxy/?url={{settings.screen_sponsors_screen_sponsors.sponsors_URL}}', function( sponsors_XML ){
-
-            // RegEx object representing the body and it's <p></p> delimiters
-            var bodyPattern = /\<\s*p\s*\>.*<\s*\/\s*p\s*\>/g;
-
-            // RegEx opject representing anchor tags
-            var anchorOpen = /<\s*a.*?>/g;
-            var anchorClose = /<\s*\/\s*a\s*>/g;
+        $.post('/proxy/',
+            {'url':'{{settings.screen_sponsors_screen_sponsors.sponsors_URL}}'}, 
+            function( sponsors_XML ){
 
             // temporary title and body storage
             var parsedTitle = null;
@@ -443,22 +421,48 @@
                 safelog( "screen_sponsors: loading sponsor title: " +
                     parsedTitle );
 
-                // load the body
+                // load the body, and strip any anchor tags
                 parsedBody =
                     $(this).find("description").text()
-                    .replace(anchorOpen, "") // strip opening anchor tags
-                    .replace(anchorClose, "")
+                    .replace(anchorOpenPattern, "")
+                    .replace(anchorClosePattern, "")
                     .match(bodyPattern);
 
-                safelog( "screen_sponsors: loading sponsor body: " +
-                    parsedBody );
+                //safelog( "screen_sponsors: loading sponsor body: " +
+                //    parsedBody );
 
                 // push a new record with the loaded data
                 screen_sponsors_sponsors_data.push(
-                    new screen_sponsors_sponsors_record( parsedTitle, parsedBody ) );
+                    new screen_sponsors_sponsors_record( parsedTitle, 
+                        parsedBody ) 
+                );
             });
 
-            // force a refresh the tiles after the data is loaded
+            // force a refresh after the data is loaded
+            screen_sponsors_refreshTiles();
+        });
+        
+        // load the friends through the simple proxy and into the friends list
+        $.post('/proxy/',
+            {'url':'{{settings.screen_sponsors_screen_sponsors.friends_URL}}' },
+            function( friends_XML ){
+            
+            // temp name storage
+            var parsedName = null;
+            
+            // for each friend name encountered...
+            $( friends_XML ).find(".friend-name").each( function(){
+                
+                // load the name, and strip any anchor tags
+                parsedName = $(this).text().replace(anchorOpenPattern, "")
+                    .replace(anchorClosePattern, "");;
+                safelog( "screen_sponsors: loading friend name:" + parsedName );
+                
+                // push name onto the names stack
+                screen_sponsors_friends_data.push( parsedName );
+            });
+            
+            // force a refresh after the data is loaded
             screen_sponsors_refreshTiles();
         });
     }
