@@ -409,16 +409,20 @@
             "Arnie Pye"
         );
 
+        /*
         $.get('/proxy/?url={{settings.screen_sponsors_screen_sponsors.sponsors_URL}}', function( sponsors_XML ){
             
             // force a refresh the tiles after the data is loaded
             screen_sponsors_refreshTiles();
         });
+        */
 
         // grab and load sponsors XML file through a simple proxy to circumvent
         // browser security model restrictions regarding AJAX GET requests to
         // remote servers
-        $.get('/proxy/?url={{settings.screen_sponsors_screen_sponsors.sponsors_URL}}', function( sponsors_XML ){
+        $.post('/proxy/',{'url':'{{settings.screen_sponsors_screen_sponsors.sponsors_URL}}' }, function( sponsors_XML ){
+        
+        //$.get('/proxy/?url={{settings.screen_sponsors_screen_sponsors.sponsors_URL}}', function( sponsors_XML ){
 
             // RegEx object representing the body and it's <p></p> delimiters
             var bodyPattern = /\<\s*p\s*\>.*<\s*\/\s*p\s*\>/g;
