@@ -110,7 +110,20 @@
             $(".screen_people_scroller").width() ) );
         $(".screen_people_scroller").height( 
             $(".display_scrollable_item").outerHeight(true) );
-            
+        
+        // position and size gradient
+        $('#screen_people_gradient').css( 'z-index', 1 );
+        $('#screen_people_gradient').css( 'top',
+            -( $('#screen_people_gradient').outerHeight( true ) -
+            $('#screen_people_gradient').height() ) );
+        $('#screen_people_gradient').css( 'left',
+            -( $('#screen_people_gradient').outerWidth( true ) -
+            $('#screen_people_gradient').width() ) );
+        $('#screen_people_gradient').height(
+            $('.screen_people_scroller').outerHeight( ) );
+        $('#screen_people_gradient').width(
+            $('.screen_people_scroller').outerWidth( ) );
+        
         // figure out a new page size for the scroller
         if( screen_people_scroller != null ){
             
@@ -186,7 +199,7 @@
                 */
 
                 // fill up the scroller tile
-                $("#screen_people_scroller_items").append( 
+                $("#screen_people_items").append( 
                     "<div class='screen_people_person display_scrollable_item "+
                         "display_img_thumb'>"+
                         "<img src='" + screen_people_people[personIndex].image+
@@ -211,8 +224,9 @@
             });
             
             // initialize the scroller plugin for the tiles
-            screen_people_scroller = $(".screen_people_scroller").scrollable()
-                .circular({ 
+            screen_people_scroller = $(".screen_people_scroller").scrollable({
+                    items:"#screen_people_items",
+                }).circular({ 
                     speed:{{settings.screen_people_screen_people.scroll_speed}},
                     api:true 
                 });
@@ -223,11 +237,12 @@
     }
 </script>
 
-<div id="screen_people_title"
-    class="display_tile display_title screen_sponsors_title"> People </div>
+<div id="screen_people_title" class="display_tile display_title"> People </div>
 
 <div class="screen_people_scroller display_tile display_content">
-    <div id="screen_people_scroller_items"
+    <img id='screen_people_gradient' class='display_gradient'
+         src="{{SITE_ROOT}}/static/screen_people/gradient.png">
+    <div id="screen_people_items"
         class='display_scrollable_items_horiz'>
         <!-- to be filled by refresh code above -->
     </div>
