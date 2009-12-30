@@ -72,7 +72,7 @@
     color: #CC5900;
 }
 
-.display_tile, .display_tile{
+.display_tile{
     -moz-border-radius:4px;
     -webkit-border-radius:4px;
     position: absolute;
@@ -102,13 +102,13 @@
     text-align: center;
 }
 
-.display_img{
+.display_img{S
     font-size: 14px;
     padding:5px;
 }
 
 .display_img_thumb{ 
-    font-size: 10px;
+    font-size: 12px;
     padding:3px;
 }
 
@@ -116,15 +116,13 @@
     padding: 10px;
 }
 
-/* required css class for auto scroller tool */
-.display_scrollable_items {
-    height:   20000em;
-    position: absolute;
-    clear:    both;
+.display_curved_border{
+    -moz-border-radius:4px;
+    -webkit-border-radius:4px;
 }
 
 img, p, li, h1{ 
-    display: block; 
+    display: block;
 }
 
 h1{
@@ -144,4 +142,26 @@ p, li {
 
 li {
     margin-left: 4em;
+}
+
+/*/////////////////////////////////
+// Required Scroller Tool Styles //
+/////////////////////////////////*/
+
+.display_scrollable_items_vert {
+    height:   20000em;
+    position: absolute;
+    clear:    both;
+}
+
+.display_scrollable_items_horiz {
+    width:    20000em;
+    position: absolute;
+    clear:    both;
+}
+
+.display_scrollable_item {
+    margin-left: 1.5em;
+    margin-right: 1.5em;
+    float: left;
 }

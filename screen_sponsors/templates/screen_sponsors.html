@@ -51,14 +51,14 @@
         screen_sponsors_friends_scroller =
             $( ".screen_sponsors_friends" ).scrollable({
                 vertical:true,
-                items:".display_scrollable_items",
+                items:".display_scrollable_items_vert",
                 speed:{{settings.screen_sponsors_screen_sponsors.friends_scroll_speed}},
                 api:true,
             });
         screen_sponsors_sponsors_scroller =
             $( ".screen_sponsors_sponsors" ).scrollable({
                 vertical:true,
-                items:".display_scrollable_items",
+                items:".display_scrollable_items_vert",
                 speed:{{settings.screen_sponsors_screen_sponsors.sponsors_scroll_speed}},
                 api:true,
             });
@@ -476,7 +476,7 @@
     <img id='screen_sponsors_friends_gradient'
          class='display_gradient'
          src="{{SITE_ROOT}}/static/screen_sponsors/gradient.png">
-    <div class='display_scrollable_items'>
+    <div class='display_scrollable_items_vert'>
         <!-- to be filled by refresh code above -->
     </div>
 </div>
@@ -485,7 +485,7 @@
     <img id='screen_sponsors_sponsors_gradient'
          class='display_gradient'
          src="{{SITE_ROOT}}/static/screen_sponsors/gradient.png">
-    <div class='display_scrollable_items'>
+    <div class='display_scrollable_items_vert'>
         <!-- to be filled by refresh code above -->
     </div>
 </div>

@@ -1,15 +1,25 @@
 <!--
     screen_people.html
     by Rob McGuire-Dale, 12/28/2009
-    
+
     This screen displays the people that work at the OSL
 -->
-
+<style>
+    /* debug colors for scrollers */
+    .cloned{ color:red; }
+    .active{ color:yellow; }
+</style>
 <script type="text/javascript">
 
     /////////////////
     // Global Data //
     /////////////////
+
+    // scroller plugin API for the people scroller
+    var screen_people_scroller = null;
+    
+    //autoscroll timer
+    var screen_people_autoscrollTimer = null;
 
     // a list of people
     var screen_people_people = new Array();
@@ -18,124 +28,207 @@
     function screen_people_person( name, title, bodyParagraphs, image )
     {
         this.name = name;
-        this.title = title; 
-        this.body = bodyParagraphs; 
-        this.image = image 
+        this.title = title;
+        this.body = bodyParagraphs;
+        this.image = image
     }
-        
+
 
     ///////////////////
     // Screen Events //
     ///////////////////
-    
+
     function screen_people_init()
     {
         safelog('screen_people: initializing...');
-        
+
         screen_people_loadData();
     }
 
     function screen_people_start()
     {
         safelog('screen_people: starting...');
-        
-        screen_people_positionTiles();
+
+        screen_people_refreshTiles();
+        screen_people_startAutoscroll();
     }
-    
+
     function screen_people_stop()
     {
         safelog('screen_people: stopping');
+        
+        // stop autoscroll
+        clearTimeout( screen_people_autoscrollTimer );
     }
-    
+
     function screen_people_onScreenResize()
     {
         safelog('screen_people: window resized to ' + screenWidth() + "x" +
             screenHeight());
-            
-        screen_people_positionTiles();
+
+        screen_people_refreshTiles();
     }
-    
-    function screen_people_positionTiles()
+
+    function screen_people_startAutoscroll()
+    {            
+        // grab the scroll interval
+        var interval = {{settings.screen_people_screen_people.scroll_interval}};
+        
+        // ensure the interval is at least 50 ms > than the advancement speed
+        if({{settings.screen_people_screen_people.scroll_speed}} > interval-50)
+            interval={{settings.screen_people_screen_people.scroll_speed}} + 50
+            
+        // Make sure scoller has been set up
+        if( screen_people_scroller != null ){
+            
+            //safelog( "screen_people: autoscrolling" );
+            
+            screen_people_scroller.click(
+                screen_people_scroller.getClickIndex() -
+                screen_people_scroller.getConf().size + 1
+            );
+            
+        } else
+            safelog("screen_people: autoscroll failed. Data not yet loaded.");
+        
+        // auto scroll every specified number of milliseconds
+        screen_people_autoscrollTimer = 
+            setTimeout('screen_people_startAutoscroll()', interval );
+    }
+
+    function screen_people_refreshTiles()
     {
         // position title
         $("#screen_people_title").width( screenWidth()-
             ( $("#screen_people_title").outerWidth( true )-
             $("#screen_people_title").width() ) );
-        
-        // position scroller
+
+        // position and size scroller
         $(".screen_people_scroller").css('bottom', 0 );
         $(".screen_people_scroller").width( screenWidth()-
             ( $(".screen_people_scroller").outerWidth( true )-
             $(".screen_people_scroller").width() ) );
+        $(".screen_people_scroller").height( 
+            $(".display_scrollable_item").outerHeight(true) );
+            
+        // figure out a new page size for the scroller
+        if( screen_people_scroller != null ){
+            
+            screen_people_scroller.getConf().size = 
+                Math.round(
+                    $(".screen_people_scroller").innerWidth() / 
+                    $(".screen_people_person").outerWidth(true)
+                );
+                
+            safelog( "screen_people: scroller page size updated to " +
+                screen_people_scroller.getConf().size );
+        }
     }
-    
+
     //////////////////
     // Data Loading //
     //////////////////
-    
+
     function screen_people_loadData()
-    {            
+    {
         // load the people data
         $.post('/proxy/',
             {'url':'{{settings.screen_people_screen_people.people_URL}}' },
             function( peoplePage ){
-            
+
+            // to keep track of widest item's width
+            var widestItemWidth = 0;
+
             // for each person encountered...
             $( peoplePage ).find(".staff-profile").each( function( personIndex ){
-                
+
                 // temp data storage
                 var parsedName = null;
                 var parsedTitle = null;
                 var parsedBody = new Array();
                 var parsedImage = null;
-                
+
                 // load the person's name
                 parsedName = $(this).find(".profile-header").text()
-                    .replace(/,.*$/g, "");
-                
+                    .replace(/,.*$/g, "").replace(/^\s+|\s+$/g,"");
+
                 // load the person's title
                 parsedTitle = $(this).find(".profile-header").text()
-                    .replace(/.*?,/g, "");
-                
+                    .replace(/.*?,/g, "").replace(/^\s+|\s+$/g,"");
+
                 // load the person's discription
                 $(this).find("p").each( function(){
                     parsedBody.push( $(this).text() );
                 });
-                
+
                 // load the image URL
-                parsedImage = 
-                    "http://" + 
+                parsedImage =
+                    "http://" +
                     "{{settings.screen_people_screen_people.people_URL}}"
-                    .replace(/http:\/\//g,"").replace(/\/.*/g,"") + 
+                    .replace(/http:\/\//g,"").replace(/\/.*/g,"") +
                     $(this).find("img").attr("src");
-                
+
                 // push this record onto the people stack
-                screen_people_people.push( 
+                screen_people_people.push(
                     new screen_people_person( parsedName, parsedTitle,
                         parsedBody, parsedImage ) ) ;
-                
-                safelog( "screen_people: loading name:" + 
+
+                safelog( "screen_people: loading person:" +
                     screen_people_people[ personIndex ].name );
-                safelog( "screen_people: loading title:" + 
+                    
+                /*
+                safelog( "screen_people: loading person title:" +
                     screen_people_people[ personIndex ].title );
-                safelog( "screen_people: loading body:" +
+                safelog( "screen_people: loading person body:" +
                     screen_people_people[ personIndex ].body );
-                safelog( "screen_people: loading image:" +
+                safelog( "screen_people: loading person image:" +
                     screen_people_people[ personIndex ].image );
+                */
+
+                // fill up the scroller tile
+                $("#screen_people_scroller_items").append( 
+                    "<div class='screen_people_person display_scrollable_item "+
+                        "display_img_thumb'>"+
+                        "<img src='" + screen_people_people[personIndex].image+
+                            "' class='screen_people_img'"+
+                            "height='{{settings.screen_people_screen_people.thumbnail_height}}'>"+
+                        "<div class='display_img_thumb_caption'>"+
+                            screen_people_people[personIndex].name+
+                        "</div>"+
+                    "</div>"
+                );
+                
+                //
+                widestItemWidth = Math.max( widestItemWidth,
+                    $(".screen_people_person:last").width() );
+            });
+
+            // AFTER the data is loaded...
+            
+            // make all of the items the same width as the widest item
+            $(".screen_people_person").each(function(){
+                $(this).width( widestItemWidth );
             });
             
-            // force a refresh after the data is loaded
-            screen_people_positionTiles();
+            // initialize the scroller plugin for the tiles
+            screen_people_scroller = $(".screen_people_scroller").scrollable()
+                .circular({ 
+                    speed:{{settings.screen_people_screen_people.scroll_speed}},
+                    api:true 
+                });
+            
+            // force a refresh
+            screen_people_refreshTiles();
         });
     }
-    
 </script>
 
-<div id="screen_people_title" 
+<div id="screen_people_title"
     class="display_tile display_title screen_sponsors_title"> People </div>
 
 <div class="screen_people_scroller display_tile display_content">
-    <div class='display_scrollable_items'>
+    <div id="screen_people_scroller_items"
+        class='display_scrollable_items_horiz'>
         <!-- to be filled by refresh code above -->
     </div>
 </div>
