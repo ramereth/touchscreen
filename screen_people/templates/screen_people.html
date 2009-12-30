@@ -42,7 +42,7 @@
     {
         safelog('screen_people: initializing...');
 
-        screen_people_loadData();
+        screen_people_setup();
     }
 
     function screen_people_start()
@@ -103,6 +103,12 @@
             ( $("#screen_people_title").outerWidth( true )-
             $("#screen_people_title").width() ) );
 
+        // position the main tile
+        $("#screen_people_main").css('top', screenHeight()/2 -
+            $("#screen_people_main").outerHeight(true)/2);
+        $("#screen_people_main").css('left', screenWidth()/2 -
+            $("#screen_people_main").outerWidth(true)/2);
+        
         // position and size scroller
         $(".screen_people_scroller").css('bottom', 0 );
         $(".screen_people_scroller").width( screenWidth()-
@@ -138,11 +144,11 @@
         }
     }
 
-    //////////////////
-    // Data Loading //
-    //////////////////
+    ////////////////////
+    // Initialization //
+    ////////////////////
 
-    function screen_people_loadData()
+    function screen_people_setup()
     {
         // load the people data
         $.post('/proxy/',
@@ -239,11 +245,16 @@
 
 <div id="screen_people_title" class="display_tile display_title"> People </div>
 
+<div id="screen_people_main" class="display_tile display_content">
+    <img src="{{SITE_ROOT}}/static/screen_people/owl.png" height='400' width='400'>
+    <!-- to be filled by javascript above -->
+</div>
+
 <div class="screen_people_scroller display_tile display_content">
     <img id='screen_people_gradient' class='display_gradient'
          src="{{SITE_ROOT}}/static/screen_people/gradient.png">
     <div id="screen_people_items"
         class='display_scrollable_items_horiz'>
-        <!-- to be filled by refresh code above -->
+        <!-- to be filled by javascript above -->
     </div>
 </div>
