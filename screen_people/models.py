@@ -30,5 +30,17 @@ class screen_peopleSettings( dbsettings.Group ):
         default=1000
     )
     
+    auto_rotation_interval = dbsettings.IntegerValue(
+        'Auto Rotation Interval',
+        'Time between people auto rotations (in milliseconds).',
+        default=10000
+    )
+    
+    rotation_pause_timeout = dbsettings.IntegerValue(
+        'Auto Rotation Pause Timeout',
+        'Time from when a person is explicitly selected to be shown to when auto rotation starts again (in milliseconds).',
+        default=180000
+    )
+    
 screen_people_settings = screen_peopleSettings('screen_people Settings')
 

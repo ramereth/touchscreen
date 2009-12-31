@@ -349,14 +349,6 @@
                     return func + '()';
             }
 
-            // returns the maximum width optimal for reading. If the screen size
-            // is smaller than the maximum width, return the screen width
-            function max_optimal_width()
-            {
-                return Math.min( {{settings.general.MAX_OPTIMAL_WIDTH}}, 
-                    screenWidth() );
-            }
-
             // inits all screens
             function init_all() {
 
