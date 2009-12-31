@@ -6,23 +6,10 @@ import dbsettings
 ================================================================ """
 class GeneralSettings(dbsettings.Group):
 
-    DISPLAY_HEIGHT     = dbsettings.IntegerValue(
-        'Screen Height',
-        'Height of the display screen. ** DEPRECIATED ** Please dynamically query the screen width with screenHeight()',
-        default=768)
-
-    DISPLAY_WIDTH      = dbsettings.IntegerValue(
-        'Screen Width',
-        'Width of the display screen ** DEPRECIATED ** Please dynamically query the screen width with screenWidth()',
-        default=1360)
-
-    MENU_HEIGHT        = dbsettings.IntegerValue(
-        'Menu Height', 'Height of the menu screen ** DEPRECIATED ** Please dynamically query the menu size [ i.e. $("#foo").parent().innerHeight() ]',
-        default=768)
-
-    MENU_WIDTH         = dbsettings.IntegerValue(
-        'Menu Width','Width of the menu screen ** DEPRECIATED ** Please dynamically query the menu size [ i.e. $("#foo").parent().innerHeight() ]',
-        default=1024)
+    MAX_OPTIMAL_WIDTH  = dbsettings.IntegerValue(
+        'Maximum Optimal Width',
+        'Maximum width optimal for reading',
+        default=780)
 
     DISPLAY_DURATION   = dbsettings.IntegerValue(
         'Default Screen Duration',
@@ -33,6 +20,12 @@ class GeneralSettings(dbsettings.Group):
         'Default Screen Timeout',
         'Duration of time without activity before the slide show restarts',
         default=10000)
+        
+    MENU_URL = dbsettings.StringValue(
+        'Menu URL', 
+        'URL of the menu application', 
+        default='http://localhost:9000/?c=0&q=biggerscreen'
+    )
 
 general_settings = GeneralSettings('General Settings')
 

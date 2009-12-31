@@ -14,18 +14,18 @@
         <script type='text/javascript' src="{{MEDIA_URL}}/js/jquery-1.3.2.min.js"></script>
         <script type='text/javascript' src="{{MEDIA_URL}}/js/jquery.doubleBorderedBox.js"></script>
         <script type="text/javascript" src="{{MEDIA_URL}}/js/jquery.refreshimage.js"></script>
-		<script type="text/javascript" src="{{MEDIA_URL}}/js/jquery.scale/jquery.scale.js"></script>
+        <script type="text/javascript" src="{{MEDIA_URL}}/js/jquery.scale/jquery.scale.js"></script>
         <script type="text/javascript" src="{{MEDIA_URL}}/js/jquery.tools.min.js"></script>
 
          <!-- jQuery UI includes -->
         <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}/js/jquery.ui/theme/ui.all.css" />
         <script type="text/javascript" src="{{MEDIA_URL}}/js/jquery.ui/jquery.ui.core-1.7.2.js"></script>
-		<script type="text/javascript" src="{{MEDIA_URL}}/js/jquery.ui/jquery.ui.draggable-1.7.2.js"></script>
+        <script type="text/javascript" src="{{MEDIA_URL}}/js/jquery.ui/jquery.ui.draggable-1.7.2.js"></script>
 
         <!-- other includes -->
         <script type="text/javascript" src="{{MEDIA_URL}}/js/util.js"></script>
 
-		<script type="text/javascript">
+        <script type="text/javascript">
 
             /* ===============================
              *  Shower / Hiders
@@ -235,55 +235,64 @@
             /* ===============================
              *  AJAX Messaging
              * =============================== */
-	    function get_message() {
-		$.post('/proxy/',{'url':'http://localhost:9000/?c=0&q=biggerscreen'}, message_received);
-	    }
+            function get_message() {
+                $.post('/proxy/',{'url':'{{settings.general.MENU_URL}}'}, message_received);
+            }
 
-	    /*
-		Process message into command
-		        
-		command messages are formated: <object/screen>,<command>[,args]+
-		a timeout will return '0'
-		an error will return '-1'
-		    
-		timeouts will occur if no message is received after 4 minutes.
-		This happens whenever there is noone interacting with the screen
-		timeouts should be ignored and the next message should be
-		requested immediately.
-	    */
-	    function message_received(response) {
-		if (response == '0' || response == '-1') {
-		    //console.log('no message in queue')
-		} else {
-		    
-		    split = response.split(',');
-		    if (split.length >= 2) {
-			obj = split[0];
-			command = split[1];
-			
-			// process args into string
-			args = '';
-			if (split.length > 2) {
-			    for (i=2;i<split.length; i++) {
-				if (i > 2){
-				    args += ',';
-				}
-				args += '"'+split[i]+'"'
-			    }
-			}
-			
-			// Build command string to evaluate - For now all commands
-			// are global.  ignore the obj variable that is passed in.
-			cmd_string = command+'('+args+')';
-			// use setTimeout to asynchronously call the function.
-			// This allows immediate return.  It also prevents
-			// exceptions in the called function from causing an
-			// exception here.
-			setTimeout(cmd_string,0);
-		    }
-		}
-		get_message();
-	    }
+            /*
+            Process message into command
+                    
+            command messages are formated: <object/screen>,<command>[,args]+
+            a timeout will return '0'
+            an error will return '-1'
+                
+            timeouts will occur if no message is received after 4 minutes.
+            This happens whenever there is noone interacting with the screen
+            timeouts should be ignored and the next message should be
+            requested immediately.
+            */
+            function message_received(response)
+            {
+                if (response == '0' || response == '-1') {
+                    
+                    //safelog('no message in queue')
+                    
+                } else {
+                    
+                    split = response.split(',');
+                    
+                    if (split.length >= 2) {
+                        
+                        obj = split[0];
+                        command = split[1];
+                        
+                        // process args into string
+                        args = '';
+                        if (split.length > 2) {
+                            
+                            for (i=2;i<split.length; i++){
+                                
+                                if (i > 2) args += ',';
+                                
+                                args += '"'+split[i]+'"'
+                            }
+                        }
+                    
+                        // Build command string to evaluate - For now all 
+                        // commands are global.  ignore the obj variable that is
+                        // passed in.
+                        cmd_string = command+'('+args+')';
+                        
+                        // use setTimeout to asynchronously call the function.
+                        // This allows immediate return.  It also prevents
+                        // exceptions in the called function from causing an
+                        // exception here.
+                        setTimeout(cmd_string,0);
+                    }
+                }
+                
+                get_message();
+            }
 
             /* ===============================
              *  Initialization
@@ -338,6 +347,14 @@
                     return void(0);
                 else 
                     return func + '()';
+            }
+
+            // returns the maximum width optimal for reading. If the screen size
+            // is smaller than the maximum width, return the screen width
+            function max_optimal_width()
+            {
+                return Math.min( {{settings.general.MAX_OPTIMAL_WIDTH}}, 
+                    screenWidth() );
             }
 
             // inits all screens

@@ -55,9 +55,12 @@
         screen_people_refreshTiles();
         screen_people_startAutoscroll();
         
-        // debug
+        // debug stuff
         $('#debug_f1').click(function(){
-            alert( "hello!");
+            screen_people_showPerson( "Peter Krenesky" );
+        });
+        $('#debug_f2').click(function(){
+            screen_people_showPerson( "Blah Blah" );
         });
     }
 
@@ -83,15 +86,59 @@
     
     function screen_people_showPerson( personName )
     {
-        // fade out the main tile
-        $("#screen_people_main").fadeOut( function(){
+        var person = 
+            screen_people_people[ screen_people_person_index[ personName ] ];
         
-            $("#screen_people_main").html( "hello!" );
+        if( person != undefined ){
+            
+            safelog( "screen_people: showing person '" + personName + "'" );
         
-        });
+            // fade out the main tile
+            $("#screen_people_main").fadeOut( function(){
+                
+                // clear the tile
+                $("#screen_people_main").html( "" );
+            
+                // Add the person's name and title
+                $("#screen_people_main").append( 
+                    "<h1>" + person.name + ", " + person.title + "</h1>"
+                );
+                
+                // Add the person's description
+                for( i = 0; i < person.body.length; ++i ){
+                    $("#screen_people_main").append(
+                        "<p>" + person.body[i] + "<p>"
+                    );
+                }
+            
+                // size and position main tile
+                screen_people_sizeAndPositionMainTile()
+            
+            });
+            
+            // fade back in
+            $("#screen_people_main").fadeIn("slow");
+            
+        } else
+            safelog( "screen_people: unknown person '" + personName + "'" );
+    }
+
+    function screen_people_sizeAndPositionMainTile()
+    {
+        var verticalSpace = screenHeight() - 
+            ($(".screen_people_scroller").outerHeight(true) + 
+            $(".screen_people_title").outerHeight(true));
         
-        // fade back in
-        $("#screen_people_main").fadeIn("slow");
+        // size the tile
+        $("#screen_people_main").width( max_optimal_width() );
+            
+        // center the tile
+        $("#screen_people_main").css('top', verticalSpace/2 -
+            $("#screen_people_main").outerHeight(true)/2 + 
+            $("#screen_people_title").outerHeight(true)/2 );
+            
+        $("#screen_people_main").css('left', screenWidth()/2 -
+            $("#screen_people_main").outerWidth(true)/2);
     }
 
     function screen_people_refreshTiles()
@@ -100,12 +147,9 @@
         $("#screen_people_title").width( screenWidth()-
             ( $("#screen_people_title").outerWidth( true )-
             $("#screen_people_title").width() ) );
-
-        // position the main tile
-        $("#screen_people_main").css('top', screenHeight()/2 -
-            $("#screen_people_main").outerHeight(true)/2);
-        $("#screen_people_main").css('left', screenWidth()/2 -
-            $("#screen_people_main").outerWidth(true)/2);
+        
+        // size and position main tile
+        screen_people_sizeAndPositionMainTile()
         
         // position and size scroller
         $(".screen_people_scroller").css('bottom', 0 );
@@ -288,11 +332,6 @@
 
 <div id="screen_people_title" class="display_tile display_title"> People </div>
 
-<div id="screen_people_main" class="display_tile display_content">
-    <img src="{{SITE_ROOT}}/static/screen_people/owl.png" height='400' width='400'>
-    <!-- to be filled by javascript above -->
-</div>
-
 <div class="screen_people_scroller display_tile display_content">
     <img id='screen_people_gradient' class='display_gradient'
          src="{{SITE_ROOT}}/static/screen_people/gradient.png">
@@ -300,4 +339,7 @@
         class='display_scrollable_items_horiz'>
         <!-- to be filled by javascript above -->
     </div>
+</div>
+
+<div id="screen_people_main" class="display_img display_tile display_content">
 </div>
