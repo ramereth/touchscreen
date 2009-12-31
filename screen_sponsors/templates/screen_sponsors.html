@@ -100,6 +100,7 @@
     //////////////////////
 
     function screen_sponsors_friends_startAutoAdvance()
+    // begin auto-advancement for the friends tile
     {
         // grab the scroll interval value
         var interval =
@@ -131,6 +132,7 @@
     }
 
     function screen_sponsors_sponsors_startAutoAdvance()
+    // begin auto-advancement for the sponsors tile
     {
         // grab the scroll interval value
         var interval =
@@ -158,7 +160,7 @@
                  screen_sponsors_sponsors_scroller.getConf().size + 1 );
 
         screen_sponsors_sponsors_autoScrollTimer =
-            setTimeout('screen_sponsors_sponsors_startAutoAdvance()', interval );
+            setTimeout('screen_sponsors_sponsors_startAutoAdvance()', interval);
     }
 
     //////////////////
@@ -166,6 +168,7 @@
     //////////////////
 
     function screen_sponsors_refreshTiles()
+    // Refresh the tiles depending on screen size
     {
         safelog( "screen_sponsors: refreshing tiles." );
 
@@ -185,6 +188,7 @@
     }
 
     function screen_sponsors_updateFriendsTile()
+    // re-fill the friends tile and calculate new page size for scroller
     {
         var curHeight = 0;   // to hold the height of the current item
         var totalHeight = 0; // total height of the items written
@@ -220,7 +224,8 @@
 
             // add to the running height total
             totalHeight += curHeight;
-            //safelog( "screen_sponsors: current total height: " + totalHeight );
+            //safelog( "screen_sponsors: current total height: " + 
+            //  totalHeight );
 
             // increment the number of items in the written list
             itemCount++;
@@ -239,6 +244,7 @@
     }
 
     function screen_sponsors_updateSponsorsTile()
+    // re-fill the sponsors tile and calculate new page size for scroller
     {
         var curHeight = 0;   // to hold the height of the current item
         var totalHeight = 0; // total height of the items written
@@ -268,7 +274,10 @@
             );
 
             // Add the next bodies, wrapping to the first if necessary
-            for( var i = 0; i < (screen_sponsors_sponsors_data[itemCount%dataLength].body.length); i++ ){
+            for( var i = 0; 
+                i < (screen_sponsors_sponsors_data[ itemCount % dataLength ].body.length); 
+                i++ ){
+                    
                 $(".screen_sponsors_sponsor_"+itemCount).append(
                     "<p>" +
                     screen_sponsors_sponsors_data[itemCount%dataLength].body[i] +
@@ -286,7 +295,8 @@
 
             // add to the running height total
             totalHeight += curHeight;
-            //safelog( "screen_sponsors: current sponsors total height: " + totalHeight );
+            //safelog( "screen_sponsors: current sponsors total height: " + 
+            //    totalHeight );
 
             // increment the number of items in the written list
             itemCount++;
@@ -309,10 +319,11 @@
     //////////////////////
 
     function screen_sponsors_positionTiles()
+    // Re-position and re-size the tiles depending on screen size
     {
         // set the width of the bottom tiles per the settings
         $('.screen_sponsors_sponsors').width(
-            {{settings.screen_sponsors_screen_sponsors.sponsors_max_width}});
+            {{settings.general.MAX_OPTIMAL_WIDTH}});
         $('.screen_sponsors_friends').width(
             {{settings.screen_sponsors_screen_sponsors.friends_width}});
 
@@ -394,6 +405,7 @@
     //////////////////
 
     function screen_sponsors_loadData()
+    // Load the friends and sponsors data from the specified remote URLs
     {
         // RegEx object representing the body and it's <p></p> delimiters
         var bodyPattern = /\<\s*p\s*\>.*<\s*\/\s*p\s*\>/g;
@@ -485,7 +497,8 @@
     <img id='screen_sponsors_sponsors_gradient'
          class='display_gradient'
          src="{{SITE_ROOT}}/static/screen_sponsors/gradient.png">
-    <div class='display_scrollable_items_vert'>
+    <div id='screen_sponsors_sponsors_items' 
+        class='display_scrollable_items_vert'>
         <!-- to be filled by refresh code above -->
     </div>
 </div>

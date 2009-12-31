@@ -10,18 +10,18 @@
     /* debug colors for scrollers
     .cloned{ color:red; }
     .active{ color:yellow; } */
-    
-    .screen_people_main_img{ 
-        float:right; 
+
+    .screen_people_main_img{
+        float:right;
         margin-left: 1em;
         margin-right: 1em;
         margin-bottom: 1em;
     }
-    
+
     .screen_people_thumb_img{
         margin-bottom: 1em;
     }
-    
+
     #screen_people_main{
         z-index: 2; /* Make sure the main tile is on top */
     }
@@ -51,7 +51,7 @@
     // person-index association to keep track of associations between a person
     // and the index they reside at in the people array.
     var screen_people_person_index = new Array();
-    
+
     // auto movement timers
     var screen_people_autoscrollTimer = null;
     var screen_people_autoRandRotateTimer = null;
@@ -73,11 +73,11 @@
         safelog('screen_people: starting...');
 
         screen_people_refreshTiles();
-        
+
         // begin auto movement
         screen_people_startAutoscroll();
         screen_people_startAutoRotate();
-        
+
         // debug stuff
         $('#debug_f1').click(function(){
             screen_people_showPerson( "Deborah Bryant" );
@@ -87,7 +87,7 @@
         });
         $('#debug_f3').click(function(){
             screen_people_showPerson( "/random" );
-            
+
             screen_people_pauseAutoRotation( 30000 );
         });
     }
@@ -95,7 +95,7 @@
     function screen_people_stop()
     {
         safelog('screen_people: stopping');
-        
+
         // stop auto movements
         clearTimeout( screen_people_autoscrollTimer );
         clearTimeout( screen_people_autoRandRotateTimer );
@@ -113,83 +113,83 @@
     //////////////////
     // Facilitators //
     //////////////////
-    
+
     function screen_people_showPerson( personName )
     // Display a person specified by a name to the main screen. If the name is
     // "/random" a random person will be displayed.
     {
         // make sure people data is loaded
         if( screen_people_people.length > 0 ){
-            
+
             // temp var to hold the recalled person
             var person = null;
-            
+
             // if personName is the command "/random" choose a random person.
             if( personName == "/random" ){
-            
-                person = 
-                    screen_people_people[ 
-                        Math.floor( 
-                            Math.random() * screen_people_people.length 
-                        ) 
+
+                person =
+                    screen_people_people[
+                        Math.floor(
+                            Math.random() * screen_people_people.length
+                        )
                     ];
-                        
-                safelog( "screen_people: showing random person '" + 
+
+                safelog( "screen_people: showing random person '" +
                     person.name + "'" );
-            
+
             // otherwise, attempt to choose the specified person
             } else {
-            
-                person = 
-                    screen_people_people[ 
-                        screen_people_person_index[personName] 
+
+                person =
+                    screen_people_people[
+                        screen_people_person_index[personName]
                     ];
-            
-                safelog( "screen_people: showing person '" + person.name + 
+
+                safelog( "screen_people: showing person '" + person.name +
                     "'" );
-            
+
                 // since someone was explicitly selected, pause auto rotation
-                screen_people_pauseAutoRotation( 
-                    {{settings.screen_people_screen_people.rotation_pause_timeout}} 
+                screen_people_pauseAutoRotation(
+                    {{settings.screen_people_screen_people.rotation_pause_timeout}}
                 );
             }
-            
+
             // as long as the person is in the people array, display him/her
             // to the main tile
             if( person != undefined ){
-            
+
                 // fade out the main tile
                 $("#screen_people_main").fadeOut( function(){
-                    
+
                     // clear the tile
                     $("#screen_people_main").html( "" );
-                
+
                     // Add the person's name and title
-                    $("#screen_people_main").append( 
+                    $("#screen_people_main").append(
                         "<h1>" + person.name + ", " + person.title + "</h1>" +
-                        "<img src='" + person.image + 
+                        "<img src='" + person.image +
                             "' class='screen_people_main_img'>"
                     );
-                    
+
                     // Add the person's description
                     for( i = 0; i < person.body.length; ++i ){
                         $("#screen_people_main").append(
                             "<p>" + person.body[i] + "<p>"
                         );
                     }
-                
+
                     // size and position main tile
                     screen_people_refreshMainTile()
                 });
-                
+
                 // fade tile back in
                 $("#screen_people_main").fadeIn("slow");
-                
+
             } else
                 safelog( "screen_people: unknown person '" + personName + "'" );
-                
+
         } else
-            safelog( "screen_people: Show person failed. People data not yet " + 
+            safelog( "screen_people: Show person failed. People data not yet " +
                 "loaded.");
     }
 
@@ -200,18 +200,18 @@
         $("#screen_people_title").width( screenWidth() -
             ( $("#screen_people_title").outerWidth( true ) -
             $("#screen_people_title").width() ) );
-        
+
         // size and position main tile
         screen_people_refreshMainTile()
-        
+
         // position and size scroller
         $(".screen_people_scroller").css('bottom', 0 );
         $(".screen_people_scroller").width( screenWidth()-
             ( $(".screen_people_scroller").outerWidth( true )-
             $(".screen_people_scroller").width() ) );
-        $(".screen_people_scroller").height( 
+        $(".screen_people_scroller").height(
             $(".display_scrollable_item").outerHeight(true) );
-        
+
         // position and size gradient over scroller
         $('#screen_people_gradient').css( 'z-index', 1 );
         $('#screen_people_gradient').css( 'top',
@@ -224,16 +224,16 @@
             $('.screen_people_scroller').outerHeight( ) );
         $('#screen_people_gradient').width(
             $('.screen_people_scroller').outerWidth( ) );
-        
+
         // figure out a new page size for the scroller
         if( screen_people_scroller != null ){
-            
-            screen_people_scroller.getConf().size = 
+
+            screen_people_scroller.getConf().size =
                 Math.round(
-                    $(".screen_people_scroller").innerWidth() / 
+                    $(".screen_people_scroller").innerWidth() /
                     $(".screen_people_person").outerWidth(true)
                 );
-                
+
             safelog( "screen_people: scroller page size updated to " +
                 screen_people_scroller.getConf().size );
         }
@@ -243,32 +243,32 @@
     // Re-position and re-size only the main tile.
     {
         // calculate the vertical space between the title and scroller tiles
-        var verticalSpace = screenHeight() - 
-            ($(".screen_people_scroller").outerHeight(true) + 
+        var verticalSpace = screenHeight() -
+            ($(".screen_people_scroller").outerHeight(true) +
             $(".screen_people_title").outerHeight(true));
-        
+
         // size the tile with a maximum specified width
         if( {{settings.general.MAX_OPTIMAL_WIDTH}} <= screenWidth() ){
-            
-            $("#screen_people_main").width( 
-                {{settings.general.MAX_OPTIMAL_WIDTH}} 
+
+            $("#screen_people_main").width(
+                {{settings.general.MAX_OPTIMAL_WIDTH}}
             );
-            
+
         } else {
-        
+
             $("#screen_people_main").width(
                 screenWidth() -
                 ($("#screen_people_main").outerWidth(true) -
                 $("#screen_people_main").width())
             );
-        
+
         }
-            
+
         // center the tile
         $("#screen_people_main").css('top', verticalSpace/2 -
-            $("#screen_people_main").outerHeight(true)/2 + 
+            $("#screen_people_main").outerHeight(true)/2 +
             $("#screen_people_title").outerHeight(true)/2 );
-            
+
         $("#screen_people_main").css('left', screenWidth()/2 -
             $("#screen_people_main").outerWidth(true)/2);
     }
@@ -278,76 +278,76 @@
     ///////////////////
 
     function screen_people_startAutoscroll()
-    // Begin autoscrolling. One may stop autoscrolling by using 
+    // Begin autoscrolling. One may stop autoscrolling by using
     // clearTimeout( screen_people_autoscrollTimer ).
-    {           
+    {
         // grab the scroll interval
         var interval = {{settings.screen_people_screen_people.scroll_interval}};
-        
+
         // ensure the interval is at least 50 ms > than the advancement speed
         if({{settings.screen_people_screen_people.scroll_speed}} > interval-50)
             interval={{settings.screen_people_screen_people.scroll_speed}} + 50
-            
+
         // Make sure scoller has been set up
         if( screen_people_scroller != null ){
-            
+
             safelog( "screen_people: autoscrolling" );
-            
+
             // If this is the first auto-advance, select the middle person
             if( screen_people_scroller.getClickIndex() == -1 ){
 
-                screen_people_scroller.click( 
+                screen_people_scroller.click(
                     screen_people_scroller.getConf().size / 2 );
-                
+
             // Otherwise, select the next person
             } else {
-                
+
                 // for selecting a random person for next click
-                var randomIndex = 
+                var randomIndex =
                     Math.floor( Math.random() * screen_people_people.length );
-                
+
                 // for selecting the next person for next click
                 var next = screen_people_scroller.getClickIndex() -
                     screen_people_scroller.getConf().size + 1
-                
+
                 screen_people_scroller.click( next );
             }
-            
+
         } else
             safelog("screen_people: autoscroll failed. Data not yet loaded.");
-        
+
         // auto scroll every specified number of milliseconds
-        screen_people_autoscrollTimer = 
+        screen_people_autoscrollTimer =
             setTimeout('screen_people_startAutoscroll()', interval );
     }
-    
+
     function screen_people_startAutoRotate()
     // Begin auto rotating the main tile. One may stop the auto rotation by
     // using clearTimeout( screen_people_autoRandRotateTimer ).
     {
         safelog( "screen_people: auto rotating." )
-        
+
         // show a random person
         screen_people_showPerson( "/random" );
-        
+
         // auto rotate every specified number of milliseconds
-        screen_people_autoRandRotateTimer = 
-            setTimeout('screen_people_startAutoRotate()', 
+        screen_people_autoRandRotateTimer =
+            setTimeout('screen_people_startAutoRotate()',
                 {{settings.screen_people_screen_people.auto_rotation_interval}});
     }
-    
+
     function screen_people_pauseAutoRotation( timeout )
     // Pause auto rotation for the main tile for a specified number of
     // milliseconds.
     {
         safelog( "screen_people: auto rotation paused for " + timeout + " ms.")
-        
-        // clear the auto rotate timer, and start it up again according to the 
+
+        // clear the auto rotate timer, and start it up again according to the
         // timeout.
         clearTimeout( screen_people_autoRandRotateTimer );
         setTimeout('screen_people_startAutoRotate()', timeout);
     }
-    
+
 
     ////////////////////
     // Initialization //
@@ -363,7 +363,7 @@
             function( peoplePage ){
 
             // for each person encountered...
-            $( peoplePage ).find(".staff-profile").each( 
+            $( peoplePage ).find(".staff-profile").each(
                 function( personIndex ){
 
                 // temp data storage
@@ -396,7 +396,7 @@
                 screen_people_people.push(
                     new screen_people_person( parsedName, parsedTitle,
                         parsedBody, parsedImage ) ) ;
-                
+
                 // associate the person with the index number
                 screen_people_person_index[ parsedName ] = personIndex;
 
@@ -404,7 +404,7 @@
                     screen_people_people[ personIndex ].name );
 
                 // fill up the scroller tile
-                $("#screen_people_items").append( 
+                $("#screen_people_items").append(
                     "<div class='screen_people_person display_scrollable_item "+
                         "display_img_thumb'>"+
                         "<img src='" + screen_people_people[personIndex].image+
@@ -417,48 +417,48 @@
                         "</div>"+
                     "</div>"
                 );
-                
+
             });
 
             // AFTER the data is loaded...
             screen_people_setup_afterDataLoad()
         });
     }
-    
+
     function screen_people_setup_afterDataLoad()
     // Tasks to perform after the data is done loading
     {
         safelog( "screen_people: Data loaded. Performing after-load tasks." );
-        
+
         // find the widest item, and set each tile to its width to provide
         // uniformly-sized scroller items
         var widestItemWidth = 0;
-        
+
         $(".screen_people_person").each( function(i){
             widestItemWidth = Math.max( widestItemWidth, $(this).width() );
             safelog(">>>" + $(this).width() + " " + screen_people_people[i].name);
         });
-        
+
         $(".screen_people_person").each(function(){
             $(this).width( widestItemWidth );
         });
-        
+
         // initialize the scroller plugin
-        screen_people_scroller = 
+        screen_people_scroller =
             $(".screen_people_scroller").scrollable({
                 items:"#screen_people_items",
-            }).circular({ 
+            }).circular({
                 speed:{{settings.screen_people_screen_people.scroll_speed}},
-                api:true 
+                api:true
             });
-        
+
         // force a refresh
         screen_people_refreshTiles();
-        
+
         // display a random person in the main tile
         screen_people_showPerson( "/random" );
     }
-    
+
 </script>
 
 <!-- Title -->
@@ -471,12 +471,12 @@
 
 <!-- Scroller tile -->
 <div class="screen_people_scroller display_tile display_content">
-    
+
     <img id='screen_people_gradient' class='display_gradient'
          src="{{SITE_ROOT}}/static/screen_people/gradient.png">
-    
+
     <div id="screen_people_items" class='display_scrollable_items_horiz'>
         <!-- to be filled by javascript above -->
     </div>
-    
+
 </div>
