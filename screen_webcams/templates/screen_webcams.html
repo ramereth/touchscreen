@@ -2,7 +2,7 @@
     screen_webcams.html
     by Rob McGuire-Dale, 3/7/2009
     last modified by Rob McGuire-Dale, 9/23/2009
-    
+
     This screen displays the current shots of the different webcams around OSU's
     facilities.
 -->
@@ -12,22 +12,22 @@
     // ======================
     //  SCREEN PLUGIN EVENTS
     // ======================
-    //      Functions that are run at particular events in the screen plugin's 
+    //      Functions that are run at particular events in the screen plugin's
     //      life cycle.
-    
+
     function screen_webcams_init() {
         // for this example just output to firebug console
         safelog('screen_webcams: initializing...');
-        
+
         //$("#screen_webcams_main").doubleBoarderedBox();
 
-		// intitialize tile click event handling. NOTE: This section is for 
-		// demonstration purposes only. Eventually, these div manipulations will
-		// be done via the touchscreen interface.
+        // intitialize tile click event handling. NOTE: This section is for
+        // demonstration purposes only. Eventually, these div manipulations will
+        // be done via the touchscreen interface.
         screen_webcams_initTileClickEvents();
-		
-		// make images refresh themselves at the specified interval
-		$(".screen_webcams_img").refreshImage({
+
+        // make images refresh themselves at the specified interval
+        $(".screen_webcams_img").refreshImage({
             interval:
                 {{settings.screen_webcams_screen_webcams.imgRefreshInterval}},
             start:true
@@ -36,32 +36,32 @@
 
     function screen_webcams_start() {
         safelog('screen_webcams: starting...');
-        
+
         // position the thumbnail tiles
-		screen_webcams_positionTiles();
-		
-	    //  initialize the main tile
-	    screen_webcams_displayToMainTile( 
-	        "{{settings.screen_webcams_screen_webcams.title_mu}}",
-	        "{{settings.screen_webcams_screen_webcams.imgAddr_mu}}"
-	    );
+        screen_webcams_positionTiles();
+
+        //  initialize the main tile
+        screen_webcams_displayToMainTile(
+            "{{settings.screen_webcams_screen_webcams.title_mu}}",
+            "{{settings.screen_webcams_screen_webcams.imgAddr_mu}}"
+        );
     }
-    
+
     function screen_webcams_stop() {
         safelog('screen_webcams: stopping...');
     }
-    
+
     function screen_webcams_onWinResize() {
-        safelog('screen_webcams: window was resized');      
-            
+        safelog('screen_webcams: window was resized');
+
             // position the thumbnail tiles
-		    screen_webcams_positionTiles();
-		
-	        //  initialize the main tile
-	        screen_webcams_displayToMainTile( 
-	            "{{settings.screen_webcams_screen_webcams.title_mu}}",
-	            "{{settings.screen_webcams_screen_webcams.imgAddr_mu}}"
-	        );
+            screen_webcams_positionTiles();
+
+            //  initialize the main tile
+            screen_webcams_displayToMainTile(
+                "{{settings.screen_webcams_screen_webcams.title_mu}}",
+                "{{settings.screen_webcams_screen_webcams.imgAddr_mu}}"
+            );
     }
 
     // ==============
@@ -70,166 +70,166 @@
     //      Functions that initialize elements of the the screen plugin.
 
     function screen_webcams_positionTiles(){
-        
+
         // calculate the padding between the tiles to evently distribute them
         // across the screen
         var tilePadding_horiz = (
-            screenWidth() - 
+            screenWidth() -
             $("#screen_webcams_monroe").outerWidth(true) -
             $("#screen_webcams_reser").outerWidth(true) -
             $("#screen_webcams_mu").outerWidth(true) -
             $("#screen_webcams_library").outerWidth(true) -
             $("#screen_webcams_gloss").outerWidth(true) -
             $("#screen_webcams_wave").outerWidth(true) )/5;
-        
+
         // top row
         $("#screen_webcams_reser").css('left',
-            $("#screen_webcams_monroe").outerWidth(true) + 
-            tilePadding_horiz );                                        
+            $("#screen_webcams_monroe").outerWidth(true) +
+            tilePadding_horiz );
 
-        $("#screen_webcams_mu").css('left', 
-            $("#screen_webcams_monroe").outerWidth(true) + 
-            $("#screen_webcams_reser").outerWidth(true) + 
-            tilePadding_horiz * 2 );                                        
+        $("#screen_webcams_mu").css('left',
+            $("#screen_webcams_monroe").outerWidth(true) +
+            $("#screen_webcams_reser").outerWidth(true) +
+            tilePadding_horiz * 2 );
 
-        $("#screen_webcams_library").css('left', 
-            $("#screen_webcams_monroe").outerWidth(true) + 
-            $("#screen_webcams_reser").outerWidth(true) + 
-            $("#screen_webcams_mu").outerWidth(true) + 
-            tilePadding_horiz * 3 );                                        
-        
-        $("#screen_webcams_gloss").css('left', 
-            $("#screen_webcams_monroe").outerWidth(true) + 
-            $("#screen_webcams_reser").outerWidth(true) + 
-            $("#screen_webcams_mu").outerWidth(true) + 
-            $("#screen_webcams_library").outerWidth(true) + 
+        $("#screen_webcams_library").css('left',
+            $("#screen_webcams_monroe").outerWidth(true) +
+            $("#screen_webcams_reser").outerWidth(true) +
+            $("#screen_webcams_mu").outerWidth(true) +
+            tilePadding_horiz * 3 );
+
+        $("#screen_webcams_gloss").css('left',
+            $("#screen_webcams_monroe").outerWidth(true) +
+            $("#screen_webcams_reser").outerWidth(true) +
+            $("#screen_webcams_mu").outerWidth(true) +
+            $("#screen_webcams_library").outerWidth(true) +
             tilePadding_horiz * 4 );
-        
-        $("#screen_webcams_wave").css('left', 
-            $("#screen_webcams_monroe").outerWidth(true) + 
-            $("#screen_webcams_reser").outerWidth(true) + 
-            $("#screen_webcams_mu").outerWidth(true) + 
-            $("#screen_webcams_library").outerWidth(true) + 
-            $("#screen_webcams_gloss").outerWidth(true) + 
-            tilePadding_horiz * 5 );                                        
+
+        $("#screen_webcams_wave").css('left',
+            $("#screen_webcams_monroe").outerWidth(true) +
+            $("#screen_webcams_reser").outerWidth(true) +
+            $("#screen_webcams_mu").outerWidth(true) +
+            $("#screen_webcams_library").outerWidth(true) +
+            $("#screen_webcams_gloss").outerWidth(true) +
+            tilePadding_horiz * 5 );
 
         // bottom row
-        $("#screen_webcams_south").css('bottom', 0 );                                      
-        
+        $("#screen_webcams_south").css('bottom', 0 );
+
         $("#screen_webcams_gill").css('bottom', 0 );
-        $("#screen_webcams_gill").css('left', 
-            $("#screen_webcams_south").outerWidth(true) + 
-            tilePadding_horiz );                                        
-        
+        $("#screen_webcams_gill").css('left',
+            $("#screen_webcams_south").outerWidth(true) +
+            tilePadding_horiz );
+
         $("#screen_webcams_andrews").css('bottom', 0 );
-        $("#screen_webcams_andrews").css('left', 
-            $("#screen_webcams_south").outerWidth(true) + 
-            $("#screen_webcams_gill").outerWidth(true) + 
-            tilePadding_horiz * 2 );                                        
-        
+        $("#screen_webcams_andrews").css('left',
+            $("#screen_webcams_south").outerWidth(true) +
+            $("#screen_webcams_gill").outerWidth(true) +
+            tilePadding_horiz * 2 );
+
         $("#screen_webcams_hatfield").css('bottom', 0 );
-        $("#screen_webcams_hatfield").css('left', 
-            $("#screen_webcams_south").outerWidth(true) + 
-            $("#screen_webcams_gill").outerWidth(true) + 
-            $("#screen_webcams_andrews").outerWidth(true) + 
-            tilePadding_horiz * 3 );                                        
-        
+        $("#screen_webcams_hatfield").css('left',
+            $("#screen_webcams_south").outerWidth(true) +
+            $("#screen_webcams_gill").outerWidth(true) +
+            $("#screen_webcams_andrews").outerWidth(true) +
+            tilePadding_horiz * 3 );
+
         $("#screen_webcams_agate").css('bottom', 0 );
-        $("#screen_webcams_agate").css('left', 
-            $("#screen_webcams_south").outerWidth(true) + 
-            $("#screen_webcams_gill").outerWidth(true) + 
-            $("#screen_webcams_andrews").outerWidth(true) + 
-            $("#screen_webcams_hatfield").outerWidth(true) + 
+        $("#screen_webcams_agate").css('left',
+            $("#screen_webcams_south").outerWidth(true) +
+            $("#screen_webcams_gill").outerWidth(true) +
+            $("#screen_webcams_andrews").outerWidth(true) +
+            $("#screen_webcams_hatfield").outerWidth(true) +
             tilePadding_horiz * 4 );
-        
+
         $("#screen_webcams_wecoma").css('bottom', 0 );
-        $("#screen_webcams_wecoma").css('left', 
-            $("#screen_webcams_south").outerWidth(true) + 
-            $("#screen_webcams_gill").outerWidth(true) + 
-            $("#screen_webcams_andrews").outerWidth(true) + 
-            $("#screen_webcams_hatfield").outerWidth(true) + 
-            $("#screen_webcams_agate").outerWidth(true) + 
+        $("#screen_webcams_wecoma").css('left',
+            $("#screen_webcams_south").outerWidth(true) +
+            $("#screen_webcams_gill").outerWidth(true) +
+            $("#screen_webcams_andrews").outerWidth(true) +
+            $("#screen_webcams_hatfield").outerWidth(true) +
+            $("#screen_webcams_agate").outerWidth(true) +
             tilePadding_horiz * 5 );
 
     }
-    
+
     function screen_webcams_initTileClickEvents() {
-    	// click event handling (NOTE: This section is for demonstration 
-		// purposes only. Eventually, these tile manipulations will be done via 
-		// the touchscreen interface.
-		
-		$("#screen_webcams_monroe").click(function(){ 
-		    screen_webcams_displayToMainTile( 
-		        "{{settings.screen_webcams_screen_webcams.title_monroe}}",
-		        "{{settings.screen_webcams_screen_webcams.imgAddr_monroe}}" 
-		    );
-		});
-		$("#screen_webcams_reser").click(function(){ 
-		    screen_webcams_displayToMainTile( 
-		        "{{settings.screen_webcams_screen_webcams.title_reser}}", 
-		        "{{settings.screen_webcams_screen_webcams.imgAddr_reser}}"
-		    );
-		});
-		$("#screen_webcams_mu").click(function(){ 
-		    screen_webcams_displayToMainTile( 
-		        "{{settings.screen_webcams_screen_webcams.title_mu}}", 
-		        "{{settings.screen_webcams_screen_webcams.imgAddr_mu}}"
-		    );
-		});
-		$("#screen_webcams_library").click(function(){ 
-		    screen_webcams_displayToMainTile( 
-		        "{{settings.screen_webcams_screen_webcams.title_library}}",
-		        "{{settings.screen_webcams_screen_webcams.imgAddr_library}}"
-		    );
-		});
-		$("#screen_webcams_gloss").click(function(){ 
-		    screen_webcams_displayToMainTile( 
-		        "{{settings.screen_webcams_screen_webcams.title_gloss}}", 
-		        "{{settings.screen_webcams_screen_webcams.imgAddr_gloss}}"
-		    );
-		});
-		$("#screen_webcams_wave").click(function(){ 
-		    screen_webcams_displayToMainTile( 
-		        "{{settings.screen_webcams_screen_webcams.title_wave}}",
-		        "{{settings.screen_webcams_screen_webcams.imgAddr_wave}}"
-		    );
-		});
-		$("#screen_webcams_hatfield").click(function(){ 
-		    screen_webcams_displayToMainTile( 
-		        "{{settings.screen_webcams_screen_webcams.title_hatfield}}",
-		        "{{settings.screen_webcams_screen_webcams.imgAddr_hatfield}}"
-		    );
-		});
-		$("#screen_webcams_agate").click(function(){ 
-		    screen_webcams_displayToMainTile( 
-		        "{{settings.screen_webcams_screen_webcams.title_agate}}",
-		        "{{settings.screen_webcams_screen_webcams.imgAddr_agate}}"
-		    );
-		});
-		$("#screen_webcams_wecoma").click(function(){ 
-		    screen_webcams_displayToMainTile( 
-		        "{{settings.screen_webcams_screen_webcams.title_wecoma}}",
-		        "{{settings.screen_webcams_screen_webcams.imgAddr_wecoma}}"
-		    );
-		});
-		$("#screen_webcams_south").click(function(){ 
-		    screen_webcams_displayToMainTile( 
-		        "{{settings.screen_webcams_screen_webcams.title_south}}",
-		        "{{settings.screen_webcams_screen_webcams.imgAddr_south}}"
-		    );
-		});
-		$("#screen_webcams_gill").click(function(){ 
-		    screen_webcams_displayToMainTile( 
-		        "{{settings.screen_webcams_screen_webcams.title_gill}}",
-		        "{{settings.screen_webcams_screen_webcams.imgAddr_gill}}"
-		    );
-		});
-		$("#screen_webcams_andrews").click(function(){ 
-		    screen_webcams_displayToMainTile( 
-		        "{{settings.screen_webcams_screen_webcams.title_andrews}}",
-		        "{{settings.screen_webcams_screen_webcams.imgAddr_andrews}}"
-		    );
-		});
+        // click event handling (NOTE: This section is for demonstration
+        // purposes only. Eventually, these tile manipulations will be done via
+        // the touchscreen interface.
+
+        $("#screen_webcams_monroe").click(function(){
+            screen_webcams_displayToMainTile(
+                "{{settings.screen_webcams_screen_webcams.title_monroe}}",
+                "{{settings.screen_webcams_screen_webcams.imgAddr_monroe}}"
+            );
+        });
+        $("#screen_webcams_reser").click(function(){
+            screen_webcams_displayToMainTile(
+                "{{settings.screen_webcams_screen_webcams.title_reser}}",
+                "{{settings.screen_webcams_screen_webcams.imgAddr_reser}}"
+            );
+        });
+        $("#screen_webcams_mu").click(function(){
+            screen_webcams_displayToMainTile(
+                "{{settings.screen_webcams_screen_webcams.title_mu}}",
+                "{{settings.screen_webcams_screen_webcams.imgAddr_mu}}"
+            );
+        });
+        $("#screen_webcams_library").click(function(){
+            screen_webcams_displayToMainTile(
+                "{{settings.screen_webcams_screen_webcams.title_library}}",
+                "{{settings.screen_webcams_screen_webcams.imgAddr_library}}"
+            );
+        });
+        $("#screen_webcams_gloss").click(function(){
+            screen_webcams_displayToMainTile(
+                "{{settings.screen_webcams_screen_webcams.title_gloss}}",
+                "{{settings.screen_webcams_screen_webcams.imgAddr_gloss}}"
+            );
+        });
+        $("#screen_webcams_wave").click(function(){
+            screen_webcams_displayToMainTile(
+                "{{settings.screen_webcams_screen_webcams.title_wave}}",
+                "{{settings.screen_webcams_screen_webcams.imgAddr_wave}}"
+            );
+        });
+        $("#screen_webcams_hatfield").click(function(){
+            screen_webcams_displayToMainTile(
+                "{{settings.screen_webcams_screen_webcams.title_hatfield}}",
+                "{{settings.screen_webcams_screen_webcams.imgAddr_hatfield}}"
+            );
+        });
+        $("#screen_webcams_agate").click(function(){
+            screen_webcams_displayToMainTile(
+                "{{settings.screen_webcams_screen_webcams.title_agate}}",
+                "{{settings.screen_webcams_screen_webcams.imgAddr_agate}}"
+            );
+        });
+        $("#screen_webcams_wecoma").click(function(){
+            screen_webcams_displayToMainTile(
+                "{{settings.screen_webcams_screen_webcams.title_wecoma}}",
+                "{{settings.screen_webcams_screen_webcams.imgAddr_wecoma}}"
+            );
+        });
+        $("#screen_webcams_south").click(function(){
+            screen_webcams_displayToMainTile(
+                "{{settings.screen_webcams_screen_webcams.title_south}}",
+                "{{settings.screen_webcams_screen_webcams.imgAddr_south}}"
+            );
+        });
+        $("#screen_webcams_gill").click(function(){
+            screen_webcams_displayToMainTile(
+                "{{settings.screen_webcams_screen_webcams.title_gill}}",
+                "{{settings.screen_webcams_screen_webcams.imgAddr_gill}}"
+            );
+        });
+        $("#screen_webcams_andrews").click(function(){
+            screen_webcams_displayToMainTile(
+                "{{settings.screen_webcams_screen_webcams.title_andrews}}",
+                "{{settings.screen_webcams_screen_webcams.imgAddr_andrews}}"
+            );
+        });
     }
 
     // ==============
@@ -237,58 +237,47 @@
     // ==============
     //      Functions responsible for manipulating the tiles
 
-    // Display an image at the specified address with the specified title in the 
-	// main tile   
-	function screen_webcams_displayToMainTile( title, addr ){
-                               
+    // Display an image at the specified address with the specified title in the
+    // main tile
+    function screen_webcams_displayToMainTile( title, addr ){
+
         // fade out the main tile
-		$("#screen_webcams_main").fadeOut(function(){
-		
-		    // fill the main tile with the title and the picture of the
-		    // specified webcam shot
-			$("#screen_webcams_title_main").html( title );
+        $("#screen_webcams_main").fadeOut(function(){
+
+            // fill the main tile with the title and the picture of the
+            // specified webcam shot
+            $("#screen_webcams_title_main").html( title );
             $("#screen_webcams_img_main").attr( 'src', addr );
-            $("#screen_webcams_img_main").height( 
-                {{settings.screen_webcams_screen_webcams.mainTile_height}} 
+            $("#screen_webcams_img_main").height(
+                {{settings.screen_webcams_screen_webcams.mainTile_height}}
             );
-            
+
             // set max height and width
-            $("#screen_webcams_img_main").attr( 'max-height', 
+            $("#screen_webcams_img_main").attr( 'max-height',
                 '{{settings.screen_webcams_screen_webcams.mainTile_height}}' );
-            $("#screen_webcams_img_main").attr( 'max-width', 
+            $("#screen_webcams_img_main").attr( 'max-width',
                 '{{settings.screen_webcams_screen_webcams.mainTile_width}}' );
 
             // place the tile in the middle of the screen
-            $("#screen_webcams_main").css('top', screenHeight()/2 - 
+            $("#screen_webcams_main").css('top', screenHeight()/2 -
                 $("#screen_webcams_main").outerHeight(true)/2);
-            $("#screen_webcams_main").css('left', screenWidth()/2 - 
+            $("#screen_webcams_main").css('left', screenWidth()/2 -
                 $("#screen_webcams_main").outerWidth(true)/2);
-		});
-		
-		// fade the main tile back in
-		$("#screen_webcams_main").fadeIn("slow");
-	}
-	
+        });
+
+        // fade the main tile back in
+        $("#screen_webcams_main").fadeIn("slow");
+    }
+
 </script>
 
 <!-- set up HTML divs for each tile ------------------------------------------->
-<div id="screen_webcams_main" class="display_img display_tile ">
-
-    <div id="screen_webcams_title_main" class="display_img_caption">
-        {{settings.screen_webcams_screen_webcams.title_mu}}
-    </div>
-    
-    <img id="screen_webcams_img_main" class="screen_webcams_img " 
-        src="{{settings.screen_webcams_screen_webcams.imgAddr_mu}}">
-
-</div>
-
 <div id="screen_webcams_mu" class="display_img_thumb display_tile ">
 
     <div class="display_img_thumb_caption">
         {{settings.screen_webcams_screen_webcams.title_mu}}
     </div>
-    
+
     <img id="screen_webcams_img_mu" class="screen_webcams_img"
         src="{{settings.screen_webcams_screen_webcams.imgAddr_mu}}"
         height={{settings.screen_webcams_screen_webcams.thumbnail_height}}
@@ -301,7 +290,7 @@
     <div class="display_img_thumb_caption">
         {{settings.screen_webcams_screen_webcams.title_library}}
     </div>
-    
+
     <img id="screen_webcams_img_library" class="screen_webcams_img"
         src="{{settings.screen_webcams_screen_webcams.imgAddr_library}}"
         height={{settings.screen_webcams_screen_webcams.thumbnail_height}}
@@ -314,7 +303,7 @@
     <div class="display_img_thumb_caption">
         {{settings.screen_webcams_screen_webcams.title_monroe}}
     </div>
-    
+
     <img id="screen_webcams_img_monroe" class="screen_webcams_img"
         src="{{settings.screen_webcams_screen_webcams.imgAddr_monroe}}"
         height={{settings.screen_webcams_screen_webcams.thumbnail_height}}
@@ -327,7 +316,7 @@
     <div class="display_img_thumb_caption">
         {{settings.screen_webcams_screen_webcams.title_south}}
     </div>
-    
+
     <img id="screen_webcams_img_south" class="screen_webcams_img"
         src="{{settings.screen_webcams_screen_webcams.imgAddr_south}}"
         height={{settings.screen_webcams_screen_webcams.thumbnail_height}}
@@ -340,7 +329,7 @@
     <div class="display_img_thumb_caption">
         {{settings.screen_webcams_screen_webcams.title_reser}}
     </div>
-    
+
     <img id="screen_webcams_img_reser" class="screen_webcams_img"
         src="{{settings.screen_webcams_screen_webcams.imgAddr_reser}}"
         height={{settings.screen_webcams_screen_webcams.thumbnail_height}}
@@ -353,7 +342,7 @@
     <div class="display_img_thumb_caption">
         {{settings.screen_webcams_screen_webcams.title_gloss}}
     </div>
-    
+
     <img id="screen_webcams_img_gloss" class="screen_webcams_img"
         src="{{settings.screen_webcams_screen_webcams.imgAddr_gloss}}"
         height={{settings.screen_webcams_screen_webcams.thumbnail_height}}
@@ -366,7 +355,7 @@
     <div class="display_img_thumb_caption">
         {{settings.screen_webcams_screen_webcams.title_gill}}
     </div>
-    
+
     <img id="screen_webcams_img_gill" class="screen_webcams_img"
         src="{{settings.screen_webcams_screen_webcams.imgAddr_gill}}"
         height={{settings.screen_webcams_screen_webcams.thumbnail_height}}
@@ -379,7 +368,7 @@
     <div class="display_img_thumb_caption">
         {{settings.screen_webcams_screen_webcams.title_andrews}}
     </div>
-    
+
     <img id="screen_webcams_img_andrews" class="screen_webcams_img"
         src="{{settings.screen_webcams_screen_webcams.imgAddr_andrews}}"
         height={{settings.screen_webcams_screen_webcams.thumbnail_height}}
@@ -392,7 +381,7 @@
     <div class="display_img_thumb_caption">
         {{settings.screen_webcams_screen_webcams.title_hatfield}}
     </div>
-    
+
     <img id="screen_webcams_img_hatfield" class="screen_webcams_img"
         src="{{settings.screen_webcams_screen_webcams.imgAddr_hatfield}}"
         height={{settings.screen_webcams_screen_webcams.thumbnail_height}}
@@ -405,7 +394,7 @@
     <div class="display_img_thumb_caption">
         {{settings.screen_webcams_screen_webcams.title_wave}}
     </div>
-    
+
     <img id="screen_webcams_img_wave" class="screen_webcams_img"
         src=  "{{settings.screen_webcams_screen_webcams.imgAddr_wave}}"
         height={{settings.screen_webcams_screen_webcams.thumbnail_height}}
@@ -418,12 +407,12 @@
     <div class="display_img_thumb_caption">
         {{settings.screen_webcams_screen_webcams.title_wecoma}}
     </div>
-    
+
     <img id="screen_webcams_img_wecoma" class="screen_webcams_img"
         src="{{settings.screen_webcams_screen_webcams.imgAddr_wecoma}}"
         height={{settings.screen_webcams_screen_webcams.thumbnail_height}}
         width={{settings.screen_webcams_screen_webcams.thumbnail_width}}>
-        
+
 </div>
 
 <div id="screen_webcams_agate" class="display_img_thumb display_tile ">
@@ -431,10 +420,21 @@
     <div class="display_img_thumb_caption">
         {{settings.screen_webcams_screen_webcams.title_agate}}
     </div>
-     
+
     <img id="screen_webcams_img_agate" class="screen_webcams_img"
         src="{{settings.screen_webcams_screen_webcams.imgAddr_agate}}"
         height={{settings.screen_webcams_screen_webcams.thumbnail_height}}
         width={{settings.screen_webcams_screen_webcams.thumbnail_width}}>
-        
+
+</div>
+
+<div id="screen_webcams_main" class="display_img display_tile ">
+
+    <div id="screen_webcams_title_main" class="display_img_caption">
+        {{settings.screen_webcams_screen_webcams.title_mu}}
+    </div>
+
+    <img id="screen_webcams_img_main" class="screen_webcams_img "
+        src="{{settings.screen_webcams_screen_webcams.imgAddr_mu}}">
+
 </div>

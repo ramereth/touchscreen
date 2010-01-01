@@ -83,10 +83,13 @@
             var start_timer = 0;
             var winResizeEventPointer = null; // for saving/restoring the win.resize pointer
 
-            function show_slide(screen) {
+            function show_slide(screen) 
+            {
                 if (slideshow_screen_index != current_screen_index) {
+                    
                     // hide slide if one is shown
                     if (current_screen_index != -1){
+                        
                         current_screen = screens[current_screen_index];
                         safelog('hiding: ' + current_screen['id']);
                         hider = eval(hiders[current_screen['hide']]);
@@ -95,7 +98,8 @@
                         //restore the window.resize event pointer to what it was
                         //before the screen was shown and hide the screen
                         window.onresize = winResizeEventPointer;
-                        safelog( "core: window.resize pointer restored to " + window.resize );
+                        safelog( "core: window.resize pointer restored to " + 
+                            window.resize );
                         eval(current_screen['stop']);
 
                     } else {
@@ -105,25 +109,31 @@
 
                     current_screen_index = slideshow_screen_index;
 
-                    if(!hidetime) {
-                        hidetime = 999
-                    }
+                    if( !hidetime ) hidetime = 999;
 
                     //clear past timer in case next/prev was clicked repeatedly
-                    if (show_timer) { clearTimeout(show_timer)};
-                    if (start_timer) { clearTimeout(start_timer)};
+                    if( show_timer ) { clearTimeout(show_timer)};
+                    if( start_timer ) { clearTimeout(start_timer)};
 
                     //save the window.resize event pointer and call onWinResize
                     //event for the current screen
+                    
                     winResizeEventPointer = window.onresize;
+                    
                     window.onresize = function(){
-                        eval(screens[current_screen_index]['onWinResize']);
+                        eval( screens[current_screen_index]['onWinResize'] );
                     }
-                    safelog( "core: window.resize changed from " + winResizeEventPointer + " to " + window.onresize );
+                    
+                    safelog( "core: window.resize changed from " + 
+                        winResizeEventPointer + " to " + window.onresize );
 
                     show = showers[screen['show']];
+                    
                     safelog('core: showing ' + screen['id']);
-                    show_timer = setTimeout( "show_slide_animation_wrapper('"+show+"(screens[current_screen_index])',"+ current_screen_index +")", hidetime);
+                    
+                    show_timer = setTimeout( "show_slide_animation_wrapper('" + 
+                        show+"(screens[current_screen_index])'," + 
+                        current_screen_index +")", hidetime);
                 }
             }
 
@@ -158,7 +168,8 @@
                 //set next transition to duration of current slide
                 safelog('core: next screen in ' +
                     parseInt(screen['duration'])/1000 + " seconds");
-                slide_show_timer = setTimeout(slide_show_loop, screen['duration']);
+                slide_show_timer = 
+                    setTimeout(slide_show_loop, screen['duration']);
             }
 
             // pauses the slideshow
@@ -368,14 +379,15 @@
             }
 
             // on load handler.
-            $(document).ready(function() {
+            $(document).ready(function() 
+            {
                 safelog("core: Initializing Display");
                 hide_all();
                 init_all();
                 slide_show_start();
                 get_message();
 
-                //SLIDESHOW BUTTONS FOR DEBUGGING
+                // Debug window controls
                 $('.debug_buttons').hover(
                     function(){$(this).addClass("ui-state-hover");},
                     function(){$(this).removeClass("ui-state-hover");}
@@ -413,7 +425,6 @@
 
                 //make debug window draggable
                 $('#debug_window').draggable();
-
             });
 
         </script>
@@ -424,15 +435,22 @@
             <!-- debug window -->
             <table id='debug_window' class='ui-widget ui-corner-all'>
                 <tr>
+                
+                    <!-- debug title -->
                     <td colspan="4" class="debug_button-cells">
                         <b>debug</b>
                     </td>
+                    
+                    <!-- debug window close button -->
                     <td class="debug_button-cells">
                         <span id="debug_close" 
                             class="debug_buttons ui-icon ui-icon-close">
                         </span>
                     </td>
+                    
                 </tr>
+                
+                <!-- slide show control buttons -->
                 <tr>
                     <td class="debug_button-cells">
                         <span id="debug_play" 
@@ -460,6 +478,8 @@
                         </span>
                     </td>
                 </tr>
+                
+                <!-- bindable debug function buttons -->
                 <tr>
                     <td class="debug_button-cells">
                         <span id="debug_f1" class="debug_buttons">F1</span></td>
