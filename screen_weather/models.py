@@ -9,7 +9,7 @@ class screen_weatherSettings( dbsettings.Group ):
     feed_URL = dbsettings.StringValue(
         'Weather Feed URL', 
         'URL of the weather feed', 
-        default='http://www.google.com'
+        default='http://xoap.weather.com/weather/local/USOR0076?cc=*&dayf=5&prod=xoap&par=1003666583&key=4128909340a9b2fc'
     )
 
     refresh_interval = dbsettings.IntegerValue(
