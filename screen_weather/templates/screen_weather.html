@@ -1,0 +1,58 @@
+<!--
+    screen_weather.html
+    by Rob McGuire-Dale, 12/31/2009
+
+    This screen displays the current weather, and a 5-day forcast
+-->
+
+<script type="text/javascript">
+
+    /////////////////
+    // Global Data //
+    /////////////////
+
+    
+
+    ///////////////////
+    // Screen Events //
+    ///////////////////
+
+    function screen_weather_init()
+    {
+        safelog('screen_weather: initializing...');
+    }
+
+    function screen_weather_start()
+    {
+        safelog('screen_weather: starting...');
+    }
+
+    function screen_weather_stop()
+    {
+        safelog('screen_weather: stopping');
+    }
+
+    function screen_weather_onScreenResize()
+    {
+        safelog('screen_weather: window resized to ' + screenWidth() + "x" +
+            screenHeight());
+    }
+    
+</script>
+
+<!-- Current Weather Tile -->
+<div id="screen_weather_current" class="display_tile display_content">
+    <h1>Current Weather Placeholder</h1>
+</div>
+
+<!-- Maps Tile -->
+<div id="screen_weather_maps" class="display_tile display_content">
+    <h1>Maps Placeholder</h1>
+</div>
+
+<!-- 5-Day Forecast Tile -->
+<div id="screen_weather_forecast" 
+    class="display_tile display_content">
+    
+    <h1>5-Day Forecast Placeholder</h1>
+</div>
