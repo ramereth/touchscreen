@@ -1,226 +1,131 @@
 <!--
     screen_osl_about.html
     by Rob McGuire-Dale, 3/7/2009
-    last modified by Rob McGuire-Dale, 9/23/2009
+    last modified by Rob McGuire-Dale, 12/31/2009
     
     This screen displays infomation about the Open Source Lab.
-
-    Note: This document is heavily commented b/c it is used in the touchscreen
-    tutorial (http://trac.osuosl.org/trac/touchscreen/wiki/plugins/screens)
 -->
 
-<!-- tile position, size, and animation javascript code ----------------------->
+<style>
+    #screen_osl_about_edRayImg{
+        float:right;
+        margin:1em;
+    }
+</style>
+
 <script type="text/javascript">
 
-    // ======================
-    //  SCREEN PLUGIN EVENTS
-    // ======================
-    //      Functions that are run at particular events in the screen plugin's 
-    //      life cycle.
+    ////////////
+    // Events //
+    ////////////
     
-    // This function runs when this plugin initializes 
-    function screen_osl_about_init() {
-
-        // output some debug info to the firebug console
+    function screen_osl_about_init()
+    {
         safelog('screen_osl_about: initializing...');
 
-        //initialize the tiles
-        screen_osl_about_positionTiles();
+        screen_osl_about_refreshTiles();
     }
 
-    // called when this plugin begins showing itself
-    function screen_osl_about_start() {
-
-        // output some debug info to the firebug console
+    function screen_osl_about_start()
+    {
         safelog('screen_osl_about: starting...');
-
-        // slowly show the tiles after a short delay (so the tiles don't animate 
-        // off-screen)
-        var delay = 500;
-        setTimeout("$('#screen_osl_about_left').show('slow')", delay );
-        setTimeout("$('#screen_osl_about_rightTop').show('slow')", delay );
-        setTimeout("$('#screen_osl_about_rightBottom').show('slow')", delay );
         
-        screen_osl_about_positionTiles();
+        screen_osl_about_refreshTiles();
     }
 
     // called when this plugin begins hiding itself
-    function screen_osl_about_stop() {
-
+    function screen_osl_about_stop()
+    {
         // output some debug info to the firebug console
         safelog('screen_webcams: stopping...');
-
-        // slowly hide the tiles as they slide off-screen
-        $("#screen_osl_about_left").hide("slow");
-        $("#screen_osl_about_rightTop").hide("slow");
-        $("#screen_osl_about_rightBottom").hide("slow");
     }
     
-    function screen_osl_about_onWinResize() {
+    function screen_osl_about_onWinResize()
+    {
         safelog("screen_webcams: window was resized");
         
         screen_osl_about_positionTiles();
     }
     
-    // ==============
-    //  INITIALIZERS
-    // ==============
-    //      Functions that initialize elements of the the screen plugin.
     
-    function screen_osl_about_positionTiles() {
+    //////////////////
+    // Facilitators //
+    //////////////////
+    
+    function screen_osl_about_refreshTiles() {
 
-        // position and size the left tile
-        $("#screen_osl_about_left").width( screenWidth() -
-            $('#screen_osl_about_rightTop').outerWidth(true) -
-            ( $("#screen_osl_about_left").outerWidth(true) - 
-            $("#screen_osl_about_left").width() ) );
-        $("#screen_osl_about_left").height( 
-            $("#screen_osl_about_rightBottom").outerHeight(true) +
-            $("#screen_osl_about_rightTop").outerHeight(true) - 
-            ($("#screen_osl_about_left").outerHeight(true) - 
-            $("#screen_osl_about_left").height()) );
-        $("#screen_osl_about_left").css('top', screenHeight()/2 -
-            $("#screen_osl_about_left").outerHeight(true)/2 );
+        // if the optimal reading with fits inside the screen size
+        if( {{settings.general.MAX_OPTIMAL_WIDTH}} <= screenWidth() ){
 
-        // position the right-top tile
-        $("#screen_osl_about_rightTop").css('right', 0 );
-        $("#screen_osl_about_rightTop").css('top',  
-            $("#screen_osl_about_left").css('top') ); 
-              
-        // position and size the right-bottom tile
-        $("#screen_osl_about_rightBottom").css('top', 
-            parseInt($("#screen_osl_about_left").css('top')) +
-            $('#screen_osl_about_rightTop').outerHeight(true));
-        $("#screen_osl_about_rightBottom").css('right', 0);
-        $("#screen_osl_about_rightBottom").width( 
-            $("#screen_osl_about_rightTop").outerWidth(true) -
-            ($("#screen_osl_about_rightBottom").outerWidth(true) -
-            $("#screen_osl_about_rightBottom").width()));
+            // size the tiles to global optimal reading width
+            $("#screen_osl_about_title").width(
+                {{settings.general.MAX_OPTIMAL_WIDTH}} -
+                ($("#screen_osl_about_title").outerWidth(true) -
+                $("#screen_osl_about_title").width())
+            );
+            
+            $("#screen_osl_about_body").width(
+                {{settings.general.MAX_OPTIMAL_WIDTH}} -
+                ($("#screen_osl_about_body").outerWidth(true) -
+                $("#screen_osl_about_body").width())
+            );
+            
+            // horizontally center the tiles
+            $("#screen_osl_about_title").css('left', screenWidth()/2 - 
+                $("#screen_osl_about_title").outerWidth(true)/2 );
+            
+            $("#screen_osl_about_body").css('left', screenWidth()/2 - 
+                $("#screen_osl_about_body").outerWidth(true)/2 );
+
+        // squeeze the tiles
+        } else {
+
+            $("#screen_osl_about_title").width(
+                screenWidth() -
+                ($("#screen_osl_about_title").outerWidth(true) -
+                $("#screen_osl_about_title").width())
+            );
+            
+            $("#screen_osl_about_body").width(
+                screenWidth() -
+                ($("#screen_osl_about_body").outerWidth(true) -
+                $("#screen_osl_about_body").width())
+            );
+        }
+        
+        // Horizontally position the body tile so it's exactly in-between the 
+        // bottom of the title, and the bottom of the screen
+        $("#screen_osl_about_body").css('top', 
+            (screenHeight()-$("#screen_osl_about_title").outerHeight(true))/2 - 
+            ($("#screen_osl_about_body").outerHeight(true))/2 +
+            $("#screen_osl_about_title").outerHeight(true)-
+            ($("#screen_osl_about_title").outerHeight(true)-
+            $("#screen_osl_about_title").outerHeight())/4);
+        
 
     }
 </script>
 
-<!-- set up html divs for each tile ------------------------------------------->
-<div id="screen_osl_about_left" class="display_content display_tile">
-    <h1>What is the Open Source Lab?</h1>
-    <p>
-    The Oregon State University Open Source Lab is a global, world-class 
-    facility and data center for Open Source Software (OSS) knowledge, 
-    hosting, infrastructure, development, and collaboration. The Open 
-    Source Lab fosters the development of unique OSS products, as well as 
-    directly assists in the development, implementation, and use of 
-    targeted OSS solutions for use in education, research, government, and 
-    business. By working closely with the OSU community, other 
-    universities, governments, and private sector business, the OSU Open 
-    Source Lab is quickly becoming a critical worldwide center for services 
-    related to open source software.
-    </p>
-    <h1>Why the Open Source Lab?</h1>
-    <p>
-    Our goal is to help promote collaboration through the nurturing and 
-    development of software projects across like-minded institutions. Our 
-    experience and world-class infrastructure helps seed development 
-    efforts across these communities, which enables them to move forward 
-    with investments in open source software that leverage open standards. 
-    The more people we can have working together, the more value we can 
-    help the world realize.
-    </p>
-
-    <p>
-    The core mission of the OSU Open Source Lab can be summed up with the 
-    following:
-    
-    <ul>
-        <li>
-        Create an atmosphere of innovation for 
-        students, faculty and staff by providing an open, diverse 
-        environment for development and collaboration.
-        </li>
-
-        <li>
-        Collaborate with public and private 
-        institutions to better understand and develop open source software.
-        </li>
-
-        <li>
-        Bolster the return on investment to the 
-        State and local economy by helping promote and build tools and 
-        products that our constituents can use.
-        </li>
-    </ul>
-    
-    </p>
-
-    <p>
-    Open source projects today are held together by shoe string budgets and 
-    questionable infrastructure. Innovation needs a solid foundation to 
-    grow upon and the OSL brings that in the form of development 
-    experience, world-class infrastructure, and the willingness to always 
-    do the right thing for the community.
-    </p>
-
-    <p>
-    Bringing the open source community together both physically and 
-    virtually is about enabling cross-pollination, economies of scale and 
-    the fostering of new and exciting projects. By focusing our energies 
-    on our "main thing" we allow other projects to do the same. We shorten 
-    the open source transaction time with innovative tools and a globally-
-    distributed infrastructure that services these communities 24 hours a 
-    day, 7 days a week and 365 days a year.
-    </p>
-
-    <p>
-    The open source community has grown by leaps and bounds over the past 5 
-    years. It has been an amazing thing to watch. As the community grows, 
-    its members begin to depend on services provided by projects that 
-    become critical to the life of a piece of software. The OSL hopes to 
-    become a key component to the open source life cycle by providing 
-    reliable infrastructure and knowledge that others can leverage. The 
-    success of the OSL hinges on the satisfaction of our customers: 
-    participants of the open source community.
-    </p>
+<div id="screen_osl_about_title" class="display_title display_tile">
+    About the OSL
 </div>
-<!-- end left tile div -->
 
-<div id="screen_osl_about_rightTop" class="display_img display_tile">
-    <!-- 
-        Display an image inside the top-right tile. The image is stored in a 
-        folder called "static" inside the screen plugin's directory. Any folder
-        hierarchy may exist within this static folder. Images can be accessed
-        with {{SITE_ROOT}}/static/APP_NAME/IMAGE_FILE.png
-    -->
-    <img id="EdRayImg" src="{{SITE_ROOT}}/static/screen_osl_about/EdRay.png">
-</div>
-<!-- end top-right tile div -->
+<div id="screen_osl_about_body" class="display_tile display_content">
 
-<div id="screen_osl_about_rightBottom" class="display_content display_tile">
-    <h1>What is Open Source Software?</h1>
+    <img id="screen_osl_about_edRayImg" 
+        src="{{SITE_ROOT}}/static/screen_osl_about/EdRay.png">
 
     <p>
-    "Open source" means that the building blocks for a program are freely 
-    available to use, modify, and improve. This provides for rapid software 
-    development by contributors worldwide, and the resulting program is 
-    available for anyone to use, anywhere, free of charge.
+        The Oregon State University Open Source Lab is the home of growing, high-impact open source communities. Its world-class hosting services enable the Linux operating system, Apache web server, the Drupal content management system and over 50 other leading open source software projects to collaborate with contributors and distribute software to millions of users globally. Through custom software development, vendor partnerships and industry events like the Government Open Source Conference (GOSCON), the Lab's staff and students encourage open source adoption in education, government, health care and other sectors.
     </p>
-
-    <h1>Why Open Source?</h1>
-
+    
+    <h1>Mission</h1>
     <p>
-    Open source software allows the user to freely take their own best 
-    interests into account, without being constrained by the interests 
-    and/or licensing restrictions of the author or vendor. This means 
-    that if, for example, you are dissatisfied with an open source 
-    application's security implementation or find that some feature is 
-    missing, you can dive in and fix the code yourself. You can then give 
-    those changes back to the community so that others may benefit.
+        The mission of the Oregon State University Open Source Lab is to accelerate the growth of high-impact open source software projects worldwide through professional hosting services, custom development and industry expertise provided by the staff and students of Oregon State University.
     </p>
-
+    
+    <h1>More Information</h1>
     <p>
-    The reason open source has become so successful is that it leverages 
-    open standards, which are the rules and guidelines that drive 
-    communication among people/sites/hosts on the Internet. These open 
-    standards help open source developers create applications that in turn 
-    conform to those same standards, ultimately giving the user the freedom 
-    to choose their preferred applications.
-    </p>    
+        For more information, please visit http://osuosl.org.
+    </p>
 </div>

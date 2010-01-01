@@ -281,6 +281,8 @@
     // Begin autoscrolling. One may stop autoscrolling by using
     // clearTimeout( screen_people_autoscrollTimer ).
     {
+        clearTimeout( screen_people_autoscrollTimer );
+        
         // grab the scroll interval
         var interval = {{settings.screen_people_screen_people.scroll_interval}};
 
@@ -325,6 +327,8 @@
     // Begin auto rotating the main tile. One may stop the auto rotation by
     // using clearTimeout( screen_people_autoRandRotateTimer ).
     {
+        clearTimeout( screen_people_autoRandRotateTimer );
+        
         safelog( "screen_people: auto rotating." )
 
         // show a random person
