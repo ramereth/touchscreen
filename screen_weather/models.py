@@ -6,10 +6,25 @@ import dbsettings
 ================================================================ """
 class screen_weatherSettings( dbsettings.Group ):
     
-    feed_URL = dbsettings.StringValue(
-        'Weather Feed URL', 
-        'URL of the weather feed', 
-        default='http://xoap.weather.com/weather/local/USOR0076?cc=*&dayf=5&prod=xoap&par=1003666583&key=4128909340a9b2fc'
+    # Original Weather.com URL:
+    # http://xoap.weather.com/weather/local/USOR0076?cc=*&dayf=5&prod=xoap&par=1003666583&key=4128909340a9b2fc
+    
+    weather_feed_URL = dbsettings.StringValue(
+        'Weather.com Feed URL', 
+        'URL of the weather.com weather feed', 
+        default='http://xoap.weather.com/weather/local/USOR0076?cc=*&dayf=5&prod=xoap'
+    )
+
+    weather_feed_main_key_URL = dbsettings.StringValue(
+        'Weather.com Feed Main Key', 
+        'Main key for the weather.com feed', 
+        default='4128909340a9b2fc'
+    )
+
+    weather_feed_par_key_URL = dbsettings.StringValue(
+        'Weather.com Feed Partner Key', 
+        'Partner key for the weather.com feed', 
+        default='1003666583'
     )
 
     refresh_interval = dbsettings.IntegerValue(

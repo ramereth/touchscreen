@@ -102,6 +102,8 @@
     function screen_weather_start()
     {
         safelog('screen_weather: starting...');
+        
+        screen_weather_loadData();
     }
 
     function screen_weather_stop()
@@ -115,10 +117,25 @@
             screenHeight());
     }
     
+    //////////////////
+    // Facilitators //
+    //////////////////
+    
     function screen_weather_refreshTiles()
     {
         
     }
+    
+    function screen_weather_loadData()
+    {
+        $.post('/proxy/',
+            {'url':'{{settings.screen_weather_screen_weather.weather_feed_URL}}&par={{settings.screen_weather_screen_weather.weather_feed_par_key_URL}}&key={{settings.screen_weather_screen_weather.weather_feed_main_key_URL}}' },
+            function( weather_feed ){
+            
+            ;
+        });
+    }
+    
 </script>
 
 <!-- Current Weather Tile -->
