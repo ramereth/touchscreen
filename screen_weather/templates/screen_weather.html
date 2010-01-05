@@ -39,7 +39,7 @@
             description:null    // i.e. "steady"
         },
         wind:{                  // wind information
-            value:null,         // wind speed
+            speed:null,         // wind speed
             from:null           // direction wind is coming from, i.e. "NW"
         },
         humidity:null,          // the humidity percentage
@@ -96,7 +96,7 @@
             new screen_weather_forecast_day( null, null, null, null, null, null, 
                 15, "NW", null, null ) );
                 
-        alert( screen_weather_forecast.days[0].wind.speed );
+        //alert( screen_weather_forecast.days[0].wind.speed );
     }
 
     function screen_weather_start()
@@ -128,11 +128,86 @@
     
     function screen_weather_loadData()
     {
+        // get and sanitize the weather feed URL
+        var weatherFeedURL = 
+            ("{{settings.screen_weather_screen_weather.weather_feed_URL}}&par={{settings.screen_weather_screen_weather.weather_feed_par_key_URL}}&key={{settings.screen_weather_screen_weather.weather_feed_main_key_URL}}")
+            .replace( /&amp\;/g, "&" );
+        
+        // get the feed
         $.post('/proxy/',
-            {'url':'{{settings.screen_weather_screen_weather.weather_feed_URL}}&par={{settings.screen_weather_screen_weather.weather_feed_par_key_URL}}&key={{settings.screen_weather_screen_weather.weather_feed_main_key_URL}}' },
+            {'url':weatherFeedURL },
             function( weather_feed ){
             
-            ;
+            // load weather unit data (note: find will not find "head")
+            screen_weather_units.temp = $( weather_feed ).find("ut").text();
+            screen_weather_units.distance = $( weather_feed ).find("ud").text();
+            screen_weather_units.speed = $( weather_feed ).find("us").text();
+            screen_weather_units.pressure = $( weather_feed ).find("up").text();
+
+            // load location data
+            screen_weather_locationInfo.name = 
+                $( weather_feed ).find("loc>dnam").text();
+            screen_weather_locationInfo.time = 
+                $( weather_feed ).find("loc>tm").text();
+            screen_weather_locationInfo.sunrise = 
+                $( weather_feed ).find("loc>sunr").text();
+            screen_weather_locationInfo.sunset = 
+                $( weather_feed ).find("loc>suns").text();
+
+            // load current condition data
+            screen_weather_cc.lastUpdate = 
+                $(weather_feed).find("cc>lsup").text();
+            screen_weather_cc.temp = $(weather_feed).find("cc>tmp").text();
+            screen_weather_cc.feelsLike = 
+                $(weather_feed).find("cc>flik").text();
+            screen_weather_cc.condition = $(weather_feed).find("cc>t").text();
+            screen_weather_cc.icon = $(weather_feed).find("cc>icon").text();
+            screen_weather_cc.pressure.value = 
+                $(weather_feed).find("cc>bar>r").text();
+            screen_weather_cc.pressure.description = 
+                $(weather_feed).find("cc>bar>d").text();
+            screen_weather_cc.wind.speed = 
+                $(weather_feed).find("cc>wind>s").text();
+            screen_weather_cc.wind.from = 
+                $(weather_feed).find("cc>wind>t").text();
+            screen_weather_cc.humidity = $(weather_feed).find("cc>hmid").text();
+            screen_weather_cc.visual = $(weather_feed).find("cc>vis").text();
+            screen_weather_cc.dewpoint = $(weather_feed).find("cc>dewp").text();
+            screen_weather_cc.moon.icon = 
+                $(weather_feed).find("cc>moon>icon").text();
+            screen_weather_cc.moon.description = 
+                $(weather_feed).find("cc>moon>t").text();
+            
+            // load 5-day forecast data
+            screen_weather_forecast.lastUpdate = 
+                $(weather_feed).find("dayf>lsup").text();
+            
+            $(weather_feed).find("dayf>day").each(function(dayIndex){
+                
+                // grab the day part of the day
+                var dayPart = null;
+                $(this).find("part").each(function(){
+                    if($(this).attr("p")=="d") dayPart = $(this);
+                });
+                
+                // push a new day onto the days array
+                screen_weather_forecast.days.push( 
+                    new screen_weather_forecast_day(
+                        $(this).find("hi").text(),
+                        $(this).find("low").text(),
+                        $(this).find("sunr").text(),
+                        $(this).find("suns").text(),
+                        dayPart.find("icon").text(),
+                        dayPart.find("t").text(),
+                        dayPart.find("wind>s").text(),
+                        dayPart.find("wind>t").text(),
+                        dayPart.find("ppcp").text(),
+                        dayPart.find("hmid").text()
+                    )
+                );
+            });
+            
+            alert( screen_weather_forecast.days[4].humidity );
         });
     }
     
