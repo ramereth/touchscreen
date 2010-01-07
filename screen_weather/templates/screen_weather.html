@@ -4,6 +4,16 @@
 
     This screen displays the current weather, and a 5-day forcast
 -->
+<style>
+    #screen_weather_forecast{
+        text-align:center;
+        bottom:0;
+    }
+    
+    #screen_weather_forecast_table{
+        width:100%
+    }
+</style>
 
 <script type="text/javascript">
 
@@ -59,6 +69,7 @@
     
     // A single forecast day
     function screen_weather_forecast_day( 
+        name,       // the name of the day
         high,       // high temp of the day
         low,        // low temp of the day
         sunrise,    // sunrise time
@@ -70,6 +81,7 @@
         precip,     // percent chance of precipitation
         humidity )  // humidity percentage
     {
+        this.name = name;
         this.high = high;
         this.low = low;
         this.sunrise = sunrise;
@@ -91,12 +103,6 @@
     function screen_weather_init()
     {
         safelog('screen_weather: initializing...');
-        
-        screen_weather_forecast.days.push( 
-            new screen_weather_forecast_day( null, null, null, null, null, null, 
-                15, "NW", null, null ) );
-                
-        //alert( screen_weather_forecast.days[0].wind.speed );
     }
 
     function screen_weather_start()
@@ -104,6 +110,7 @@
         safelog('screen_weather: starting...');
         
         screen_weather_loadData();
+        screen_weather_refreshTiles();
     }
 
     function screen_weather_stop()
@@ -115,6 +122,8 @@
     {
         safelog('screen_weather: window resized to ' + screenWidth() + "x" +
             screenHeight());
+        
+        screen_weather_refreshTiles();
     }
     
     //////////////////
@@ -123,7 +132,11 @@
     
     function screen_weather_refreshTiles()
     {
-        
+        $("#screen_weather_forecast").width(
+            screenWidth() -
+            ($("#screen_weather_forecast").outerWidth( true ) -
+            $("#screen_weather_forecast").width())
+        );
     }
     
     function screen_weather_loadData()
@@ -193,6 +206,7 @@
                 // push a new day onto the days array
                 screen_weather_forecast.days.push( 
                     new screen_weather_forecast_day(
+                        $(this).attr("t"),
                         $(this).find("hi").text(),
                         $(this).find("low").text(),
                         $(this).find("sunr").text(),
@@ -205,9 +219,46 @@
                         dayPart.find("hmid").text()
                     )
                 );
+                
             });
             
-            alert( screen_weather_forecast.days[4].humidity );
+            // fill the 5-day forecast tile
+            $(".screen_weather_forecast_day").each(function(dayIndex){
+                
+                // day names
+                $(this).html( 
+                    "<h1>" + 
+                        // add 1 to days so it doesn't include the current day
+                        screen_weather_forecast.days[dayIndex+1].name +
+                    "</h1>"
+                );
+                
+                // icons
+                $(".screen_weather_forecast_icon").eq(dayIndex).html(
+                    "<img class='display_centered_image' "+
+                        "src='{{SITE_ROOT}}/static/screen_weather/icons/large/" +
+                        screen_weather_forecast.days[dayIndex+1].icon + 
+                        ".png'>"
+                );
+                
+                // conditions
+                $(".screen_weather_forecast_cond").eq(dayIndex).html( 
+                    "<p>" + 
+                        // add 1 to days so it doesn't include the current day
+                        screen_weather_forecast.days[dayIndex+1].condition +
+                    "</p>"
+                );
+                
+                // temperature
+                $(".screen_weather_forecast_temp").eq(dayIndex).html( 
+                    "<p>" + 
+                        // add 1 to days so it doesn't include the current day
+                        screen_weather_forecast.days[dayIndex+1].low + "/" +
+                        screen_weather_forecast.days[dayIndex+1].high +
+                    "</p>"
+                );
+            });  
+                  
         });
     }
     
@@ -224,8 +275,32 @@
 </div>
 
 <!-- 5-Day Forecast Tile -->
-<div id="screen_weather_forecast" 
+<div id="screen_weather_forecast"
     class="display_tile display_content">
-    
-    <h1>5-Day Forecast Placeholder</h1>
+    <table id="screen_weather_forecast_table" border=1>
+        <tr>
+            <td class="screen_weather_forecast_day"></td>
+            <td class="screen_weather_forecast_day"></td>
+            <td class="screen_weather_forecast_day"></td>
+            <td class="screen_weather_forecast_day"></td>
+        </tr>
+        <tr>
+            <td class="screen_weather_forecast_icon"></td>
+            <td class="screen_weather_forecast_icon"></td>
+            <td class="screen_weather_forecast_icon"></td>
+            <td class="screen_weather_forecast_icon"></td>
+        </tr>
+        <tr>
+            <td class="screen_weather_forecast_cond"></td>
+            <td class="screen_weather_forecast_cond"></td>
+            <td class="screen_weather_forecast_cond"></td>
+            <td class="screen_weather_forecast_cond"></td>
+        </tr>
+        <tr>
+            <td class="screen_weather_forecast_temp"></td>
+            <td class="screen_weather_forecast_temp"></td>
+            <td class="screen_weather_forecast_temp"></td>
+            <td class="screen_weather_forecast_temp"></td>
+        </tr>
+    </table>
 </div>
