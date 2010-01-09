@@ -27,6 +27,12 @@ class screen_weatherSettings( dbsettings.Group ):
         default='1003666583'
     )
 
+    forecast_icon_height = dbsettings.IntegerValue(
+        'Forecast Icon Height', 
+        'Height of the forecast icons.', 
+        default=50
+    )
+
     refresh_interval = dbsettings.IntegerValue(
         'Refresh Interval', 
         'How often to refresh the data (in milliseconds.)', 

@@ -128,10 +128,25 @@
     margin-right: auto
 }
 
-.display_centered_image{
+.bold{ font-weight: bold; }
+
+.centered{ text-align: center;}
+
+.italic{ font-style: italic; }
+
+.centered_block{
     display: block;
     margin-left: auto;
     margin-right: auto;
+    text-align: center;
+}
+
+.default_color, p, li{
+    color: #F8F8FF;
+}
+
+.default_size, p, li{
+    font-size: 10pt;
 }
 
 img, p, li, h1{ 
@@ -145,12 +160,10 @@ h1{
 }
 
 p, li { 
-    font-size: 10pt; 
     margin-bottom: 1em;
     margin-left: 2em;
     margin-right: 2em;
     margin-top:1em;
-    color: #F8F8FF;
 }
 
 li {

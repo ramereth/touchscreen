@@ -4,14 +4,62 @@
 
     This screen displays the current weather, and a 5-day forcast
 -->
+
 <style>
+
+    /* current condition tile styles */
+    
+    .screen_weather_cc_main_block_left{
+        display:block;
+        margin-right:4em;
+    }
+    
+    .screen_weather_cc_block{
+        margin:2em;
+    }
+    
+    .screen_weather_cc_block_top{
+        margin-bottom:1em;
+    }
+    
+    .screen_weather_cc_block_bottom{
+        margin-top:1em;
+    }
+    
+    #screen_weather_cc_temp{
+        font-size:70pt;
+    }
+    
+    .screen_weather_cc_mainData{
+        font-size:14pt;
+    }
+    
+    .screen_weather_cc_labels_left{
+        display:block;
+        margin-right:1em;
+    }
+    
+    .screen_weather_cc_labels_right{
+        display:block;
+        margin-left:4em;
+        margin-right:1em;
+    }
+    
+    
+    /* forecast tile styles */
+    
     #screen_weather_forecast{
         text-align:center;
         bottom:0;
     }
     
     #screen_weather_forecast_table{
-        width:100%
+        width:100%;
+    }
+    
+    .screen_weather_forecast_icon{
+        padding-top:1em;
+        padding-bottom:1em;
     }
 </style>
 
@@ -59,6 +107,10 @@
             icon:null,          // associated moon phase icon
             description:null    // i.e. "full"
         },
+        uv:{
+            index:null,         // UV index
+            description:null    // i.e. "low" or "high"
+        }
     };
 
     // 5-day forecast information
@@ -132,6 +184,7 @@
     
     function screen_weather_refreshTiles()
     {
+        // size the forecast tile
         $("#screen_weather_forecast").width(
             screenWidth() -
             ($("#screen_weather_forecast").outerWidth( true ) -
@@ -190,6 +243,10 @@
                 $(weather_feed).find("cc>moon>icon").text();
             screen_weather_cc.moon.description = 
                 $(weather_feed).find("cc>moon>t").text();
+            screen_weather_cc.uv.index = 
+                $(weather_feed).find("cc>uv>i").text();
+            screen_weather_cc.uv.description = 
+                $(weather_feed).find("cc>uv>t").text();
             
             // load 5-day forecast data
             screen_weather_forecast.lastUpdate = 
@@ -212,7 +269,7 @@
                         $(this).find("sunr").text(),
                         $(this).find("suns").text(),
                         dayPart.find("icon").text(),
-                        dayPart.find("t").text(),
+                        dayPart.find("t").eq(0).text(),
                         dayPart.find("wind>s").text(),
                         dayPart.find("wind>t").text(),
                         dayPart.find("ppcp").text(),
@@ -221,52 +278,176 @@
                 );
                 
             });
-            
-            // fill the 5-day forecast tile
-            $(".screen_weather_forecast_day").each(function(dayIndex){
-                
-                // day names
-                $(this).html( 
-                    "<h1>" + 
-                        // add 1 to days so it doesn't include the current day
-                        screen_weather_forecast.days[dayIndex+1].name +
-                    "</h1>"
-                );
-                
-                // icons
-                $(".screen_weather_forecast_icon").eq(dayIndex).html(
-                    "<img class='display_centered_image' "+
-                        "src='{{SITE_ROOT}}/static/screen_weather/icons/large/" +
-                        screen_weather_forecast.days[dayIndex+1].icon + 
-                        ".png'>"
-                );
-                
-                // conditions
-                $(".screen_weather_forecast_cond").eq(dayIndex).html( 
-                    "<p>" + 
-                        // add 1 to days so it doesn't include the current day
-                        screen_weather_forecast.days[dayIndex+1].condition +
-                    "</p>"
-                );
-                
-                // temperature
-                $(".screen_weather_forecast_temp").eq(dayIndex).html( 
-                    "<p>" + 
-                        // add 1 to days so it doesn't include the current day
-                        screen_weather_forecast.days[dayIndex+1].low + "/" +
-                        screen_weather_forecast.days[dayIndex+1].high +
-                    "</p>"
-                );
-            });  
-                  
+           
+           // fill the tiles with the loaded data
+           screen_weather_fillTiles();
+           
         });
+    }
+    
+    function screen_weather_fillTiles(){
+        
+        // fill the current conditions tile
+        $("#screen_weather_cc_icon").html(
+            "<img class='display_centered_block'"+
+                " src='{{SITE_ROOT}}/static/screen_weather/icons/large/" +
+                screen_weather_cc.icon + 
+                ".png'>"
+        );
+        
+        $("#screen_weather_cc_temp").html( screen_weather_cc.temp + "&#176;");
+        
+        $("#screen_weather_cc_feelsLike").html( 
+            "(Feels like " + screen_weather_cc.feelsLike + " &#176;)" 
+        );
+        
+        $("#screen_weather_cc_condition").html( screen_weather_cc.condition );
+        
+        if( screen_weather_cc.wind.speed == "calm" )
+            $("#screen_weather_cc_wind").html( "calm" );
+        else
+            $("#screen_weather_cc_wind").html( 
+                screen_weather_cc.wind.speed + " " + 
+                screen_weather_units.speed +
+                " " + screen_weather_cc.wind.from 
+            );
+        
+        $("#screen_weather_cc_humiditiy").html( 
+            screen_weather_cc.humidity + "%"
+        );
+        
+        $("#screen_weather_cc_pressure").html( 
+            screen_weather_cc.pressure.value + " " + 
+            screen_weather_units.pressure + ". (" +
+            screen_weather_cc.pressure.description + ")"
+        );
+        
+        $("#screen_weather_cc_visibility").html( 
+            screen_weather_cc.visual + " " + 
+            screen_weather_units.distance + "."
+        );
+        
+        $("#screen_weather_cc_uv").html( screen_weather_cc.uv.index + " (" +
+            screen_weather_cc.uv.description + ")"
+        );
+        
+        $("#screen_weather_cc_lastUpdate").html( screen_weather_cc.lastUpdate );
+        
+        
+        // fill the 5-day forecast tile
+        $(".screen_weather_forecast_day").each(function(dayIndex){
+            
+            // day names
+            $(this).html( 
+                "<h1>" + 
+                    // add 1 to days so it doesn't include the current day
+                    screen_weather_forecast.days[dayIndex+1].name +
+                "</h1>"
+            );
+            
+            // icons
+            $(".screen_weather_forecast_icon").eq(dayIndex).html(
+                "<img class='centered_block' "+
+                    "src='{{SITE_ROOT}}/static/screen_weather/icons/large/" +
+                    screen_weather_forecast.days[dayIndex+1].icon + 
+                    ".png' height='{{settings.screen_weather_screen_weather.forecast_icon_height}}'>"
+            );
+            
+            // conditions
+            $(".screen_weather_forecast_cond").eq(dayIndex).html( 
+                // add 1 to days so it doesn't include the current day
+                screen_weather_forecast.days[dayIndex+1].condition
+            );
+            
+            // temperature
+            $(".screen_weather_forecast_temp").eq(dayIndex).html( 
+                // add 1 to days so it doesn't include the current day
+                screen_weather_forecast.days[dayIndex+1].low + "/" +
+                screen_weather_forecast.days[dayIndex+1].high
+            );
+        });  
+        
     }
     
 </script>
 
 <!-- Current Weather Tile -->
-<div id="screen_weather_current" class="display_tile display_content">
-    <h1>Current Weather Placeholder</h1>
+<div id="screen_weather_cc" class="display_tile display_content">
+
+    <center>
+    
+    <h1>Current Conditions</h1>
+    
+    <table class="screen_weather_cc_block" border=0>
+        <tr>
+            <td class="centered_block screen_weather_cc_main_block_left" 
+                id="screen_weather_cc_icon">
+            </td>
+            <td class="default_color centered" 
+                id="screen_weather_cc_temp">
+            </td>
+        </tr>
+        <tr>
+            <td class="default_color default_size centered screen_weather_cc_mainData screen_weather_cc_main_block_left" 
+                id="screen_weather_cc_condition">
+            </td>
+            <td class="default_color default_size centered screen_weather_cc_mainData" 
+                id="screen_weather_cc_feelsLike">
+            </td>
+        </tr>
+    </table>
+    
+    <table class="screen_weather_cc_block" border=0>
+        <tr>
+            <td class="default_color default_size bold screen_weather_cc_labels_left">
+                Wind
+            </td>
+            <td class="default_color default_size" 
+                id="screen_weather_cc_wind">
+            </td>
+            <td class="default_color default_size bold screen_weather_cc_labels_right">
+                Humidity
+            </td>
+            <td class="default_color default_size" 
+                id="screen_weather_cc_humiditiy">
+            </td>
+        </tr>
+        <tr>
+            <td class="default_color default_size bold screen_weather_cc_labels_left">
+                Pressure
+            </td>   
+            <td class="default_color default_size" 
+                id="screen_weather_cc_pressure">
+            </td> 
+            <td class="default_color default_size bold screen_weather_cc_labels_right">
+                Visibility
+            </td> 
+            <td class="default_color default_size" 
+                id="screen_weather_cc_visibility">
+            </td>
+        </tr>
+        <tr>
+            <td class="default_color default_size bold screen_weather_cc_labels_left">
+                UV Index
+            </td>   
+            <td class="default_color default_size" id="screen_weather_cc_uv">
+            </td> 
+            <td class="default_color default_size bold screen_weather_cc_labels_right">
+                Dewpoint
+            </td>   
+            <td class="default_color default_size" 
+                id="screen_weather_cc_dewpoint">
+            </td>
+        </tr>
+    </table>
+    
+    <div class="default_color screen_weather_cc_block_bottom" 
+        style="font-size:8pt">
+        Last update <span id="screen_weather_cc_lastUpdate"></span>
+    </div>
+    
+    </center>
+    
 </div>
 
 <!-- Maps Tile -->
@@ -277,30 +458,30 @@
 <!-- 5-Day Forecast Tile -->
 <div id="screen_weather_forecast"
     class="display_tile display_content">
-    <table id="screen_weather_forecast_table" border=1>
+    <table id="screen_weather_forecast_table" border=0>
         <tr>
-            <td class="screen_weather_forecast_day"></td>
-            <td class="screen_weather_forecast_day"></td>
-            <td class="screen_weather_forecast_day"></td>
-            <td class="screen_weather_forecast_day"></td>
+            <td class="default_color default_size screen_weather_forecast_day"></td>
+            <td class="default_color default_size screen_weather_forecast_day"></td>
+            <td class="default_color default_size screen_weather_forecast_day"></td>
+            <td class="default_color default_size screen_weather_forecast_day"></td>
         </tr>
         <tr>
-            <td class="screen_weather_forecast_icon"></td>
-            <td class="screen_weather_forecast_icon"></td>
-            <td class="screen_weather_forecast_icon"></td>
-            <td class="screen_weather_forecast_icon"></td>
+            <td class="default_color default_size screen_weather_forecast_icon"></td>
+            <td class="default_color default_size screen_weather_forecast_icon"></td>
+            <td class="default_color default_size screen_weather_forecast_icon"></td>
+            <td class="default_color default_size screen_weather_forecast_icon"></td>
         </tr>
         <tr>
-            <td class="screen_weather_forecast_cond"></td>
-            <td class="screen_weather_forecast_cond"></td>
-            <td class="screen_weather_forecast_cond"></td>
-            <td class="screen_weather_forecast_cond"></td>
+            <td class="default_color default_size screen_weather_forecast_cond"></td>
+            <td class="default_color default_size screen_weather_forecast_cond"></td>
+            <td class="default_color default_size screen_weather_forecast_cond"></td>
+            <td class="default_color default_size screen_weather_forecast_cond"></td>
         </tr>
         <tr>
-            <td class="screen_weather_forecast_temp"></td>
-            <td class="screen_weather_forecast_temp"></td>
-            <td class="screen_weather_forecast_temp"></td>
-            <td class="screen_weather_forecast_temp"></td>
+            <td class="default_color default_size screen_weather_forecast_temp"></td>
+            <td class="default_color default_size screen_weather_forecast_temp"></td>
+            <td class="default_color default_size screen_weather_forecast_temp"></td>
+            <td class="default_color default_size screen_weather_forecast_temp"></td>
         </tr>
     </table>
 </div>
