@@ -86,14 +86,14 @@
                     }
 
                     safelog( "jquery.scale: BEFORE scaling, object's outer " +
-                        "size = " + obj.outerWidth() + "x" + 
-                        obj.outerHeight() + ", object's parent's inner size " +
+                        "size = " + obj.outerWidth( true ) + "x" + 
+                        obj.outerHeight( true ) + ", object's parent's inner size " +
                         "= " + obj.parent().innerWidth() + "x" + 
                         obj.parent().innerHeight() );
                     
                     // Object too tall, but width is fine. Need to shorten.
-                    if( obj.outerHeight() > obj.parent().innerHeight() && 
-                        obj.outerWidth() <= obj.parent().innerWidth() ){
+                    if( obj.outerHeight( true ) > obj.parent().innerHeight() && 
+                        obj.outerWidth( true ) <= obj.parent().innerWidth() ){
 
                         safelog( "jquery.scale: object is too tall, but width" +
                             " is OK" );
@@ -101,8 +101,8 @@
                     }
                     
                     // Object too wide, but height is fine. Need to diet.
-                    else if( obj.outerWidth() > obj.parent().innerWidth() && 
-                             obj.outerHeight() <= obj.parent().innerHeight() ){
+                    else if( obj.outerWidth( true ) > obj.parent().innerWidth() && 
+                             obj.outerHeight( true ) <= obj.parent().innerHeight() ){
 
                         safelog( "jquery.scale: object is too wide, but " +
                             "height is OK" );
@@ -111,14 +111,14 @@
                     
                     // Object too short and skinny. If "stretch" option enabled,
                     // match the dimenstion that is closer to being correct.
-                    else if( obj.outerWidth() < obj.parent().innerWidth() && 
-                             obj.outerHeight() < obj.parent().innerHeight() &&
+                    else if( obj.outerWidth( true ) < obj.parent().innerWidth() && 
+                             obj.outerHeight( true ) < obj.parent().innerHeight() &&
                              (arg1 == "stretch" || arg2 == "stretch" ) ){
                       
                         safelog( "jquery.scale: object is too short and " +
                             "skinny, and stretch option enabled" );
-                        if( obj.parent().innerHeight()/obj.outerHeight() <= 
-                            obj.parent().innerWidth()/obj.outerWidth() ){
+                        if( obj.parent().innerHeight()/obj.outerHeight( true ) <= 
+                            obj.parent().innerWidth()/obj.outerWidth( true ) ){
                             
                             safelog( "jquery.scale: height is closer to " +
                                 "being correct, or height and width are " +
@@ -133,12 +133,12 @@
                     
                     // Object too tall and wide. Need to match the dimension 
                     // that is further from being correct.
-                    } else if( obj.outerWidth() > obj.parent().innerWidth() && 
-                               obj.outerHeight() > obj.parent().innerHeight() ){
+                    } else if( obj.outerWidth( true ) > obj.parent().innerWidth() && 
+                               obj.outerHeight( true ) > obj.parent().innerHeight() ){
                                
                         safelog( "jquery.scale: object is too tall and wide");
-                        if( obj.parent().innerHeight()/obj.outerHeight() >
-                            obj.parent().innerWidth()/obj.outerWidth() ){
+                        if( obj.parent().innerHeight()/obj.outerHeight( true ) >
+                            obj.parent().innerWidth()/obj.outerWidth( true ) ){
                             
                             safelog( "jquery.scale: width is closer to being " +
                                 "correct");
@@ -160,10 +160,10 @@
                         obj.css( 'position', 'relative' );
                         obj.css( 'margin-top', 
                              obj.parent().innerHeight()/2 - 
-                                        obj.outerHeight()/2  );
+                                        obj.outerHeight( true )/2  );
                         obj.css( 'margin-left', 
                              obj.parent().innerWidth()/2 - 
-                                        obj.outerWidth()/2  );
+                                        obj.outerWidth( true )/2  );
                     }
 
                     // reset the onload pointer so the object doesn't flicker
@@ -171,7 +171,7 @@
                     this.onload = null;
 
                     safelog( "jquery.scale: AFTER scaling, object's size = " +
-                        obj.outerWidth() + "x" + obj.outerHeight() + 
+                        obj.outerWidth( true ) + "x" + obj.outerHeight( true ) + 
                         ", object's parent's size = " + 
                         obj.parent().innerWidth() + "x" + 
                         obj.parent().innerHeight() + ".'" );                    
@@ -181,21 +181,21 @@
                 // match the height while maintaining the aspect ratio
                 function matchHeight(){
                     safelog( "jquery.scale: matching height" );
-                    obj.width( obj.outerWidth() * 
-                        obj.parent().innerHeight()/obj.outerHeight() - 
-                        (obj.outerWidth() - obj.width()));
+                    obj.width( obj.outerWidth( true ) * 
+                        obj.parent().innerHeight()/obj.outerHeight( true ) - 
+                        (obj.outerWidth( true ) - obj.width()));
                     obj.height( obj.parent().innerHeight() - 
-                        (obj.outerHeight() - obj.height()) );
+                        (obj.outerHeight( true ) - obj.height()) );
                 }
                 
                 // match the width while maintaining the aspect ratio
                 function matchWidth(){
                     safelog( "jquery.scale: matching width" );
-                    obj.height(  obj.outerHeight() * 
-                        obj.parent().innerWidth()/obj.outerWidth() - 
-                        (obj.outerHeight() - obj.height())  );
+                    obj.height(  obj.outerHeight( true ) * 
+                        obj.parent().innerWidth()/obj.outerWidth( true ) - 
+                        (obj.outerHeight( true ) - obj.height())  );
                     obj.width( obj.parent().width() - 
-                        (obj.outerWidth() - obj.width()));
+                        (obj.outerWidth( true ) - obj.width()));
                 }
                 
                 // a function to safely log

@@ -61,6 +61,11 @@
         padding-top:1em;
         padding-bottom:1em;
     }
+    
+    /* maps tile styles */
+    #screen_weather_maps{
+        right:0;
+    }
 </style>
 
 <script type="text/javascript">
@@ -163,6 +168,10 @@
         
         screen_weather_loadData();
         screen_weather_refreshTiles();
+        
+        $('#debug_f1').click(function(){
+            screen_weather_loadData();
+        });
     }
 
     function screen_weather_stop()
@@ -184,6 +193,14 @@
     
     function screen_weather_refreshTiles()
     {
+        safelog("screen_weather: refreshing tiles...");
+        
+        // size the maps tile to match the height of the cc tile
+        $("#screen_weather_maps").height( $("#screen_weather_cc").height() );
+        
+        // size the map inside tha maps tile to match its size
+        $(".screen_weather_map").scale();
+        
         // size the forecast tile
         $("#screen_weather_forecast").width(
             screenWidth() -
@@ -194,6 +211,8 @@
     
     function screen_weather_loadData()
     {
+        safelog( "screen_weather: loading data..." );
+        
         // get and sanitize the weather feed URL
         var weatherFeedURL = 
             ("{{settings.screen_weather_screen_weather.weather_feed_URL}}&par={{settings.screen_weather_screen_weather.weather_feed_par_key_URL}}&key={{settings.screen_weather_screen_weather.weather_feed_main_key_URL}}")
@@ -282,10 +301,15 @@
            // fill the tiles with the loaded data
            screen_weather_fillTiles();
            
+           // force a refresh
+           screen_weather_refreshTiles();
+           
         });
     }
     
-    function screen_weather_fillTiles(){
+    function screen_weather_fillTiles()
+    {
+        safelog( "screen_weather: filling tiles..." );
         
         // fill the current conditions tile
         $("#screen_weather_cc_icon").html(
@@ -371,6 +395,12 @@
     
 </script>
 
+<!-- Maps Tile -->
+<div id="screen_weather_maps" class="display_tile display_content">
+    <img class="screen_weather_map"
+        src="http://image.weather.com/web/radar/us_pdx_closeradar_plus_usen.jpg">
+</div>
+
 <!-- Current Weather Tile -->
 <div id="screen_weather_cc" class="display_tile display_content">
 
@@ -448,11 +478,6 @@
     
     </center>
     
-</div>
-
-<!-- Maps Tile -->
-<div id="screen_weather_maps" class="display_tile display_content">
-    <h1>Maps Placeholder</h1>
 </div>
 
 <!-- 5-Day Forecast Tile -->
