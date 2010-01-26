@@ -172,6 +172,8 @@
         $('#debug_f1').click(function(){
             screen_weather_loadData();
         });
+
+        $('#screen_weather_maps').cycle('fade');
     }
 
     function screen_weather_stop()
@@ -396,6 +398,12 @@
 <div id="screen_weather_maps" class="display_tile display_content">
     <img class="screen_weather_map"
         src="http://image.weather.com/web/radar/us_pdx_closeradar_plus_usen.jpg">
+    <img class="screen_weather_map"
+        src="http://image.weather.com/images/sat/regions/northwest_sat_720x486.jpg">
+    <img class="screen_weather_map"
+        src="http://image.weather.com/images/maps/current/nw_curtemp_720x486.jpg">
+    <img class="screen_weather_map"
+        src="http://image.weather.com/images/maps/current/cur_nw_720x486.jpg">
 </div>
 
 <!-- Current Weather Tile -->
