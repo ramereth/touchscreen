@@ -11,7 +11,7 @@
         </style>
 
         <!-- jQuery includes -->
-        <script type='text/javascript' src="{{MEDIA_URL}}/js/jquery-1.3.2.min.js"></script>
+        <script type='text/javascript' src="{{MEDIA_URL}}/js/jquery-1.4.min.js"></script>
         <script type='text/javascript' src="{{MEDIA_URL}}/js/jquery.doubleBorderedBox.js"></script>
         <script type="text/javascript" src="{{MEDIA_URL}}/js/jquery.refreshimage.js"></script>
         <script type="text/javascript" src="{{MEDIA_URL}}/js/jquery.scale/jquery.scale.js"></script>
@@ -82,7 +82,9 @@
             var current_screen_index = -1
             var show_timer = 0;
             var start_timer = 0;
-            var winResizeEventPointer = null; // for saving/restoring the win.resize pointer
+            
+            // for saving/restoring the win.resize pointer
+            var winResizeEventPointer = null;
 
             function show_slide(screen) 
             {
@@ -96,11 +98,13 @@
                         hider = eval(hiders[current_screen['hide']]);
                         var hidetime = hider(current_screen);
 
-                        //restore the window.resize event pointer to what it was
-                        //before the screen was shown and hide the screen
+                        // restore the window.resize event pointer to 
+                        // what it was before the screen was shown
                         window.onresize = winResizeEventPointer;
                         safelog( "core: window.resize pointer restored to " + 
                             window.resize );
+
+                        // hide the screen
                         eval(current_screen['stop']);
 
                     } else {
@@ -112,16 +116,19 @@
 
                     if( !hidetime ) hidetime = 999;
 
-                    //clear past timer in case next/prev was clicked repeatedly
+                    // clear past timer in case next/prev was clicked 
+                    // repeatedly
                     if( show_timer ) { clearTimeout(show_timer)};
                     if( start_timer ) { clearTimeout(start_timer)};
 
-                    //save the window.resize event pointer and call onWinResize
-                    //event for the current screen
-                    
+                    // save the window.resize event pointer and call 
+                    // onWinResize event for the current screen
                     winResizeEventPointer = window.onresize;
                     
                     window.onresize = function(){
+                        safelog('core: window resized to ' + 
+                            screenWidth() + "x" + screenHeight());
+                        
                         eval( screens[current_screen_index]['onWinResize'] );
                     }
                     

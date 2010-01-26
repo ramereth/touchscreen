@@ -29,9 +29,7 @@
         safelog('screen_ftp_traffic: stopping');
     }
     
-    function screen_ftp_traffic_onScreenResize() {
-        safelog('screen_ftp_traffic: window was resized');
-        
+    function screen_ftp_traffic_onScreenResize() {        
         // re-scale every time the window is resized
         $("#screen_ftp_traffic_img").scale("center");
     }

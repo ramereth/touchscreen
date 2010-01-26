@@ -7,7 +7,8 @@
 -->
 
 <script type="text/javascript">
-    function screen_wifi_bandwidth_init() {
+    function screen_wifi_bandwidth_init()
+    {
         safelog('screen_wifi_bandwidth: initializing...');
     
         // make the image refresh itself at the specified interval
@@ -18,20 +19,21 @@
         });
     }
 
-    function screen_wifi_bandwidth_start() {
+    function screen_wifi_bandwidth_start() 
+    {
         safelog('screen_wifi_bandwidth: starting...');
 
         // scale the wifi bandwidth image to fit inside the parent
         $("#screen_wifi_bandwidth_img").scale("center","stretch");
     }
     
-    function screen_wifi_bandwidth_stop() {
+    function screen_wifi_bandwidth_stop() 
+    {
         safelog('screen_wifi_bandwidth: stopping');
     }
     
-    function screen_wifi_bandwidth_onWinResize() {
-        safelog("screen_wifi_bandwidth: window was resized");
-        
+    function screen_wifi_bandwidth_onWinResize()
+    {
         $("#screen_wifi_bandwidth_img").scale("center","stretch");
     }
     

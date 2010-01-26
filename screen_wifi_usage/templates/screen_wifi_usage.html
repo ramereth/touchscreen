@@ -30,9 +30,7 @@
         safelog('screen_wifi_usage: stopping');
     }
     
-    function screen_wifi_usage_onScreenResize() {
-        safelog('screen_wifi_usage: window was resized');
-        
+    function screen_wifi_usage_onScreenResize() {        
         // re-scale every time the window is resized
         $("#screen_wifi_usage_img").scale("center");
     }

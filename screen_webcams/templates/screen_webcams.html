@@ -51,17 +51,16 @@
         safelog('screen_webcams: stopping...');
     }
 
-    function screen_webcams_onWinResize() {
-        safelog('screen_webcams: window was resized');
+    function screen_webcams_onWinResize() 
+    {
+        // position the thumbnail tiles
+        screen_webcams_positionTiles();
 
-            // position the thumbnail tiles
-            screen_webcams_positionTiles();
-
-            //  initialize the main tile
-            screen_webcams_displayToMainTile(
-                "{{settings.screen_webcams_screen_webcams.title_mu}}",
-                "{{settings.screen_webcams_screen_webcams.imgAddr_mu}}"
-            );
+        //  initialize the main tile
+        screen_webcams_displayToMainTile(
+            "{{settings.screen_webcams_screen_webcams.title_mu}}",
+            "{{settings.screen_webcams_screen_webcams.imgAddr_mu}}"
+        );
     }
 
     // ==============

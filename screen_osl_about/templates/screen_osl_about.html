@@ -37,13 +37,11 @@
     function screen_osl_about_stop()
     {
         // output some debug info to the firebug console
-        safelog('screen_webcams: stopping...');
+        safelog('screen_osl_about: stopping...');
     }
     
     function screen_osl_about_onWinResize()
     {
-        safelog("screen_webcams: window was resized");
-        
         screen_osl_about_refreshTiles();
     }
     
