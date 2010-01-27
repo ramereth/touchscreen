@@ -168,17 +168,25 @@
         
         screen_weather_loadData();
         screen_weather_refreshTiles();
+
+        // start the weather maps cycle
+        $('#screen_weather_maps').cycle({
+            fx:'fade',
+            timeout:5000
+        });
         
+        // setup debug buttons
         $('#debug_f1').click(function(){
             screen_weather_loadData();
         });
-
-        $('#screen_weather_maps').cycle('fade');
     }
 
     function screen_weather_stop()
     {
         safelog('screen_weather: stopping');
+        
+        // stop the weather maps cycle
+        $('#screen_weather_maps').cycle('stop');
     }
 
     function screen_weather_onScreenResize()
@@ -196,6 +204,7 @@
         
         // size the maps tile to match the height of the cc tile
         $("#screen_weather_maps").height( $("#screen_weather_cc").height() );
+        $("#screen_weather_maps").width($(".screen_weather_map").width())
         
         // size the map inside tha maps tile to match its size
         $(".screen_weather_map").scale();
@@ -212,7 +221,7 @@
     {
         safelog( "screen_weather: loading data..." );
         
-        // get and sanitize the weather feed URL
+        // get and prepare the weather feed URL
         var weatherFeedURL = 
             ("{{settings.screen_weather_screen_weather.weather_feed_URL}}&par={{settings.screen_weather_screen_weather.weather_feed_par_key_URL}}&key={{settings.screen_weather_screen_weather.weather_feed_main_key_URL}}")
             .replace( /&amp\;/g, "&" );
