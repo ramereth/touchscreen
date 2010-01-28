@@ -172,6 +172,8 @@
         // start the weather maps cycle
         $('#screen_weather_maps').cycle({
             fx:'fade',
+            fit:0,
+            containerResize:1,
             timeout:5000
         });
         
@@ -321,19 +323,23 @@
         
         // fill the current conditions tile
         $("#screen_weather_cc_icon").html(
-            "<img class='display_centered_block'"+
+            "<img class='display_centered_block'" +
                 " src='{{SITE_ROOT}}/static/screen_weather/icons/large/" +
                 screen_weather_cc.icon + 
                 ".png'>"
         );
         
-        $("#screen_weather_cc_temp").html( screen_weather_cc.temp + "&#176;");
+        $("#screen_weather_cc_temp").html(
+            screen_weather_cc.temp + "&#176;"
+        );
         
         $("#screen_weather_cc_feelsLike").html( 
             "(Feels like " + screen_weather_cc.feelsLike + " &#176;)" 
         );
         
-        $("#screen_weather_cc_condition").html( screen_weather_cc.condition );
+        $("#screen_weather_cc_condition").html(
+            screen_weather_cc.condition
+        );
         
         if( screen_weather_cc.wind.speed == "calm" )
             $("#screen_weather_cc_wind").html( "calm" );
@@ -359,11 +365,13 @@
             screen_weather_units.distance + "."
         );
         
-        $("#screen_weather_cc_uv").html( screen_weather_cc.uv.index + " (" +
-            screen_weather_cc.uv.description + ")"
+        $("#screen_weather_cc_uv").html( screen_weather_cc.uv.index +
+            " (" + screen_weather_cc.uv.description + ")"
         );
         
-        $("#screen_weather_cc_lastUpdate").html( screen_weather_cc.lastUpdate );
+        $("#screen_weather_cc_lastUpdate").html(
+            screen_weather_cc.lastUpdate
+        );
         
         
         // fill the 5-day forecast tile
@@ -372,7 +380,8 @@
             // day names
             $(this).html( 
                 "<h1>" + 
-                    // add 1 to days so it doesn't include the current day
+                    // add 1 to days so it doesn't include the current
+                    // day
                     screen_weather_forecast.days[dayIndex+1].name +
                 "</h1>"
             );

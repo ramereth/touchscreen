@@ -23,25 +23,25 @@ class screen_osl_bandwidthSettings( dbsettings.Group ):
     thumbnail_img_height = dbsettings.IntegerValue(
             'Thumbnail Image Height', 
             'The height of the thumbnail images', 
-            default=120
+            default=82
     )
     
     thumbnail_img_width = dbsettings.IntegerValue(
             'Thumbnail Image Width', 
             'The width of the thumbnail images', 
-            default=160
+            default=200
     )
     
     mainTile_height = dbsettings.IntegerValue(
             'Main Tile Image Height', 
             'The height of the main tile\'s images', 
-            default=480
+            default=202
     )
     
     mainTile_width = dbsettings.IntegerValue(
             'Main Tile Image Width', 
             'The width of the main tile\'s images', 
-            default=640
+            default=495
     )
 
     # ===========================

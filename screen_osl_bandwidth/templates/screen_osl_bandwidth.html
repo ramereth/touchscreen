@@ -10,7 +10,8 @@
 
     // A settings class to make the code a little cleaner
     screen_osl_bandwidth_settings = new screen_osl_bandwidth_settings();
-    function screen_osl_bandwidth_settings() {
+    function screen_osl_bandwidth_settings()
+    {
         this.titles = [
             '{{settings.screen_osl_bandwidth_screen_osl_bandwidth.title_0}}',
             '{{settings.screen_osl_bandwidth_screen_osl_bandwidth.title_1}}',
@@ -49,7 +50,8 @@
     //      Functions that are run at particular events in the screen plugin's
     //      life cycle.
 
-    function screen_osl_bandwidth_init() {
+    function screen_osl_bandwidth_init()
+    {
         safelog('screen_osl_bandwidth: initializing...');
 
         //write the html for the tiles
@@ -71,7 +73,8 @@
         screen_osl_bandwidth_initTileClickEvents();
     }
 
-    function screen_osl_bandwidth_start() {
+    function screen_osl_bandwidth_start()
+    {
         safelog('screen_osl_bandwidth: starting...');
 
         // position the thumbnail tiles
@@ -81,15 +84,13 @@
         screen_osl_bandwidth_randomizeMainTile(); 
     }
 
-    function screen_osl_bandwidth_stop() {
-        safelog('screen_osl_bandwidth: stopping...');
-        
+    function screen_osl_bandwidth_stop()
+    {
+        safelog('screen_osl_bandwidth: stopping...');        
     }
 
-    function screen_osl_bandwidth_onWinResize() {
-        safelog('screen_osl_bandwidth: window was resized to ' + screenHeight()
-            + "x" + screenWidth() );
-
+    function screen_osl_bandwidth_onWinResize()
+    {
         screen_osl_bandwidth_positionTiles();
     }
 
@@ -98,7 +99,8 @@
     // ==============
     //      Functions that initialize elements of the the screen plugin.
 
-    function screen_osl_bandwidth_write_tile_html(){
+    function screen_osl_bandwidth_write_tile_html()
+    {
     
         // write the main div
         $("#screen_osl_bandwidth_wrapper").append((<r><![CDATA[
@@ -154,7 +156,8 @@
         screen_osl_bandwidth_randomizeMainTile(); 
     }
 
-    function screen_osl_bandwidth_initTileClickEvents() {
+    function screen_osl_bandwidth_initTileClickEvents()
+    {
     	// click event handling (NOTE: This section is for demonstration 
 		// purposes only. Eventually, these tile manipulations will be done via 
 		// the touchscreen interface.
@@ -208,7 +211,8 @@
     // ==============
     //      Functions responsible for manipulating the tiles
 
-    function screen_osl_bandwidth_positionTiles(){
+    function screen_osl_bandwidth_positionTiles()
+    {
         // calculate the padding between the tiles to evently distribute them
         // across the screen
         var horizPadding = (screenWidth() -
@@ -243,7 +247,8 @@
     
         // fill the main tile with a random graph and title set
         var randIndex=Math.floor(
-            Math.random()*screen_osl_bandwidth_settings.titles.length );
+            Math.random()*screen_osl_bandwidth_settings.titles.length 
+        );
             
         screen_osl_bandwidth_displayToMainTile(
             screen_osl_bandwidth_settings.titles[ randIndex ],
@@ -255,7 +260,8 @@
 
     // Display two graphs from the specified address with the specified title in
     // the main tile with some fade effects
-    function screen_osl_bandwidth_displayToMainTile( title, addr_a, addr_b, speed ){
+    function screen_osl_bandwidth_displayToMainTile( title, addr_a, addr_b, speed )
+    {
     
         // default speed if not defined is slow
         if( speed == undefined ) speed = "slow";

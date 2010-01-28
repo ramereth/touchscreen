@@ -59,7 +59,7 @@
 
 .display_tile{
     overflow:hidden;
-    margin:10px;
+    margin:25px;
     background-color: black;
     font-family:'verdana','geneva','arial','helvetica',sans-serif;
 }
@@ -130,7 +130,7 @@
 
 .bold{ font-weight: bold; }
 
-.centered{ text-align: center;}
+.centered{ text-align: center; }
 
 .italic{ font-style: italic; }
 
