@@ -153,6 +153,9 @@
         this.humidity = humidity;
     }
 
+    // Timer for the data refresh
+    var screen_weather_dataRefreshTimer = null;
+
     ///////////////////
     // Screen Events //
     ///////////////////
@@ -165,16 +168,16 @@
     function screen_weather_start()
     {
         safelog('screen_weather: starting...');
-        
+
+        // load the weather data from the weather feed
         screen_weather_loadData();
-        screen_weather_refreshTiles();
 
         // start the weather maps cycle
         $('#screen_weather_maps').cycle({
             fx:'fade',
             fit:0,
-            containerResize:1,
-            timeout:5000
+            containerResize:0,
+            timeout:{{settings.screen_weather_screen_weather.maps_cycle_timeout}}
         });
         
         // setup debug buttons
@@ -186,6 +189,9 @@
     function screen_weather_stop()
     {
         safelog('screen_weather: stopping');
+
+        // clear the data refresh timer
+        clearTimeout(screen_weather_dataRefreshTimer);
         
         // stop the weather maps cycle
         $('#screen_weather_maps').cycle('stop');
@@ -199,14 +205,21 @@
     //////////////////
     // Facilitators //
     //////////////////
-    
+
+    // refreshTiles()
+    // Repositions and resizes the tiles depending on their content.
     function screen_weather_refreshTiles()
     {
         safelog("screen_weather: refreshing tiles...");
         
-        // size the maps tile to match the height of the cc tile
-        $("#screen_weather_maps").height( $("#screen_weather_cc").height() );
-        $("#screen_weather_maps").width($(".screen_weather_map").width())
+        // size the maps tile to match the height of the cc tile, and
+        // the width of the map images
+        $("#screen_weather_maps").height(
+            $("#screen_weather_cc").height()
+        );
+        $("#screen_weather_maps").width(
+            $(".screen_weather_map").width()
+        );
         
         // size the map inside tha maps tile to match its size
         $(".screen_weather_map").scale();
@@ -218,7 +231,10 @@
             $("#screen_weather_forecast").width())
         );
     }
-    
+
+    // loadData()
+    // Loads data from the weather RSS feed into the data structure and
+    // refreshes the tiles with the loaded data.
     function screen_weather_loadData()
     {
         safelog( "screen_weather: loading data..." );
@@ -308,15 +324,20 @@
                 
             });
            
-           // fill the tiles with the loaded data
-           screen_weather_fillTiles();
-           
-           // force a refresh
-           screen_weather_refreshTiles();
-           
+            // fill the tiles with the loaded data
+            screen_weather_fillTiles();
+
+            // set a timeout to reload the data again at a specified interval
+            screen_weather_dataRefreshTimer = 
+                setTimeout(
+                    'screen_weather_loadData()',
+                    {{settings.screen_weather_screen_weather.refresh_interval}}
+                );
         });
     }
-    
+
+    // fillTiles()
+    // Fills the tiles with data from the data structure
     function screen_weather_fillTiles()
     {
         safelog( "screen_weather: filling tiles..." );
@@ -407,7 +428,9 @@
                 screen_weather_forecast.days[dayIndex+1].high
             );
         });  
-        
+
+        // force a refresh with the newly filled data
+        screen_weather_refreshTiles();
     }
     
 </script>

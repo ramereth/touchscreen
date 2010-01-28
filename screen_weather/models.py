@@ -38,6 +38,12 @@ class screen_weatherSettings( dbsettings.Group ):
         'How often to refresh the data (in milliseconds.)', 
         default=60000
     )
+
+    maps_cycle_timeout = dbsettings.IntegerValue(
+        'Maps Cycle Timeout', 
+        'How long each map is displayed (in milliseconds.)', 
+        default=5000
+    )
     
 screen_weather_settings = screen_weatherSettings('screen_weather Settings')
 
