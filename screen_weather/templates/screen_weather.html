@@ -211,17 +211,21 @@
     {
         safelog("screen_weather: refreshing tiles...");
         
-        // size the maps tile to match the height of the cc tile, and
-        // the width of the map images
+        // size the maps tile to match the height of the cc tile, and the width
+        // of the smallest map
         $("#screen_weather_maps").height(
             $("#screen_weather_cc").height()
         );
-        $("#screen_weather_maps").width(
-            $(".screen_weather_map").width()
+        $("#screen_weather_maps").width( 600 -
+            $("#screen_weather_maps").width() -
+            $("#screen_weather_maps").innerWidth()
         );
-        
-        // size the map inside tha maps tile to match its size
-        $(".screen_weather_map").scale();
+
+        // resize each of the maps to fit inside the container
+        $(".screen_weather_map").each( function(index){
+            $(this).height( $("#screen_weather_maps").innerHeight() );
+            $(this).width( $("#screen_weather_maps").innerWidth() );
+        });
         
         // size the forecast tile
         $("#screen_weather_forecast").width(
