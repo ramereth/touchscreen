@@ -9,17 +9,21 @@
 
 <script type="text/javascript">
 
-    // ======================
-    //  SCREEN PLUGIN EVENTS
-    // ======================
-    //      Functions that are run at particular events in the screen plugin's
-    //      life cycle.
+    /////////////////
+    // Global Data //
+    /////////////////
 
-    function screen_webcams_init() {
-        // for this example just output to firebug console
+    // A flag to tell if the displayToMainTile function is running (to prevent
+    // main tile flickering)
+    var screen_webcams_displayToMainTileRunning = false;
+
+    ///////////////////
+    // Screen Events //
+    ///////////////////
+
+    function screen_webcams_init()
+    {
         safelog('screen_webcams: initializing...');
-
-        //$("#screen_webcams_main").doubleBoarderedBox();
 
         // intitialize tile click event handling. NOTE: This section is for
         // demonstration purposes only. Eventually, these div manipulations will
@@ -34,7 +38,8 @@
         });
     }
 
-    function screen_webcams_start() {
+    function screen_webcams_start()
+    {
         safelog('screen_webcams: starting...');
 
         // position the thumbnail tiles
@@ -47,7 +52,8 @@
         );
     }
 
-    function screen_webcams_stop() {
+    function screen_webcams_stop()
+    {
         safelog('screen_webcams: stopping...');
     }
 
@@ -63,13 +69,14 @@
         );
     }
 
-    // ==============
-    //  INITIALIZERS
-    // ==============
-    //      Functions that initialize elements of the the screen plugin.
+    //////////////////
+    // Initializers //
+    //////////////////
 
-    function screen_webcams_positionTiles(){
-
+    // positionTiles()
+    // Resizes and repositions tiles depending on thier content.
+    function screen_webcams_positionTiles()
+    {
         // calculate the padding between the tiles to evently distribute them
         // across the screen
         var tilePadding_horiz = (
@@ -152,11 +159,12 @@
 
     }
 
-    function screen_webcams_initTileClickEvents() {
-        // click event handling (NOTE: This section is for demonstration
-        // purposes only. Eventually, these tile manipulations will be done via
-        // the touchscreen interface.
-
+    // initTileClickEvents()
+    // Initialize click event handling. (NOTE: This section is for demonstration
+    // purposes only. Eventually, these tile manipulations will be done via the
+    // touchscreen control interface.)
+    function screen_webcams_initTileClickEvents()
+    {
         $("#screen_webcams_monroe").click(function(){
             screen_webcams_displayToMainTile(
                 "{{settings.screen_webcams_screen_webcams.title_monroe}}",
@@ -231,43 +239,54 @@
         });
     }
 
-    // ==============
-    //  FACILITATORS
-    // ==============
-    //      Functions responsible for manipulating the tiles
+    ///////////////////
+    //  FACILITATORS //
+    ///////////////////
 
+    // displayToMainTile( title, addr )
     // Display an image at the specified address with the specified title in the
-    // main tile
-    function screen_webcams_displayToMainTile( title, addr ){
+    // main tile.
+    function screen_webcams_displayToMainTile( title, addr )
+    {
+        // make sure only one instance of this function runs at a time
+        if( !screen_webcams_displayToMainTileRunning ){
 
-        // fade out the main tile
-        $("#screen_webcams_main").fadeOut(function(){
+            // set a running flag so only one function runs at a time
+            screen_webcams_displayToMainTileRunning = true;
+            
+            // fade out the main tile
+            $("#screen_webcams_main").fadeOut(function(){
 
-            // fill the main tile with the title and the picture of the
-            // specified webcam shot
-            $("#screen_webcams_title_main").html( title );
-            $("#screen_webcams_img_main").attr( 'src', addr );
-            $("#screen_webcams_img_main").height(
-                {{settings.screen_webcams_screen_webcams.mainTile_height}}
-            );
+                // fill the main tile with the title and the picture of the
+                // specified webcam shot
+                $("#screen_webcams_title_main").html( title );
+                $("#screen_webcams_img_main").attr( 'src', addr );
+                $("#screen_webcams_img_main").height(
+                    {{settings.screen_webcams_screen_webcams.mainTile_height}}
+                );
 
-            // set max height and width
-            $("#screen_webcams_img_main").attr( 'max-height',
-                '{{settings.screen_webcams_screen_webcams.mainTile_height}}' );
-            $("#screen_webcams_img_main").attr( 'max-width',
-                '{{settings.screen_webcams_screen_webcams.mainTile_width}}' );
+                // set max height and width
+                $("#screen_webcams_img_main").attr( 'max-height',
+                    '{{settings.screen_webcams_screen_webcams.mainTile_height}}'
+                );
+                $("#screen_webcams_img_main").attr( 'max-width',
+                    '{{settings.screen_webcams_screen_webcams.mainTile_width}}'
+                );
 
-            // place the tile in the middle of the screen
-            $("#screen_webcams_main").css('top', screenHeight()/2 -
-                $("#screen_webcams_main").outerHeight(true)/2);
-            $("#screen_webcams_main").css('left', screenWidth()/2 -
-                $("#screen_webcams_main").outerWidth(true)/2);
-        });
+                // place the tile in the middle of the screen
+                $("#screen_webcams_main").css('top', screenHeight()/2 -
+                    $("#screen_webcams_main").outerHeight(true)/2);
+                $("#screen_webcams_main").css('left', screenWidth()/2 -
+                    $("#screen_webcams_main").outerWidth(true)/2);
 
-        // fade the main tile back in
-        $("#screen_webcams_main").fadeIn("slow");
+                // fade the main tile back in
+                $("#screen_webcams_main").fadeIn("slow");
+
+                // clear the running flag to allow the function to run again
+                screen_webcams_displayToMainTileRunning = false;
+            });
+        }
     }
-
 </script>
 
 <!-- set up HTML divs for each tile ------------------------------------------->
