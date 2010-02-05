@@ -10,3 +10,4 @@ REFERENCE
 *.bkp*
 *swp
 *.log
+*.pid
