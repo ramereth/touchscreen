@@ -4,9 +4,9 @@ REFERENCE
 /static/js/jquery.scale/jquery-1.3.2.min.js
 /static/js/ARCHIVE
 /screen_webcams/mockups/
-/runserver
 /settings.py
 *.pyc
 *~
 *.bkp*
 *swp
+*.log
