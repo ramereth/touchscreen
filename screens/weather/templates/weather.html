@@ -1,0 +1,561 @@
+<!--
+    weather.html
+    by Rob McGuire-Dale, 12/31/2009
+
+    This screen displays the current weather, and a 5-day forcast
+-->
+
+<style>
+    /* current condition tile styles */
+    
+    .weather_cc_main_block_left{
+        display:block;
+        margin-right:4em;
+    }
+    
+    .weather_cc_block{
+        margin:2em;
+    }
+    
+    .weather_cc_block_top{
+        margin-bottom:1em;
+    }
+    
+    .weather_cc_block_bottom{
+        margin-top:1em;
+    }
+    
+    #weather_cc_temp{
+        font-size:70pt;
+    }
+    
+    .weather_cc_mainData{
+        font-size:14pt;
+    }
+    
+    .weather_cc_labels_left{
+        display:block;
+        margin-right:1em;
+    }
+    
+    .weather_cc_labels_right{
+        display:block;
+        margin-left:4em;
+        margin-right:1em;
+    }
+    
+    
+    /* forecast tile styles */
+    
+    #weather_forecast{
+        text-align:center;
+        bottom:0;
+    }
+    
+    #weather_forecast_table{
+        width:100%;
+    }
+    
+    .weather_forecast_icon{
+        padding-top:1em;
+        padding-bottom:1em;
+    }
+    
+    /* maps tile styles */
+    #weather_maps{
+        right:0;
+    }
+</style>
+
+<script type="text/javascript">
+
+    /////////////////
+    // Global Data //
+    /////////////////
+
+    // unit information
+    var weather_units = {
+        temp:null,      // i.e. F (fahrenheit) or C (celcius)
+        distance:null,  // i.e. km or mi
+        speed:null,     // i.e. kmh or mph
+        pressure:null   // i.e. mb (millibars) or in (inches of mercury)
+    };
+
+    // location information
+    var weather_locationInfo = {
+        name:null,      // city's name
+        time:null,      // location's current time
+        sunrise:null,   // time of sunrise
+        sunset:null     // time of sunset
+    };
+    
+    // current condition information
+    var weather_cc = {
+        lastUpdate:null,        // when the information was last updated
+        temp:null,              // the current temperature
+        feelsLike:null,         // the "feels like" temperature
+        condition:null,         // i.e. "sunny" or "overcast"
+        icon:null,              // associated condition icon
+        pressure:{              // barometric pressure
+            value:null,         // pressure value
+            description:null    // i.e. "steady"
+        },
+        wind:{                  // wind information
+            speed:null,         // wind speed
+            from:null           // direction wind is coming from, i.e. "NW"
+        },
+        humidity:null,          // the humidity percentage
+        visual:null,            // visibility value (how far one can see)
+        dewpoint:null,          // dewpoint temperature
+        moon:{                  // moon information
+            icon:null,          // associated moon phase icon
+            description:null    // i.e. "full"
+        },
+        uv:{
+            index:null,         // UV index
+            description:null    // i.e. "low" or "high"
+        }
+    };
+
+    // 5-day forecast information
+    var weather_forecast = {
+        lastUpdate:null,    // when the forecast information was last updated
+        days:new Array()    // an array of forecast days
+    };
+    
+    // A single forecast day
+    function weather_forecast_day( 
+        name,       // the name of the day
+        high,       // high temp of the day
+        low,        // low temp of the day
+        sunrise,    // sunrise time
+        sunset,     // sunset time
+        icon,       // icon associated with condition
+        condition,  // condition description
+        wind_speed, // speed of the wind
+        wind_from,  // direction wind is coming from, i.e. "NW"
+        precip,     // percent chance of precipitation
+        humidity )  // humidity percentage
+    {
+        this.name = name;
+        this.high = high;
+        this.low = low;
+        this.sunrise = sunrise;
+        this.sunset = sunset;
+        this.icon = icon;
+        this.condition = condition;
+        this.wind = {
+            speed:wind_speed,
+            from:wind_from
+        };
+        this.precip = precip;
+        this.humidity = humidity;
+    }
+
+    // Timer for the data refresh
+    var weather_dataRefreshTimer = null;
+
+    ///////////////////
+    // Screen Events //
+    ///////////////////
+
+    function weather_init()
+    {
+        safelog('weather: initializing...');
+    }
+
+    function weather_start()
+    {
+        safelog('weather: starting...');
+
+        // load the weather data from the weather feed
+        weather_loadData();
+
+        // start the weather maps cycle
+        $('#weather_maps').cycle({
+            fx:'fade',
+            fit:0,
+            containerResize:0,
+            timeout:{{settings.screens_weather.maps_cycle_timeout}}
+        });
+        
+        // setup debug buttons
+        $('#debug_f1').click(function(){
+            weather_loadData();
+        });
+    }
+
+    function weather_stop()
+    {
+        safelog('weather: stopping');
+
+        // clear the data refresh timer
+        clearTimeout(weather_dataRefreshTimer);
+        
+        // stop the weather maps cycle
+        $('#weather_maps').cycle('stop');
+    }
+
+    function weather_onScreenResize()
+    {
+        weather_refreshTiles();
+    }
+    
+    //////////////////
+    // Facilitators //
+    //////////////////
+
+    // refreshTiles()
+    // Repositions and resizes the tiles depending on their content.
+    function weather_refreshTiles()
+    {
+        safelog("weather: refreshing tiles...");
+        
+        // size the maps tile to match the height of the cc tile, and the width
+        // of the smallest map
+        $("#weather_maps").height(
+            $("#weather_cc").height()
+        );
+        $("#weather_maps").width( 600 -
+            $("#weather_maps").width() -
+            $("#weather_maps").innerWidth()
+        );
+
+        // resize each of the maps to fit inside the container
+        $(".weather_map").each( function(index){
+            $(this).height( $("#weather_maps").innerHeight() );
+            $(this).width( $("#weather_maps").innerWidth() );
+        });
+        
+        // size the forecast tile
+        $("#weather_forecast").width(
+            screenWidth() -
+            ($("#weather_forecast").outerWidth( true ) -
+            $("#weather_forecast").width())
+        );
+    }
+
+    // loadData()
+    // Loads data from the weather RSS feed into the data structure and
+    // refreshes the tiles with the loaded data.
+    function weather_loadData()
+    {
+        safelog( "weather: loading data..." );
+        
+        // get and prepare the weather feed URL
+        var weatherFeedURL = 
+            ("{{settings.screens_weather.weather_feed_URL}}&par={{settings.screens_weather.weather_feed_par_key_URL}}&key={{settings.screens_weather.weather_feed_main_key_URL}}")
+            .replace( /&amp\;/g, "&" );
+        
+        // get the feed
+        $.post('/proxy/',
+            {'url':weatherFeedURL },
+            function( weather_feed ){
+            
+            // load weather unit data (note: find will not find "head")
+            weather_units.temp = $( weather_feed ).find("ut").text();
+            weather_units.distance = $( weather_feed ).find("ud").text();
+            weather_units.speed = $( weather_feed ).find("us").text();
+            weather_units.pressure = $( weather_feed ).find("up").text();
+
+            // load location data
+            weather_locationInfo.name = 
+                $( weather_feed ).find("loc>dnam").text();
+            weather_locationInfo.time = 
+                $( weather_feed ).find("loc>tm").text();
+            weather_locationInfo.sunrise = 
+                $( weather_feed ).find("loc>sunr").text();
+            weather_locationInfo.sunset = 
+                $( weather_feed ).find("loc>suns").text();
+
+            // load current condition data
+            weather_cc.lastUpdate = 
+                $(weather_feed).find("cc>lsup").text();
+            weather_cc.temp = $(weather_feed).find("cc>tmp").text();
+            weather_cc.feelsLike = 
+                $(weather_feed).find("cc>flik").text();
+            weather_cc.condition = $(weather_feed).find("cc>t").text();
+            weather_cc.icon = $(weather_feed).find("cc>icon").text();
+            weather_cc.pressure.value = 
+                $(weather_feed).find("cc>bar>r").text();
+            weather_cc.pressure.description = 
+                $(weather_feed).find("cc>bar>d").text();
+            weather_cc.wind.speed = 
+                $(weather_feed).find("cc>wind>s").text();
+            weather_cc.wind.from = 
+                $(weather_feed).find("cc>wind>t").text();
+            weather_cc.humidity = $(weather_feed).find("cc>hmid").text();
+            weather_cc.visual = $(weather_feed).find("cc>vis").text();
+            weather_cc.dewpoint = $(weather_feed).find("cc>dewp").text();
+            weather_cc.moon.icon = 
+                $(weather_feed).find("cc>moon>icon").text();
+            weather_cc.moon.description = 
+                $(weather_feed).find("cc>moon>t").text();
+            weather_cc.uv.index = 
+                $(weather_feed).find("cc>uv>i").text();
+            weather_cc.uv.description = 
+                $(weather_feed).find("cc>uv>t").text();
+            
+            // load 5-day forecast data
+            weather_forecast.lastUpdate = 
+                $(weather_feed).find("dayf>lsup").text();
+            
+            $(weather_feed).find("dayf>day").each(function(dayIndex){
+                
+                // grab the day part of the day
+                var dayPart = null;
+                $(this).find("part").each(function(){
+                    if($(this).attr("p")=="d") dayPart = $(this);
+                });
+                
+                // push a new day onto the days array
+                weather_forecast.days.push( 
+                    new weather_forecast_day(
+                        $(this).attr("t"),
+                        $(this).find("hi").text(),
+                        $(this).find("low").text(),
+                        $(this).find("sunr").text(),
+                        $(this).find("suns").text(),
+                        dayPart.find("icon").text(),
+                        dayPart.find("t").eq(0).text(),
+                        dayPart.find("wind>s").text(),
+                        dayPart.find("wind>t").text(),
+                        dayPart.find("ppcp").text(),
+                        dayPart.find("hmid").text()
+                    )
+                );
+                
+            });
+           
+            // fill the tiles with the loaded data
+            weather_fillTiles();
+
+            // set a timeout to reload the data again at a specified interval
+            weather_dataRefreshTimer = 
+                setTimeout(
+                    'weather_loadData()',
+                    {{settings.screens_weather.refresh_interval}}
+                );
+        });
+    }
+
+    // fillTiles()
+    // Fills the tiles with data from the data structure
+    function weather_fillTiles()
+    {
+        safelog( "weather: filling tiles..." );
+        
+        // fill the current conditions tile
+        $("#weather_cc_icon").html(
+            "<img class='display_centered_block'" +
+                " src='{{SITE_ROOT}}/static/screens/weather/icons/large/" +
+                weather_cc.icon + 
+                ".png'>"
+        );
+        
+        $("#weather_cc_temp").html(
+            weather_cc.temp + "&#176;"
+        );
+        
+        $("#weather_cc_feelsLike").html( 
+            "(Feels like " + weather_cc.feelsLike + " &#176;)" 
+        );
+        
+        $("#weather_cc_condition").html(
+            weather_cc.condition
+        );
+        
+        if( weather_cc.wind.speed == "calm" )
+            $("#weather_cc_wind").html( "calm" );
+        else
+            $("#weather_cc_wind").html( 
+                weather_cc.wind.speed + " " + 
+                weather_units.speed +
+                " " + weather_cc.wind.from 
+            );
+        
+        $("#weather_cc_humiditiy").html( 
+            weather_cc.humidity + "%"
+        );
+        
+        $("#weather_cc_pressure").html( 
+            weather_cc.pressure.value + " " + 
+            weather_units.pressure + ". (" +
+            weather_cc.pressure.description + ")"
+        );
+        
+        $("#weather_cc_visibility").html( 
+            weather_cc.visual + " " + 
+            weather_units.distance + "."
+        );
+        
+        $("#weather_cc_uv").html( weather_cc.uv.index +
+            " (" + weather_cc.uv.description + ")"
+        );
+        
+        $("#weather_cc_lastUpdate").html(
+            weather_cc.lastUpdate
+        );
+        
+        
+        // fill the 5-day forecast tile
+        $(".weather_forecast_day").each(function(dayIndex){
+            
+            // day names
+            $(this).html( 
+                "<h1>" + 
+                    // add 1 to days so it doesn't include the current
+                    // day
+                    weather_forecast.days[dayIndex+1].name +
+                "</h1>"
+            );
+            
+            // icons
+            $(".weather_forecast_icon").eq(dayIndex).html(
+                "<img class='centered_block' "+
+                    "src='{{SITE_ROOT}}/static/screens/weather/icons/large/" +
+                    weather_forecast.days[dayIndex+1].icon + 
+                    ".png' height='{{settings.screens_weather.forecast_icon_height}}'>"
+            );
+            
+            // conditions
+            $(".weather_forecast_cond").eq(dayIndex).html( 
+                // add 1 to days so it doesn't include the current day
+                weather_forecast.days[dayIndex+1].condition
+            );
+            
+            // temperature
+            $(".weather_forecast_temp").eq(dayIndex).html( 
+                // add 1 to days so it doesn't include the current day
+                weather_forecast.days[dayIndex+1].low + "/" +
+                weather_forecast.days[dayIndex+1].high
+            );
+        });  
+
+        // force a refresh with the newly filled data
+        weather_refreshTiles();
+    }
+    
+</script>
+
+<!-- Maps Tile -->
+<div id="weather_maps" class="display_tile display_content">
+    <img class="weather_map"
+        src="http://image.weather.com/web/radar/us_pdx_closeradar_plus_usen.jpg">
+    <img class="weather_map"
+        src="http://image.weather.com/images/sat/regions/northwest_sat_720x486.jpg">
+    <img class="weather_map"
+        src="http://image.weather.com/images/maps/current/nw_curtemp_720x486.jpg">
+    <img class="weather_map"
+        src="http://image.weather.com/images/maps/current/cur_nw_720x486.jpg">
+</div>
+
+<!-- Current Weather Tile -->
+<div id="weather_cc" class="display_tile display_content">
+
+    <center>
+    
+    <h1>Current Conditions</h1>
+    
+    <table class="weather_cc_block" border=0>
+        <tr>
+            <td class="centered_block weather_cc_main_block_left" 
+                id="weather_cc_icon">
+            </td>
+            <td class="default_color centered" 
+                id="weather_cc_temp">
+            </td>
+        </tr>
+        <tr>
+            <td class="default_color default_size centered weather_cc_mainData weather_cc_main_block_left" 
+                id="weather_cc_condition">
+            </td>
+            <td class="default_color default_size centered weather_cc_mainData" 
+                id="weather_cc_feelsLike">
+            </td>
+        </tr>
+    </table>
+    
+    <table class="weather_cc_block" border=0>
+        <tr>
+            <td class="default_color default_size bold weather_cc_labels_left">
+                Wind
+            </td>
+            <td class="default_color default_size" 
+                id="weather_cc_wind">
+            </td>
+            <td class="default_color default_size bold weather_cc_labels_right">
+                Humidity
+            </td>
+            <td class="default_color default_size" 
+                id="weather_cc_humiditiy">
+            </td>
+        </tr>
+        <tr>
+            <td class="default_color default_size bold weather_cc_labels_left">
+                Pressure
+            </td>   
+            <td class="default_color default_size" 
+                id="weather_cc_pressure">
+            </td> 
+            <td class="default_color default_size bold weather_cc_labels_right">
+                Visibility
+            </td> 
+            <td class="default_color default_size" 
+                id="weather_cc_visibility">
+            </td>
+        </tr>
+        <tr>
+            <td class="default_color default_size bold weather_cc_labels_left">
+                UV Index
+            </td>   
+            <td class="default_color default_size" id="weather_cc_uv">
+            </td> 
+            <td class="default_color default_size bold weather_cc_labels_right">
+                Dewpoint
+            </td>   
+            <td class="default_color default_size" 
+                id="weather_cc_dewpoint">
+            </td>
+        </tr>
+    </table>
+    
+    <div class="default_color weather_cc_block_bottom" 
+        style="font-size:8pt">
+        Last update <span id="weather_cc_lastUpdate"></span>
+    </div>
+    
+    </center>
+    
+</div>
+
+<!-- 5-Day Forecast Tile -->
+<div id="weather_forecast"
+    class="display_tile display_content">
+    <table id="weather_forecast_table" border=0>
+        <tr>
+            <td class="default_color default_size weather_forecast_day"></td>
+            <td class="default_color default_size weather_forecast_day"></td>
+            <td class="default_color default_size weather_forecast_day"></td>
+            <td class="default_color default_size weather_forecast_day"></td>
+        </tr>
+        <tr>
+            <td class="default_color default_size weather_forecast_icon"></td>
+            <td class="default_color default_size weather_forecast_icon"></td>
+            <td class="default_color default_size weather_forecast_icon"></td>
+            <td class="default_color default_size weather_forecast_icon"></td>
+        </tr>
+        <tr>
+            <td class="default_color default_size weather_forecast_cond"></td>
+            <td class="default_color default_size weather_forecast_cond"></td>
+            <td class="default_color default_size weather_forecast_cond"></td>
+            <td class="default_color default_size weather_forecast_cond"></td>
+        </tr>
+        <tr>
+            <td class="default_color default_size weather_forecast_temp"></td>
+            <td class="default_color default_size weather_forecast_temp"></td>
+            <td class="default_color default_size weather_forecast_temp"></td>
+            <td class="default_color default_size weather_forecast_temp"></td>
+        </tr>
+    </table>
+</div>
