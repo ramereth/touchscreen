@@ -31,8 +31,8 @@ osl_about = Screen(
 
     # Optional Parameters --------------------------------------
     duration=300000, # how long to display the screen
-    hide='slide',    # the hide transition
-    show='slide',    # the show transition
+    #hide='slide',    # the hide transition
+    #show='slide',    # the show transition
     slideshow=True,  # include the screen in the slideshow?
 
     js_init ='osl_about_init',  # a function to call when

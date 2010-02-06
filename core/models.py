@@ -44,7 +44,10 @@ class Plugin(models.Model):
         abstract = True
 
     def generate_hash(self):
-        self.hash = '%s_%s' % (self.app, self.name)
+        # self.hash = '%s_%s' % (self.app, self.name) <-- Original hash
+        self.hash = '%s' % self.app.replace('.','_') # sanitize name
+
+        
 
     def validate(self):
         if not name:
