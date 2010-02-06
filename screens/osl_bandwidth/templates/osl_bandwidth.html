@@ -1,0 +1,296 @@
+<!--
+    osl_bandwidth.html
+    by Rob McGuire-Dale, 3/7/2009
+    last modified by Rob McGuire-Dale, 9/23/2009
+
+    This screen displays osl bandwidth graphs
+-->
+
+<script type="text/javascript">
+
+    // A settings class to make the code a little cleaner
+    osl_bandwidth_settings = new osl_bandwidth_settings();
+    function osl_bandwidth_settings()
+    {
+        this.titles = [
+            '{{settings.screens_osl_bandwidth.title_0}}',
+            '{{settings.screens_osl_bandwidth.title_1}}',
+            '{{settings.screens_osl_bandwidth.title_2}}',
+            '{{settings.screens_osl_bandwidth.title_3}}',
+            '{{settings.screens_osl_bandwidth.title_4}}',
+            '{{settings.screens_osl_bandwidth.title_5}}'
+        ];
+
+        this.a_images = [
+            '{{settings.screens_osl_bandwidth.imgAddr_0a}}',
+            '{{settings.screens_osl_bandwidth.imgAddr_1a}}',
+            '{{settings.screens_osl_bandwidth.imgAddr_2a}}',
+            '{{settings.screens_osl_bandwidth.imgAddr_3a}}',
+            '{{settings.screens_osl_bandwidth.imgAddr_4a}}',
+            '{{settings.screens_osl_bandwidth.imgAddr_5a}}'
+        ];
+
+        this.b_images = [
+            '{{settings.screens_osl_bandwidth.imgAddr_0b}}',
+            '{{settings.screens_osl_bandwidth.imgAddr_1b}}',
+            '{{settings.screens_osl_bandwidth.imgAddr_2b}}',
+            '{{settings.screens_osl_bandwidth.imgAddr_3b}}',
+            '{{settings.screens_osl_bandwidth.imgAddr_4b}}',
+            '{{settings.screens_osl_bandwidth.imgAddr_5b}}'
+        ];
+        
+        this.numThumbs = Math.min( 
+            this.titles.length, this.a_images.length, this.b_images.length );
+            
+    }
+
+    // ======================
+    //  SCREEN PLUGIN EVENTS
+    // ======================
+    //      Functions that are run at particular events in the screen plugin's
+    //      life cycle.
+
+    function osl_bandwidth_init()
+    {
+        safelog('osl_bandwidth: initializing...');
+
+        //write the html for the tiles
+        osl_bandwidth_write_tile_html();
+        
+        // make images refresh themselves at the specified interval
+        $(".osl_bandwidth_img").refreshImage({
+            interval:
+                {{settings.screens_osl_bandwidth.imgRefreshInterval}},
+            start:true
+        });
+
+        // position the tiles
+        osl_bandwidth_positionTiles();
+        
+        // intitialize tile click event handling. NOTE: This section is for 
+		// demonstration purposes only. Eventually, these div manipulations will
+		// be done via the touchscreen interface.
+        osl_bandwidth_initTileClickEvents();
+    }
+
+    function osl_bandwidth_start()
+    {
+        safelog('osl_bandwidth: starting...');
+
+        // position the thumbnail tiles
+        osl_bandwidth_positionTiles();
+        
+        // randomize the main tile
+        osl_bandwidth_randomizeMainTile(); 
+    }
+
+    function osl_bandwidth_stop()
+    {
+        safelog('osl_bandwidth: stopping...');        
+    }
+
+    function osl_bandwidth_onWinResize()
+    {
+        osl_bandwidth_positionTiles();
+    }
+
+    // ==============
+    //  INITIALIZERS
+    // ==============
+    //      Functions that initialize elements of the the screen plugin.
+
+    function osl_bandwidth_write_tile_html()
+    {
+    
+        // write the main div
+        $("#osl_bandwidth_wrapper").append((<r><![CDATA[
+            <div id='osl_bandwidth_main' class='display_img display_tile'>
+
+                <div id='osl_bandwidth_title_main' class='display_img_caption'>
+                    {{settings.screens_osl_bandwidth.title_0}}
+                </div>
+
+                <table>
+                    <tr>
+                        <td>
+                            <img id='osl_bandwidth_img_main_a' class='osl_bandwidth_img'
+                            src='{{settings.screens_osl_bandwidth.imgAddr_0a}}'
+                            height={{settings.screens_osl_bandwidth.mainTile_height}}
+                            width={{settings.screens_osl_bandwidth.mainTile_width}}> 
+                        </td>
+                        
+                        <td>
+                            <img id='osl_bandwidth_img_main_b' class='osl_bandwidth_img'
+                            src='{{settings.screens_osl_bandwidth.imgAddr_0b}}'
+                            height={{settings.screens_osl_bandwidth.mainTile_height}}
+                            width={{settings.screens_osl_bandwidth.mainTile_width}}> 
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        ]]></r>).toString());
+        
+        // write the thumbnails
+        for( var i = 0; i < osl_bandwidth_settings.numThumbs; i++ ){
+            $("#osl_bandwidth_wrapper").append('                                                 \
+                <div id="osl_bandwidth_thumb_' + i + '" class="display_img_thumb display_tile "> \
+                                                                                                        \
+                    <div id="osl_bandwidth_title_' + i + '" class="display_img_thumb_caption">   \
+                        ' + osl_bandwidth_settings.titles[i] + '                                 \
+                    </div>                                                                              \
+                                                                                                        \
+                    <img id="osl_bandwidth_img_' + i + 'a" class="osl_bandwidth_img"      \
+                    src="' + osl_bandwidth_settings.a_images[i] + '"                             \
+                    height={{settings.screens_osl_bandwidth.thumbnail_img_height}}  \
+                    width={{settings.screens_osl_bandwidth.thumbnail_img_width}}>   \
+                                                                                                        \
+                    <img id="osl_bandwidth_img_' + i + 'b" class="osl_bandwidth_img"      \
+                    src="' + osl_bandwidth_settings.b_images[i] + '"                             \
+                    height={{settings.screens_osl_bandwidth.thumbnail_img_height}}  \
+                    width={{settings.screens_osl_bandwidth.thumbnail_img_width}}>   \
+                </div>                                                                                  \
+            ');
+        }
+        
+        // randomize the main tile
+        osl_bandwidth_randomizeMainTile(); 
+    }
+
+    function osl_bandwidth_initTileClickEvents()
+    {
+    	// click event handling (NOTE: This section is for demonstration 
+		// purposes only. Eventually, these tile manipulations will be done via 
+		// the touchscreen interface.
+		
+		$("#osl_bandwidth_thumb_0").click(function(){ 
+		    osl_bandwidth_displayToMainTile( 
+		        "{{settings.screens_osl_bandwidth.title_0}}",
+		        "{{settings.screens_osl_bandwidth.imgAddr_0a}}",
+		        "{{settings.screens_osl_bandwidth.imgAddr_0b}}"
+		    );
+		});
+		$("#osl_bandwidth_thumb_1").click(function(){ 
+		    osl_bandwidth_displayToMainTile( 
+		        "{{settings.screens_osl_bandwidth.title_1}}",
+		        "{{settings.screens_osl_bandwidth.imgAddr_1a}}",
+		        "{{settings.screens_osl_bandwidth.imgAddr_1b}}"
+		    );
+		});
+		$("#osl_bandwidth_thumb_2").click(function(){ 
+		    osl_bandwidth_displayToMainTile( 
+		        "{{settings.screens_osl_bandwidth.title_2}}",
+		        "{{settings.screens_osl_bandwidth.imgAddr_2a}}",
+		        "{{settings.screens_osl_bandwidth.imgAddr_2b}}"
+		    );
+		});
+		$("#osl_bandwidth_thumb_3").click(function(){ 
+		    osl_bandwidth_displayToMainTile( 
+		        "{{settings.screens_osl_bandwidth.title_3}}",
+		        "{{settings.screens_osl_bandwidth.imgAddr_3a}}",
+		        "{{settings.screens_osl_bandwidth.imgAddr_3b}}"
+		    );
+		});
+		$("#osl_bandwidth_thumb_4").click(function(){ 
+		    osl_bandwidth_displayToMainTile( 
+		        "{{settings.screens_osl_bandwidth.title_4}}",
+		        "{{settings.screens_osl_bandwidth.imgAddr_4a}}",
+		        "{{settings.screens_osl_bandwidth.imgAddr_4b}}"
+		    );
+		});
+		$("#osl_bandwidth_thumb_5").click(function(){ 
+		    osl_bandwidth_displayToMainTile( 
+		        "{{settings.screens_osl_bandwidth.title_5}}",
+		        "{{settings.screens_osl_bandwidth.imgAddr_5a}}",
+		        "{{settings.screens_osl_bandwidth.imgAddr_5b}}"
+		    );
+		});
+    }
+
+    // ==============
+    //  FACILITATORS
+    // ==============
+    //      Functions responsible for manipulating the tiles
+
+    function osl_bandwidth_positionTiles()
+    {
+        // calculate the padding between the tiles to evently distribute them
+        // across the screen
+        var horizPadding = (screenWidth() -
+            $("#osl_bandwidth_thumb_0").outerWidth(true) *
+            osl_bandwidth_settings.titles.length/2)/
+            ((osl_bandwidth_settings.titles.length/2) - 1);
+
+        // position the thumbs
+        for( var i = 0; i < osl_bandwidth_settings.titles.length/2; i++ ){
+
+            // top row
+            $("#osl_bandwidth_thumb_" + i).css('left',
+                $("#osl_bandwidth_thumb_0").outerWidth(true) * i +
+                horizPadding * i);
+
+            // bottom row
+            $("#osl_bandwidth_thumb_" + (i + osl_bandwidth_settings.titles.length/2)).css('bottom', 0 );
+            $("#osl_bandwidth_thumb_" + (i + osl_bandwidth_settings.titles.length/2)).css('left',
+                $("#osl_bandwidth_thumb_0").outerWidth(true) * i +
+                horizPadding * i );
+        }
+
+        // place the tile in the middle of the screen
+        $("#osl_bandwidth_main").css('top', screenHeight()/2 -
+            $("#osl_bandwidth_main").outerHeight(true)/2);
+        $("#osl_bandwidth_main").css('left', screenWidth()/2 -
+            $("#osl_bandwidth_main").outerWidth(true)/2);
+    }
+
+    // display a random graph pair to the main tile
+    function osl_bandwidth_randomizeMainTile(){
+    
+        // fill the main tile with a random graph and title set
+        var randIndex=Math.floor(
+            Math.random()*osl_bandwidth_settings.titles.length 
+        );
+            
+        osl_bandwidth_displayToMainTile(
+            osl_bandwidth_settings.titles[ randIndex ],
+            osl_bandwidth_settings.a_images[ randIndex ],
+            osl_bandwidth_settings.b_images[ randIndex ],
+            "fast"
+        );
+    }
+
+    // Display two graphs from the specified address with the specified title in
+    // the main tile with some fade effects
+    function osl_bandwidth_displayToMainTile( title, addr_a, addr_b, speed )
+    {
+    
+        // default speed if not defined is slow
+        if( speed == undefined ) speed = "slow";
+
+        // fade out the main tile
+        $("#osl_bandwidth_main").fadeOut( speed, function(){
+
+            // fill the main tile with the title and the picture of the
+            // specified webcam shot
+            $("#osl_bandwidth_title_main").html( title +
+                " Bandwidth Usage" );
+            $("#osl_bandwidth_img_main_a").attr( 'src', addr_a );
+            $("#osl_bandwidth_img_main_b").attr( 'src', addr_b );
+            $("#osl_bandwidth_img_main").height(
+                {{settings.screens_osl_bandwidth.mainTile_height}}
+            );
+
+            // set max height and width
+            $("#osl_bandwidth_img_main").attr( 'max-height',
+                '{{settings.screens_osl_bandwidth.mainTile_height}}' );
+            $("#osl_bandwidth_img_main").attr( 'max-width',
+                '{{settings.screens_osl_bandwidth.mainTile_width}}' );
+        });
+
+        // fade the main tile back in
+        $("#osl_bandwidth_main").fadeIn( speed );
+    }
+
+</script>
+
+<!-- set up the main screen wrapper. Will be filled by initTiles() above -->
+<div id="osl_bandwidth_wrapper"></div>

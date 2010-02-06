@@ -34,20 +34,20 @@
             function slide_in(screen) {
                 id = screen['id']
                 duration = 1000;
-                $('#screen_'+id).animate({left:0}, duration );
+                $('#'+id).animate({left:0}, duration );
                 return duration;
             }
 
             function slide_out(screen) {
                 id = screen['id']
                 duration = 1000;
-                $('#screen_'+id).animate({left:-1400}, duration );
+                $('#'+id).animate({left:-1400}, duration );
                 return duration;
             }
 
             function fade_in(screen) {
                 id = screen['id']
-                $screen = $('#screen_'+id);
+                $screen = $('#'+id);
 
                 //first move the screen into place
                 $screen.css('left',0);
@@ -61,7 +61,7 @@
 
             function fade_out(screen) {
                 id = screen['id']
-                $screen = $('#screen_'+id);
+                $screen = $('#'+id);
 
                 //fade the contents out
                 $screen.children('.content').fadeOut(750, function(){
@@ -442,11 +442,11 @@
     </head>
 
     <body>
-        <div id='screens'>
+
+        <div id='debug'>
             <!-- debug window -->
             <table id='debug_window' class='ui-widget ui-corner-all'>
                 <tr>
-                
                     <!-- debug title -->
                     <td colspan="4" class="debug_button-cells">
                         <b>debug</b>
@@ -458,7 +458,6 @@
                             class="debug_buttons ui-icon ui-icon-close">
                         </span>
                     </td>
-                    
                 </tr>
                 
                 <!-- slide show control buttons -->
@@ -504,13 +503,16 @@
                         <span id="debug_f5" class="debug_buttons">F5</span></td>
                 </tr>
             </table>
+        </div>
 
+        <div id='screens'>
             <!-- create screen divs -->
             {% for key, screen in screens.items %}
-                <div id='screen_{{screen.hash}}' class='screen'>
+                <div id='{{screen.hash}}' class='screen'>
                     {% include screen.template %}
                 </div>
             {% endfor %}
-
         </div>
+        
     </body>
+</html>

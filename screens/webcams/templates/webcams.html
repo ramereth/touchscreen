@@ -1,0 +1,458 @@
+<!--
+    webcams.html
+    by Rob McGuire-Dale, 3/7/2009
+    last modified by Rob McGuire-Dale, 9/23/2009
+
+    This screen displays the current shots of the different webcams around OSU's
+    facilities.
+-->
+
+<script type="text/javascript">
+
+    /////////////////
+    // Global Data //
+    /////////////////
+
+    // A flag to tell if the displayToMainTile function is running (to prevent
+    // main tile flickering)
+    var webcams_displayToMainTileRunning = false;
+
+    ///////////////////
+    // Screen Events //
+    ///////////////////
+
+    function webcams_init()
+    {
+        safelog('webcams: initializing...');
+
+        // intitialize tile click event handling. NOTE: This section is for
+        // demonstration purposes only. Eventually, these div manipulations will
+        // be done via the touchscreen interface.
+        webcams_initTileClickEvents();
+
+        // make images refresh themselves at the specified interval
+        $(".webcams_img").refreshImage({
+            interval:
+                {{settings.screens_webcams.imgRefreshInterval}},
+            start:true
+        });
+    }
+
+    function webcams_start()
+    {
+        safelog('webcams: starting...');
+
+        // position the thumbnail tiles
+        webcams_positionTiles();
+
+        //  initialize the main tile
+        webcams_displayToMainTile(
+            "{{settings.screens_webcams.title_mu}}",
+            "{{settings.screens_webcams.imgAddr_mu}}"
+        );
+    }
+
+    function webcams_stop()
+    {
+        safelog('webcams: stopping...');
+    }
+
+    function webcams_onWinResize() 
+    {
+        // position the thumbnail tiles
+        webcams_positionTiles();
+
+        //  initialize the main tile
+        webcams_displayToMainTile(
+            "{{settings.screens_webcams.title_mu}}",
+            "{{settings.screens_webcams.imgAddr_mu}}"
+        );
+    }
+
+    //////////////////
+    // Initializers //
+    //////////////////
+
+    // positionTiles()
+    // Resizes and repositions tiles depending on thier content.
+    function webcams_positionTiles()
+    {
+        // calculate the padding between the tiles to evently distribute them
+        // across the screen
+        var tilePadding_horiz = (
+            screenWidth() -
+            $("#webcams_monroe").outerWidth(true) -
+            $("#webcams_reser").outerWidth(true) -
+            $("#webcams_mu").outerWidth(true) -
+            $("#webcams_library").outerWidth(true) -
+            $("#webcams_gloss").outerWidth(true) -
+            $("#webcams_wave").outerWidth(true) )/5;
+
+        // top row
+        $("#webcams_reser").css('left',
+            $("#webcams_monroe").outerWidth(true) +
+            tilePadding_horiz );
+
+        $("#webcams_mu").css('left',
+            $("#webcams_monroe").outerWidth(true) +
+            $("#webcams_reser").outerWidth(true) +
+            tilePadding_horiz * 2 );
+
+        $("#webcams_library").css('left',
+            $("#webcams_monroe").outerWidth(true) +
+            $("#webcams_reser").outerWidth(true) +
+            $("#webcams_mu").outerWidth(true) +
+            tilePadding_horiz * 3 );
+
+        $("#webcams_gloss").css('left',
+            $("#webcams_monroe").outerWidth(true) +
+            $("#webcams_reser").outerWidth(true) +
+            $("#webcams_mu").outerWidth(true) +
+            $("#webcams_library").outerWidth(true) +
+            tilePadding_horiz * 4 );
+
+        $("#webcams_wave").css('left',
+            $("#webcams_monroe").outerWidth(true) +
+            $("#webcams_reser").outerWidth(true) +
+            $("#webcams_mu").outerWidth(true) +
+            $("#webcams_library").outerWidth(true) +
+            $("#webcams_gloss").outerWidth(true) +
+            tilePadding_horiz * 5 );
+
+        // bottom row
+        $("#webcams_south").css('bottom', 0 );
+
+        $("#webcams_gill").css('bottom', 0 );
+        $("#webcams_gill").css('left',
+            $("#webcams_south").outerWidth(true) +
+            tilePadding_horiz );
+
+        $("#webcams_andrews").css('bottom', 0 );
+        $("#webcams_andrews").css('left',
+            $("#webcams_south").outerWidth(true) +
+            $("#webcams_gill").outerWidth(true) +
+            tilePadding_horiz * 2 );
+
+        $("#webcams_hatfield").css('bottom', 0 );
+        $("#webcams_hatfield").css('left',
+            $("#webcams_south").outerWidth(true) +
+            $("#webcams_gill").outerWidth(true) +
+            $("#webcams_andrews").outerWidth(true) +
+            tilePadding_horiz * 3 );
+
+        $("#webcams_agate").css('bottom', 0 );
+        $("#webcams_agate").css('left',
+            $("#webcams_south").outerWidth(true) +
+            $("#webcams_gill").outerWidth(true) +
+            $("#webcams_andrews").outerWidth(true) +
+            $("#webcams_hatfield").outerWidth(true) +
+            tilePadding_horiz * 4 );
+
+        $("#webcams_wecoma").css('bottom', 0 );
+        $("#webcams_wecoma").css('left',
+            $("#webcams_south").outerWidth(true) +
+            $("#webcams_gill").outerWidth(true) +
+            $("#webcams_andrews").outerWidth(true) +
+            $("#webcams_hatfield").outerWidth(true) +
+            $("#webcams_agate").outerWidth(true) +
+            tilePadding_horiz * 5 );
+
+    }
+
+    // initTileClickEvents()
+    // Initialize click event handling. (NOTE: This section is for demonstration
+    // purposes only. Eventually, these tile manipulations will be done via the
+    // touchscreen control interface.)
+    function webcams_initTileClickEvents()
+    {
+        $("#webcams_monroe").click(function(){
+            webcams_displayToMainTile(
+                "{{settings.screens_webcams.title_monroe}}",
+                "{{settings.screens_webcams.imgAddr_monroe}}"
+            );
+        });
+        $("#webcams_reser").click(function(){
+            webcams_displayToMainTile(
+                "{{settings.screens_webcams.title_reser}}",
+                "{{settings.screens_webcams.imgAddr_reser}}"
+            );
+        });
+        $("#webcams_mu").click(function(){
+            webcams_displayToMainTile(
+                "{{settings.screens_webcams.title_mu}}",
+                "{{settings.screens_webcams.imgAddr_mu}}"
+            );
+        });
+        $("#webcams_library").click(function(){
+            webcams_displayToMainTile(
+                "{{settings.screens_webcams.title_library}}",
+                "{{settings.screens_webcams.imgAddr_library}}"
+            );
+        });
+        $("#webcams_gloss").click(function(){
+            webcams_displayToMainTile(
+                "{{settings.screens_webcams.title_gloss}}",
+                "{{settings.screens_webcams.imgAddr_gloss}}"
+            );
+        });
+        $("#webcams_wave").click(function(){
+            webcams_displayToMainTile(
+                "{{settings.screens_webcams.title_wave}}",
+                "{{settings.screens_webcams.imgAddr_wave}}"
+            );
+        });
+        $("#webcams_hatfield").click(function(){
+            webcams_displayToMainTile(
+                "{{settings.screens_webcams.title_hatfield}}",
+                "{{settings.screens_webcams.imgAddr_hatfield}}"
+            );
+        });
+        $("#webcams_agate").click(function(){
+            webcams_displayToMainTile(
+                "{{settings.screens_webcams.title_agate}}",
+                "{{settings.screens_webcams.imgAddr_agate}}"
+            );
+        });
+        $("#webcams_wecoma").click(function(){
+            webcams_displayToMainTile(
+                "{{settings.screens_webcams.title_wecoma}}",
+                "{{settings.screens_webcams.imgAddr_wecoma}}"
+            );
+        });
+        $("#webcams_south").click(function(){
+            webcams_displayToMainTile(
+                "{{settings.screens_webcams.title_south}}",
+                "{{settings.screens_webcams.imgAddr_south}}"
+            );
+        });
+        $("#webcams_gill").click(function(){
+            webcams_displayToMainTile(
+                "{{settings.screens_webcams.title_gill}}",
+                "{{settings.screens_webcams.imgAddr_gill}}"
+            );
+        });
+        $("#webcams_andrews").click(function(){
+            webcams_displayToMainTile(
+                "{{settings.screens_webcams.title_andrews}}",
+                "{{settings.screens_webcams.imgAddr_andrews}}"
+            );
+        });
+    }
+
+    ///////////////////
+    //  FACILITATORS //
+    ///////////////////
+
+    // displayToMainTile( title, addr )
+    // Display an image at the specified address with the specified title in the
+    // main tile.
+    function webcams_displayToMainTile( title, addr )
+    {
+        // make sure only one instance of this function runs at a time
+        if( !webcams_displayToMainTileRunning ){
+
+            // set a running flag so only one function runs at a time
+            webcams_displayToMainTileRunning = true;
+            
+            // fade out the main tile
+            $("#webcams_main").fadeOut(function(){
+
+                // fill the main tile with the title and the picture of the
+                // specified webcam shot
+                $("#webcams_title_main").html( title );
+                $("#webcams_img_main").attr( 'src', addr );
+                $("#webcams_img_main").height(
+                    {{settings.screens_webcams.mainTile_height}}
+                );
+
+                // set max height and width
+                $("#webcams_img_main").attr( 'max-height',
+                    '{{settings.screens_webcams.mainTile_height}}'
+                );
+                $("#webcams_img_main").attr( 'max-width',
+                    '{{settings.screens_webcams.mainTile_width}}'
+                );
+
+                // place the tile in the middle of the screen
+                $("#webcams_main").css('top', screenHeight()/2 -
+                    $("#webcams_main").outerHeight(true)/2);
+                $("#webcams_main").css('left', screenWidth()/2 -
+                    $("#webcams_main").outerWidth(true)/2);
+
+                // fade the main tile back in
+                $("#webcams_main").fadeIn("slow");
+
+                // clear the running flag to allow the function to run again
+                webcams_displayToMainTileRunning = false;
+            });
+        }
+    }
+</script>
+
+<!-- set up HTML divs for each tile ------------------------------------------->
+<div id="webcams_mu" class="display_img_thumb display_tile ">
+
+    <div class="display_img_thumb_caption">
+        {{settings.screens_webcams.title_mu}}
+    </div>
+
+    <img id="webcams_img_mu" class="webcams_img"
+        src="{{settings.screens_webcams.imgAddr_mu}}"
+        height={{settings.screens_webcams.thumbnail_height}}
+        width={{settings.screens_webcams.thumbnail_width}}>
+
+</div>
+
+<div id="webcams_library" class="display_img_thumb display_tile ">
+
+    <div class="display_img_thumb_caption">
+        {{settings.screens_webcams.title_library}}
+    </div>
+
+    <img id="webcams_img_library" class="webcams_img"
+        src="{{settings.screens_webcams.imgAddr_library}}"
+        height={{settings.screens_webcams.thumbnail_height}}
+        width={{settings.screens_webcams.thumbnail_width}}>
+
+</div>
+
+<div id="webcams_monroe" class="display_img_thumb display_tile ">
+
+    <div class="display_img_thumb_caption">
+        {{settings.screens_webcams.title_monroe}}
+    </div>
+
+    <img id="webcams_img_monroe" class="webcams_img"
+        src="{{settings.screens_webcams.imgAddr_monroe}}"
+        height={{settings.screens_webcams.thumbnail_height}}
+        width={{settings.screens_webcams.thumbnail_width}}>
+
+</div>
+
+<div id="webcams_south" class="display_img_thumb display_tile ">
+
+    <div class="display_img_thumb_caption">
+        {{settings.screens_webcams.title_south}}
+    </div>
+
+    <img id="webcams_img_south" class="webcams_img"
+        src="{{settings.screens_webcams.imgAddr_south}}"
+        height={{settings.screens_webcams.thumbnail_height}}
+        width={{settings.screens_webcams.thumbnail_width}}>
+
+</div>
+
+<div id="webcams_reser" class="display_img_thumb display_tile ">
+
+    <div class="display_img_thumb_caption">
+        {{settings.screens_webcams.title_reser}}
+    </div>
+
+    <img id="webcams_img_reser" class="webcams_img"
+        src="{{settings.screens_webcams.imgAddr_reser}}"
+        height={{settings.screens_webcams.thumbnail_height}}
+        width={{settings.screens_webcams.thumbnail_width}}>
+
+</div>
+
+<div id="webcams_gloss" class="display_img_thumb display_tile ">
+
+    <div class="display_img_thumb_caption">
+        {{settings.screens_webcams.title_gloss}}
+    </div>
+
+    <img id="webcams_img_gloss" class="webcams_img"
+        src="{{settings.screens_webcams.imgAddr_gloss}}"
+        height={{settings.screens_webcams.thumbnail_height}}
+        width={{settings.screens_webcams.thumbnail_width}}>
+
+</div>
+
+<div id="webcams_gill" class="display_img_thumb display_tile ">
+
+    <div class="display_img_thumb_caption">
+        {{settings.screens_webcams.title_gill}}
+    </div>
+
+    <img id="webcams_img_gill" class="webcams_img"
+        src="{{settings.screens_webcams.imgAddr_gill}}"
+        height={{settings.screens_webcams.thumbnail_height}}
+        width={{settings.screens_webcams.thumbnail_width}}>
+
+</div>
+
+<div id="webcams_andrews" class="display_img_thumb display_tile ">
+
+    <div class="display_img_thumb_caption">
+        {{settings.screens_webcams.title_andrews}}
+    </div>
+
+    <img id="webcams_img_andrews" class="webcams_img"
+        src="{{settings.screens_webcams.imgAddr_andrews}}"
+        height={{settings.screens_webcams.thumbnail_height}}
+        width={{settings.screens_webcams.thumbnail_width}}>
+
+</div>
+
+<div id="webcams_hatfield" class="display_img_thumb display_tile ">
+
+    <div class="display_img_thumb_caption">
+        {{settings.screens_webcams.title_hatfield}}
+    </div>
+
+    <img id="webcams_img_hatfield" class="webcams_img"
+        src="{{settings.screens_webcams.imgAddr_hatfield}}"
+        height={{settings.screens_webcams.thumbnail_height}}
+        width={{settings.screens_webcams.thumbnail_width}}>
+
+</div>
+
+<div id="webcams_wave" class="display_img_thumb display_tile ">
+
+    <div class="display_img_thumb_caption">
+        {{settings.screens_webcams.title_wave}}
+    </div>
+
+    <img id="webcams_img_wave" class="webcams_img"
+        src=  "{{settings.screens_webcams.imgAddr_wave}}"
+        height={{settings.screens_webcams.thumbnail_height}}
+        width= {{settings.screens_webcams.thumbnail_width}}>
+
+</div>
+
+<div id="webcams_wecoma" class="display_img_thumb display_tile ">
+
+    <div class="display_img_thumb_caption">
+        {{settings.screens_webcams.title_wecoma}}
+    </div>
+
+    <img id="webcams_img_wecoma" class="webcams_img"
+        src="{{settings.screens_webcams.imgAddr_wecoma}}"
+        height={{settings.screens_webcams.thumbnail_height}}
+        width={{settings.screens_webcams.thumbnail_width}}>
+
+</div>
+
+<div id="webcams_agate" class="display_img_thumb display_tile ">
+
+    <div class="display_img_thumb_caption">
+        {{settings.screens_webcams.title_agate}}
+    </div>
+
+    <img id="webcams_img_agate" class="webcams_img"
+        src="{{settings.screens_webcams.imgAddr_agate}}"
+        height={{settings.screens_webcams.thumbnail_height}}
+        width={{settings.screens_webcams.thumbnail_width}}>
+
+</div>
+
+<div id="webcams_main" class="display_img display_tile ">
+
+    <div id="webcams_title_main" class="display_img_caption">
+        {{settings.screens_webcams.title_mu}}
+    </div>
+
+    <img id="webcams_img_main" class="webcams_img "
+        src="{{settings.screens_webcams.imgAddr_mu}}">
+
+</div>

@@ -1,0 +1,501 @@
+<!--
+    sponsors.html
+    by Rob McGuire-Dale, 9/3/2009
+
+    This screen displays a list of sponsors and friends.
+-->
+
+<style>
+    /* debug colors for scrollers
+    .cloned{ color:red; }
+    .active{ color:yellow; } */
+
+    .sponsors_sponsor{
+        margin-bottom: 1.5em;
+    }
+</style>
+
+<script type="text/javascript">
+
+    /////////////////
+    // Global Data //
+    /////////////////
+
+    // a simple friends list
+    var sponsors_friends_data = new Array();
+
+    // a list of sponsor records
+    var sponsors_sponsors_data = new Array();
+
+    // a sponsors records class
+    function sponsors_sponsors_record( title, bodyParagraphs ){
+        this.title = title; this.body = bodyParagraphs }
+
+    // scroller plugin APIs for the friends and sponsors tiles
+    var sponsors_friends_scroller = null;
+    var sponsors_sponsors_scroller = null;
+
+    // autoscroll timers
+    var sponsors_friends_autoScrollTimer = null;
+    var sponsors_sponsors_autoScrollTimer = null;
+
+    ///////////////////
+    // Screen Events //
+    ///////////////////
+
+    function sponsors_init()
+    {
+        safelog('sponsors: initializing...');
+
+        // initialize the scroller plugin for the tiles
+        sponsors_friends_scroller =
+            $( ".sponsors_friends" ).scrollable({
+                vertical:true,
+                items:".display_scrollable_items_vert",
+                speed:{{settings.screens_sponsors.friends_scroll_speed}},
+                api:true,
+            });
+        sponsors_sponsors_scroller =
+            $( ".sponsors_sponsors" ).scrollable({
+                vertical:true,
+                items:".display_scrollable_items_vert",
+                speed:{{settings.screens_sponsors.sponsors_scroll_speed}},
+                api:true,
+            });
+
+        // load friends and sponsors data
+        sponsors_loadData();
+    }
+
+    function sponsors_start()
+    {
+        safelog('sponsors: starting...');
+
+        sponsors_refreshTiles();
+
+        // start auto scrolling
+        sponsors_friends_startAutoAdvance();
+        sponsors_sponsors_startAutoAdvance();
+    }
+
+    function sponsors_stop()
+    {
+        safelog('sponsors: stopping');
+
+        // stop autoscrolling
+        clearTimeout(sponsors_friends_autoScrollTimer);
+        clearTimeout(sponsors_sponsors_autoScrollTimer);
+    }
+
+    function sponsors_onScreenResize()
+    {
+        sponsors_refreshTiles();
+    }
+
+    //////////////////////
+    // Auto Advancement //
+    //////////////////////
+
+    function sponsors_friends_startAutoAdvance()
+    // begin auto-advancement for the friends tile
+    {
+        // grab the scroll interval value
+        var interval =
+            {{settings.screens_sponsors.friends_scroll_interval}};
+
+        // Ensure the interval is at least 50 ms > than the advancement speed
+        if( {{settings.screens_sponsors.friends_scroll_speed}} >
+            interval - 50 )
+
+            interval =
+                {{settings.screens_sponsors.friends_scroll_speed}}
+                + 50;
+
+
+        // Make sure scolling starts in the middle of the list
+        if( sponsors_friends_scroller.getClickIndex() == -1 )
+            sponsors_friends_scroller.click(
+                sponsors_friends_scroller.getConf().size/2 );
+
+        // Otherwise, advance to the next friend. Tuned to work with circular
+        // plugin.
+        else
+            sponsors_friends_scroller.click(
+                sponsors_friends_scroller.getClickIndex() -
+                 sponsors_friends_scroller.getConf().size + 1 );
+
+        sponsors_friends_autoScrollTimer =
+            setTimeout('sponsors_friends_startAutoAdvance()', interval );
+    }
+
+    function sponsors_sponsors_startAutoAdvance()
+    // begin auto-advancement for the sponsors tile
+    {
+        // grab the scroll interval value
+        var interval =
+            {{settings.screens_sponsors.sponsors_scroll_interval}};
+
+        // Ensure the interval is at least 50 ms > than the advancement speed
+        if( {{settings.screens_sponsors.sponsors_scroll_speed}} >
+            interval - 50 )
+
+            interval =
+                {{settings.screens_sponsors.sponsors_scroll_speed}}
+                + 50;
+
+
+        // Make sure scolling starts in the middle of the list
+        if( sponsors_sponsors_scroller.getClickIndex() == -1 )
+            sponsors_sponsors_scroller.click(
+                sponsors_sponsors_scroller.getConf().size/2 );
+
+        // Otherwise, advance to the next friend. Tuned to work with circular
+        // plugin.
+        else
+            sponsors_sponsors_scroller.click(
+                sponsors_sponsors_scroller.getClickIndex() -
+                 sponsors_sponsors_scroller.getConf().size + 1 );
+
+        sponsors_sponsors_autoScrollTimer =
+            setTimeout('sponsors_sponsors_startAutoAdvance()', interval);
+    }
+
+    //////////////////
+    // Tile Refresh //
+    //////////////////
+
+    function sponsors_refreshTiles()
+    // Refresh the tiles depending on screen size
+    {
+        safelog( "sponsors: refreshing tiles." );
+
+        // reposition the tiles
+        sponsors_positionTiles();
+
+        // if the data is loaded, fill the tiles
+        var dataLoaded = sponsors_sponsors_data.length > 0 &&
+            sponsors_friends_data.length > 0;
+
+        if( dataLoaded ){
+            sponsors_updateFriendsTile();
+            sponsors_updateSponsorsTile();
+        } else
+            safelog( "sponsors: tiles NOT refreshed because data " +
+                "isn't loaded yet." );
+    }
+
+    function sponsors_updateFriendsTile()
+    // re-fill the friends tile and calculate new page size for scroller
+    {
+        var curHeight = 0;   // to hold the height of the current item
+        var totalHeight = 0; // total height of the items written
+        var itemCount = 0;   // number of items written
+
+        // grab the height of the container tile
+        var tileHeight = $(".sponsors_friends").height();
+        safelog( "sponsors: tile height: " + tileHeight );
+
+        // clear the friends list
+        sponsors_friends_scroller.getItems().remove();
+
+        // Fill up the tile with items, wrapping if necessary
+        while( totalHeight < tileHeight ){
+
+            //safelog( "sponsors: writing friend # " + itemCount );
+
+            // Add the next item, wrapping to the first if necessary
+            sponsors_friends_scroller.getItemWrap().append(
+                "<p class='sponsors_friend_"+itemCount+"'>" +
+                sponsors_friends_data[
+                    itemCount % sponsors_friends_data.length ] +
+                "</p>"
+            );
+
+            // the *actual* height each item takes up, as positioned by the
+            // scollable plugin (as observed by firebug)
+            curHeight =
+                $(".sponsors_friend_" + itemCount ).innerHeight() +
+                ($(".sponsors_friend_" + itemCount ).outerHeight(true)-
+                $(".sponsors_friend_" + itemCount ).innerHeight())/2;
+            //safelog( "sponsors: current itemheight: " + curHeight );
+
+            // add to the running height total
+            totalHeight += curHeight;
+            //safelog( "sponsors: current total height: " + 
+            //  totalHeight );
+
+            // increment the number of items in the written list
+            itemCount++;
+        }
+        safelog( "sponsors: total friends height: " + totalHeight );
+
+        // update the scroller to include the new items
+        sponsors_friends_scroller.reload();
+
+        // set new tile page size for the scroller
+        sponsors_friends_scroller.getConf().size = itemCount;
+        safelog( "sponsors: Friends written: "+ itemCount );
+
+        // make the scroller circular
+        $( ".sponsors_friends" ).circular();
+    }
+
+    function sponsors_updateSponsorsTile()
+    // re-fill the sponsors tile and calculate new page size for scroller
+    {
+        var curHeight = 0;   // to hold the height of the current item
+        var totalHeight = 0; // total height of the items written
+        var itemCount = 0;   // number of items written
+
+        // grab the size of the data
+        var dataLength = sponsors_sponsors_data.length;
+
+        // grab the height of the container tile
+        var tileHeight = $(".sponsors_sponsors").height();
+        safelog( "sponsors: sponsors tile height: " + tileHeight );
+
+        // clear the sponsors list
+        sponsors_sponsors_scroller.getItems().remove();
+
+        // Fill up the tile with items, wrapping if necessary
+        while( totalHeight < tileHeight ){
+
+            //safelog( "sponsors: writing sponsor # " + itemCount );
+
+            // Add the next title, wrapping to the first if necessary
+            sponsors_sponsors_scroller.getItemWrap().append(
+                "<div class='sponsors_sponsor sponsors_sponsor_" +
+                itemCount+"'><h1>" + sponsors_sponsors_data[
+                    itemCount % dataLength ].title +
+                "</h1></div>"
+            );
+
+            // Add the next bodies, wrapping to the first if necessary
+            for( var i = 0; 
+                i < (sponsors_sponsors_data[ itemCount % dataLength ].body.length); 
+                i++ ){
+                    
+                $(".sponsors_sponsor_"+itemCount).append(
+                    "<p>" +
+                    sponsors_sponsors_data[itemCount%dataLength].body[i] +
+                    "</p>"
+                );
+            }
+
+            // the *actual* height each item takes up, as positioned by the
+            // scollable plugin (as observed by firebug)
+            curHeight =
+                $(".sponsors_sponsor_" + itemCount ).innerHeight() +
+                ($(".sponsors_sponsor_" + itemCount ).outerHeight(true)-
+                $(".sponsors_sponsor_" + itemCount ).innerHeight())/2;
+            //safelog( "sponsors: current sponsor height: " + curHeight );
+
+            // add to the running height total
+            totalHeight += curHeight;
+            //safelog( "sponsors: current sponsors total height: " + 
+            //    totalHeight );
+
+            // increment the number of items in the written list
+            itemCount++;
+        }
+        safelog( "sponsors: total sponsors height: " + totalHeight );
+
+        // update the scroller to include the new items
+        sponsors_sponsors_scroller.reload();
+
+        // set new tile page size for the scroller
+        sponsors_sponsors_scroller.getConf().size = itemCount;
+        safelog( "sponsors: Sponsors written: "+ itemCount );
+
+        // make the scroller circular
+        $( ".sponsors_sponsors" ).circular();
+    }
+
+    //////////////////////
+    // Tile Positioning //
+    //////////////////////
+
+    function sponsors_positionTiles()
+    // Re-position and re-size the tiles depending on screen size
+    {
+        // set the width of the bottom tiles per the settings
+        $('.sponsors_sponsors').width(
+            {{settings.general.MAX_OPTIMAL_WIDTH}});
+        $('.sponsors_friends').width(
+            {{settings.screens_sponsors.friends_width}});
+
+        // if the total tile width is too large to fit in the window,
+        // resize the sponsors tile dynamically
+        if( $('.sponsors_friends').outerWidth( true ) +
+            $('.sponsors_sponsors').outerWidth( true ) >
+            screenWidth() ){
+
+            $('.sponsors_sponsors').width( screenWidth() -
+                $('.sponsors_friends').outerWidth( true ) -
+                ( $('.sponsors_sponsors').outerWidth( true ) -
+                $('.sponsors_sponsors').width() ) );
+        }
+
+        // position the bottom tiles
+        $('.sponsors_friends').css('top',
+            $('.sponsors_title').outerHeight( true ) );
+        $('.sponsors_friends').css('left', 0 );
+        $('.sponsors_sponsors').css('top',
+            $('.sponsors_title').outerHeight( true ) );
+        $('.sponsors_sponsors').css('left',
+            $('.sponsors_friends').outerWidth( true ) );
+
+        // set the height of the bottom tiles
+        $('.sponsors_sponsors').height( screenHeight() -
+            $('.sponsors_title').outerHeight(true) -
+            $('.sponsors_sponsors').outerHeight(true) +
+            $('.sponsors_sponsors').height());
+        $('.sponsors_friends').height( screenHeight() -
+            $('.sponsors_title').outerHeight(true) -
+            $('.sponsors_friends').outerHeight(true) +
+            $('.sponsors_friends').height());
+
+        // size the title width to match the width of the bottom tiles
+        $('.sponsors_title').width(
+            $('.sponsors_friends').outerWidth( true ) +
+            $('.sponsors_sponsors').outerWidth( true ) -
+            ( $('.sponsors_title').outerWidth( true ) -
+            $('.sponsors_title').width() ) );
+
+        // center the tiles
+        $('.sponsors_title').css( 'left', screenWidth()/2 -
+            $('.sponsors_title').outerWidth( true )/2 );
+        $('.sponsors_friends').css( 'left',
+            parseInt( $('.sponsors_title').css( 'left' ) ) );
+        $('.sponsors_sponsors').css( 'left',
+            parseInt( $('.sponsors_title').css( 'left' ) ) +
+            $('.sponsors_friends').outerWidth( true ) );
+
+        // position and size gradient overlays
+        $('#sponsors_sponsors_gradient').css( 'z-index', 1 );
+        $('#sponsors_sponsors_gradient').css( 'top',
+            -( $('#sponsors_sponsors_gradient').outerHeight( true ) -
+            $('#sponsors_sponsors_gradient').height() ) );
+        $('#sponsors_sponsors_gradient').css( 'left',
+            -( $('#sponsors_sponsors_gradient').outerWidth( true ) -
+            $('#sponsors_sponsors_gradient').width() ) );
+        $('#sponsors_sponsors_gradient').height(
+            $('.sponsors_sponsors').outerHeight( ) );
+        $('#sponsors_sponsors_gradient').width(
+            $('.sponsors_sponsors').outerWidth( ) );
+
+        $('#sponsors_friends_gradient').css( 'z-index', 1 );
+        $('#sponsors_friends_gradient').css( 'top',
+            -( $('#sponsors_friends_gradient').outerHeight( true ) -
+            $('#sponsors_friends_gradient').height() ) );
+        $('#sponsors_friends_gradient').css( 'left',
+            -( $('#sponsors_friends_gradient').outerWidth( true ) -
+            $('#sponsors_friends_gradient').width() ) );
+        $('#sponsors_friends_gradient').height(
+            $('.sponsors_friends').outerHeight( ) );
+        $('#sponsors_friends_gradient').width(
+            $('.sponsors_friends').outerWidth( ) );
+    }
+
+    //////////////////
+    // Data Loading //
+    //////////////////
+
+    function sponsors_loadData()
+    // Load the friends and sponsors data from the specified remote URLs
+    {
+        // RegEx object representing the body and it's <p></p> delimiters
+        var bodyPattern = /\<\s*p\s*\>.*<\s*\/\s*p\s*\>/g;
+
+        // RegEx opject representing anchor tags
+        var anchorOpenPattern = /<\s*a.*?>/g;
+        var anchorClosePattern = /<\s*\/\s*a\s*>/g;
+
+        // grab and load sponsors XML file through a simple proxy to circumvent
+        // browser security model restrictions regarding AJAX GET requests to
+        // remote servers
+        $.post('/proxy/',
+            {'url':'{{settings.screens_sponsors.sponsors_URL}}'}, 
+            function( sponsors_XML ){
+
+            // temporary title and body storage
+            var parsedTitle = null;
+            var parsedBody = null;
+
+            // for each item...
+            $(sponsors_XML).find("item").each( function( curItemIndex ){
+
+                // load the title
+                parsedTitle = $(this).find("title").text();
+                safelog( "sponsors: loading sponsor title: " +
+                    parsedTitle );
+
+                // load the body, and strip any anchor tags
+                parsedBody =
+                    $(this).find("description").text()
+                    .replace(anchorOpenPattern, "")
+                    .replace(anchorClosePattern, "")
+                    .match(bodyPattern);
+
+                safelog( "sponsors: loading sponsor body: " +
+                    parsedBody );
+
+                // push a new record with the loaded data
+                sponsors_sponsors_data.push(
+                    new sponsors_sponsors_record( parsedTitle, 
+                        parsedBody ) 
+                );
+            });
+
+            // force a refresh after the data is loaded
+            sponsors_refreshTiles();
+        });
+        
+        // load the friends through the simple proxy and into the friends list
+        $.post('/proxy/',
+            {'url':'{{settings.screens_sponsors.friends_URL}}' },
+            function( friends_XML ){
+            
+            // temp name storage
+            var parsedName = null;
+            
+            // for each friend name encountered...
+            $( friends_XML ).find(".friend-name").each( function(){
+                
+                // load the name, and strip any anchor tags
+                parsedName = $(this).text().replace(anchorOpenPattern, "")
+                    .replace(anchorClosePattern, "");;
+                safelog( "sponsors: loading friend name:" + parsedName );
+                
+                // push name onto the names stack
+                sponsors_friends_data.push( parsedName );
+            });
+            
+            // force a refresh after the data is loaded
+            sponsors_refreshTiles();
+        });
+    }
+</script>
+
+<div class="display_tile display_title sponsors_title">
+    Sponsors
+</div>
+
+<div class="sponsors_friends display_tile display_content">
+    <img id='sponsors_friends_gradient'
+         class='display_gradient'
+         src="{{SITE_ROOT}}/static/screens/sponsors/gradient.png">
+    <div class='display_scrollable_items_vert'>
+        <!-- to be filled by refresh code above -->
+    </div>
+</div>
+
+<div class="sponsors_sponsors display_tile display_content">
+    <img id='sponsors_sponsors_gradient'
+         class='display_gradient'
+         src="{{SITE_ROOT}}/static/screens/sponsors/gradient.png">
+    <div id='sponsors_sponsors_items' 
+        class='display_scrollable_items_vert'>
+        <!-- to be filled by refresh code above -->
+    </div>
+</div>
