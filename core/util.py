@@ -11,7 +11,15 @@ def get_plugin_static_dirs():
 
     paths = []
     for app in settings.INSTALLED_APPS:
-        path = '%s/%s/static' % (settings.DOC_ROOT, app.split('.')[-1])
+        
+        path = '%s/' % settings.DOC_ROOT
+
+        if( len( app.split('.') ) > 1 ):
+            path += '%s/%s/' % (app.split('.')[-2], app.split('.')[-1])
+        else:
+            path += '%s/' % app.split('.')[-1]
+        
+        path += "static"
 
         # if the static dir exists, add it to the list
         if os.path.exists(path):

@@ -78,7 +78,8 @@
             /* ===============================
              *  Show / Hide Screen
              * =============================== */
-            // index of screen currently displayed, or in process of being displayed
+            // index of screen currently displayed, or in process of being
+            // displayed
             var current_screen_index = -1
             var show_timer = 0;
             var start_timer = 0;
@@ -161,7 +162,8 @@
             // tracks timer for automatic slideshow, used for pausing slideshow
             var slide_show_timer = -1;
 
-            // tracks slideshow index, may temporarily hold next or previous screen
+            // tracks slideshow index, may temporarily hold next or previous
+            // screen
             var slideshow_screen_index = -1;
 
             // initializes and starts slideshow from the first slide
@@ -255,7 +257,8 @@
              *  AJAX Messaging
              * =============================== */
             function get_message() {
-                $.post('/proxy/',{'url':'{{settings.general.MENU_URL}}'}, message_received);
+                $.post('/proxy/',{'url':'{{settings.general.MENU_URL}}'},
+                    message_received);
             }
 
             /*
