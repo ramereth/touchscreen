@@ -1,4 +1,4 @@
 #! /bin/bash
 
-../manage.py runserver localhost:8000
+../manage.py runserver redfir.osuosl.org:8000
 

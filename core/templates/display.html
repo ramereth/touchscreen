@@ -347,10 +347,6 @@
                         'fade':'fade_in'
                       };
 
-            // global functions for querying the size of the viewport
-            function screenHeight(){ return Screen.getViewportHeight(); }
-            function screenWidth(){ return Screen.getViewportWidth(); }
-
             // hides all screens
             function hide_all() {
                 for (i=0; i<screens.length; i++) {
@@ -362,6 +358,10 @@
                 }
                 safelog("core: All screens hidden");
             }
+
+            // global functions for querying the size of the viewport
+            function screenHeight(){ return Screen.getViewportHeight(); }
+            function screenWidth(){ return Screen.getViewportWidth(); }
 
             // fixes a mapped function
             function fix_function(func) {
