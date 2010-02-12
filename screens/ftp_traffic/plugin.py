@@ -6,7 +6,7 @@ create instance of screens this plugin provides. The parameters are as follows:
 
 	Required:
 	- the name of the screen's html file (i.e. 'screen.html')
-	- the name of the screen (i.e. 'screen')
+	- the name of the screen (i.e. 'foo_screen')
 
 	Optional:
 	- hide='<transition name>'	i.e. hide='fade', or hide='slide')
@@ -27,7 +27,7 @@ create instance of screens this plugin provides. The parameters are as follows:
 
 ftp_traffic = Screen(
     'ftp_traffic.html',
-    'ftp_traffic',
+    'ftp_traffic', 
 
     #optional params
     duration=300000,
@@ -40,4 +40,3 @@ ftp_traffic = Screen(
     js_stop ='ftp_traffic.stop',
     js_onWinResize = 'ftp_traffic.onScreenResize'
 )
-

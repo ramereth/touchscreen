@@ -15,32 +15,33 @@
 
 <script type="text/javascript">
 
+function osl_about()
+{
     ////////////
     // Events //
     ////////////
     
-    function osl_about_init()
+    this.init = function()
     {
         safelog('osl_about: initializing...');
 
         osl_about_refreshTiles();
     }
 
-    function osl_about_start()
+    this.start = function()
     {
         safelog('osl_about: starting...');
         
         osl_about_refreshTiles();
     }
 
-    // called when this plugin begins hiding itself
-    function osl_about_stop()
+    this.stop = function()
     {
         // output some debug info to the firebug console
         safelog('osl_about: stopping...');
     }
     
-    function osl_about_onWinResize()
+    this.onWinResize = function()
     {
         osl_about_refreshTiles();
     }
@@ -102,6 +103,9 @@
         
 
     }
+    
+} osl_about = new osl_about();
+
 </script>
 
 <div id="osl_about_title" class="display_title display_tile">

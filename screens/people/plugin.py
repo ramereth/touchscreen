@@ -35,9 +35,9 @@ people = Screen(
     #hide='fade', 
     #show='fade',
     slideshow=True,
-    js_init ='people_init',
-    js_start='people_start',
-    js_stop ='people_stop',
-    js_onWinResize = 'people_onScreenResize'
+    js_init ='people.init',
+    js_start='people.start',
+    js_stop ='people.stop',
+    js_onWinResize = 'people.onScreenResize'
 )
 

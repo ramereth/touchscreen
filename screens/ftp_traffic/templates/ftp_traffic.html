@@ -1,17 +1,18 @@
 <!--
     ftp_traffic.html
     by Rob McGuire-Dale, 9/23/2009
-    
+
     This screen displays a map of the FTP traffic
 -->
-        
+
 <script type="text/javascript">
 
-function screens_ftp_traffic(){
-
-    this.init = function() {
+function ftp_traffic()
+{
+    this.init = function()
+    {
         safelog('ftp_traffic: initializing...');
-    
+
         // make the image refresh itself at the specified interval
         $("#ftp_traffic_img").refreshImage({
             interval:
@@ -20,23 +21,26 @@ function screens_ftp_traffic(){
         });
     };
 
-    this.start = function() {
+    this.start = function()
+    {
         safelog('ftp_traffic: starting...');
 
         // scale the wifi usage image to fit inside the parent
         $("#ftp_traffic_img").scale("center");
     };
-    
-    this.stop = function(){
+
+    this.stop = function()
+    {
         safelog('ftp_traffic: stopping');
     };
-    
-    this.onScreenResize = function() {        
+
+    this.onScreenResize = function()
+    {
         // re-scale every time the window is resized
         $("#ftp_traffic_img").scale("center");
     };
 
-} ftp_traffic = new screens_ftp_traffic();
+} ftp_traffic = new ftp_traffic();
 
 </script>
 <img id="ftp_traffic_img"

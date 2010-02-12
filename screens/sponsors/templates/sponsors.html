@@ -16,46 +16,48 @@
 </style>
 
 <script type="text/javascript">
+function sponsors()
+{
 
     /////////////////
     // Global Data //
     /////////////////
 
     // a simple friends list
-    var sponsors_friends_data = new Array();
+    var friends_data = new Array();
 
     // a list of sponsor records
-    var sponsors_sponsors_data = new Array();
+    var sponsors_data = new Array();
 
     // a sponsors records class
-    function sponsors_sponsors_record( title, bodyParagraphs ){
+    function sponsors_record( title, bodyParagraphs ){
         this.title = title; this.body = bodyParagraphs }
 
     // scroller plugin APIs for the friends and sponsors tiles
-    var sponsors_friends_scroller = null;
-    var sponsors_sponsors_scroller = null;
+    var friends_scroller = null;
+    var sponsors_scroller = null;
 
     // autoscroll timers
-    var sponsors_friends_autoScrollTimer = null;
-    var sponsors_sponsors_autoScrollTimer = null;
+    var friends_autoScrollTimer = null;
+    var sponsors_autoScrollTimer = null;
 
     ///////////////////
     // Screen Events //
     ///////////////////
 
-    function sponsors_init()
+    this.init = function()
     {
         safelog('sponsors: initializing...');
 
         // initialize the scroller plugin for the tiles
-        sponsors_friends_scroller =
+        friends_scroller =
             $( ".sponsors_friends" ).scrollable({
                 vertical:true,
                 items:".display_scrollable_items_vert",
                 speed:{{settings.screens_sponsors.friends_scroll_speed}},
                 api:true,
             });
-        sponsors_sponsors_scroller =
+        sponsors_scroller =
             $( ".sponsors_sponsors" ).scrollable({
                 vertical:true,
                 items:".display_scrollable_items_vert",
@@ -64,39 +66,39 @@
             });
 
         // load friends and sponsors data
-        sponsors_loadData();
+        loadData();
     }
 
-    function sponsors_start()
+    this.start = function()
     {
         safelog('sponsors: starting...');
 
-        sponsors_refreshTiles();
+        refreshTiles();
 
         // start auto scrolling
-        sponsors_friends_startAutoAdvance();
-        sponsors_sponsors_startAutoAdvance();
+        this.friends_startAutoAdvance();
+        this.sponsors_startAutoAdvance();
     }
 
-    function sponsors_stop()
+    this.stop = function()
     {
         safelog('sponsors: stopping');
 
         // stop autoscrolling
-        clearTimeout(sponsors_friends_autoScrollTimer);
-        clearTimeout(sponsors_sponsors_autoScrollTimer);
+        clearTimeout(friends_autoScrollTimer);
+        clearTimeout(sponsors_autoScrollTimer);
     }
 
-    function sponsors_onScreenResize()
+    this.onScreenResize = function()
     {
-        sponsors_refreshTiles();
+        refreshTiles();
     }
 
     //////////////////////
     // Auto Advancement //
     //////////////////////
 
-    function sponsors_friends_startAutoAdvance()
+    this.friends_startAutoAdvance = function()
     // begin auto-advancement for the friends tile
     {
         // grab the scroll interval value
@@ -113,22 +115,22 @@
 
 
         // Make sure scolling starts in the middle of the list
-        if( sponsors_friends_scroller.getClickIndex() == -1 )
-            sponsors_friends_scroller.click(
-                sponsors_friends_scroller.getConf().size/2 );
+        if( friends_scroller.getClickIndex() == -1 )
+            friends_scroller.click(
+                friends_scroller.getConf().size/2 );
 
         // Otherwise, advance to the next friend. Tuned to work with circular
         // plugin.
         else
-            sponsors_friends_scroller.click(
-                sponsors_friends_scroller.getClickIndex() -
-                 sponsors_friends_scroller.getConf().size + 1 );
+            friends_scroller.click(
+                friends_scroller.getClickIndex() -
+                 friends_scroller.getConf().size + 1 );
 
-        sponsors_friends_autoScrollTimer =
-            setTimeout('sponsors_friends_startAutoAdvance()', interval );
+        friends_autoScrollTimer =
+            setTimeout('sponsors.friends_startAutoAdvance()', interval );
     }
 
-    function sponsors_sponsors_startAutoAdvance()
+    this.sponsors_startAutoAdvance = function()
     // begin auto-advancement for the sponsors tile
     {
         // grab the scroll interval value
@@ -145,46 +147,46 @@
 
 
         // Make sure scolling starts in the middle of the list
-        if( sponsors_sponsors_scroller.getClickIndex() == -1 )
-            sponsors_sponsors_scroller.click(
-                sponsors_sponsors_scroller.getConf().size/2 );
+        if( sponsors_scroller.getClickIndex() == -1 )
+            sponsors_scroller.click(
+                sponsors_scroller.getConf().size/2 );
 
         // Otherwise, advance to the next friend. Tuned to work with circular
         // plugin.
         else
-            sponsors_sponsors_scroller.click(
-                sponsors_sponsors_scroller.getClickIndex() -
-                 sponsors_sponsors_scroller.getConf().size + 1 );
+            sponsors_scroller.click(
+                sponsors_scroller.getClickIndex() -
+                 sponsors_scroller.getConf().size + 1 );
 
-        sponsors_sponsors_autoScrollTimer =
-            setTimeout('sponsors_sponsors_startAutoAdvance()', interval);
+        sponsors_autoScrollTimer =
+            setTimeout('sponsors.sponsors_startAutoAdvance()', interval);
     }
 
     //////////////////
     // Tile Refresh //
     //////////////////
 
-    function sponsors_refreshTiles()
+    function refreshTiles()
     // Refresh the tiles depending on screen size
     {
         safelog( "sponsors: refreshing tiles." );
 
         // reposition the tiles
-        sponsors_positionTiles();
+        positionTiles();
 
         // if the data is loaded, fill the tiles
-        var dataLoaded = sponsors_sponsors_data.length > 0 &&
-            sponsors_friends_data.length > 0;
+        var dataLoaded = sponsors_data.length > 0 &&
+            friends_data.length > 0;
 
         if( dataLoaded ){
-            sponsors_updateFriendsTile();
-            sponsors_updateSponsorsTile();
+            updateFriendsTile();
+            updateSponsorsTile();
         } else
             safelog( "sponsors: tiles NOT refreshed because data " +
                 "isn't loaded yet." );
     }
 
-    function sponsors_updateFriendsTile()
+    function updateFriendsTile()
     // re-fill the friends tile and calculate new page size for scroller
     {
         var curHeight = 0;   // to hold the height of the current item
@@ -196,7 +198,7 @@
         safelog( "sponsors: tile height: " + tileHeight );
 
         // clear the friends list
-        sponsors_friends_scroller.getItems().remove();
+        friends_scroller.getItems().remove();
 
         // Fill up the tile with items, wrapping if necessary
         while( totalHeight < tileHeight ){
@@ -204,10 +206,10 @@
             //safelog( "sponsors: writing friend # " + itemCount );
 
             // Add the next item, wrapping to the first if necessary
-            sponsors_friends_scroller.getItemWrap().append(
+            friends_scroller.getItemWrap().append(
                 "<p class='sponsors_friend_"+itemCount+"'>" +
-                sponsors_friends_data[
-                    itemCount % sponsors_friends_data.length ] +
+                friends_data[
+                    itemCount % friends_data.length ] +
                 "</p>"
             );
 
@@ -230,17 +232,17 @@
         safelog( "sponsors: total friends height: " + totalHeight );
 
         // update the scroller to include the new items
-        sponsors_friends_scroller.reload();
+        friends_scroller.reload();
 
         // set new tile page size for the scroller
-        sponsors_friends_scroller.getConf().size = itemCount;
+        friends_scroller.getConf().size = itemCount;
         safelog( "sponsors: Friends written: "+ itemCount );
 
         // make the scroller circular
         $( ".sponsors_friends" ).circular();
     }
 
-    function sponsors_updateSponsorsTile()
+    function updateSponsorsTile()
     // re-fill the sponsors tile and calculate new page size for scroller
     {
         var curHeight = 0;   // to hold the height of the current item
@@ -248,14 +250,14 @@
         var itemCount = 0;   // number of items written
 
         // grab the size of the data
-        var dataLength = sponsors_sponsors_data.length;
+        var dataLength = sponsors_data.length;
 
         // grab the height of the container tile
         var tileHeight = $(".sponsors_sponsors").height();
         safelog( "sponsors: sponsors tile height: " + tileHeight );
 
         // clear the sponsors list
-        sponsors_sponsors_scroller.getItems().remove();
+        sponsors_scroller.getItems().remove();
 
         // Fill up the tile with items, wrapping if necessary
         while( totalHeight < tileHeight ){
@@ -263,21 +265,21 @@
             //safelog( "sponsors: writing sponsor # " + itemCount );
 
             // Add the next title, wrapping to the first if necessary
-            sponsors_sponsors_scroller.getItemWrap().append(
+            sponsors_scroller.getItemWrap().append(
                 "<div class='sponsors_sponsor sponsors_sponsor_" +
-                itemCount+"'><h1>" + sponsors_sponsors_data[
+                itemCount+"'><h1>" + sponsors_data[
                     itemCount % dataLength ].title +
                 "</h1></div>"
             );
 
             // Add the next bodies, wrapping to the first if necessary
             for( var i = 0; 
-                i < (sponsors_sponsors_data[ itemCount % dataLength ].body.length); 
+                i < (sponsors_data[ itemCount % dataLength ].body.length); 
                 i++ ){
                     
                 $(".sponsors_sponsor_"+itemCount).append(
                     "<p>" +
-                    sponsors_sponsors_data[itemCount%dataLength].body[i] +
+                    sponsors_data[itemCount%dataLength].body[i] +
                     "</p>"
                 );
             }
@@ -301,10 +303,10 @@
         safelog( "sponsors: total sponsors height: " + totalHeight );
 
         // update the scroller to include the new items
-        sponsors_sponsors_scroller.reload();
+        sponsors_scroller.reload();
 
         // set new tile page size for the scroller
-        sponsors_sponsors_scroller.getConf().size = itemCount;
+        sponsors_scroller.getConf().size = itemCount;
         safelog( "sponsors: Sponsors written: "+ itemCount );
 
         // make the scroller circular
@@ -315,7 +317,7 @@
     // Tile Positioning //
     //////////////////////
 
-    function sponsors_positionTiles()
+    function positionTiles()
     // Re-position and re-size the tiles depending on screen size
     {
         // set the width of the bottom tiles per the settings
@@ -401,7 +403,7 @@
     // Data Loading //
     //////////////////
 
-    function sponsors_loadData()
+    function loadData()
     // Load the friends and sponsors data from the specified remote URLs
     {
         // RegEx object representing the body and it's <p></p> delimiters
@@ -441,14 +443,14 @@
                     parsedBody );
 
                 // push a new record with the loaded data
-                sponsors_sponsors_data.push(
-                    new sponsors_sponsors_record( parsedTitle, 
+                sponsors_data.push(
+                    new sponsors_record( parsedTitle, 
                         parsedBody ) 
                 );
             });
 
             // force a refresh after the data is loaded
-            sponsors_refreshTiles();
+            refreshTiles();
         });
         
         // load the friends through the simple proxy and into the friends list
@@ -468,13 +470,15 @@
                 safelog( "sponsors: loading friend name:" + parsedName );
                 
                 // push name onto the names stack
-                sponsors_friends_data.push( parsedName );
+                friends_data.push( parsedName );
             });
             
             // force a refresh after the data is loaded
-            sponsors_refreshTiles();
+            refreshTiles();
         });
     }
+    
+} sponsors = new sponsors();
 </script>
 
 <div class="display_tile display_title sponsors_title">

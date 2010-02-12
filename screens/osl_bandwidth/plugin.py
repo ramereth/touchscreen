@@ -35,9 +35,9 @@ osl_bandwidth = Screen(
     #hide='fade', 
     #show='fade',
     #slideshow=True,
-    js_init ='osl_bandwidth_init',
-    js_start='osl_bandwidth_start',
-    js_stop ='osl_bandwidth_stop',
-    js_onWinResize = 'osl_bandwidth_onWinResize'
+    js_init ='osl_bandwidth.init',
+    js_start='osl_bandwidth.start',
+    js_stop ='osl_bandwidth.stop',
+    js_onWinResize = 'osl_bandwidth.onWinResize'
 )
 

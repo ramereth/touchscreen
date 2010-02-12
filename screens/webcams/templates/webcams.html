@@ -8,27 +8,28 @@
 -->
 
 <script type="text/javascript">
-
+function webcams()
+{
     /////////////////
     // Global Data //
     /////////////////
 
     // A flag to tell if the displayToMainTile function is running (to prevent
     // main tile flickering)
-    var webcams_displayToMainTileRunning = false;
+    var displayToMainTileRunning = false;
 
     ///////////////////
     // Screen Events //
     ///////////////////
 
-    function webcams_init()
+    this.init = function()
     {
         safelog('webcams: initializing...');
 
         // intitialize tile click event handling. NOTE: This section is for
         // demonstration purposes only. Eventually, these div manipulations will
         // be done via the touchscreen interface.
-        webcams_initTileClickEvents();
+        initTileClickEvents();
 
         // make images refresh themselves at the specified interval
         $(".webcams_img").refreshImage({
@@ -38,32 +39,32 @@
         });
     }
 
-    function webcams_start()
+    this.start = function()
     {
         safelog('webcams: starting...');
 
         // position the thumbnail tiles
-        webcams_positionTiles();
+        positionTiles();
 
         //  initialize the main tile
-        webcams_displayToMainTile(
+        displayToMainTile(
             "{{settings.screens_webcams.title_mu}}",
             "{{settings.screens_webcams.imgAddr_mu}}"
         );
     }
 
-    function webcams_stop()
+    this.stop = function()
     {
         safelog('webcams: stopping...');
     }
 
-    function webcams_onWinResize() 
+    this.onWinResize = function() 
     {
         // position the thumbnail tiles
-        webcams_positionTiles();
+        positionTiles();
 
         //  initialize the main tile
-        webcams_displayToMainTile(
+        displayToMainTile(
             "{{settings.screens_webcams.title_mu}}",
             "{{settings.screens_webcams.imgAddr_mu}}"
         );
@@ -75,7 +76,7 @@
 
     // positionTiles()
     // Resizes and repositions tiles depending on thier content.
-    function webcams_positionTiles()
+    function positionTiles()
     {
         // calculate the padding between the tiles to evently distribute them
         // across the screen
@@ -163,76 +164,76 @@
     // Initialize click event handling. (NOTE: This section is for demonstration
     // purposes only. Eventually, these tile manipulations will be done via the
     // touchscreen control interface.)
-    function webcams_initTileClickEvents()
+    function initTileClickEvents()
     {
         $("#webcams_monroe").click(function(){
-            webcams_displayToMainTile(
+            displayToMainTile(
                 "{{settings.screens_webcams.title_monroe}}",
                 "{{settings.screens_webcams.imgAddr_monroe}}"
             );
         });
         $("#webcams_reser").click(function(){
-            webcams_displayToMainTile(
+            displayToMainTile(
                 "{{settings.screens_webcams.title_reser}}",
                 "{{settings.screens_webcams.imgAddr_reser}}"
             );
         });
         $("#webcams_mu").click(function(){
-            webcams_displayToMainTile(
+            displayToMainTile(
                 "{{settings.screens_webcams.title_mu}}",
                 "{{settings.screens_webcams.imgAddr_mu}}"
             );
         });
         $("#webcams_library").click(function(){
-            webcams_displayToMainTile(
+            displayToMainTile(
                 "{{settings.screens_webcams.title_library}}",
                 "{{settings.screens_webcams.imgAddr_library}}"
             );
         });
         $("#webcams_gloss").click(function(){
-            webcams_displayToMainTile(
+            displayToMainTile(
                 "{{settings.screens_webcams.title_gloss}}",
                 "{{settings.screens_webcams.imgAddr_gloss}}"
             );
         });
         $("#webcams_wave").click(function(){
-            webcams_displayToMainTile(
+            displayToMainTile(
                 "{{settings.screens_webcams.title_wave}}",
                 "{{settings.screens_webcams.imgAddr_wave}}"
             );
         });
         $("#webcams_hatfield").click(function(){
-            webcams_displayToMainTile(
+            displayToMainTile(
                 "{{settings.screens_webcams.title_hatfield}}",
                 "{{settings.screens_webcams.imgAddr_hatfield}}"
             );
         });
         $("#webcams_agate").click(function(){
-            webcams_displayToMainTile(
+            displayToMainTile(
                 "{{settings.screens_webcams.title_agate}}",
                 "{{settings.screens_webcams.imgAddr_agate}}"
             );
         });
         $("#webcams_wecoma").click(function(){
-            webcams_displayToMainTile(
+            displayToMainTile(
                 "{{settings.screens_webcams.title_wecoma}}",
                 "{{settings.screens_webcams.imgAddr_wecoma}}"
             );
         });
         $("#webcams_south").click(function(){
-            webcams_displayToMainTile(
+            displayToMainTile(
                 "{{settings.screens_webcams.title_south}}",
                 "{{settings.screens_webcams.imgAddr_south}}"
             );
         });
         $("#webcams_gill").click(function(){
-            webcams_displayToMainTile(
+            displayToMainTile(
                 "{{settings.screens_webcams.title_gill}}",
                 "{{settings.screens_webcams.imgAddr_gill}}"
             );
         });
         $("#webcams_andrews").click(function(){
-            webcams_displayToMainTile(
+            displayToMainTile(
                 "{{settings.screens_webcams.title_andrews}}",
                 "{{settings.screens_webcams.imgAddr_andrews}}"
             );
@@ -246,13 +247,13 @@
     // displayToMainTile( title, addr )
     // Display an image at the specified address with the specified title in the
     // main tile.
-    function webcams_displayToMainTile( title, addr )
+    function displayToMainTile( title, addr )
     {
         // make sure only one instance of this function runs at a time
-        if( !webcams_displayToMainTileRunning ){
+        if( !displayToMainTileRunning ){
 
             // set a running flag so only one function runs at a time
-            webcams_displayToMainTileRunning = true;
+            displayToMainTileRunning = true;
             
             // fade out the main tile
             $("#webcams_main").fadeOut(function(){
@@ -283,10 +284,12 @@
                 $("#webcams_main").fadeIn("slow");
 
                 // clear the running flag to allow the function to run again
-                webcams_displayToMainTileRunning = false;
+                displayToMainTileRunning = false;
             });
         }
     }
+    
+} webcams = new webcams();
 </script>
 
 <!-- set up HTML divs for each tile ------------------------------------------->

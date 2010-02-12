@@ -35,9 +35,9 @@ webcams = Screen(
     #hide='fade', 
     #show='fade',
     #slideshow=True,
-    js_init ='webcams_init',
-    js_start='webcams_start',
-    js_stop ='webcams_stop',
-    js_onWinResize = 'webcams_onWinResize'
+    js_init ='webcams.init',
+    js_start='webcams.start',
+    js_stop ='webcams.stop',
+    js_onWinResize = 'webcams.onWinResize'
 )
 

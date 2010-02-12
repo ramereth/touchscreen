@@ -35,9 +35,9 @@ wifi_bandwidth = Screen(
     #hide='fade', 
     #show='fade',
     slideshow=True,
-    js_init ='wifi_bandwidth_init',
-    js_start='wifi_bandwidth_start',
-    js_stop ='wifi_bandwidth_stop',
-    js_onWinResize = 'wifi_bandwidth_onWinResize'
+    js_init ='wifi_bandwidth.init',
+    js_start='wifi_bandwidth.start',
+    js_stop ='wifi_bandwidth.stop',
+    js_onWinResize = 'wifi_bandwidth.onWinResize'
 )
 

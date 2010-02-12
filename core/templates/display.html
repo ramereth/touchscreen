@@ -364,7 +364,8 @@
             function screenWidth(){ return Screen.getViewportWidth(); }
 
             // fixes a mapped function
-            function fix_function(func) {
+            function fix_function( func )
+            {
                 if( func == "None" ) 
                     return void(0);
                 else 
@@ -372,11 +373,11 @@
             }
 
             // inits all screens
-            function init_all() {
-
+            function init_all()
+            {
                 // check for the existance of event functions in the screens,
                 // void them if they don't exist, and validate if they do
-                for (i=0; i<screens.length; i++) {
+                for( i=0; i<screens.length; i++ ){
                     scr = screens[i];
                     scr['init'] = fix_function(scr['init']);
                     scr['start'] = fix_function(scr['start']);

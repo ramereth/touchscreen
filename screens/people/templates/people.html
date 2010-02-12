@@ -28,19 +28,20 @@
 </style>
 
 <script type="text/javascript">
-
+function people()
+{    
     /////////////////
     // Global Data //
     /////////////////
 
     // scroller plugin API for the people scroller
-    var people_scroller = null;
+    var scroller = null;
 
     // a list of people
-    var people_people = new Array();
+    var people = new Array();
 
     // a person class
-    function people_person( name, title, bodyParagraphs, image )
+    function person( name, title, bodyParagraphs, image )
     {
         this.name = name;
         this.title = title;
@@ -50,60 +51,61 @@
 
     // person-index association to keep track of associations between a person
     // and the index they reside at in the people array.
-    var people_person_index = new Array();
+    var person_index = new Array();
 
     // auto movement timers
-    var people_autoscrollTimer = null;
-    var people_autoRandRotateTimer = null;
+    var autoscrollTimer = null;
+    var autoRandRotateTimer = null;
 
 
     ///////////////////
     // Screen Events //
     ///////////////////
 
-    function people_init()
+    this.init = function()
     {
         safelog('people: initializing...');
 
-        people_setup();
+        setup();
     }
 
-    function people_start()
+    this.start = function()
     {
         safelog('people: starting...');
 
-        people_refreshTiles();
+        refreshTiles();
 
-        // begin auto movement
-        people_startAutoscroll();
-        people_startAutoRotate();
+        // begin auto movement (both need "this." b/c they're publically
+        // accessable because of the js timer functions.)
+        this.startAutoscroll();
+        this.startAutoRotate();
 
         // debug stuff
         $('#debug_f1').click(function(){
-            people_showPerson( "Deborah Bryant" );
+            showPerson( "Deborah Bryant" );
         });
         $('#debug_f2').click(function(){
-            people_showPerson( "Alex Weeks" );
+            showPerson( "Alex Weeks" );
         });
         $('#debug_f3').click(function(){
-            people_showPerson( "/random" );
+            showPerson( "/random" );
 
-            people_pauseAutoRotation( 30000 );
+            pauseAutoRotation( 30000 );
         });
     }
 
-    function people_stop()
+    this.stop = function()
     {
         safelog('people: stopping');
 
         // stop auto movements
-        clearTimeout( people_autoscrollTimer );
-        clearTimeout( people_autoRandRotateTimer );
+        clearTimeout( autoscrollTimer );
+        clearTimeout( autoRandRotateTimer );
     }
 
-    function people_onScreenResize()
+    this.onScreenResize = function()
     {
-        people_refreshTiles();
+        refreshTiles();
     }
 
 
@@ -111,12 +113,12 @@
     // Facilitators //
     //////////////////
 
-    function people_showPerson( personName )
+    function showPerson( personName )
     // Display a person specified by a name to the main screen. If the name is
     // "/random" a random person will be displayed.
     {
         // make sure people data is loaded
-        if( people_people.length > 0 ){
+        if( people.length > 0 ){
 
             // temp var to hold the recalled person
             var person = null;
@@ -125,9 +127,9 @@
             if( personName == "/random" ){
 
                 person =
-                    people_people[
+                    people[
                         Math.floor(
-                            Math.random() * people_people.length
+                            Math.random() * people.length
                         )
                     ];
 
@@ -138,15 +140,15 @@
             } else {
 
                 person =
-                    people_people[
-                        people_person_index[personName]
+                    people[
+                        person_index[personName]
                     ];
 
                 safelog( "people: showing person '" + person.name +
                     "'" );
 
                 // since someone was explicitly selected, pause auto rotation
-                people_pauseAutoRotation(
+                pauseAutoRotation(
                     {{settings.screens_people.rotation_pause_timeout}}
                 );
             }
@@ -176,7 +178,7 @@
                     }
 
                     // size and position main tile
-                    people_refreshMainTile()
+                    refreshMainTile()
                 });
 
                 // fade tile back in
@@ -190,7 +192,7 @@
                 "loaded.");
     }
 
-    function people_refreshTiles()
+    function refreshTiles()
     // Re-positions and re-sizes tiles depending on screen size
     {
         // position title tile
@@ -199,7 +201,7 @@
             $("#people_title").width() ) );
 
         // size and position main tile
-        people_refreshMainTile()
+        refreshMainTile()
 
         // position and size scroller
         $(".people_scroller").css('bottom', 0 );
@@ -223,20 +225,20 @@
             $('.people_scroller').outerWidth( ) );
 
         // figure out a new page size for the scroller
-        if( people_scroller != null ){
+        if( scroller != null ){
 
-            people_scroller.getConf().size =
+            scroller.getConf().size =
                 Math.round(
                     $(".people_scroller").innerWidth() /
                     $(".people_person").outerWidth(true)
                 );
 
             safelog( "people: scroller page size updated to " +
-                people_scroller.getConf().size );
+                scroller.getConf().size );
         }
     }
 
-    function people_refreshMainTile()
+    function refreshMainTile()
     // Re-position and re-size only the main tile.
     {
         // calculate the vertical space between the title and scroller tiles
@@ -274,11 +276,12 @@
     // Auto Movement //
     ///////////////////
 
-    function people_startAutoscroll()
+    this.startAutoscroll = function()
     // Begin autoscrolling. One may stop autoscrolling by using
-    // clearTimeout( people_autoscrollTimer ).
+    // clearTimeout( autoscrollTimer ). Must be publically accessable because it
+    // uses timeout functions.
     {
-        clearTimeout( people_autoscrollTimer );
+        clearTimeout( autoscrollTimer );
         
         // grab the scroll interval
         var interval = {{settings.screens_people.scroll_interval}};
@@ -288,56 +291,57 @@
             interval={{settings.screens_people.scroll_speed}} + 50
 
         // Make sure scoller has been set up
-        if( people_scroller != null ){
+        if( scroller != null ){
 
             safelog( "people: autoscrolling" );
 
             // If this is the first auto-advance, select the middle person
-            if( people_scroller.getClickIndex() == -1 ){
+            if( scroller.getClickIndex() == -1 ){
 
-                people_scroller.click(
-                    people_scroller.getConf().size / 2 );
+                scroller.click(
+                    scroller.getConf().size / 2 );
 
             // Otherwise, select the next person
             } else {
 
                 // for selecting a random person for next click
                 var randomIndex =
-                    Math.floor( Math.random() * people_people.length );
+                    Math.floor( Math.random() * people.length );
 
                 // for selecting the next person for next click
-                var next = people_scroller.getClickIndex() -
-                    people_scroller.getConf().size + 1
+                var next = scroller.getClickIndex() -
+                    scroller.getConf().size + 1
 
-                people_scroller.click( next );
+                scroller.click( next );
             }
 
         } else
             safelog("people: autoscroll failed. Data not yet loaded.");
 
         // auto scroll every specified number of milliseconds
-        people_autoscrollTimer =
-            setTimeout('people_startAutoscroll()', interval );
+        autoscrollTimer =
+            setTimeout('people.startAutoscroll()', interval );
     }
 
-    function people_startAutoRotate()
+    this.startAutoRotate = function()
     // Begin auto rotating the main tile. One may stop the auto rotation by
-    // using clearTimeout( people_autoRandRotateTimer ).
+    // using clearTimeout( autoRandRotateTimer ). Must be publically accessable
+    // because it uses timeout functions.
     {
-        clearTimeout( people_autoRandRotateTimer );
+        clearTimeout( autoRandRotateTimer );
         
         safelog( "people: auto rotating." )
 
         // show a random person
-        people_showPerson( "/random" );
+        showPerson( "/random" );
 
         // auto rotate every specified number of milliseconds
-        people_autoRandRotateTimer =
-            setTimeout('people_startAutoRotate()',
+        autoRandRotateTimer =
+            setTimeout('people.startAutoRotate()',
                 {{settings.screens_people.auto_rotation_interval}});
     }
 
-    function people_pauseAutoRotation( timeout )
+    function pauseAutoRotation( timeout )
     // Pause auto rotation for the main tile for a specified number of
     // milliseconds.
     {
@@ -345,8 +349,8 @@
 
         // clear the auto rotate timer, and start it up again according to the
         // timeout.
-        clearTimeout( people_autoRandRotateTimer );
-        setTimeout('people_startAutoRotate()', timeout);
+        clearTimeout( autoRandRotateTimer );
+        setTimeout('people.startAutoRotate()', timeout);
     }
 
 
@@ -354,7 +358,7 @@
     // Initialization //
     ////////////////////
 
-    function people_setup()
+    function setup()
     // Load people data from specified site into the scoller tile, and run
     // a the _afterDataLoad() function when loading is complete.
     {
@@ -394,27 +398,27 @@
                     $(this).find("img").attr("src");
 
                 // push this record onto the people stack
-                people_people.push(
-                    new people_person( parsedName, parsedTitle,
+                people.push(
+                    new person( parsedName, parsedTitle,
                         parsedBody, parsedImage ) ) ;
 
                 // associate the person with the index number
-                people_person_index[ parsedName ] = personIndex;
+                person_index[ parsedName ] = personIndex;
 
                 safelog( "people: loading person:" +
-                    people_people[ personIndex ].name );
+                    people[ personIndex ].name );
 
                 // fill up the scroller tile
                 $("#people_items").append(
                     "<div class='people_person display_scrollable_item "+
                         "display_img_thumb'>"+
-                        "<img src='" + people_people[personIndex].image+
+                        "<img src='" + people[personIndex].image+
                             "' class='display_img_center "+
                                 "people_thumb_img'"+
                             "height='"+
                                 "{{settings.screens_people.thumbnail_height}}'>"+
                         "<div class='display_img_thumb_caption'>"+
-                            people_people[personIndex].name+
+                            people[personIndex].name+
                         "</div>"+
                     "</div>"
                 );
@@ -422,11 +426,11 @@
             });
 
             // AFTER the data is loaded...
-            people_setup_afterDataLoad()
+            setup_afterDataLoad()
         });
     }
 
-    function people_setup_afterDataLoad()
+    function setup_afterDataLoad()
     // Tasks to perform after the data is done loading
     {
         safelog( "people: Data loaded. Performing after-load tasks." );
@@ -437,7 +441,7 @@
 
         $(".people_person").each( function(i){
             widestItemWidth = Math.max( widestItemWidth, $(this).width() );
-            safelog(">>>" + $(this).width() + " " + people_people[i].name);
+            safelog(">>>" + $(this).width() + " " + people[i].name);
         });
 
         $(".people_person").each(function(){
@@ -445,7 +449,7 @@
         });
 
         // initialize the scroller plugin
-        people_scroller =
+        scroller =
             $(".people_scroller").scrollable({
                 items:"#people_items",
             }).circular({
@@ -454,12 +458,12 @@
             });
 
         // force a refresh
-        people_refreshTiles();
+        refreshTiles();
 
         // display a random person in the main tile
-        people_showPerson( "/random" );
+        showPerson( "/random" );
     }
-
+} people = new people();
 </script>
 
 <!-- Title -->

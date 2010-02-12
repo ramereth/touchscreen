@@ -35,16 +35,16 @@ osl_about = Screen(
     #show='slide',    # the show transition
     slideshow=True,  # include the screen in the slideshow?
 
-    js_init ='osl_about_init',  # a function to call when
+    js_init ='osl_about.init',  # a function to call when
                                        # initializing the screen
 
-    js_start='osl_about_start', # a function to call when
+    js_start='osl_about.start', # a function to call when
                                        # showing the screen
 
-    js_stop ='osl_about_stop',  # a function to call when
+    js_stop ='osl_about.stop',  # a function to call when
                                        # hiding the screen
                                        
-    js_onWinResize = 'osl_about_onWinResize', # a function to call when
+    js_onWinResize = 'osl_about.onWinResize', # a function to call when
                                                      # the window gets resized
 )
 

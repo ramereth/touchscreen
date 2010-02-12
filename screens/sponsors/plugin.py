@@ -35,9 +35,9 @@ sponsors = Screen(
     #hide='fade', 
     #show='fade',
     slideshow=True,
-    js_init ='sponsors_init',
-    js_start='sponsors_start',
-    js_stop ='sponsors_stop',
-    js_onWinResize = 'sponsors_onScreenResize'
+    js_init ='sponsors.init',
+    js_start='sponsors.start',
+    js_stop ='sponsors.stop',
+    js_onWinResize = 'sponsors.onScreenResize'
 )
 

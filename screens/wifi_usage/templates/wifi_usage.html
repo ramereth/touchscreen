@@ -7,8 +7,10 @@
 -->
 
 <script type="text/javascript">
-
-    function wifi_usage_init() {
+function wifi_usage()
+{
+    this.init = function()
+    {
         safelog('wifi_usage: initializing...');
     
         // make the image refresh itself at the specified interval
@@ -19,22 +21,26 @@
         });
     }
 
-    function wifi_usage_start() {
+    this.start = function()
+    {
         safelog('wifi_usage: starting...');
 
         // scale the wifi usage image to fit inside the parent
         $("#wifi_usage_img").scale("center");
     }
     
-    function wifi_usage_stop() {
+    this.stop = function()
+    {
         safelog('wifi_usage: stopping');
     }
     
-    function wifi_usage_onScreenResize() {        
+    this.onScreenResize = function()
+    {        
         // re-scale every time the window is resized
         $("#wifi_usage_img").scale("center");
     }
-    
+
+} wifi_usage = new wifi_usage();
 </script>
 
 <!-- set up the wifi usage map image ------------------------------------------>

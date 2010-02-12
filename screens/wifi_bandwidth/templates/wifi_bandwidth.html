@@ -7,7 +7,9 @@
 -->
 
 <script type="text/javascript">
-    function wifi_bandwidth_init()
+function wifi_bandwidth()
+{
+    this.init = function()
     {
         safelog('wifi_bandwidth: initializing...');
     
@@ -19,7 +21,7 @@
         });
     }
 
-    function wifi_bandwidth_start() 
+    this.start = function() 
     {
         safelog('wifi_bandwidth: starting...');
 
@@ -27,16 +29,17 @@
         $("#wifi_bandwidth_img").scale("center","stretch");
     }
     
-    function wifi_bandwidth_stop() 
+    this.stop = function() 
     {
         safelog('wifi_bandwidth: stopping');
     }
     
-    function wifi_bandwidth_onWinResize()
+    this.onWinResize = function()
     {
         $("#wifi_bandwidth_img").scale("center","stretch");
     }
     
+} wifi_bandwidth = new wifi_bandwidth();
 </script>
 
 <!-- set up the wifi bandwidth map image -------------------------------------->

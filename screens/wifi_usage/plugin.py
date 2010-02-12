@@ -35,9 +35,9 @@ wifi_usage = Screen(
     #hide='fade', 
     #show='fade',
     slideshow=True,
-    js_init ='wifi_usage_init',
-    js_start='wifi_usage_start',
-    js_stop ='wifi_usage_stop',
-    js_onWinResize = 'wifi_usage_onScreenResize'
+    js_init ='wifi_usage.init',
+    js_start='wifi_usage.start',
+    js_stop ='wifi_usage.stop',
+    js_onWinResize = 'wifi_usage.onScreenResize'
 )
 

@@ -68,13 +68,14 @@
 </style>
 
 <script type="text/javascript">
-
+function weather()
+{
     /////////////////
     // Global Data //
     /////////////////
 
     // unit information
-    var weather_units = {
+    var units = {
         temp:null,      // i.e. F (fahrenheit) or C (celcius)
         distance:null,  // i.e. km or mi
         speed:null,     // i.e. kmh or mph
@@ -82,7 +83,7 @@
     };
 
     // location information
-    var weather_locationInfo = {
+    var locationInfo = {
         name:null,      // city's name
         time:null,      // location's current time
         sunrise:null,   // time of sunrise
@@ -90,7 +91,7 @@
     };
     
     // current condition information
-    var weather_cc = {
+    var cc = {
         lastUpdate:null,        // when the information was last updated
         temp:null,              // the current temperature
         feelsLike:null,         // the "feels like" temperature
@@ -118,13 +119,13 @@
     };
 
     // 5-day forecast information
-    var weather_forecast = {
+    var forecast = {
         lastUpdate:null,    // when the forecast information was last updated
         days:new Array()    // an array of forecast days
     };
     
     // A single forecast day
-    function weather_forecast_day( 
+    function forecast_day( 
         name,       // the name of the day
         high,       // high temp of the day
         low,        // low temp of the day
@@ -153,23 +154,23 @@
     }
 
     // Timer for the data refresh
-    var weather_dataRefreshTimer = null;
+    var dataRefreshTimer = null;
 
     ///////////////////
     // Screen Events //
     ///////////////////
 
-    function weather_init()
+    this.init = function()
     {
         safelog('weather: initializing...');
     }
 
-    function weather_start()
+    this.start = function()
     {
         safelog('weather: starting...');
 
         // load the weather data from the weather feed
-        weather_loadData();
+        this.loadData();
 
         // start the weather maps cycle
         $('#weather_maps').cycle({
@@ -181,24 +182,24 @@
         
         // setup debug buttons
         $('#debug_f1').click(function(){
-            weather_loadData();
+            this.loadData();
         });
     }
 
-    function weather_stop()
+    this.stop = function()
     {
         safelog('weather: stopping');
 
         // clear the data refresh timer
-        clearTimeout(weather_dataRefreshTimer);
+        clearTimeout(dataRefreshTimer);
         
         // stop the weather maps cycle
         $('#weather_maps').cycle('stop');
     }
 
-    function weather_onScreenResize()
+    this.onScreenResize = function()
     {
-        weather_refreshTiles();
+        refreshTiles();
     }
     
     //////////////////
@@ -207,7 +208,7 @@
 
     // refreshTiles()
     // Repositions and resizes the tiles depending on their content.
-    function weather_refreshTiles()
+    function refreshTiles()
     {
         safelog("weather: refreshing tiles...");
         
@@ -238,7 +239,7 @@
     // loadData()
     // Loads data from the weather RSS feed into the data structure and
     // refreshes the tiles with the loaded data.
-    function weather_loadData()
+    this.loadData = function()
     {
         safelog( "weather: loading data..." );
         
@@ -250,57 +251,57 @@
         // get the feed
         $.post('/proxy/',
             {'url':weatherFeedURL },
-            function( weather_feed ){
+            function( feed ){
             
             // load weather unit data (note: find will not find "head")
-            weather_units.temp = $( weather_feed ).find("ut").text();
-            weather_units.distance = $( weather_feed ).find("ud").text();
-            weather_units.speed = $( weather_feed ).find("us").text();
-            weather_units.pressure = $( weather_feed ).find("up").text();
+            units.temp = $( feed ).find("ut").text();
+            units.distance = $( feed ).find("ud").text();
+            units.speed = $( feed ).find("us").text();
+            units.pressure = $( feed ).find("up").text();
 
             // load location data
-            weather_locationInfo.name = 
-                $( weather_feed ).find("loc>dnam").text();
-            weather_locationInfo.time = 
-                $( weather_feed ).find("loc>tm").text();
-            weather_locationInfo.sunrise = 
-                $( weather_feed ).find("loc>sunr").text();
-            weather_locationInfo.sunset = 
-                $( weather_feed ).find("loc>suns").text();
+            locationInfo.name = 
+                $( feed ).find("loc>dnam").text();
+            locationInfo.time = 
+                $( feed ).find("loc>tm").text();
+            locationInfo.sunrise = 
+                $( feed ).find("loc>sunr").text();
+            locationInfo.sunset = 
+                $( feed ).find("loc>suns").text();
 
             // load current condition data
-            weather_cc.lastUpdate = 
-                $(weather_feed).find("cc>lsup").text();
-            weather_cc.temp = $(weather_feed).find("cc>tmp").text();
-            weather_cc.feelsLike = 
-                $(weather_feed).find("cc>flik").text();
-            weather_cc.condition = $(weather_feed).find("cc>t").text();
-            weather_cc.icon = $(weather_feed).find("cc>icon").text();
-            weather_cc.pressure.value = 
-                $(weather_feed).find("cc>bar>r").text();
-            weather_cc.pressure.description = 
-                $(weather_feed).find("cc>bar>d").text();
-            weather_cc.wind.speed = 
-                $(weather_feed).find("cc>wind>s").text();
-            weather_cc.wind.from = 
-                $(weather_feed).find("cc>wind>t").text();
-            weather_cc.humidity = $(weather_feed).find("cc>hmid").text();
-            weather_cc.visual = $(weather_feed).find("cc>vis").text();
-            weather_cc.dewpoint = $(weather_feed).find("cc>dewp").text();
-            weather_cc.moon.icon = 
-                $(weather_feed).find("cc>moon>icon").text();
-            weather_cc.moon.description = 
-                $(weather_feed).find("cc>moon>t").text();
-            weather_cc.uv.index = 
-                $(weather_feed).find("cc>uv>i").text();
-            weather_cc.uv.description = 
-                $(weather_feed).find("cc>uv>t").text();
+            cc.lastUpdate = 
+                $(feed).find("cc>lsup").text();
+            cc.temp = $(feed).find("cc>tmp").text();
+            cc.feelsLike = 
+                $(feed).find("cc>flik").text();
+            cc.condition = $(feed).find("cc>t").text();
+            cc.icon = $(feed).find("cc>icon").text();
+            cc.pressure.value = 
+                $(feed).find("cc>bar>r").text();
+            cc.pressure.description = 
+                $(feed).find("cc>bar>d").text();
+            cc.wind.speed = 
+                $(feed).find("cc>wind>s").text();
+            cc.wind.from = 
+                $(feed).find("cc>wind>t").text();
+            cc.humidity = $(feed).find("cc>hmid").text();
+            cc.visual = $(feed).find("cc>vis").text();
+            cc.dewpoint = $(feed).find("cc>dewp").text();
+            cc.moon.icon = 
+                $(feed).find("cc>moon>icon").text();
+            cc.moon.description = 
+                $(feed).find("cc>moon>t").text();
+            cc.uv.index = 
+                $(feed).find("cc>uv>i").text();
+            cc.uv.description = 
+                $(feed).find("cc>uv>t").text();
             
             // load 5-day forecast data
-            weather_forecast.lastUpdate = 
-                $(weather_feed).find("dayf>lsup").text();
+            forecast.lastUpdate = 
+                $(feed).find("dayf>lsup").text();
             
-            $(weather_feed).find("dayf>day").each(function(dayIndex){
+            $(feed).find("dayf>day").each(function(dayIndex){
                 
                 // grab the day part of the day
                 var dayPart = null;
@@ -309,8 +310,8 @@
                 });
                 
                 // push a new day onto the days array
-                weather_forecast.days.push( 
-                    new weather_forecast_day(
+                forecast.days.push( 
+                    new forecast_day(
                         $(this).attr("t"),
                         $(this).find("hi").text(),
                         $(this).find("low").text(),
@@ -328,12 +329,12 @@
             });
            
             // fill the tiles with the loaded data
-            weather_fillTiles();
+            fillTiles();
 
             // set a timeout to reload the data again at a specified interval
-            weather_dataRefreshTimer = 
+            dataRefreshTimer = 
                 setTimeout(
-                    'weather_loadData()',
+                    'weather.loadData()',
                     {{settings.screens_weather.refresh_interval}}
                 );
         });
@@ -341,7 +342,7 @@
 
     // fillTiles()
     // Fills the tiles with data from the data structure
-    function weather_fillTiles()
+    function fillTiles()
     {
         safelog( "weather: filling tiles..." );
         
@@ -349,52 +350,52 @@
         $("#weather_cc_icon").html(
             "<img class='display_centered_block'" +
                 " src='{{SITE_ROOT}}/static/screens/weather/icons/large/" +
-                weather_cc.icon + 
+                cc.icon + 
                 ".png'>"
         );
         
         $("#weather_cc_temp").html(
-            weather_cc.temp + "&#176;"
+            cc.temp + "&#176;"
         );
         
         $("#weather_cc_feelsLike").html( 
-            "(Feels like " + weather_cc.feelsLike + " &#176;)" 
+            "(Feels like " + cc.feelsLike + " &#176;)" 
         );
         
         $("#weather_cc_condition").html(
-            weather_cc.condition
+            cc.condition
         );
         
-        if( weather_cc.wind.speed == "calm" )
+        if( cc.wind.speed == "calm" )
             $("#weather_cc_wind").html( "calm" );
         else
             $("#weather_cc_wind").html( 
-                weather_cc.wind.speed + " " + 
-                weather_units.speed +
-                " " + weather_cc.wind.from 
+                cc.wind.speed + " " + 
+                units.speed +
+                " " + cc.wind.from 
             );
         
         $("#weather_cc_humiditiy").html( 
-            weather_cc.humidity + "%"
+            cc.humidity + "%"
         );
         
         $("#weather_cc_pressure").html( 
-            weather_cc.pressure.value + " " + 
-            weather_units.pressure + ". (" +
-            weather_cc.pressure.description + ")"
+            cc.pressure.value + " " + 
+            units.pressure + ". (" +
+            cc.pressure.description + ")"
         );
         
         $("#weather_cc_visibility").html( 
-            weather_cc.visual + " " + 
-            weather_units.distance + "."
+            cc.visual + " " + 
+            units.distance + "."
         );
         
-        $("#weather_cc_uv").html( weather_cc.uv.index +
-            " (" + weather_cc.uv.description + ")"
+        $("#weather_cc_uv").html( cc.uv.index +
+            " (" + cc.uv.description + ")"
         );
         
         $("#weather_cc_lastUpdate").html(
-            weather_cc.lastUpdate
+            cc.lastUpdate
         );
         
         
@@ -406,7 +407,7 @@
                 "<h1>" + 
                     // add 1 to days so it doesn't include the current
                     // day
-                    weather_forecast.days[dayIndex+1].name +
+                    forecast.days[dayIndex+1].name +
                 "</h1>"
             );
             
@@ -414,28 +415,29 @@
             $(".weather_forecast_icon").eq(dayIndex).html(
                 "<img class='centered_block' "+
                     "src='{{SITE_ROOT}}/static/screens/weather/icons/large/" +
-                    weather_forecast.days[dayIndex+1].icon + 
+                    forecast.days[dayIndex+1].icon + 
                     ".png' height='{{settings.screens_weather.forecast_icon_height}}'>"
             );
             
             // conditions
             $(".weather_forecast_cond").eq(dayIndex).html( 
                 // add 1 to days so it doesn't include the current day
-                weather_forecast.days[dayIndex+1].condition
+                forecast.days[dayIndex+1].condition
             );
             
             // temperature
             $(".weather_forecast_temp").eq(dayIndex).html( 
                 // add 1 to days so it doesn't include the current day
-                weather_forecast.days[dayIndex+1].low + "/" +
-                weather_forecast.days[dayIndex+1].high
+                forecast.days[dayIndex+1].low + "/" +
+                forecast.days[dayIndex+1].high
             );
         });  
 
         // force a refresh with the newly filled data
-        weather_refreshTiles();
+        refreshTiles();
     }
     
+} weather = new weather();
 </script>
 
 <!-- Maps Tile -->
