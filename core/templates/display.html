@@ -277,8 +277,8 @@
             {
                 if (response == '0' || response == '-1') {
                     
-                    //safelog('no message in queue')
-                    
+                    safelog("core: no message in queue")
+                                        
                 } else {
                     
                     split = response.split(',');
@@ -397,7 +397,7 @@
                 hide_all();
                 init_all();
                 slide_show_start();
-                get_message();
+                get_message();  //start processing messages
 
                 // Debug window controls
                 $('.debug_buttons').hover(

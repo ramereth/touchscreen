@@ -172,20 +172,21 @@ function weather()
         // load the weather data from the weather feed
         this.loadData();
 
+        //$(".weather_map").scale();
+
         // start the weather maps cycle
         $('#weather_maps').cycle({
             fx:'fade',
             fit:0,
             containerResize:0,
-            timeout:{{settings.screens_weather.maps_cycle_timeout}}
+            timeout:{{settings.screens_weather.maps_cycle_timeout}},
+            //after:function(){$(".weather_map").scale();}
         });
         
         // setup debug buttons
         $('#debug_f1').click(function(){
             this.loadData();
         });
-
-        $(".weather_map").scale("debug");
     }
 
     this.stop = function()
@@ -251,9 +252,7 @@ function weather()
             .replace( /&amp\;/g, "&" );
         
         // get the feed
-        $.post('/proxy/',
-            {'url':weatherFeedURL },
-            function( feed ){
+        $.post('/proxy/', {'url':weatherFeedURL}, function( feed ){
             
             // load weather unit data (note: find will not find "head")
             units.temp = $( feed ).find("ut").text();

@@ -28,7 +28,7 @@ from twisted.internet import reactor
 from twisted.internet.defer import Deferred
 from threading import Lock
 
-TIMEOUT = 240
+TIMEOUT = 1 # timeout in seconds
 MESSAGE_QUEUES = {}
 QUEUE_LOCK = Lock()
 
