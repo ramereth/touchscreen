@@ -89,10 +89,10 @@
 
             function show_slide(screen) 
             {
-                if (slideshow_screen_index != current_screen_index) {
+                if( slideshow_screen_index != current_screen_index ){
                     
                     // hide slide if one is shown
-                    if (current_screen_index != -1){
+                    if( current_screen_index != -1 ){
                         
                         current_screen = screens[current_screen_index];
                         safelog('hiding: ' + current_screen['id']);
@@ -122,7 +122,7 @@
                     if( show_timer ) { clearTimeout(show_timer)};
                     if( start_timer ) { clearTimeout(start_timer)};
 
-                    // save the window.resize event pointer and call 
+                    // save the window.resize event pointer and set it to the  
                     // onWinResize event for the current screen
                     winResizeEventPointer = window.onresize;
                     
@@ -133,8 +133,8 @@
                         eval( screens[current_screen_index]['onWinResize'] );
                     }
                     
-                    safelog( "core: window.resize changed from " + 
-                        winResizeEventPointer + " to " + window.onresize );
+                    //safelog( "core: window.resize changed from " + 
+                    //    winResizeEventPointer + " to " + window.onresize );
 
                     show = showers[screen['show']];
                     
@@ -289,47 +289,56 @@
                 // otherwise, the message server returned a valid command
                 else {
 
+                    safelog("core: message received: " + response);
+
                     // split the message response by commas
                     splitResponse = response.split(',');
 
-                    // a valid command will have at least two comma-seperated
-                    // values
+                    // capture the object name
+                    screenName = splitResponse[0];
+
+                    // if the mesage has at least one comma-seperated value,
+                    // show the referenced screen
+                    if( splitResponse.length >= 1 ){
+
+                        // TO DO!!
+                        // show the screen
+                        
+                    // otherwise, the command is not valid
+                    } else
+                        safelog("core: not a valid command.");
+                        
+                    // if a command (and optionally arguments) are also
+                    // supplied, execute the command
                     if( splitResponse.length >= 2 ) {
                         
-                        obj = splitResponse[0];
                         command = splitResponse[1];
                         
-                        // process args into string if ther are more than two
+                        // process args into strings if ther are more than two
                         // comma-seperated values
                         args = '';
                         if( splitResponse.length > 2 ) {
                             
                             for( i=2; i<splitResponse.length; i++ ){
                                 
-                                if (i > 2) args += ',';
+                                if( i > 2 ) args += ',';
                                 
-                                args += '"'+splitResponce[i]+'"'
+                                args += '"' + splitResponse[i] + '"';
                             }
                         }
                     
-                        // Build command string to evaluate - For now all 
-                        // commands are global.  ignore the obj variable that is
-                        // passed in.
-                        cmd_string = command+'('+args+')';
+                        // Build command string to evaluate
+                        cmd_string = screenName+"."+command+'('+args+')';
 
-                        safelog("core: message server returned command \"" +
-                            cmd_string + "\"");
+                        safelog("core: parsed command from message: " +
+                            cmd_string );
                         
                         // use setTimeout to asynchronously call the function.
                         // This allows immediate return.  It also prevents
                         // exceptions in the called function from causing an
                         // exception here.
-                        setTimeout( cmd_string, 0 );
-
-                    // otherwise, the command is not valid
-                    } else
-                        safelog("core: message \"" + response +
-                            "\" not a valid command.");
+                        // setTimeout( cmd_string, 0 );
+                    }
                 }
                 
                 get_message();

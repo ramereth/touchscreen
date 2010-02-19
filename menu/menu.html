@@ -19,6 +19,8 @@
             body{
                 border:1px solid grey;
                 width:720px;
+                margin-left:auto;
+                margin-right:auto;
             }
             
             title1{
@@ -44,8 +46,7 @@
                 margin-top: 25px;
             }
 
-            screen{
-                font-weight:bold;
+            item{
                 font-size:large;
                 margin-left: 75px;
                 margin-top: 25px;
@@ -70,22 +71,30 @@
             server.
         </subtitle1>
 
+        <title2>Debug:</title2>
+
+        <cmd>
+            <a href="http://localhost:9000/?c=1&q=touchscreen&m=hello">
+                send bogus "hello" message
+            </a>
+        </cmd>
+
         <title2>Screens:</title2>
 
-        <screen>ftp_traffic</screen>
+        <a href="http://localhost:9000/?c=1&q=touchscreen&m=test1,test2,test3">
+            <item>ftp_traffic</item>
+        </a>
 
-        <cmd>cmd</cmd>
+        <item>osl_about</item>
 
-        <screen>osl_about</screen>
-
-        <screen>osl_bandwidth</screen>
+        <item>osl_bandwidth</item>
         
-        <screen>people</screen>
-        <screen>sponsors</screen>
-        <screen>weather</screen>
-        <screen>webcams</screen>
-        <screen>wifi_bandwidth</screen>
-        <screen>wifi_usage</screen>
+        <item>people</item>
+        <item>sponsors</item>
+        <item>weather</item>
+        <item>webcams</item>
+        <item>wifi_bandwidth</item>
+        <item>wifi_usage</item>
         
     </body>
 </html>
