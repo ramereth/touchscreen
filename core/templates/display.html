@@ -256,7 +256,10 @@
             /* ===============================
              *  AJAX Messaging
              * =============================== */
-            function get_message() {
+            function get_message()
+            {
+                safelog("core: waiting for message server.");
+                
                 $.post('/proxy/',{'url':'{{settings.general.MENU_URL}}'},
                     message_received);
             }
@@ -275,28 +278,37 @@
             */
             function message_received(response)
             {
-                if (response == '0' || response == '-1') {
-                    
-                    safelog("core: no message in queue")
-                                        
-                } else {
-                    
-                    split = response.split(',');
-                    
-                    if (split.length >= 2) {
+                // message server timed out
+                if( response == '0' )
+                    safelog("core: no message in queue.");
+
+                // message server reported an error
+                else if( response == '-1' )
+                    safelog("core: error in message.");
+
+                // otherwise, the message server returned a valid command
+                else {
+
+                    // split the message response by commas
+                    splitResponse = response.split(',');
+
+                    // a valid command will have at least two comma-seperated
+                    // values
+                    if( splitResponse.length >= 2 ) {
                         
-                        obj = split[0];
-                        command = split[1];
+                        obj = splitResponse[0];
+                        command = splitResponse[1];
                         
-                        // process args into string
+                        // process args into string if ther are more than two
+                        // comma-seperated values
                         args = '';
-                        if (split.length > 2) {
+                        if( splitResponse.length > 2 ) {
                             
-                            for (i=2;i<split.length; i++){
+                            for( i=2; i<splitResponse.length; i++ ){
                                 
                                 if (i > 2) args += ',';
                                 
-                                args += '"'+split[i]+'"'
+                                args += '"'+splitResponce[i]+'"'
                             }
                         }
                     
@@ -304,13 +316,20 @@
                         // commands are global.  ignore the obj variable that is
                         // passed in.
                         cmd_string = command+'('+args+')';
+
+                        safelog("core: message server returned command \"" +
+                            cmd_string + "\"");
                         
                         // use setTimeout to asynchronously call the function.
                         // This allows immediate return.  It also prevents
                         // exceptions in the called function from causing an
                         // exception here.
-                        setTimeout(cmd_string,0);
-                    }
+                        setTimeout( cmd_string, 0 );
+
+                    // otherwise, the command is not valid
+                    } else
+                        safelog("core: message \"" + response +
+                            "\" not a valid command.");
                 }
                 
                 get_message();

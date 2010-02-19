@@ -2,14 +2,15 @@
 #    twistd -ny messenger.tac
 
 """
-Simple Messaging Daemon.  It allows multiple queues of messages to be added to and retrieved.
+Simple Messaging Daemon.  It allows multiple queues of messages to be added to
+and retrieved.
 
 Uses http GET requests
 
 Parameters:
    c = 1 for send,  0 for retrieve.
    q = queue name to send to or retrieve from
-   m = message to queue, only required for send
+   m = message to queue (only required for send)
 
 Example:
    http://localhost:9000/?c=1&q=foo_queue&m=bar_message
@@ -28,7 +29,7 @@ from twisted.internet import reactor
 from twisted.internet.defer import Deferred
 from threading import Lock
 
-TIMEOUT = 1 # timeout in seconds
+TIMEOUT = 240 # timeout in seconds
 MESSAGE_QUEUES = {}
 QUEUE_LOCK = Lock()
 

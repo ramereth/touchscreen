@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# Restarts the message server and starts the Django server
+
+./stopMessageService
+./runMessageService
+./runDjangoServer

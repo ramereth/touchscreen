@@ -11,3 +11,4 @@ REFERENCE
 *swp
 *.log
 *.pid
+twistd.log*

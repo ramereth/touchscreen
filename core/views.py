@@ -17,9 +17,10 @@ def plugin_processor(request):
         PLUGIN_MANAGER = PluginManager()
         PLUGIN_MANAGER.autodiscover()
 
-    return {'plugin_manager':PLUGIN_MANAGER,
-            'settings':PLUGIN_MANAGER.get_settings()
-            }
+    return {
+        'plugin_manager':PLUGIN_MANAGER,
+        'settings':PLUGIN_MANAGER.get_settings()
+    }
 
 # Create your views here.
 def display(request):
