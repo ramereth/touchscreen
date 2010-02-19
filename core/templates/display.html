@@ -87,8 +87,23 @@
             // for saving/restoring the win.resize pointer
             var winResizeEventPointer = null;
 
-            function show_slide(screen) 
+            // Find a screen's index by it's id string. If a matching screen is
+            // not found, return -1
+            function get_screen_index( id )
             {
+                // search through the screens for one matching the key
+                for( var i in screens )                    
+                    if( id == screens[i].id )
+                        return i;
+
+                return -1;
+            }
+
+            function show_slide( screen ) 
+            {
+
+                alert( screen.id );
+                
                 if( slideshow_screen_index != current_screen_index ){
                     
                     // hide slide if one is shown
@@ -276,37 +291,45 @@
             timeouts should be ignored and the next message should be
             requested immediately.
             */
-            function message_received(response)
+            function message_received( response )
             {
                 // message server timed out
                 if( response == '0' )
-                    safelog("core: no message in queue.");
+                    safelog("core messaging: no message in queue.");
 
                 // message server reported an error
                 else if( response == '-1' )
-                    safelog("core: error in message.");
+                    safelog("core messaging: error in message.");
 
                 // otherwise, the message server returned a valid command
                 else {
 
-                    safelog("core: message received: " + response);
+                    safelog("core messaging: message received: " + response);
 
                     // split the message response by commas
                     splitResponse = response.split(',');
 
                     // capture the object name
-                    screenName = splitResponse[0];
+                    screenKey = splitResponse[0];
 
                     // if the mesage has at least one comma-seperated value,
                     // show the referenced screen
                     if( splitResponse.length >= 1 ){
 
-                        // TO DO!!
-                        // show the screen
+                        ///////////////////////
+                        // NOT WORKING! FIX! //
+                        ///////////////////////
+
+                        var screenIndex = get_screen_index( screenKey );
+
+                        if( show_slide( screens[ screenIndex ] ) != -1 )
+                            safelog("core messaging: showing screen " +
+                                screenKey);
+                                
+                        else safelog("core messaging: screen not found.");
                         
                     // otherwise, the command is not valid
-                    } else
-                        safelog("core: not a valid command.");
+                    } else safelog("core messaging: not a valid command.");
                         
                     // if a command (and optionally arguments) are also
                     // supplied, execute the command
@@ -330,7 +353,7 @@
                         // Build command string to evaluate
                         cmd_string = screenName+"."+command+'('+args+')';
 
-                        safelog("core: parsed command from message: " +
+                        safelog("core messaging: parsed command from message: "+
                             cmd_string );
                         
                         // use setTimeout to asynchronously call the function.
@@ -425,7 +448,7 @@
                 hide_all();
                 init_all();
                 slide_show_start();
-                get_message();  //start processing messages
+                get_message();  //start waiting for messages
 
                 // Debug window controls
                 $('.debug_buttons').hover(
