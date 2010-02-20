@@ -87,30 +87,32 @@
             // for saving/restoring the win.resize pointer
             var winResizeEventPointer = null;
 
-            // Find a screen's index by it's id string. If a matching screen is
-            // not found, return -1
-            function get_screen_index( id )
+            // Get a screen by its id string. If a matching screen is not found,
+            // return -1
+            function get_screen( id )
             {
-                // search through the screens for one matching the key
                 for( var i in screens )                    
                     if( id == screens[i].id )
-                        return i;
+                        return screens[i];
 
                 return -1;
             }
 
             function show_slide( screen ) 
             {
-
-                alert( screen.id );
+                safelog("core show_slide: screen[id] = " + screen['id']);
+                safelog("core show_slide: slideshow_screen_index = " +
+                    slideshow_screen_index);
+                safelog("core show_slide: current_screen_index = " +
+                    current_screen_index);
                 
-                if( slideshow_screen_index != current_screen_index ){
+                //if( slideshow_screen_index != current_screen_index ){
                     
                     // hide slide if one is shown
                     if( current_screen_index != -1 ){
                         
                         current_screen = screens[current_screen_index];
-                        safelog('hiding: ' + current_screen['id']);
+                        safelog('core: hiding ' + current_screen['id']);
                         hider = eval(hiders[current_screen['hide']]);
                         var hidetime = hider(current_screen);
 
@@ -158,7 +160,7 @@
                     show_timer = setTimeout( "show_slide_animation_wrapper('" + 
                         show+"(screens[current_screen_index])'," + 
                         current_screen_index +")", hidetime);
-                }
+                //}
             }
 
             /*
@@ -175,38 +177,38 @@
              *  SLIDE SHOW
              * =============================== */
             // tracks timer for automatic slideshow, used for pausing slideshow
-            var slide_show_timer = -1;
+            var slideshow_timer = -1;
 
             // tracks slideshow index, may temporarily hold next or previous
             // screen
             var slideshow_screen_index = -1;
 
             // initializes and starts slideshow from the first slide
-            function slide_show_start() {
-                slide_show_loop();
+            function slideshow_start() {
+                slideshow_loop();
             }
 
             // loops slides automatically
-            function slide_show_loop() {
-                var screen = slide_show_next();
+            function slideshow_loop() {
+                var screen = slideshow_next();
 
                 //set next transition to duration of current slide
                 safelog('core: next screen in ' +
                     parseInt(screen['duration'])/1000 + " seconds");
-                slide_show_timer = 
-                    setTimeout(slide_show_loop, screen['duration']);
+                slideshow_timer = 
+                    setTimeout(slideshow_loop, screen['duration']);
             }
 
             // pauses the slideshow
-            function slide_show_stop() {
-                if (slide_show_timer) {
-                    clearTimeout(slide_show_timer);
-                    slide_show_timer = -1;
+            function slideshow_stop() {
+                if (slideshow_timer) {
+                    clearTimeout(slideshow_timer);
+                    slideshow_timer = -1;
                 }
             }
 
             // advances to the next slide
-            function slide_show_next() {
+            function slideshow_next() {
                 //get next slide
                 var screen = get_next_slide();
                 while (!screen['slideshow']) {
@@ -218,7 +220,7 @@
             }
 
             // advances to the previous slide
-            function slide_show_prev() {
+            function slideshow_prev() {
                 //get next slide
                 var screen = get_prev_slide();
                 while (!screen['slideshow']) {
@@ -229,44 +231,26 @@
             }
 
             // gets next potential screen to be displayed
-            function get_next_slide() {
-                if (slideshow_screen_index+1 == screens.length) {
+            function get_next_slide()
+            {
+                if( slideshow_screen_index + 1 == screens.length )
                     slideshow_screen_index = 0;
-                } else {
-                    slideshow_screen_index = slideshow_screen_index + 1;
-                }
+                else
+                    slideshow_screen_index++;
+                
                 return screens[slideshow_screen_index];
             }
 
             // gets prev potential screen to be displayed
-            function get_prev_slide() {
-                if (slideshow_screen_index) {
-                    slideshow_screen_index = slideshow_screen_index-1 ;
-                } else {
+            function get_prev_slide()
+            {
+                if( slideshow_screen_index )
+                    slideshow_screen_index--;
+                else
                     slideshow_screen_index = screens.length-1;
-                }
+
                 return screens[slideshow_screen_index];
             }
-
-             /* ===============================
-             *  Slide Show Remote Commands
-             * =============================== */
-            function remote_slide_show_prev(){
-                slide_show_prev();
-            }
-
-            function remote_slide_show_stop(){
-                //do nothing its already stopped;
-            }
-
-            function remote_slide_show_play(){
-                slide_show_start();
-            }
-
-            function remote_slide_show_next() {
-                slide_show_next();
-            }
-
 
             /* ===============================
              *  AJAX Messaging
@@ -287,7 +271,7 @@
             an error will return '-1'
                 
             timeouts will occur if no message is received after 4 minutes.
-            This happens whenever there is noone interacting with the screen
+            This happens whenever there is no one interacting with the screen
             timeouts should be ignored and the next message should be
             requested immediately.
             */
@@ -310,7 +294,7 @@
                     splitResponse = response.split(',');
 
                     // capture the object name
-                    screenKey = splitResponse[0];
+                    screenID = splitResponse[0];
 
                     // if the mesage has at least one comma-seperated value,
                     // show the referenced screen
@@ -319,12 +303,13 @@
                         ///////////////////////
                         // NOT WORKING! FIX! //
                         ///////////////////////
+                        // has to do with current_screen_index and
+                        // slideshow_screen_index being the same value when
+                        // show_slide is called.
 
-                        var screenIndex = get_screen_index( screenKey );
-
-                        if( show_slide( screens[ screenIndex ] ) != -1 )
+                        if( show_slide( get_screen( screenID ) ) != -1 )
                             safelog("core messaging: showing screen " +
-                                screenKey);
+                                screenID);
                                 
                         else safelog("core messaging: screen not found.");
                         
@@ -351,7 +336,10 @@
                         }
                     
                         // Build command string to evaluate
-                        cmd_string = screenName+"."+command+'('+args+')';
+                        cmd_string = "";
+                        if( screenID != "core" )
+                            cmd_string += screenID+".";
+                        cmd_string += command+'('+args+')';
 
                         safelog("core messaging: parsed command from message: "+
                             cmd_string );
@@ -360,7 +348,7 @@
                         // This allows immediate return.  It also prevents
                         // exceptions in the called function from causing an
                         // exception here.
-                        // setTimeout( cmd_string, 0 );
+                        setTimeout( cmd_string, 0 );
                     }
                 }
                 
@@ -447,7 +435,7 @@
                 safelog("core: Initializing Display");
                 hide_all();
                 init_all();
-                slide_show_start();
+                slideshow_start();
                 get_message();  //start waiting for messages
 
                 // Debug window controls
@@ -457,28 +445,28 @@
                 );
                 $('#debug_play').click(function(){
                     safelog("debug menu: playing slideshow");
-                    slide_show_stop();
-                    remote_slide_show_play();
+                    slideshow_stop();
+                    slideshow_start();
                 });
                 $('#debug_stop').click(function(){
                     safelog("debug menu: stopping slideshow");
-                    slide_show_stop();
-                    remote_slide_show_stop();
+                    slideshow_stop();
+                    slideshow_stop();
                 });
                 $('#debug_refresh').click(function(){
                     safelog("debug menu: refreshing current slide");
-                    remote_slide_show_next();
-                    remote_slide_show_prev();
+                    slideshow_next();
+                    slideshow_prev();
                 });
                 $('#debug_next').click(function(){
                     safelog("debug menu: going to next slide");
-                    slide_show_stop();
-                    remote_slide_show_next();
+                    slideshow_stop();
+                    slideshow_next();
                 });
                 $('#debug_prev').click(function(){
                     safelog("debug menu: going to previous slide");
-                    slide_show_stop();
-                    remote_slide_show_prev();
+                    slideshow_stop();
+                    slideshow_prev();
                 });
 
                 $('#debug_close').click(function(){
