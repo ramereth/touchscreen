@@ -16,7 +16,7 @@
 </style>
 
 <script type="text/javascript">
-function sponsors()
+function {{screen.hash}}()
 {
 
     /////////////////
@@ -127,7 +127,7 @@ function sponsors()
                  friends_scroller.getConf().size + 1 );
 
         friends_autoScrollTimer =
-            setTimeout('sponsors.friends_startAutoAdvance()', interval );
+            setTimeout('{{screen.hash}}.friends_startAutoAdvance()', interval );
     }
 
     this.sponsors_startAutoAdvance = function()
@@ -159,7 +159,7 @@ function sponsors()
                  sponsors_scroller.getConf().size + 1 );
 
         sponsors_autoScrollTimer =
-            setTimeout('sponsors.sponsors_startAutoAdvance()', interval);
+            setTimeout('{{screen.hash}}.sponsors_startAutoAdvance()', interval);
     }
 
     //////////////////
@@ -478,7 +478,7 @@ function sponsors()
         });
     }
     
-} sponsors = new sponsors();
+} {{screen.hash}} = new {{screen.hash}}();
 </script>
 
 <div class="display_tile display_title sponsors_title">

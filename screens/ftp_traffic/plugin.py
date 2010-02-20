@@ -35,8 +35,8 @@ ftp_traffic = Screen(
     #hide='fade', 
     #show='fade',
     slideshow=True,
-    js_init ='ftp_traffic.init',
-    js_start='ftp_traffic.start',
-    js_stop ='ftp_traffic.stop',
-    js_onWinResize = 'ftp_traffic.onScreenResize'
+    js_init ='init',
+    js_start='start',
+    js_stop ='stop',
+    js_onWinResize = 'onScreenResize'
 )

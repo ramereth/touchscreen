@@ -35,9 +35,9 @@ weather = Screen(
     #hide='fade', 
     #show='fade',
     slideshow=True,
-    js_init ='weather.init',
-    js_start='weather.start',
-    js_stop ='weather.stop',
-    js_onWinResize = 'weather.onScreenResize'
+    js_init ='init',
+    js_start='start',
+    js_stop ='stop',
+    js_onWinResize = 'onScreenResize'
 )
 

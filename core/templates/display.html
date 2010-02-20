@@ -83,46 +83,29 @@
             var current_screen_index = -1
             var show_timer = 0;
             var start_timer = 0;
-            
-            // for saving/restoring the win.resize pointer
-            var winResizeEventPointer = null;
 
             // Get a screen index by its id string. If a matching screen is not
             // found, return -1
             function get_screen_index( id )
             {
-                for( var i in screens )                    
+                for( var i in screens )
                     if( id == screens[i].id )
                         return i;
 
                 return -1;
             }
 
-            function show_slide( screen ) 
+            function show_slide( screen )
             {
-                /*
-                safelog("core show_slide: screen[id] = " + screen['id']);
-                safelog("core show_slide: slideshow_screen_index = " +
-                    slideshow_screen_index);
-                safelog("core show_slide: current_screen_index = " +
-                    current_screen_index);
-                */
-                
                 if( slideshow_screen_index != current_screen_index ){
-                    
+
                     // hide slide if one is shown
                     if( current_screen_index != -1 ){
-                        
+
                         current_screen = screens[current_screen_index];
                         safelog('core: hiding ' + current_screen['id']);
                         hider = eval(hiders[current_screen['hide']]);
                         var hidetime = hider(current_screen);
-
-                        // restore the window.resize event pointer to 
-                        // what it was before the screen was shown
-                        window.onresize = winResizeEventPointer;
-                        safelog( "core: window.resize pointer restored to " + 
-                            window.resize );
 
                         // hide the screen
                         eval(current_screen['stop']);
@@ -136,31 +119,26 @@
 
                     if( !hidetime ) hidetime = 999;
 
-                    // clear past timer in case next/prev was clicked 
+                    // clear past timer in case next/prev was clicked
                     // repeatedly
                     if( show_timer ) { clearTimeout(show_timer)};
                     if( start_timer ) { clearTimeout(start_timer)};
 
-                    // save the window.resize event pointer and set it to the  
-                    // onWinResize event for the current screen
-                    winResizeEventPointer = window.onresize;
-                    
+                    // set the window resize pointer to the screen's resize hook
+                    // function
                     window.onresize = function(){
-                        safelog('core: window resized to ' + 
+                        safelog('core: window resized to ' +
                             screenWidth() + "x" + screenHeight());
-                        
+
                         eval( screens[current_screen_index]['onWinResize'] );
                     }
-                    
-                    //safelog( "core: window.resize changed from " + 
-                    //    winResizeEventPointer + " to " + window.onresize );
 
                     show = showers[screen['show']];
-                    
+
                     safelog('core: showing ' + screen['id']);
-                    
-                    show_timer = setTimeout( "show_slide_animation_wrapper('" + 
-                        show+"(screens[current_screen_index])'," + 
+
+                    show_timer = setTimeout( "show_slide_animation_wrapper('" +
+                        show+"(screens[current_screen_index])'," +
                         current_screen_index +")", hidetime);
                 }
             }
@@ -199,8 +177,8 @@
                 //set next transition to duration of current slide
                 safelog('core: next screen in ' +
                     parseInt(screen['duration'])/1000 + " seconds");
-                    
-                slideshow_timer = 
+
+                slideshow_timer =
                     setTimeout(slideshow_loop, screen['duration']);
             }
 
@@ -218,13 +196,13 @@
             {
                 //get next slide
                 var screen = get_next_slide();
-                
+
                 while( !screen['slideshow'] ){
                     screen = get_next_slide();
                 }
 
                 show_slide( screen );
-                
+
                 return screen;
             }
 
@@ -247,7 +225,7 @@
                     slideshow_screen_index = 0;
                 else
                     slideshow_screen_index++;
-                
+
                 return screens[slideshow_screen_index];
             }
 
@@ -268,18 +246,18 @@
             function get_message()
             {
                 safelog("core messaging: eagerly awaiting next command.");
-                
+
                 $.post('/proxy/',{'url':'{{settings.general.MENU_URL}}'},
                     message_received);
             }
 
             /*
             Process message into command
-                    
+
             command messages are formated: <object/screen>,<command>[,args]+
             a timeout will return '0'
             an error will return '-1'
-                
+
             timeouts will occur if no message is received after 4 minutes.
             This happens whenever there is no one interacting with the screen
             timeouts should be ignored and the next message should be
@@ -317,53 +295,53 @@
                 // for building the command string
                 cmd_string = null;
 
-                // if the message referrs to the slideshow, 
+                // if the message referrs to the slideshow,
                 if( objName == "slideshow" ){
                     cmd = splitResponse[1];
-                    
+
                     if( cmd == "start" ) cmd_string = 'slideshow_start()';
                     else if( cmd == "stop" ) cmd_string = 'slideshow_stop()';
                     else if( cmd == "next" ) cmd_string = 'slideshow_next()';
                     else if( cmd == "prev" ) cmd_string = 'slideshow_prev()';
                     else
-                        safelog("core messaging: unknown slideshow command '" + 
+                        safelog("core messaging: unknown slideshow command '" +
                         splitResponse[1] + "'");
                 }
 
                 // otherwise, the message refers to a screen
                 else {
-                    
+
                     slideshow_screen_index = get_screen_index( objName );
-                    
+
                     if( slideshow_screen_index != -1 ){
-                        
+
                         show_slide( screens[ slideshow_screen_index ] );
-                        
+
                         safelog( "core messaging: showing screen " + objName );
 
                         // if a command (and optionally arguments) are also
                         // supplied, execute the command
                         if( splitResponse.length >= 2 ) {
-                            
+
                             command = splitResponse[1];
-                            
+
                             // process args into strings if ther are more than
                             // two comma-seperated values
                             args = '';
                             if( splitResponse.length > 2 ) {
-                                
+
                                 for( i=2; i<splitResponse.length; i++ ){
-                                    
+
                                     if( i > 2 ) args += ',';
-                                    
+
                                     args += '"' + splitResponse[i] + '"';
                                 }
                             }
-                        
+
                             // Build command string to evaluate
                             cmd_string = objName + "." + command + '('+args+')';
                         }
-                        
+
                     } else
                         safelog("core messaging: screen " + objName +
                             " not found.");
@@ -373,7 +351,7 @@
                 if( cmd_string ){
                     safelog("core messaging: parsed command from message: "
                         + cmd_string );
-                    
+
                     // use setTimeout to asynchronously call the function. This
                     // allows immediate return.  It also prevents exceptions in
                     // the called function from causing an exception here.
@@ -390,7 +368,7 @@
             {% for key, screen in screens.items %}
                 screens[{{forloop.counter0}}] =
                     {
-                        'id':       '{{key}}',              // Screen identifier (name)
+                        'id':       '{{screen.hash}}',      // Screen identifier (name)
                         'hide':     '{{screen.hide}}',      // Function for hiding the screen
                         'show':     '{{screen.show}}',      // Function for showing the screen
                         'duration': {{screen.duration}},    // How long screen will be displayed
@@ -429,12 +407,12 @@
             function screenWidth(){ return Screen.getViewportWidth(); }
 
             // fixes a mapped function
-            function fix_function( func )
+            function fix_function( scr, func )
             {
-                if( func == "None" ) 
+                if( func == "None" )
                     return void(0);
-                else 
-                    return func + '()';
+                else
+                    return scr['id'] + "." + func + '()';
             }
 
             // inits all screens
@@ -444,11 +422,11 @@
                 // void them if they don't exist, and validate if they do
                 for( i=0; i<screens.length; i++ ){
                     scr = screens[i];
-                    scr['init'] = fix_function(scr['init']);
-                    scr['start'] = fix_function(scr['start']);
-                    scr['stop'] = fix_function(scr['stop']);
-                    scr['onWinResize'] = fix_function(scr['onWinResize']);
-                    
+                    scr['init'] = fix_function(scr, scr['init']);
+                    scr['start'] = fix_function(scr, scr['start']);
+                    scr['stop'] = fix_function(scr, scr['stop']);
+                    scr['onWinResize'] = fix_function(scr, scr['onWinResize']);
+
                     eval(screens[i]['init']);
                 }
 
@@ -456,7 +434,7 @@
             }
 
             // on load handler.
-            $(document).ready(function() 
+            $(document).ready(function()
             {
                 safelog("core: Initializing Display");
                 hide_all();
@@ -517,44 +495,44 @@
                     <td colspan="4" class="debug_button-cells">
                         <b>debug</b>
                     </td>
-                    
+
                     <!-- debug window close button -->
                     <td class="debug_button-cells">
-                        <span id="debug_close" 
+                        <span id="debug_close"
                             class="debug_buttons ui-icon ui-icon-close">
                         </span>
                     </td>
                 </tr>
-                
+
                 <!-- slide show control buttons -->
                 <tr>
                     <td class="debug_button-cells">
-                        <span id="debug_play" 
+                        <span id="debug_play"
                             class="debug_buttons ui-icon ui-icon-play">
                         </span>
                     </td>
                     <td class="debug_button-cells">
-                        <span id="debug_stop" 
+                        <span id="debug_stop"
                             class="debug_buttons ui-icon ui-icon-stop">
                         </span>
                     </td>
                     <td class="debug_button-cells">
-                        <span id="debug_refresh" 
+                        <span id="debug_refresh"
                             class="debug_buttons ui-icon ui-icon-refresh">
                         </span>
                     </td>
                     <td class="debug_button-cells">
-                        <span id="debug_prev" 
+                        <span id="debug_prev"
                             class="debug_buttons ui-icon ui-icon-seek-prev">
                         </span>
                     </td>
                     <td class="debug_button-cells">
-                        <span id="debug_next" 
+                        <span id="debug_next"
                             class="debug_buttons ui-icon ui-icon-seek-next">
                         </span>
                     </td>
                 </tr>
-                
+
                 <!-- bindable debug function buttons -->
                 <tr>
                     <td class="debug_button-cells">
@@ -575,10 +553,12 @@
             <!-- create screen divs -->
             {% for key, screen in screens.items %}
                 <div id='{{screen.hash}}' class='screen'>
-                    {% include screen.template %}
+                    {% with screen.hash as screenHash %}
+                        {% include screen.template %}
+                    {% endwith %}
                 </div>
             {% endfor %}
         </div>
-        
+
     </body>
 </html>

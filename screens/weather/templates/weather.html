@@ -68,7 +68,7 @@
 </style>
 
 <script type="text/javascript">
-function weather()
+function {{screen.hash}}()
 {
     /////////////////
     // Global Data //
@@ -335,7 +335,7 @@ function weather()
             // set a timeout to reload the data again at a specified interval
             dataRefreshTimer = 
                 setTimeout(
-                    'weather.loadData()',
+                    '{{screen.hash}}.loadData()',
                     {{settings.screens_weather.refresh_interval}}
                 );
         });
@@ -438,7 +438,7 @@ function weather()
         refreshTiles();
     }
     
-} weather = new weather();
+} {{screen.hash}} = new {{screen.hash}}();
 </script>
 
 <!-- Maps Tile -->

@@ -7,10 +7,10 @@
 
 <script type="text/javascript">
 
-function ftp_traffic()
+function {{screen.hash}}()
 {
     this.init = function()
-    {
+    {        
         safelog('ftp_traffic: initializing...');
 
         // make the image refresh itself at the specified interval
@@ -40,7 +40,7 @@ function ftp_traffic()
         $("#ftp_traffic_img").scale("center");
     };
 
-} ftp_traffic = new ftp_traffic();
+} {{screen.hash}} = new {{screen.hash}}();
 
 </script>
 <img id="ftp_traffic_img"

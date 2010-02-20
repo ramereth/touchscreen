@@ -28,7 +28,7 @@
 </style>
 
 <script type="text/javascript">
-function people()
+function {{screen.hash}}()
 {    
     /////////////////
     // Global Data //
@@ -320,7 +320,7 @@ function people()
 
         // auto scroll every specified number of milliseconds
         autoscrollTimer =
-            setTimeout('people.startAutoscroll()', interval );
+            setTimeout('{{screen.hash}}.startAutoscroll()', interval );
     }
 
     this.startAutoRotate = function()
@@ -337,7 +337,7 @@ function people()
 
         // auto rotate every specified number of milliseconds
         autoRandRotateTimer =
-            setTimeout('people.startAutoRotate()',
+            setTimeout('{{screen.hash}}.startAutoRotate()',
                 {{settings.screens_people.auto_rotation_interval}});
     }
 
@@ -350,7 +350,7 @@ function people()
         // clear the auto rotate timer, and start it up again according to the
         // timeout.
         clearTimeout( autoRandRotateTimer );
-        setTimeout('people.startAutoRotate()', timeout);
+        setTimeout('{{screen.hash}}.startAutoRotate()', timeout);
     }
 
 
@@ -463,7 +463,7 @@ function people()
         // display a random person in the main tile
         showPerson( "/random" );
     }
-} people = new people();
+} {{screen.hash}} = new {{screen.hash}}();
 </script>
 
 <!-- Title -->
