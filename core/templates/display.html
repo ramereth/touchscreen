@@ -87,26 +87,28 @@
             // for saving/restoring the win.resize pointer
             var winResizeEventPointer = null;
 
-            // Get a screen by its id string. If a matching screen is not found,
-            // return -1
-            function get_screen( id )
+            // Get a screen index by its id string. If a matching screen is not
+            // found, return -1
+            function get_screen_index( id )
             {
                 for( var i in screens )                    
                     if( id == screens[i].id )
-                        return screens[i];
+                        return i;
 
                 return -1;
             }
 
             function show_slide( screen ) 
             {
+                /*
                 safelog("core show_slide: screen[id] = " + screen['id']);
                 safelog("core show_slide: slideshow_screen_index = " +
                     slideshow_screen_index);
                 safelog("core show_slide: current_screen_index = " +
                     current_screen_index);
+                */
                 
-                //if( slideshow_screen_index != current_screen_index ){
+                if( slideshow_screen_index != current_screen_index ){
                     
                     // hide slide if one is shown
                     if( current_screen_index != -1 ){
@@ -160,7 +162,7 @@
                     show_timer = setTimeout( "show_slide_animation_wrapper('" + 
                         show+"(screens[current_screen_index])'," + 
                         current_screen_index +")", hidetime);
-                //}
+                }
             }
 
             /*
@@ -184,44 +186,52 @@
             var slideshow_screen_index = -1;
 
             // initializes and starts slideshow from the first slide
-            function slideshow_start() {
+            function slideshow_start()
+            {
                 slideshow_loop();
             }
 
             // loops slides automatically
-            function slideshow_loop() {
+            function slideshow_loop()
+            {
                 var screen = slideshow_next();
 
                 //set next transition to duration of current slide
                 safelog('core: next screen in ' +
                     parseInt(screen['duration'])/1000 + " seconds");
+                    
                 slideshow_timer = 
                     setTimeout(slideshow_loop, screen['duration']);
             }
 
             // pauses the slideshow
-            function slideshow_stop() {
-                if (slideshow_timer) {
-                    clearTimeout(slideshow_timer);
+            function slideshow_stop()
+            {
+                if( slideshow_timer ){
+                    clearTimeout( slideshow_timer );
                     slideshow_timer = -1;
                 }
             }
 
             // advances to the next slide
-            function slideshow_next() {
+            function slideshow_next()
+            {
                 //get next slide
                 var screen = get_next_slide();
-                while (!screen['slideshow']) {
+                
+                while( !screen['slideshow'] ){
                     screen = get_next_slide();
                 }
 
-                show_slide(screen);
+                show_slide( screen );
+                
                 return screen;
             }
 
             // advances to the previous slide
-            function slideshow_prev() {
-                //get next slide
+            function slideshow_prev()
+            {
+                //get previous slide
                 var screen = get_prev_slide();
                 while (!screen['slideshow']) {
                     screen = get_prev_slide();
@@ -257,7 +267,7 @@
              * =============================== */
             function get_message()
             {
-                safelog("core: waiting for message server.");
+                safelog("core messaging: eagerly awaiting next command.");
                 
                 $.post('/proxy/',{'url':'{{settings.general.MENU_URL}}'},
                     message_received);
@@ -282,77 +292,93 @@
                     safelog("core messaging: no message in queue.");
 
                 // message server reported an error
-                else if( response == '-1' )
+                else if( response == '-1' || response == "" )
                     safelog("core messaging: error in message.");
 
-                // otherwise, the message server returned a valid command
-                else {
+                // otherwise, the message server returned a valid command.
+                // process it.
+                else
+                    process_message( response );
 
-                    safelog("core messaging: message received: " + response);
-
-                    // split the message response by commas
-                    splitResponse = response.split(',');
-
-                    // capture the object name
-                    screenID = splitResponse[0];
-
-                    // if the mesage has at least one comma-seperated value,
-                    // show the referenced screen
-                    if( splitResponse.length >= 1 ){
-
-                        ///////////////////////
-                        // NOT WORKING! FIX! //
-                        ///////////////////////
-                        // has to do with current_screen_index and
-                        // slideshow_screen_index being the same value when
-                        // show_slide is called.
-
-                        if( show_slide( get_screen( screenID ) ) != -1 )
-                            safelog("core messaging: showing screen " +
-                                screenID);
-                                
-                        else safelog("core messaging: screen not found.");
-                        
-                    // otherwise, the command is not valid
-                    } else safelog("core messaging: not a valid command.");
-                        
-                    // if a command (and optionally arguments) are also
-                    // supplied, execute the command
-                    if( splitResponse.length >= 2 ) {
-                        
-                        command = splitResponse[1];
-                        
-                        // process args into strings if ther are more than two
-                        // comma-seperated values
-                        args = '';
-                        if( splitResponse.length > 2 ) {
-                            
-                            for( i=2; i<splitResponse.length; i++ ){
-                                
-                                if( i > 2 ) args += ',';
-                                
-                                args += '"' + splitResponse[i] + '"';
-                            }
-                        }
-                    
-                        // Build command string to evaluate
-                        cmd_string = "";
-                        if( screenID != "core" )
-                            cmd_string += screenID+".";
-                        cmd_string += command+'('+args+')';
-
-                        safelog("core messaging: parsed command from message: "+
-                            cmd_string );
-                        
-                        // use setTimeout to asynchronously call the function.
-                        // This allows immediate return.  It also prevents
-                        // exceptions in the called function from causing an
-                        // exception here.
-                        setTimeout( cmd_string, 0 );
-                    }
-                }
-                
+                // wait for the message
                 get_message();
+            }
+
+            function process_message( response )
+            {
+                safelog("core messaging: message received: " + response);
+
+                // treat the message as comma-seperated values
+                splitResponse = response.split(',');
+
+                // capture the object name
+                objName = splitResponse[0];
+
+                // for building the command string
+                cmd_string = null;
+
+                // if the message referrs to the slideshow, 
+                if( objName == "slideshow" ){
+                    cmd = splitResponse[1];
+                    
+                    if( cmd == "start" ) cmd_string = 'slideshow_start()';
+                    else if( cmd == "stop" ) cmd_string = 'slideshow_stop()';
+                    else if( cmd == "next" ) cmd_string = 'slideshow_next()';
+                    else if( cmd == "prev" ) cmd_string = 'slideshow_prev()';
+                    else
+                        safelog("core messaging: unknown slideshow command '" + 
+                        splitResponse[1] + "'");
+                }
+
+                // otherwise, the message refers to a screen
+                else {
+                    
+                    slideshow_screen_index = get_screen_index( objName );
+                    
+                    if( slideshow_screen_index != -1 ){
+                        
+                        show_slide( screens[ slideshow_screen_index ] );
+                        
+                        safelog( "core messaging: showing screen " + objName );
+
+                        // if a command (and optionally arguments) are also
+                        // supplied, execute the command
+                        if( splitResponse.length >= 2 ) {
+                            
+                            command = splitResponse[1];
+                            
+                            // process args into strings if ther are more than
+                            // two comma-seperated values
+                            args = '';
+                            if( splitResponse.length > 2 ) {
+                                
+                                for( i=2; i<splitResponse.length; i++ ){
+                                    
+                                    if( i > 2 ) args += ',';
+                                    
+                                    args += '"' + splitResponse[i] + '"';
+                                }
+                            }
+                        
+                            // Build command string to evaluate
+                            cmd_string = objName + "." + command + '('+args+')';
+                        }
+                        
+                    } else
+                        safelog("core messaging: screen " + objName +
+                            " not found.");
+                }
+
+                // evaluate the command if it was set
+                if( cmd_string ){
+                    safelog("core messaging: parsed command from message: "
+                        + cmd_string );
+                    
+                    // use setTimeout to asynchronously call the function. This
+                    // allows immediate return.  It also prevents exceptions in
+                    // the called function from causing an exception here.
+                    setTimeout( cmd_string, 0 );
+                }
             }
 
             /* ===============================
