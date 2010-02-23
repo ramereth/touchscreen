@@ -9,7 +9,7 @@ class PluginManager():
     Register a screen with the plugin manager
     """
     def register_screen(self, screen, app):
-        print '[info] PluginManager - Registering Screen: %s_%s' % (app,screen.name)
+        print '[info] PluginManager - Registering Screen: %s' % app
         #make sure the screen is in the db
         try:
             screen.app = app

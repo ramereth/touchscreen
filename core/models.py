@@ -9,22 +9,31 @@ class GeneralSettings(dbsettings.Group):
     MAX_OPTIMAL_WIDTH  = dbsettings.IntegerValue(
         'Maximum Optimal Width',
         'Maximum width optimal for reading',
-        default=780)
+        default=780
+    )
 
     DISPLAY_DURATION   = dbsettings.IntegerValue(
         'Default Screen Duration',
         'How long screens will be displayed',
-        default=10000)
+        default=10000
+    )
 
     TIMEOUT            = dbsettings.IntegerValue(
         'Default Screen Timeout',
         'Duration of time without activity before the slide show restarts',
-        default=10000)
+        default=10000
+    )
         
-    MENU_URL = dbsettings.StringValue(
-        'Menu URL', 
-        'URL of the menu application', 
-        default='http://localhost:9000/?c=0&q=biggerscreen'
+    MSG_SEND_URL = dbsettings.StringValue(
+        'Message Send URL', 
+        'The send url of the message server', 
+        default='http://localhost:9000/?c=1&q=touchscreen'
+    )
+
+    MSG_RECEIVE_URL = dbsettings.StringValue(
+        'Message Receive URL', 
+        'The receive url of the message server', 
+        default='http://localhost:9000/?c=0&q=touchscreen'
     )
 
 general_settings = GeneralSettings('General Settings')

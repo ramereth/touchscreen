@@ -247,7 +247,7 @@
             {
                 safelog("core messaging: eagerly awaiting next command.");
 
-                $.post('/proxy/',{'url':'{{settings.general.MENU_URL}}'},
+                $.post('/proxy/',{'url':'{{settings.general.MSG_RECEIVE_URL}}'},
                     message_received);
             }
 
