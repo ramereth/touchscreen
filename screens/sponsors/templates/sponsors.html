@@ -10,7 +10,7 @@
     .cloned{ color:red; }
     .active{ color:yellow; } */
 
-    .{{screen.hash}}sponsor{
+    .{{screen.hash}}_sponsor{
         margin-bottom: 1.5em;
     }
 </style>
@@ -102,29 +102,24 @@ function {{screen.hash}}()
     // begin auto-advancement for the friends tile
     {
         // grab the scroll interval value
-        var interval =
-            {{settings.screens_sponsors.friends_scroll_interval}};
+        var interval = {{settings.screens_sponsors.friends_scroll_interval}};
 
         // Ensure the interval is at least 50 ms > than the advancement speed
-        if( {{settings.screens_sponsors.friends_scroll_speed}} >
-            interval - 50 )
-
-            interval =
-                {{settings.screens_sponsors.friends_scroll_speed}}
-                + 50;
+        if( {{settings.screens_sponsors.friends_scroll_speed}} > interval - 50 )
+            interval = {{settings.screens_sponsors.friends_scroll_speed}} + 50;
 
 
         // Make sure scolling starts in the middle of the list
         if( friends_scroller.getClickIndex() == -1 )
-            friends_scroller.click(
-                friends_scroller.getConf().size/2 );
+            friends_scroller.click( friends_scroller.getConf().size/2 );
 
         // Otherwise, advance to the next friend. Tuned to work with circular
         // plugin.
         else
             friends_scroller.click(
                 friends_scroller.getClickIndex() -
-                 friends_scroller.getConf().size + 1 );
+                friends_scroller.getConf().size + 1
+            );
 
         friends_autoScrollTimer =
             setTimeout('{{screen.hash}}.friends_startAutoAdvance()', interval );
@@ -134,28 +129,20 @@ function {{screen.hash}}()
     // begin auto-advancement for the sponsors tile
     {
         // grab the scroll interval value
-        var interval =
-            {{settings.screens_sponsors.sponsors_scroll_interval}};
+        var interval = {{settings.screens_sponsors.sponsors_scroll_interval}};
 
         // Ensure the interval is at least 50 ms > than the advancement speed
-        if( {{settings.screens_sponsors.sponsors_scroll_speed}} >
-            interval - 50 )
-
-            interval =
-                {{settings.screens_sponsors.sponsors_scroll_speed}}
-                + 50;
+        if( {{settings.screens_sponsors.sponsors_scroll_speed}} > interval-50 )
+            interval = {{settings.screens_sponsors.sponsors_scroll_speed}} + 50;
 
 
         // Make sure scolling starts in the middle of the list
         if( sponsors_scroller.getClickIndex() == -1 )
-            sponsors_scroller.click(
-                sponsors_scroller.getConf().size/2 );
+            sponsors_scroller.click( sponsors_scroller.getConf().size/2 );
 
         // Otherwise, advance to the next friend. Tuned to work with circular
         // plugin.
-        else
-            sponsors_scroller.click(
-                sponsors_scroller.getClickIndex() -
+        else sponsors_scroller.click( sponsors_scroller.getClickIndex() -
                  sponsors_scroller.getConf().size + 1 );
 
         sponsors_autoScrollTimer =
@@ -175,8 +162,7 @@ function {{screen.hash}}()
         positionTiles();
 
         // if the data is loaded, fill the tiles
-        var dataLoaded = sponsors_data.length > 0 &&
-            friends_data.length > 0;
+        var dataLoaded = sponsors_data.length > 0 && friends_data.length > 0;
 
         if( dataLoaded ){
             updateFriendsTile();
@@ -503,3 +489,9 @@ function {{screen.hash}}()
         <!-- to be filled by refresh code above -->
     </div>
 </div>
+
+/*
+<div id="{{screen.hash}}_popup" class="display_tile display_content">
+    hello
+</div>
+*/
