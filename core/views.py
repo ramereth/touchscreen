@@ -22,7 +22,7 @@ def plugin_processor(request):
         'settings':PLUGIN_MANAGER.get_settings()
     }
 
-# Create your views here.
+# The display view
 def display(request):
 
     rc = RequestContext(request, processors=[plugin_processor])
@@ -31,12 +31,13 @@ def display(request):
         'screens':PLUGIN_MANAGER.screens,
     }, context_instance=rc)
 
+# The menu view
+def menu(request):
+    return render_to_response('menu.html')
+
 # A simple proxy
 def proxy(request):
     connection = httplib2.Http()
     url = request.POST['url']
     response, content = connection.request( url, "GET" )
     return HttpResponse( content )
-
-def menu(request):
-   pass

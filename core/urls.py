@@ -6,6 +6,7 @@ from util import get_plugin_static_dirs
 urlpatterns = patterns('',
     (r'^$', display),
     (r'^display/$', display),
+    (r'^menu/$', menu),
     (r'^proxy/$', proxy),
 )
 
