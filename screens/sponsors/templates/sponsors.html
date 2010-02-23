@@ -10,7 +10,7 @@
     .cloned{ color:red; }
     .active{ color:yellow; } */
 
-    .sponsors_sponsor{
+    .{{screen.hash}}sponsor{
         margin-bottom: 1.5em;
     }
 </style>
@@ -51,14 +51,14 @@ function {{screen.hash}}()
 
         // initialize the scroller plugin for the tiles
         friends_scroller =
-            $( ".sponsors_friends" ).scrollable({
+            $( ".{{screen.hash}}_friends" ).scrollable({
                 vertical:true,
                 items:".display_scrollable_items_vert",
                 speed:{{settings.screens_sponsors.friends_scroll_speed}},
                 api:true,
             });
         sponsors_scroller =
-            $( ".sponsors_sponsors" ).scrollable({
+            $( ".{{screen.hash}}_sponsors" ).scrollable({
                 vertical:true,
                 items:".display_scrollable_items_vert",
                 speed:{{settings.screens_sponsors.sponsors_scroll_speed}},
@@ -194,7 +194,7 @@ function {{screen.hash}}()
         var itemCount = 0;   // number of items written
 
         // grab the height of the container tile
-        var tileHeight = $(".sponsors_friends").height();
+        var tileHeight = $(".{{screen.hash}}_friends").height();
         safelog( "sponsors: tile height: " + tileHeight );
 
         // clear the friends list
@@ -207,7 +207,7 @@ function {{screen.hash}}()
 
             // Add the next item, wrapping to the first if necessary
             friends_scroller.getItemWrap().append(
-                "<p class='sponsors_friend_"+itemCount+"'>" +
+                "<p class='{{screen.hash}}_friend_"+itemCount+"'>" +
                 friends_data[
                     itemCount % friends_data.length ] +
                 "</p>"
@@ -216,9 +216,9 @@ function {{screen.hash}}()
             // the *actual* height each item takes up, as positioned by the
             // scollable plugin (as observed by firebug)
             curHeight =
-                $(".sponsors_friend_" + itemCount ).innerHeight() +
-                ($(".sponsors_friend_" + itemCount ).outerHeight(true)-
-                $(".sponsors_friend_" + itemCount ).innerHeight())/2;
+                $(".{{screen.hash}}_friend_" + itemCount ).innerHeight() +
+                ($(".{{screen.hash}}_friend_" + itemCount ).outerHeight(true)-
+                $(".{{screen.hash}}_friend_" + itemCount ).innerHeight())/2;
             //safelog( "sponsors: current itemheight: " + curHeight );
 
             // add to the running height total
@@ -239,7 +239,7 @@ function {{screen.hash}}()
         safelog( "sponsors: Friends written: "+ itemCount );
 
         // make the scroller circular
-        $( ".sponsors_friends" ).circular();
+        $( ".{{screen.hash}}_friends" ).circular();
     }
 
     function updateSponsorsTile()
@@ -253,7 +253,7 @@ function {{screen.hash}}()
         var dataLength = sponsors_data.length;
 
         // grab the height of the container tile
-        var tileHeight = $(".sponsors_sponsors").height();
+        var tileHeight = $(".{{screen.hash}}_sponsors").height();
         safelog( "sponsors: sponsors tile height: " + tileHeight );
 
         // clear the sponsors list
@@ -266,7 +266,7 @@ function {{screen.hash}}()
 
             // Add the next title, wrapping to the first if necessary
             sponsors_scroller.getItemWrap().append(
-                "<div class='sponsors_sponsor sponsors_sponsor_" +
+                "<div class='{{screen.hash}}_sponsor {{screen.hash}}_sponsor_" +
                 itemCount+"'><h1>" + sponsors_data[
                     itemCount % dataLength ].title +
                 "</h1></div>"
@@ -277,7 +277,7 @@ function {{screen.hash}}()
                 i < (sponsors_data[ itemCount % dataLength ].body.length); 
                 i++ ){
                     
-                $(".sponsors_sponsor_"+itemCount).append(
+                $(".{{screen.hash}}_sponsor_"+itemCount).append(
                     "<p>" +
                     sponsors_data[itemCount%dataLength].body[i] +
                     "</p>"
@@ -287,9 +287,9 @@ function {{screen.hash}}()
             // the *actual* height each item takes up, as positioned by the
             // scollable plugin (as observed by firebug)
             curHeight =
-                $(".sponsors_sponsor_" + itemCount ).innerHeight() +
-                ($(".sponsors_sponsor_" + itemCount ).outerHeight(true)-
-                $(".sponsors_sponsor_" + itemCount ).innerHeight())/2;
+                $(".{{screen.hash}}_sponsor_" + itemCount ).innerHeight() +
+                ($(".{{screen.hash}}_sponsor_" + itemCount ).outerHeight(true)-
+                $(".{{screen.hash}}_sponsor_" + itemCount ).innerHeight())/2;
             //safelog( "sponsors: current sponsor height: " + curHeight );
 
             // add to the running height total
@@ -310,7 +310,7 @@ function {{screen.hash}}()
         safelog( "sponsors: Sponsors written: "+ itemCount );
 
         // make the scroller circular
-        $( ".sponsors_sponsors" ).circular();
+        $( ".{{screen.hash}}_sponsors" ).circular();
     }
 
     //////////////////////
@@ -321,82 +321,82 @@ function {{screen.hash}}()
     // Re-position and re-size the tiles depending on screen size
     {
         // set the width of the bottom tiles per the settings
-        $('.sponsors_sponsors').width(
+        $('.{{screen.hash}}_sponsors').width(
             {{settings.general.MAX_OPTIMAL_WIDTH}});
-        $('.sponsors_friends').width(
+        $('.{{screen.hash}}_friends').width(
             {{settings.screens_sponsors.friends_width}});
 
         // if the total tile width is too large to fit in the window,
         // resize the sponsors tile dynamically
-        if( $('.sponsors_friends').outerWidth( true ) +
-            $('.sponsors_sponsors').outerWidth( true ) >
+        if( $('.{{screen.hash}}_friends').outerWidth( true ) +
+            $('.{{screen.hash}}_sponsors').outerWidth( true ) >
             screenWidth() ){
 
-            $('.sponsors_sponsors').width( screenWidth() -
-                $('.sponsors_friends').outerWidth( true ) -
-                ( $('.sponsors_sponsors').outerWidth( true ) -
-                $('.sponsors_sponsors').width() ) );
+            $('.{{screen.hash}}_sponsors').width( screenWidth() -
+                $('.{{screen.hash}}_friends').outerWidth( true ) -
+                ( $('.{{screen.hash}}_sponsors').outerWidth( true ) -
+                $('.{{screen.hash}}_sponsors').width() ) );
         }
 
         // position the bottom tiles
-        $('.sponsors_friends').css('top',
-            $('.sponsors_title').outerHeight( true ) );
-        $('.sponsors_friends').css('left', 0 );
-        $('.sponsors_sponsors').css('top',
-            $('.sponsors_title').outerHeight( true ) );
-        $('.sponsors_sponsors').css('left',
-            $('.sponsors_friends').outerWidth( true ) );
+        $('.{{screen.hash}}_friends').css('top',
+            $('.{{screen.hash}}_title').outerHeight( true ) );
+        $('.{{screen.hash}}_friends').css('left', 0 );
+        $('.{{screen.hash}}_sponsors').css('top',
+            $('.{{screen.hash}}_title').outerHeight( true ) );
+        $('.{{screen.hash}}_sponsors').css('left',
+            $('.{{screen.hash}}_friends').outerWidth( true ) );
 
         // set the height of the bottom tiles
-        $('.sponsors_sponsors').height( screenHeight() -
-            $('.sponsors_title').outerHeight(true) -
-            $('.sponsors_sponsors').outerHeight(true) +
-            $('.sponsors_sponsors').height());
-        $('.sponsors_friends').height( screenHeight() -
-            $('.sponsors_title').outerHeight(true) -
-            $('.sponsors_friends').outerHeight(true) +
-            $('.sponsors_friends').height());
+        $('.{{screen.hash}}_sponsors').height( screenHeight() -
+            $('.{{screen.hash}}_title').outerHeight(true) -
+            $('.{{screen.hash}}_sponsors').outerHeight(true) +
+            $('.{{screen.hash}}_sponsors').height());
+        $('.{{screen.hash}}_friends').height( screenHeight() -
+            $('.{{screen.hash}}_title').outerHeight(true) -
+            $('.{{screen.hash}}_friends').outerHeight(true) +
+            $('.{{screen.hash}}_friends').height());
 
         // size the title width to match the width of the bottom tiles
-        $('.sponsors_title').width(
-            $('.sponsors_friends').outerWidth( true ) +
-            $('.sponsors_sponsors').outerWidth( true ) -
-            ( $('.sponsors_title').outerWidth( true ) -
-            $('.sponsors_title').width() ) );
+        $('.{{screen.hash}}_title').width(
+            $('.{{screen.hash}}_friends').outerWidth( true ) +
+            $('.{{screen.hash}}_sponsors').outerWidth( true ) -
+            ( $('.{{screen.hash}}_title').outerWidth( true ) -
+            $('.{{screen.hash}}_title').width() ) );
 
         // center the tiles
-        $('.sponsors_title').css( 'left', screenWidth()/2 -
-            $('.sponsors_title').outerWidth( true )/2 );
-        $('.sponsors_friends').css( 'left',
-            parseInt( $('.sponsors_title').css( 'left' ) ) );
-        $('.sponsors_sponsors').css( 'left',
-            parseInt( $('.sponsors_title').css( 'left' ) ) +
-            $('.sponsors_friends').outerWidth( true ) );
+        $('.{{screen.hash}}_title').css( 'left', screenWidth()/2 -
+            $('.{{screen.hash}}_title').outerWidth( true )/2 );
+        $('.{{screen.hash}}_friends').css( 'left',
+            parseInt( $('.{{screen.hash}}_title').css( 'left' ) ) );
+        $('.{{screen.hash}}_sponsors').css( 'left',
+            parseInt( $('.{{screen.hash}}_title').css( 'left' ) ) +
+            $('.{{screen.hash}}_friends').outerWidth( true ) );
 
         // position and size gradient overlays
-        $('#sponsors_sponsors_gradient').css( 'z-index', 1 );
-        $('#sponsors_sponsors_gradient').css( 'top',
-            -( $('#sponsors_sponsors_gradient').outerHeight( true ) -
-            $('#sponsors_sponsors_gradient').height() ) );
-        $('#sponsors_sponsors_gradient').css( 'left',
-            -( $('#sponsors_sponsors_gradient').outerWidth( true ) -
-            $('#sponsors_sponsors_gradient').width() ) );
-        $('#sponsors_sponsors_gradient').height(
-            $('.sponsors_sponsors').outerHeight( ) );
-        $('#sponsors_sponsors_gradient').width(
-            $('.sponsors_sponsors').outerWidth( ) );
+        $('#{{screen.hash}}_sponsors_gradient').css( 'z-index', 1 );
+        $('#{{screen.hash}}_sponsors_gradient').css( 'top',
+            -( $('#{{screen.hash}}_sponsors_gradient').outerHeight( true ) -
+            $('#{{screen.hash}}_sponsors_gradient').height() ) );
+        $('#{{screen.hash}}_sponsors_gradient').css( 'left',
+            -( $('#{{screen.hash}}_sponsors_gradient').outerWidth( true ) -
+            $('#{{screen.hash}}_sponsors_gradient').width() ) );
+        $('#{{screen.hash}}_sponsors_gradient').height(
+            $('.{{screen.hash}}_sponsors').outerHeight( ) );
+        $('#{{screen.hash}}_sponsors_gradient').width(
+            $('.{{screen.hash}}_sponsors').outerWidth( ) );
 
-        $('#sponsors_friends_gradient').css( 'z-index', 1 );
-        $('#sponsors_friends_gradient').css( 'top',
-            -( $('#sponsors_friends_gradient').outerHeight( true ) -
-            $('#sponsors_friends_gradient').height() ) );
-        $('#sponsors_friends_gradient').css( 'left',
-            -( $('#sponsors_friends_gradient').outerWidth( true ) -
-            $('#sponsors_friends_gradient').width() ) );
-        $('#sponsors_friends_gradient').height(
-            $('.sponsors_friends').outerHeight( ) );
-        $('#sponsors_friends_gradient').width(
-            $('.sponsors_friends').outerWidth( ) );
+        $('#{{screen.hash}}_friends_gradient').css( 'z-index', 1 );
+        $('#{{screen.hash}}_friends_gradient').css( 'top',
+            -( $('#{{screen.hash}}_friends_gradient').outerHeight( true ) -
+            $('#{{screen.hash}}_friends_gradient').height() ) );
+        $('#{{screen.hash}}_friends_gradient').css( 'left',
+            -( $('#{{screen.hash}}_friends_gradient').outerWidth( true ) -
+            $('#{{screen.hash}}_friends_gradient').width() ) );
+        $('#{{screen.hash}}_friends_gradient').height(
+            $('.{{screen.hash}}_friends').outerHeight( ) );
+        $('#{{screen.hash}}_friends_gradient').width(
+            $('.{{screen.hash}}_friends').outerWidth( ) );
     }
 
     //////////////////
@@ -481,12 +481,12 @@ function {{screen.hash}}()
 } {{screen.hash}} = new {{screen.hash}}();
 </script>
 
-<div class="display_tile display_title sponsors_title">
+<div class="display_tile display_title {{screen.hash}}_title">
     Sponsors
 </div>
 
-<div class="sponsors_friends display_tile display_content">
-    <img id='sponsors_friends_gradient'
+<div class="{{screen.hash}}_friends display_tile display_content">
+    <img id='{{screen.hash}}_friends_gradient'
          class='display_gradient'
          src="{{SITE_ROOT}}/static/screens/sponsors/gradient.png">
     <div class='display_scrollable_items_vert'>
@@ -494,11 +494,11 @@ function {{screen.hash}}()
     </div>
 </div>
 
-<div class="sponsors_sponsors display_tile display_content">
-    <img id='sponsors_sponsors_gradient'
+<div class="{{screen.hash}}_sponsors display_tile display_content">
+    <img id='{{screen.hash}}_sponsors_gradient'
          class='display_gradient'
          src="{{SITE_ROOT}}/static/screens/sponsors/gradient.png">
-    <div id='sponsors_sponsors_items' 
+    <div id='{{screen.hash}}_sponsors_items' 
         class='display_scrollable_items_vert'>
         <!-- to be filled by refresh code above -->
     </div>
