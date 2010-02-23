@@ -10,24 +10,28 @@
 </style>
 
 <script type="text/javascript">
-     /*
+function {{screen.hash}}()
+{
+    /*
         Javascript functions for this view.  These are not required,
         just demonstrating how they would be used.
     */
-    function world_screen_init() {
+    this.init = function() {
         // for this example just output to firebug console
         safelog('WorldScreen is initializing itself');
-    }
+    };
 
-    function world_screen_start() {
+    this.start = function() {
         // for this example just output to firebug console
         safelog('WorldScreen is starting because i was shown');
-    }
+    };
 
-    function world_screen_stop() {
+    this.stop = function() {
         // for this example just output to firebug console
         safelog('World screen is stopping because im being hidden');
-    }
+    };
+
+} {{screen.hash}} = new {{screen.hash}}();
 </script>
 
 <div id="worldScreen">

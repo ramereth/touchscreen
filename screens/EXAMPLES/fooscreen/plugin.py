@@ -14,9 +14,9 @@ foo_screen = Screen(
     #hide='fade', 
     #show='fade',
     slideshow=True,
-    js_init ='foo_screen_init',
-    js_start='foo_screen_start',
-    js_stop ='foo_screen_stop'
+    js_init ='init',
+    js_start='start',
+    js_stop ='stop'
 )
 
 
