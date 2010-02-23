@@ -9,6 +9,52 @@
 <script type="text/javascript">
 function {{screen.hash}}()
 {
+    //////////
+    // Data //
+    //////////
+    
+    // a graph set object consisting of two graphs and a title
+    function graphSet( title, graph1, graph2 )
+    {
+        this.title = title;
+        this.graph1 = graph1;
+        this.graph2 = graph2;
+    }
+
+    // a set of graph sets
+    var graphSets = new Array(
+        new graphSet(
+            '{{settings.screens_osl_bandwidth.title_0}}',
+            '{{settings.screens_osl_bandwidth.imgAddr_0a}}',
+            '{{settings.screens_osl_bandwidth.imgAddr_0b}}'
+        ),
+        new graphSet(
+            '{{settings.screens_osl_bandwidth.title_1}}',
+            '{{settings.screens_osl_bandwidth.imgAddr_1a}}',
+            '{{settings.screens_osl_bandwidth.imgAddr_1b}}'
+        ),
+        new graphSet(
+            '{{settings.screens_osl_bandwidth.title_2}}',
+            '{{settings.screens_osl_bandwidth.imgAddr_2a}}',
+            '{{settings.screens_osl_bandwidth.imgAddr_2b}}'
+        ),
+        new graphSet(
+            '{{settings.screens_osl_bandwidth.title_3}}',
+            '{{settings.screens_osl_bandwidth.imgAddr_3a}}',
+            '{{settings.screens_osl_bandwidth.imgAddr_3b}}'
+        ),
+        new graphSet(
+            '{{settings.screens_osl_bandwidth.title_4}}',
+            '{{settings.screens_osl_bandwidth.imgAddr_4a}}',
+            '{{settings.screens_osl_bandwidth.imgAddr_4b}}'
+        ),
+        new graphSet(
+            '{{settings.screens_osl_bandwidth.title_5}}',
+            '{{settings.screens_osl_bandwidth.imgAddr_5a}}',
+            '{{settings.screens_osl_bandwidth.imgAddr_5b}}'
+        )
+    );
+    
     // ======================
     //  SCREEN PLUGIN EVENTS
     // ======================
@@ -22,20 +68,8 @@ function {{screen.hash}}()
         //write the html for the tiles
         write_tile_html();
 
-        // make images refresh themselves at the specified interval
-        $(".osl_bandwidth_img").refreshImage({
-            interval:
-                {{settings.screens_osl_bandwidth.imgRefreshInterval}},
-            start:true
-        });
-
         // position the tiles
         positionTiles();
-
-        // intitialize tile click event handling. NOTE: This section is for
-        // demonstration purposes only. Eventually, these div manipulations will
-        // be done via the touchscreen interface.
-        initTileClickEvents();
     };
 
     this.start = function()
@@ -47,6 +81,13 @@ function {{screen.hash}}()
 
         // randomize the main tile
         randomizeMainTile();
+
+        // make images refresh themselves at the specified interval
+        $(".osl_bandwidth_img").refreshImage({
+            interval:
+                {{settings.screens_osl_bandwidth.imgRefreshInterval}},
+            start:true
+        });
     };
 
     this.stop = function()
@@ -59,40 +100,29 @@ function {{screen.hash}}()
         positionTiles();
     };
 
-    // A settings class to make the code a little cleaner
-    function settings()
+    ///////////////////
+    // MENU COMMANDS //
+    ///////////////////
+
+    // a menu command to show the specified graph set (by name, first
+    // encountered)
+    this.show = function( name )
     {
-        this.titles = [
-            '{{settings.screens_osl_bandwidth.title_0}}',
-            '{{settings.screens_osl_bandwidth.title_1}}',
-            '{{settings.screens_osl_bandwidth.title_2}}',
-            '{{settings.screens_osl_bandwidth.title_3}}',
-            '{{settings.screens_osl_bandwidth.title_4}}',
-            '{{settings.screens_osl_bandwidth.title_5}}'
-        ];
+        var index = null;
+        
+        // find the index of the graph set by name
+        for( i in graphSets ){
 
-        this.a_images = [
-            '{{settings.screens_osl_bandwidth.imgAddr_0a}}',
-            '{{settings.screens_osl_bandwidth.imgAddr_1a}}',
-            '{{settings.screens_osl_bandwidth.imgAddr_2a}}',
-            '{{settings.screens_osl_bandwidth.imgAddr_3a}}',
-            '{{settings.screens_osl_bandwidth.imgAddr_4a}}',
-            '{{settings.screens_osl_bandwidth.imgAddr_5a}}'
-        ];
+            if( graphSets[i].title == name ){
+                index = i;
+                break;
+            }
+        }
 
-        this.b_images = [
-            '{{settings.screens_osl_bandwidth.imgAddr_0b}}',
-            '{{settings.screens_osl_bandwidth.imgAddr_1b}}',
-            '{{settings.screens_osl_bandwidth.imgAddr_2b}}',
-            '{{settings.screens_osl_bandwidth.imgAddr_3b}}',
-            '{{settings.screens_osl_bandwidth.imgAddr_4b}}',
-            '{{settings.screens_osl_bandwidth.imgAddr_5b}}'
-        ];
-
-        this.numThumbs = Math.min(
-            this.titles.length, this.a_images.length, this.b_images.length );
-
-    } settings = new settings();
+        // if the graph set is found, display it to the main tile
+        if( index != null ) displayToMainTile( index );
+        else safelog( "osl_bandwidth: show: graph set '"+name+"' not found." );
+    }
 
     // ==============
     //  INITIALIZERS
@@ -102,21 +132,21 @@ function {{screen.hash}}()
     function write_tile_html()
     {
         // write the thumbnails
-        for( var i = 0; i < settings.numThumbs; i++ ){
+        for( var i = 0; i < graphSets.length; i++ ){
             $("#osl_bandwidth_wrapper").append(
                 '<div id="osl_bandwidth_thumb_'+i+'" class="display_img_thumb display_tile ">'+
 
                     '<div id="osl_bandwidth_title_'+i+'" class="display_img_thumb_caption">'+
-                        settings.titles[i]+
+                        graphSets[i].title+
                     '</div>'+
 
                     '<img id="osl_bandwidth_img_'+i+'a" class="osl_bandwidth_img"'+
-                        'src="'+settings.a_images[i]+'"'+
+                        'src="'+graphSets[i].graph1+'"'+
                         'height="{{settings.screens_osl_bandwidth.thumbnail_img_height}}"'+
                         'width="{{settings.screens_osl_bandwidth.thumbnail_img_width}}">'+
 
                     '<img id="osl_bandwidth_img_'+i+'b" class="osl_bandwidth_img"'+
-                        'src="'+settings.b_images[i]+'"'+
+                        'src="'+graphSets[i].graph2+'"'+
                         'height="{{settings.screens_osl_bandwidth.thumbnail_img_height}}"'+
                         'width="{{settings.screens_osl_bandwidth.thumbnail_img_width}}">'+
                 '</div>'
@@ -127,54 +157,16 @@ function {{screen.hash}}()
         randomizeMainTile();
     }
 
+    // click event handling (NOTE: this is meant as a secondary interface to the
+    // menu interface
     function initTileClickEvents()
     {
-        // click event handling (NOTE: This section is for demonstration
-        // purposes only. Eventually, these tile manipulations will be done via
-        // the touchscreen interface.
-
-        $("#osl_bandwidth_thumb_0").click(function(){
-            displayToMainTile(
-                "{{settings.screens_osl_bandwidth.title_0}}",
-                "{{settings.screens_osl_bandwidth.imgAddr_0a}}",
-                "{{settings.screens_osl_bandwidth.imgAddr_0b}}"
-            );
-        });
-        $("#osl_bandwidth_thumb_1").click(function(){
-            displayToMainTile(
-                "{{settings.screens_osl_bandwidth.title_1}}",
-                "{{settings.screens_osl_bandwidth.imgAddr_1a}}",
-                "{{settings.screens_osl_bandwidth.imgAddr_1b}}"
-            );
-        });
-        $("#osl_bandwidth_thumb_2").click(function(){
-            displayToMainTile(
-                "{{settings.screens_osl_bandwidth.title_2}}",
-                "{{settings.screens_osl_bandwidth.imgAddr_2a}}",
-                "{{settings.screens_osl_bandwidth.imgAddr_2b}}"
-            );
-        });
-        $("#osl_bandwidth_thumb_3").click(function(){
-            displayToMainTile(
-                "{{settings.screens_osl_bandwidth.title_3}}",
-                "{{settings.screens_osl_bandwidth.imgAddr_3a}}",
-                "{{settings.screens_osl_bandwidth.imgAddr_3b}}"
-            );
-        });
-        $("#osl_bandwidth_thumb_4").click(function(){
-            displayToMainTile(
-                "{{settings.screens_osl_bandwidth.title_4}}",
-                "{{settings.screens_osl_bandwidth.imgAddr_4a}}",
-                "{{settings.screens_osl_bandwidth.imgAddr_4b}}"
-            );
-        });
-        $("#osl_bandwidth_thumb_5").click(function(){
-            displayToMainTile(
-                "{{settings.screens_osl_bandwidth.title_5}}",
-                "{{settings.screens_osl_bandwidth.imgAddr_5a}}",
-                "{{settings.screens_osl_bandwidth.imgAddr_5b}}"
-            );
-        });
+        $("#osl_bandwidth_thumb_0").click(function(){displayToMainTile(0)});
+        $("#osl_bandwidth_thumb_1").click(function(){displayToMainTile(1)});
+        $("#osl_bandwidth_thumb_2").click(function(){displayToMainTile(2)});
+        $("#osl_bandwidth_thumb_3").click(function(){displayToMainTile(3)});
+        $("#osl_bandwidth_thumb_4").click(function(){displayToMainTile(4)});
+        $("#osl_bandwidth_thumb_5").click(function(){displayToMainTile(5)});
     }
 
     // ==============
@@ -188,11 +180,11 @@ function {{screen.hash}}()
         // across the screen
         var horizPadding = (screenWidth() -
             $("#osl_bandwidth_thumb_0").outerWidth(true) *
-            settings.titles.length/2)/
-            ((settings.titles.length/2) - 1);
+            graphSets.length/2)/
+            ((graphSets.length/2) - 1);
 
         // position the thumbs
-        for( var i = 0; i < settings.titles.length/2; i++ ){
+        for( var i = 0; i < graphSets.length/2; i++ ){
 
             // top row
             $("#osl_bandwidth_thumb_" + i).css('left',
@@ -200,8 +192,8 @@ function {{screen.hash}}()
                 horizPadding * i);
 
             // bottom row
-            $("#osl_bandwidth_thumb_" + (i + settings.titles.length/2)).css('bottom', 0 );
-            $("#osl_bandwidth_thumb_" + (i + settings.titles.length/2)).css('left',
+            $("#osl_bandwidth_thumb_" + (i + graphSets.length/2)).css('bottom', 0 );
+            $("#osl_bandwidth_thumb_" + (i + graphSets.length/2)).css('left',
                 $("#osl_bandwidth_thumb_0").outerWidth(true) * i +
                 horizPadding * i );
         }
@@ -218,34 +210,30 @@ function {{screen.hash}}()
 
         // fill the main tile with a random graph and title set
         var randIndex=Math.floor(
-            Math.random()*settings.titles.length
+            Math.random()*graphSets.length
         );
 
-        displayToMainTile(
-            settings.titles[ randIndex ],
-            settings.a_images[ randIndex ],
-            settings.b_images[ randIndex ],
-            "fast"
-        );
+        displayToMainTile( randIndex );
     }
 
-    // Display two graphs from the specified address with the specified title in
-    // the main tile with some fade effects
-    function displayToMainTile( title, addr_a, addr_b, speed )
+    // Display a graph set to the main tile
+    function displayToMainTile( graphSetIndex )
     {
-
-        // default speed if not defined is slow
-        if( speed == undefined ) speed = "slow";
+        var speed = "fast"; // fade in/fade out speed
 
         // fade out the main tile
         $("#osl_bandwidth_main").fadeOut( speed, function(){
 
             // fill the main tile with the title and the picture of the
             // specified webcam shot
-            $("#osl_bandwidth_title_main").html( title +
+            $("#osl_bandwidth_title_main").html( graphSets[graphSetIndex].title+
                 " Bandwidth Usage" );
-            $("#osl_bandwidth_img_main_a").attr( 'src', addr_a );
-            $("#osl_bandwidth_img_main_b").attr( 'src', addr_b );
+            $("#osl_bandwidth_img_main_a").attr( 'src',
+                graphSets[graphSetIndex].graph1
+            );
+            $("#osl_bandwidth_img_main_b").attr( 'src',
+                graphSets[graphSetIndex].graph2
+            );
             $("#osl_bandwidth_img_main").height(
                 {{settings.screens_osl_bandwidth.mainTile_height}}
             );
