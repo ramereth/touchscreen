@@ -13,6 +13,10 @@
     .{{screen.hash}}_sponsor{
         margin-bottom: 1.5em;
     }
+
+    #{{screen.hash}}_popup{
+        z-index: 3;
+    }
 </style>
 
 <script type="text/javascript">
@@ -94,6 +98,60 @@ function {{screen.hash}}()
         refreshTiles();
     }
 
+    ///////////////////
+    // MENU COMMANDS //
+    ///////////////////
+
+    // a menu command to show the specified sponsor
+    this.show = function( name )
+    {
+        // only continue if sponsors data is loaded
+        if( sponsors_data.length > 0 ){
+            
+            // find the specified sponsor (first-encountered)
+            var index = null;
+            for( i in sponsors_data ){
+                if( sponsors_data[i].title == name ){
+                    index = i;
+                    break
+                }
+            }
+
+            // if the graph set is found, display it to the main tile
+            if( index != null ) popupSponsor( index );
+            else safelog( "sponsors: show: sponsor '"+name+"' not found." );
+            
+        } else
+            safelog("sponsors: show command failed. Sponsors data not yet " +
+                "loaded.");
+    }
+
+    // displays a sponsor to the popup
+    function popupSponsor( index )
+    {
+        var speed = "fast"; // fade in/fade out speed
+
+        // fade out the main tile
+        $("#{{screen.hash}}_popup").fadeOut( speed, function(){
+
+            // fill the popup with the sponsors data
+            $("#{{screen.hash}}_popup").html(
+                "<h1>" + sponsors_data[index].title + "</h1>"
+            );
+
+            for( var i = 0; i < sponsors_data[index].body.length; i++ )          
+                $("#{{screen.hash}}_popup").append(
+                    "<p>" + sponsors_data[index].body[i] + "</p>"
+                );
+
+            // refresh popup's position and size
+            positionPopup();
+
+            // fade the main tile back in
+            $("#{{screen.hash}}_popup").fadeIn( speed );
+        });
+    }
+    
     //////////////////////
     // Auto Advancement //
     //////////////////////
@@ -383,6 +441,34 @@ function {{screen.hash}}()
             $('.{{screen.hash}}_friends').outerHeight( ) );
         $('#{{screen.hash}}_friends_gradient').width(
             $('.{{screen.hash}}_friends').outerWidth( ) );
+
+        // refresh popup tile
+        positionPopup();
+    }
+
+    function positionPopup()
+    {
+        //size tile
+         $("#{{screen.hash}}_popup").width(
+            {{settings.general.MAX_OPTIMAL_WIDTH}}
+        );
+
+        // if the total popup width is too large to fit in the window,
+        // resize it to fit
+        if( $('#{{screen.hash}}_popup').outerWidth(true) > screenWidth() ){
+
+            $('#{{screen.hash}}_popup').width(
+                screenWidth() -
+                ( $('#{{screen.hash}}_popup').outerWidth( true ) -
+                $('#{{screen.hash}}_popup').width() )
+            );
+        }
+
+        // center tile
+        $('#{{screen.hash}}_popup').css('left', screenWidth()/2 -
+            $('#{{screen.hash}}_popup').outerWidth(true)/2);
+        $('#{{screen.hash}}_popup').css('top', screenHeight()/2 -
+            $('#{{screen.hash}}_popup').outerHeight(true)/2);
     }
 
     //////////////////
@@ -490,8 +576,6 @@ function {{screen.hash}}()
     </div>
 </div>
 
-/*
-<div id="{{screen.hash}}_popup" class="display_tile display_content">
-    hello
-</div>
-*/
+<div id="{{scree.hash}}_popup_background">HELLO</div>
+<div id="{{screen.hash}}_popup" class="display_tile display_content"></div>
+

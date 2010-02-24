@@ -134,12 +134,7 @@ function {{screen.hash}}()
             // if personName is the command "/random" choose a random person.
             if( personName == "/random" ){
 
-                person =
-                    people[
-                        Math.floor(
-                            Math.random() * people.length
-                        )
-                    ];
+                person = people[ Math.floor( Math.random() * people.length ) ];
 
                 safelog( "people: showing random person '" +
                     person.name + "'" );
