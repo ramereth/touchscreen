@@ -7,14 +7,13 @@
 -->
 
 <style>
-    #osl_about_edRayImg{
+    #{{screen.hash}}_edRayImg{
         float:right;
         margin:1em;
     }
 </style>
 
 <script type="text/javascript">
-
 function {{screen.hash}}()
 {
     ////////////
@@ -24,15 +23,13 @@ function {{screen.hash}}()
     this.init = function()
     {
         safelog('osl_about: initializing...');
-
-        osl_about_refreshTiles();
+        refreshTiles();
     }
 
     this.start = function()
     {
         safelog('osl_about: starting...');
-        
-        osl_about_refreshTiles();
+        refreshTiles();
     }
 
     this.stop = function()
@@ -43,7 +40,7 @@ function {{screen.hash}}()
     
     this.onWinResize = function()
     {
-        osl_about_refreshTiles();
+        refreshTiles();
     }
     
     
@@ -51,55 +48,55 @@ function {{screen.hash}}()
     // Facilitators //
     //////////////////
     
-    function osl_about_refreshTiles() {
+    function refreshTiles() {
 
         // if the optimal reading with fits inside the screen size
         if( {{settings.general.MAX_OPTIMAL_WIDTH}} <= screenWidth() ){
 
             // size the tiles to global optimal reading width
-            $("#osl_about_title").width(
+            $("#{{screen.hash}}_title").width(
                 {{settings.general.MAX_OPTIMAL_WIDTH}} -
-                ($("#osl_about_title").outerWidth(true) -
-                $("#osl_about_title").width())
+                ($("#{{screen.hash}}_title").outerWidth(true) -
+                $("#{{screen.hash}}_title").width())
             );
             
-            $("#osl_about_body").width(
+            $("#{{screen.hash}}_body").width(
                 {{settings.general.MAX_OPTIMAL_WIDTH}} -
-                ($("#osl_about_body").outerWidth(true) -
-                $("#osl_about_body").width())
+                ($("#{{screen.hash}}_body").outerWidth(true) -
+                $("#{{screen.hash}}_body").width())
             );
             
             // horizontally center the tiles
-            $("#osl_about_title").css('left', screenWidth()/2 - 
-                $("#osl_about_title").outerWidth(true)/2 );
+            $("#{{screen.hash}}_title").css('left', screenWidth()/2 - 
+                $("#{{screen.hash}}_title").outerWidth(true)/2 );
             
-            $("#osl_about_body").css('left', screenWidth()/2 - 
-                $("#osl_about_body").outerWidth(true)/2 );
+            $("#{{screen.hash}}_body").css('left', screenWidth()/2 - 
+                $("#{{screen.hash}}_body").outerWidth(true)/2 );
 
         // squeeze the tiles
         } else {
 
-            $("#osl_about_title").width(
+            $("#{{screen.hash}}_title").width(
                 screenWidth() -
-                ($("#osl_about_title").outerWidth(true) -
-                $("#osl_about_title").width())
+                ($("#{{screen.hash}}_title").outerWidth(true) -
+                $("#{{screen.hash}}_title").width())
             );
             
-            $("#osl_about_body").width(
+            $("#{{screen.hash}}_body").width(
                 screenWidth() -
-                ($("#osl_about_body").outerWidth(true) -
-                $("#osl_about_body").width())
+                ($("#{{screen.hash}}_body").outerWidth(true) -
+                $("#{{screen.hash}}_body").width())
             );
         }
         
         // Horizontally position the body tile so it's exactly in-between the 
         // bottom of the title, and the bottom of the screen
-        $("#osl_about_body").css('top', 
-            (screenHeight()-$("#osl_about_title").outerHeight(true))/2 - 
-            ($("#osl_about_body").outerHeight(true))/2 +
-            $("#osl_about_title").outerHeight(true)-
-            ($("#osl_about_title").outerHeight(true)-
-            $("#osl_about_title").outerHeight())/4);
+        $("#{{screen.hash}}_body").css('top', 
+            (screenHeight()-$("#{{screen.hash}}_title").outerHeight(true))/2 - 
+            ($("#{{screen.hash}}_body").outerHeight(true))/2 +
+            $("#{{screen.hash}}_title").outerHeight(true)-
+            ($("#{{screen.hash}}_title").outerHeight(true)-
+            $("#{{screen.hash}}_title").outerHeight())/4);
         
 
     }
@@ -108,13 +105,13 @@ function {{screen.hash}}()
 
 </script>
 
-<div id="osl_about_title" class="display_title display_tile">
+<div id="{{screen.hash}}_title" class="display_title display_tile">
     About the OSL
 </div>
 
-<div id="osl_about_body" class="display_tile display_content">
+<div id="{{screen.hash}}_body" class="display_tile display_content">
 
-    <img id="osl_about_edRayImg" 
+    <img id="{{screen.hash}}_edRayImg" 
         src="{{SITE_ROOT}}/static/screens/osl_about/EdRay.png">
 
     <p>

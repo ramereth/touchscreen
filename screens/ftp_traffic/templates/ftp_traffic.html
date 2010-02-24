@@ -14,7 +14,7 @@ function {{screen.hash}}()
         safelog('ftp_traffic: initializing...');
 
         // make the image refresh itself at the specified interval
-        $("#ftp_traffic_img").refreshImage({
+        $("#{{screen.hash}}_img").refreshImage({
             interval:
                 {{settings.screens_ftp_traffic.imgRefreshInterval}},
             start:true
@@ -26,7 +26,7 @@ function {{screen.hash}}()
         safelog('ftp_traffic: starting...');
 
         // scale the wifi usage image to fit inside the parent
-        $("#ftp_traffic_img").scale("center");
+        $("#{{screen.hash}}_img").scale("center");
     };
 
     this.stop = function()
@@ -37,12 +37,12 @@ function {{screen.hash}}()
     this.onScreenResize = function()
     {
         // re-scale every time the window is resized
-        $("#ftp_traffic_img").scale("center");
+        $("#{{screen.hash}}_img").scale("center");
     };
 
 } {{screen.hash}} = new {{screen.hash}}();
 
 </script>
-<img id="ftp_traffic_img"
+<img id="{{screen.hash}}_img"
      src="{{settings.screens_ftp_traffic.img_addr}}"
      class="display_tile display_img">

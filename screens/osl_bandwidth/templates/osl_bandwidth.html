@@ -70,6 +70,9 @@ function {{screen.hash}}()
 
         // position the tiles
         positionTiles();
+
+        // init debug click events
+        initTileClickEvents();
     };
 
     this.start = function()
@@ -83,7 +86,7 @@ function {{screen.hash}}()
         randomizeMainTile();
 
         // make images refresh themselves at the specified interval
-        $(".osl_bandwidth_img").refreshImage({
+        $(".{{screen.hash}}_img").refreshImage({
             interval:
                 {{settings.screens_osl_bandwidth.imgRefreshInterval}},
             start:true
@@ -133,19 +136,19 @@ function {{screen.hash}}()
     {
         // write the thumbnails
         for( var i = 0; i < graphSets.length; i++ ){
-            $("#osl_bandwidth_wrapper").append(
-                '<div id="osl_bandwidth_thumb_'+i+'" class="display_img_thumb display_tile ">'+
+            $("#{{screen.hash}}_wrapper").append(
+                '<div id="{{screen.hash}}_thumb_'+i+'" class="display_img_thumb display_tile ">'+
 
-                    '<div id="osl_bandwidth_title_'+i+'" class="display_img_thumb_caption">'+
+                    '<div id="{{screen.hash}}_title_'+i+'" class="display_img_thumb_caption">'+
                         graphSets[i].title+
                     '</div>'+
 
-                    '<img id="osl_bandwidth_img_'+i+'a" class="osl_bandwidth_img"'+
+                    '<img id="{{screen.hash}}_img_'+i+'a" class="{{screen.hash}}_img"'+
                         'src="'+graphSets[i].graph1+'"'+
                         'height="{{settings.screens_osl_bandwidth.thumbnail_img_height}}"'+
                         'width="{{settings.screens_osl_bandwidth.thumbnail_img_width}}">'+
 
-                    '<img id="osl_bandwidth_img_'+i+'b" class="osl_bandwidth_img"'+
+                    '<img id="{{screen.hash}}_img_'+i+'b" class="{{screen.hash}}_img"'+
                         'src="'+graphSets[i].graph2+'"'+
                         'height="{{settings.screens_osl_bandwidth.thumbnail_img_height}}"'+
                         'width="{{settings.screens_osl_bandwidth.thumbnail_img_width}}">'+
@@ -157,16 +160,16 @@ function {{screen.hash}}()
         randomizeMainTile();
     }
 
-    // click event handling (NOTE: this is meant as a secondary interface to the
-    // menu interface
+    // click event handling (For debug purposes. The menu is meant to be the
+    // main control for this screen.)
     function initTileClickEvents()
     {
-        $("#osl_bandwidth_thumb_0").click(function(){displayToMainTile(0)});
-        $("#osl_bandwidth_thumb_1").click(function(){displayToMainTile(1)});
-        $("#osl_bandwidth_thumb_2").click(function(){displayToMainTile(2)});
-        $("#osl_bandwidth_thumb_3").click(function(){displayToMainTile(3)});
-        $("#osl_bandwidth_thumb_4").click(function(){displayToMainTile(4)});
-        $("#osl_bandwidth_thumb_5").click(function(){displayToMainTile(5)});
+        $("#{{screen.hash}}_thumb_0").click(function(){displayToMainTile(0)});
+        $("#{{screen.hash}}_thumb_1").click(function(){displayToMainTile(1)});
+        $("#{{screen.hash}}_thumb_2").click(function(){displayToMainTile(2)});
+        $("#{{screen.hash}}_thumb_3").click(function(){displayToMainTile(3)});
+        $("#{{screen.hash}}_thumb_4").click(function(){displayToMainTile(4)});
+        $("#{{screen.hash}}_thumb_5").click(function(){displayToMainTile(5)});
     }
 
     // ==============
@@ -179,7 +182,7 @@ function {{screen.hash}}()
         // calculate the padding between the tiles to evently distribute them
         // across the screen
         var horizPadding = (screenWidth() -
-            $("#osl_bandwidth_thumb_0").outerWidth(true) *
+            $("#{{screen.hash}}_thumb_0").outerWidth(true) *
             graphSets.length/2)/
             ((graphSets.length/2) - 1);
 
@@ -187,22 +190,22 @@ function {{screen.hash}}()
         for( var i = 0; i < graphSets.length/2; i++ ){
 
             // top row
-            $("#osl_bandwidth_thumb_" + i).css('left',
-                $("#osl_bandwidth_thumb_0").outerWidth(true) * i +
+            $("#{{screen.hash}}_thumb_" + i).css('left',
+                $("#{{screen.hash}}_thumb_0").outerWidth(true) * i +
                 horizPadding * i);
 
             // bottom row
-            $("#osl_bandwidth_thumb_" + (i + graphSets.length/2)).css('bottom', 0 );
-            $("#osl_bandwidth_thumb_" + (i + graphSets.length/2)).css('left',
-                $("#osl_bandwidth_thumb_0").outerWidth(true) * i +
+            $("#{{screen.hash}}_thumb_" + (i + graphSets.length/2)).css('bottom', 0 );
+            $("#{{screen.hash}}_thumb_" + (i + graphSets.length/2)).css('left',
+                $("#{{screen.hash}}_thumb_0").outerWidth(true) * i +
                 horizPadding * i );
         }
 
         // place the tile in the middle of the screen
-        $("#osl_bandwidth_main").css('top', screenHeight()/2 -
-            $("#osl_bandwidth_main").outerHeight(true)/2);
-        $("#osl_bandwidth_main").css('left', screenWidth()/2 -
-            $("#osl_bandwidth_main").outerWidth(true)/2);
+        $("#{{screen.hash}}_main").css('top', screenHeight()/2 -
+            $("#{{screen.hash}}_main").outerHeight(true)/2);
+        $("#{{screen.hash}}_main").css('left', screenWidth()/2 -
+            $("#{{screen.hash}}_main").outerWidth(true)/2);
     }
 
     // display a random graph pair to the main tile
@@ -222,54 +225,54 @@ function {{screen.hash}}()
         var speed = "fast"; // fade in/fade out speed
 
         // fade out the main tile
-        $("#osl_bandwidth_main").fadeOut( speed, function(){
+        $("#{{screen.hash}}_main").fadeOut( speed, function(){
 
             // fill the main tile with the title and the picture of the
             // specified webcam shot
-            $("#osl_bandwidth_title_main").html( graphSets[graphSetIndex].title+
+            $("#{{screen.hash}}_title_main").html( graphSets[graphSetIndex].title+
                 " Bandwidth Usage" );
-            $("#osl_bandwidth_img_main_a").attr( 'src',
+            $("#{{screen.hash}}_img_main_a").attr( 'src',
                 graphSets[graphSetIndex].graph1
             );
-            $("#osl_bandwidth_img_main_b").attr( 'src',
+            $("#{{screen.hash}}_img_main_b").attr( 'src',
                 graphSets[graphSetIndex].graph2
             );
-            $("#osl_bandwidth_img_main").height(
+            $("#{{screen.hash}}_img_main").height(
                 {{settings.screens_osl_bandwidth.mainTile_height}}
             );
 
             // set max height and width
-            $("#osl_bandwidth_img_main").attr( 'max-height',
+            $("#{{screen.hash}}_img_main").attr( 'max-height',
                 '{{settings.screens_osl_bandwidth.mainTile_height}}' );
-            $("#osl_bandwidth_img_main").attr( 'max-width',
+            $("#{{screen.hash}}_img_main").attr( 'max-width',
                 '{{settings.screens_osl_bandwidth.mainTile_width}}' );
         });
 
         // fade the main tile back in
-        $("#osl_bandwidth_main").fadeIn( speed );
+        $("#{{screen.hash}}_main").fadeIn( speed );
     }
 
 } {{screen.hash}} = new {{screen.hash}}();
 </script>
 
-<div id="osl_bandwidth_wrapper">
-    <div id='osl_bandwidth_main' class='display_img display_tile'>
+<div id="{{screen.hash}}_wrapper">
+    <div id='{{screen.hash}}_main' class='display_img display_tile'>
 
-        <div id='osl_bandwidth_title_main' class='display_img_caption'>
+        <div id='{{screen.hash}}_title_main' class='display_img_caption'>
             {{settings.screens_osl_bandwidth.title_0}}
         </div>
 
         <table>
             <tr>
                 <td>
-                    <img id='osl_bandwidth_img_main_a' class='osl_bandwidth_img'
+                    <img id='{{screen.hash}}_img_main_a' class='{{screen.hash}}_img'
                     src='{{settings.screens_osl_bandwidth.imgAddr_0a}}'
                     height={{settings.screens_osl_bandwidth.mainTile_height}}
                     width={{settings.screens_osl_bandwidth.mainTile_width}}>
                 </td>
 
                 <td>
-                    <img id='osl_bandwidth_img_main_b' class='osl_bandwidth_img'
+                    <img id='{{screen.hash}}_img_main_b' class='{{screen.hash}}_img'
                     src='{{settings.screens_osl_bandwidth.imgAddr_0b}}'
                     height={{settings.screens_osl_bandwidth.mainTile_height}}
                     width={{settings.screens_osl_bandwidth.mainTile_width}}>

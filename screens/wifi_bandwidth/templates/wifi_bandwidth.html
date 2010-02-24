@@ -14,7 +14,7 @@ function {{screen.hash}}()
         safelog('wifi_bandwidth: initializing...');
     
         // make the image refresh itself at the specified interval
-		$("#wifi_bandwidth_img").refreshImage({
+		$("#{{screen.hash}}_img").refreshImage({
             interval:
                 {{settings.screens_wifi_bandwidth.imgRefreshInterval}},
             start:true
@@ -26,7 +26,7 @@ function {{screen.hash}}()
         safelog('wifi_bandwidth: starting...');
 
         // scale the wifi bandwidth image to fit inside the parent
-        $("#wifi_bandwidth_img").scale("center","stretch");
+        $("#{{screen.hash}}_img").scale("center","stretch");
     }
     
     this.stop = function() 
@@ -36,13 +36,13 @@ function {{screen.hash}}()
     
     this.onWinResize = function()
     {
-        $("#wifi_bandwidth_img").scale("center","stretch");
+        $("#{{screen.hash}}_img").scale("center","stretch");
     }
     
 } {{screen.hash}} = new {{screen.hash}}();
 </script>
 
 <!-- set up the wifi bandwidth map image -------------------------------------->
-<img id="wifi_bandwidth_img"
+<img id="{{screen.hash}}_img"
      src="{{settings.screens_wifi_bandwidth.img_addr}}"
      class="display_tile display_img">

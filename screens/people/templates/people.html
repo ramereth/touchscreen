@@ -11,18 +11,18 @@
     .cloned{ color:red; }
     .active{ color:yellow; } */
 
-    .people_main_img{
+    .{{screen.hash}}_main_img{
         float:right;
         margin-left: 1em;
         margin-right: 1em;
         margin-bottom: 1em;
     }
 
-    .people_thumb_img{
+    .{{screen.hash}}_thumb_img{
         margin-bottom: 1em;
     }
 
-    #people_main{
+    #{{screen.hash}}_main{
         z-index: 2; /* Make sure the main tile is on top */
     }
 </style>
@@ -161,21 +161,21 @@ function {{screen.hash}}()
             if( person != undefined ){
 
                 // fade out the main tile
-                $("#people_main").fadeOut( function(){
+                $("#{{screen.hash}}_main").fadeOut( function(){
 
                     // clear the tile
-                    $("#people_main").html( "" );
+                    $("#{{screen.hash}}_main").html( "" );
 
                     // Add the person's name and title
-                    $("#people_main").append(
+                    $("#{{screen.hash}}_main").append(
                         "<h1>" + person.name + ", " + person.title + "</h1>" +
                         "<img src='" + person.image +
-                            "' class='people_main_img'>"
+                            "' class='{{screen.hash}}_main_img'>"
                     );
 
                     // Add the person's description
                     for( i = 0; i < person.body.length; ++i ){
-                        $("#people_main").append(
+                        $("#{{screen.hash}}_main").append(
                             "<p>" + person.body[i] + "<p>"
                         );
                     }
@@ -185,7 +185,7 @@ function {{screen.hash}}()
                 });
 
                 // fade tile back in
-                $("#people_main").fadeIn("slow");
+                $("#{{screen.hash}}_main").fadeIn("slow");
 
             } else
                 safelog( "people: unknown person '" + personName + "'" );
@@ -199,41 +199,41 @@ function {{screen.hash}}()
     // Re-positions and re-sizes tiles depending on screen size
     {
         // position title tile
-        $("#people_title").width( screenWidth() -
-            ( $("#people_title").outerWidth( true ) -
-            $("#people_title").width() ) );
+        $("#{{screen.hash}}_title").width( screenWidth() -
+            ( $("#{{screen.hash}}_title").outerWidth( true ) -
+            $("#{{screen.hash}}_title").width() ) );
 
         // size and position main tile
         refreshMainTile()
 
         // position and size scroller
-        $(".people_scroller").css('bottom', 0 );
-        $(".people_scroller").width( screenWidth()-
-            ( $(".people_scroller").outerWidth( true )-
-            $(".people_scroller").width() ) );
-        $(".people_scroller").height(
+        $(".{{screen.hash}}_scroller").css('bottom', 0 );
+        $(".{{screen.hash}}_scroller").width( screenWidth()-
+            ( $(".{{screen.hash}}_scroller").outerWidth( true )-
+            $(".{{screen.hash}}_scroller").width() ) );
+        $(".{{screen.hash}}_scroller").height(
             $(".display_scrollable_item").outerHeight(true) );
 
         // position and size gradient over scroller
-        $('#people_gradient').css( 'z-index', 1 );
-        $('#people_gradient').css( 'top',
-            -( $('#people_gradient').outerHeight( true ) -
-            $('#people_gradient').height() ) );
-        $('#people_gradient').css( 'left',
-            -( $('#people_gradient').outerWidth( true ) -
-            $('#people_gradient').width() ) );
-        $('#people_gradient').height(
-            $('.people_scroller').outerHeight( ) );
-        $('#people_gradient').width(
-            $('.people_scroller').outerWidth( ) );
+        $('#{{screen.hash}}_gradient').css( 'z-index', 1 );
+        $('#{{screen.hash}}_gradient').css( 'top',
+            -( $('#{{screen.hash}}_gradient').outerHeight( true ) -
+            $('#{{screen.hash}}_gradient').height() ) );
+        $('#{{screen.hash}}_gradient').css( 'left',
+            -( $('#{{screen.hash}}_gradient').outerWidth( true ) -
+            $('#{{screen.hash}}_gradient').width() ) );
+        $('#{{screen.hash}}_gradient').height(
+            $('.{{screen.hash}}_scroller').outerHeight( ) );
+        $('#{{screen.hash}}_gradient').width(
+            $('.{{screen.hash}}_scroller').outerWidth( ) );
 
         // figure out a new page size for the scroller
         if( scroller != null ){
 
             scroller.getConf().size =
                 Math.round(
-                    $(".people_scroller").innerWidth() /
-                    $(".people_person").outerWidth(true)
+                    $(".{{screen.hash}}_scroller").innerWidth() /
+                    $(".{{screen.hash}}_person").outerWidth(true)
                 );
 
             safelog( "people: scroller page size updated to " +
@@ -246,33 +246,33 @@ function {{screen.hash}}()
     {
         // calculate the vertical space between the title and scroller tiles
         var verticalSpace = screenHeight() -
-            ($(".people_scroller").outerHeight(true) +
-            $(".people_title").outerHeight(true));
+            ($(".{{screen.hash}}_scroller").outerHeight(true) +
+            $(".{{screen.hash}}_title").outerHeight(true));
 
         // size the tile with a maximum specified width
         if( {{settings.general.MAX_OPTIMAL_WIDTH}} <= screenWidth() ){
 
-            $("#people_main").width(
+            $("#{{screen.hash}}_main").width(
                 {{settings.general.MAX_OPTIMAL_WIDTH}}
             );
 
         } else {
 
-            $("#people_main").width(
+            $("#{{screen.hash}}_main").width(
                 screenWidth() -
-                ($("#people_main").outerWidth(true) -
-                $("#people_main").width())
+                ($("#{{screen.hash}}_main").outerWidth(true) -
+                $("#{{screen.hash}}_main").width())
             );
 
         }
 
         // center the tile
-        $("#people_main").css('top', verticalSpace/2 -
-            $("#people_main").outerHeight(true)/2 +
-            $("#people_title").outerHeight(true)/2 );
+        $("#{{screen.hash}}_main").css('top', verticalSpace/2 -
+            $("#{{screen.hash}}_main").outerHeight(true)/2 +
+            $("#{{screen.hash}}_title").outerHeight(true)/2 );
 
-        $("#people_main").css('left', screenWidth()/2 -
-            $("#people_main").outerWidth(true)/2);
+        $("#{{screen.hash}}_main").css('left', screenWidth()/2 -
+            $("#{{screen.hash}}_main").outerWidth(true)/2);
     }
 
     ///////////////////
@@ -412,12 +412,12 @@ function {{screen.hash}}()
                     people[ personIndex ].name );
 
                 // fill up the scroller tile
-                $("#people_items").append(
-                    "<div class='people_person display_scrollable_item "+
+                $("#{{screen.hash}}_items").append(
+                    "<div class='{{screen.hash}}_person display_scrollable_item "+
                         "display_img_thumb'>"+
                         "<img src='" + people[personIndex].image+
                             "' class='display_img_center "+
-                                "people_thumb_img'"+
+                                "{{screen.hash}}_thumb_img'"+
                             "height='"+
                                 "{{settings.screens_people.thumbnail_height}}'>"+
                         "<div class='display_img_thumb_caption'>"+
@@ -442,19 +442,19 @@ function {{screen.hash}}()
         // uniformly-sized scroller items
         var widestItemWidth = 0;
 
-        $(".people_person").each( function(i){
+        $(".{{screen.hash}}_person").each( function(i){
             widestItemWidth = Math.max( widestItemWidth, $(this).width() );
             safelog(">>>" + $(this).width() + " " + people[i].name);
         });
 
-        $(".people_person").each(function(){
+        $(".{{screen.hash}}_person").each(function(){
             $(this).width( widestItemWidth );
         });
 
         // initialize the scroller plugin
         scroller =
-            $(".people_scroller").scrollable({
-                items:"#people_items",
+            $(".{{screen.hash}}_scroller").scrollable({
+                items:"#{{screen.hash}}_items",
             }).circular({
                 speed:{{settings.screens_people.scroll_speed}},
                 api:true
@@ -470,20 +470,20 @@ function {{screen.hash}}()
 </script>
 
 <!-- Title -->
-<div id="people_title" class="display_tile display_title"> People </div>
+<div id="{{screen.hash}}_title" class="display_tile display_title"> People </div>
 
 <!-- Main tile -->
-<div id="people_main" class="display_tile display_content">
+<div id="{{screen.hash}}_main" class="display_tile display_content">
     <!-- to be filled by javascript above -->
 </div>
 
 <!-- Scroller tile -->
-<div class="people_scroller display_tile display_content">
+<div class="{{screen.hash}}_scroller display_tile display_content">
 
-    <img id='people_gradient' class='display_gradient'
+    <img id='{{screen.hash}}_gradient' class='display_gradient'
          src="{{SITE_ROOT}}/static/screens/people/gradient.png">
 
-    <div id="people_items" class='display_scrollable_items_horiz'>
+    <div id="{{screen.hash}}_items" class='display_scrollable_items_horiz'>
         <!-- to be filled by javascript above -->
     </div>
 

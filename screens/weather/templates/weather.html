@@ -8,37 +8,37 @@
 <style>
     /* current condition tile styles */
     
-    .weather_cc_main_block_left{
+    .{{screen.hash}}_cc_main_block_left{
         display:block;
         margin-right:4em;
     }
     
-    .weather_cc_block{
+    .{{screen.hash}}_cc_block{
         margin:2em;
     }
     
-    .weather_cc_block_top{
+    .{{screen.hash}}_cc_block_top{
         margin-bottom:1em;
     }
     
-    .weather_cc_block_bottom{
+    .{{screen.hash}}_cc_block_bottom{
         margin-top:1em;
     }
     
-    #weather_cc_temp{
+    #{{screen.hash}}_cc_temp{
         font-size:70pt;
     }
     
-    .weather_cc_mainData{
+    .{{screen.hash}}_cc_mainData{
         font-size:14pt;
     }
     
-    .weather_cc_labels_left{
+    .{{screen.hash}}_cc_labels_left{
         display:block;
         margin-right:1em;
     }
     
-    .weather_cc_labels_right{
+    .{{screen.hash}}_cc_labels_right{
         display:block;
         margin-left:4em;
         margin-right:1em;
@@ -47,22 +47,22 @@
     
     /* forecast tile styles */
     
-    #weather_forecast{
+    #{{screen.hash}}_forecast{
         text-align:center;
         bottom:0;
     }
     
-    #weather_forecast_table{
+    #{{screen.hash}}_forecast_table{
         width:100%;
     }
     
-    .weather_forecast_icon{
+    .{{screen.hash}}_forecast_icon{
         padding-top:1em;
         padding-bottom:1em;
     }
     
     /* maps tile styles */
-    #weather_maps{
+    #{{screen.hash}}_maps{
         right:0;
     }
 </style>
@@ -172,15 +172,15 @@ function {{screen.hash}}()
         // load the weather data from the weather feed
         this.loadData();
 
-        //$(".weather_map").scale();
+        //$(".{{screen.hash}}_map").scale();
 
         // start the weather maps cycle
-        $('#weather_maps').cycle({
+        $('#{{screen.hash}}_maps').cycle({
             fx:'fade',
             fit:0,
             containerResize:0,
             timeout:{{settings.screens_weather.maps_cycle_timeout}},
-            //after:function(){$(".weather_map").scale();}
+            //after:function(){$(".{{screen.hash}}_map").scale();}
         });
         
         // setup debug buttons
@@ -197,7 +197,7 @@ function {{screen.hash}}()
         clearTimeout(dataRefreshTimer);
         
         // stop the weather maps cycle
-        $('#weather_maps').cycle('stop');
+        $('#{{screen.hash}}_maps').cycle('stop');
     }
 
     this.onScreenResize = function()
@@ -217,25 +217,25 @@ function {{screen.hash}}()
         
         // size the maps tile to match the height of the cc tile, and the width
         // of the smallest map
-        $("#weather_maps").height(
-            $("#weather_cc").height()
+        $("#{{screen.hash}}_maps").height(
+            $("#{{screen.hash}}_cc").height()
         );
-        $("#weather_maps").width( 600 -
-            $("#weather_maps").width() -
-            $("#weather_maps").innerWidth()
+        $("#{{screen.hash}}_maps").width( 600 -
+            $("#{{screen.hash}}_maps").width() -
+            $("#{{screen.hash}}_maps").innerWidth()
         );
 
         // resize each of the maps to fit inside the container
-        $(".weather_map").each( function(index){
-            $(this).height( $("#weather_maps").innerHeight() );
-            $(this).width( $("#weather_maps").innerWidth() );
+        $(".{{screen.hash}}_map").each( function(index){
+            $(this).height( $("#{{screen.hash}}_maps").innerHeight() );
+            $(this).width( $("#{{screen.hash}}_maps").innerWidth() );
         });
         
         // size the forecast tile
-        $("#weather_forecast").width(
+        $("#{{screen.hash}}_forecast").width(
             screenWidth() -
-            ($("#weather_forecast").outerWidth( true ) -
-            $("#weather_forecast").width())
+            ($("#{{screen.hash}}_forecast").outerWidth( true ) -
+            $("#{{screen.hash}}_forecast").width())
         );
     }
 
@@ -348,60 +348,60 @@ function {{screen.hash}}()
         safelog( "weather: filling tiles..." );
         
         // fill the current conditions tile
-        $("#weather_cc_icon").html(
+        $("#{{screen.hash}}_cc_icon").html(
             "<img class='display_centered_block'" +
                 " src='{{SITE_ROOT}}/static/screens/weather/icons/large/" +
                 cc.icon + 
                 ".png'>"
         );
         
-        $("#weather_cc_temp").html(
+        $("#{{screen.hash}}_cc_temp").html(
             cc.temp + "&#176;"
         );
         
-        $("#weather_cc_feelsLike").html( 
+        $("#{{screen.hash}}_cc_feelsLike").html( 
             "(Feels like " + cc.feelsLike + " &#176;)" 
         );
         
-        $("#weather_cc_condition").html(
+        $("#{{screen.hash}}_cc_condition").html(
             cc.condition
         );
         
         if( cc.wind.speed == "calm" )
-            $("#weather_cc_wind").html( "calm" );
+            $("#{{screen.hash}}_cc_wind").html( "calm" );
         else
-            $("#weather_cc_wind").html( 
+            $("#{{screen.hash}}_cc_wind").html( 
                 cc.wind.speed + " " + 
                 units.speed +
                 " " + cc.wind.from 
             );
         
-        $("#weather_cc_humiditiy").html( 
+        $("#{{screen.hash}}_cc_humiditiy").html( 
             cc.humidity + "%"
         );
         
-        $("#weather_cc_pressure").html( 
+        $("#{{screen.hash}}_cc_pressure").html( 
             cc.pressure.value + " " + 
             units.pressure + ". (" +
             cc.pressure.description + ")"
         );
         
-        $("#weather_cc_visibility").html( 
+        $("#{{screen.hash}}_cc_visibility").html( 
             cc.visual + " " + 
             units.distance + "."
         );
         
-        $("#weather_cc_uv").html( cc.uv.index +
+        $("#{{screen.hash}}_cc_uv").html( cc.uv.index +
             " (" + cc.uv.description + ")"
         );
         
-        $("#weather_cc_lastUpdate").html(
+        $("#{{screen.hash}}_cc_lastUpdate").html(
             cc.lastUpdate
         );
         
         
         // fill the 5-day forecast tile
-        $(".weather_forecast_day").each(function(dayIndex){
+        $(".{{screen.hash}}_forecast_day").each(function(dayIndex){
             
             // day names
             $(this).html( 
@@ -413,7 +413,7 @@ function {{screen.hash}}()
             );
             
             // icons
-            $(".weather_forecast_icon").eq(dayIndex).html(
+            $(".{{screen.hash}}_forecast_icon").eq(dayIndex).html(
                 "<img class='centered_block' "+
                     "src='{{SITE_ROOT}}/static/screens/weather/icons/large/" +
                     forecast.days[dayIndex+1].icon + 
@@ -421,13 +421,13 @@ function {{screen.hash}}()
             );
             
             // conditions
-            $(".weather_forecast_cond").eq(dayIndex).html( 
+            $(".{{screen.hash}}_forecast_cond").eq(dayIndex).html( 
                 // add 1 to days so it doesn't include the current day
                 forecast.days[dayIndex+1].condition
             );
             
             // temperature
-            $(".weather_forecast_temp").eq(dayIndex).html( 
+            $(".{{screen.hash}}_forecast_temp").eq(dayIndex).html( 
                 // add 1 to days so it doesn't include the current day
                 forecast.days[dayIndex+1].low + "/" +
                 forecast.days[dayIndex+1].high
@@ -442,90 +442,90 @@ function {{screen.hash}}()
 </script>
 
 <!-- Maps Tile -->
-<div id="weather_maps" class="display_tile display_content">
-    <img class="weather_map"
+<div id="{{screen.hash}}_maps" class="display_tile display_content">
+    <img class="{{screen.hash}}_map"
         src="http://image.weather.com/web/radar/us_pdx_closeradar_plus_usen.jpg">
-    <img class="weather_map"
+    <img class="{{screen.hash}}_map"
         src="http://image.weather.com/images/sat/regions/northwest_sat_720x486.jpg">
-    <img class="weather_map"
+    <img class="{{screen.hash}}_map"
         src="http://image.weather.com/images/maps/current/nw_curtemp_720x486.jpg">
-    <img class="weather_map"
+    <img class="{{screen.hash}}_map"
         src="http://image.weather.com/images/maps/current/cur_nw_720x486.jpg">
 </div>
 
 <!-- Current Weather Tile -->
-<div id="weather_cc" class="display_tile display_content">
+<div id="{{screen.hash}}_cc" class="display_tile display_content">
 
     <center>
     
     <h1>Current Conditions</h1>
     
-    <table class="weather_cc_block" border=0>
+    <table class="{{screen.hash}}_cc_block" border=0>
         <tr>
-            <td class="centered_block weather_cc_main_block_left" 
-                id="weather_cc_icon">
+            <td class="centered_block {{screen.hash}}_cc_main_block_left" 
+                id="{{screen.hash}}_cc_icon">
             </td>
             <td class="default_color centered" 
-                id="weather_cc_temp">
+                id="{{screen.hash}}_cc_temp">
             </td>
         </tr>
         <tr>
-            <td class="default_color default_size centered weather_cc_mainData weather_cc_main_block_left" 
-                id="weather_cc_condition">
+            <td class="default_color default_size centered {{screen.hash}}_cc_mainData {{screen.hash}}_cc_main_block_left" 
+                id="{{screen.hash}}_cc_condition">
             </td>
-            <td class="default_color default_size centered weather_cc_mainData" 
-                id="weather_cc_feelsLike">
+            <td class="default_color default_size centered {{screen.hash}}_cc_mainData" 
+                id="{{screen.hash}}_cc_feelsLike">
             </td>
         </tr>
     </table>
     
-    <table class="weather_cc_block" border=0>
+    <table class="{{screen.hash}}_cc_block" border=0>
         <tr>
-            <td class="default_color default_size bold weather_cc_labels_left">
+            <td class="default_color default_size bold {{screen.hash}}_cc_labels_left">
                 Wind
             </td>
             <td class="default_color default_size" 
-                id="weather_cc_wind">
+                id="{{screen.hash}}_cc_wind">
             </td>
-            <td class="default_color default_size bold weather_cc_labels_right">
+            <td class="default_color default_size bold {{screen.hash}}_cc_labels_right">
                 Humidity
             </td>
             <td class="default_color default_size" 
-                id="weather_cc_humiditiy">
+                id="{{screen.hash}}_cc_humiditiy">
             </td>
         </tr>
         <tr>
-            <td class="default_color default_size bold weather_cc_labels_left">
+            <td class="default_color default_size bold {{screen.hash}}_cc_labels_left">
                 Pressure
             </td>   
             <td class="default_color default_size" 
-                id="weather_cc_pressure">
+                id="{{screen.hash}}_cc_pressure">
             </td> 
-            <td class="default_color default_size bold weather_cc_labels_right">
+            <td class="default_color default_size bold {{screen.hash}}_cc_labels_right">
                 Visibility
             </td> 
             <td class="default_color default_size" 
-                id="weather_cc_visibility">
+                id="{{screen.hash}}_cc_visibility">
             </td>
         </tr>
         <tr>
-            <td class="default_color default_size bold weather_cc_labels_left">
+            <td class="default_color default_size bold {{screen.hash}}_cc_labels_left">
                 UV Index
             </td>   
-            <td class="default_color default_size" id="weather_cc_uv">
+            <td class="default_color default_size" id="{{screen.hash}}_cc_uv">
             </td> 
-            <td class="default_color default_size bold weather_cc_labels_right">
+            <td class="default_color default_size bold {{screen.hash}}_cc_labels_right">
                 Dewpoint
             </td>   
             <td class="default_color default_size" 
-                id="weather_cc_dewpoint">
+                id="{{screen.hash}}_cc_dewpoint">
             </td>
         </tr>
     </table>
     
-    <div class="default_color weather_cc_block_bottom" 
+    <div class="default_color {{screen.hash}}_cc_block_bottom" 
         style="font-size:8pt">
-        Last update <span id="weather_cc_lastUpdate"></span>
+        Last update <span id="{{screen.hash}}_cc_lastUpdate"></span>
     </div>
     
     </center>
@@ -533,32 +533,32 @@ function {{screen.hash}}()
 </div>
 
 <!-- 5-Day Forecast Tile -->
-<div id="weather_forecast"
+<div id="{{screen.hash}}_forecast"
     class="display_tile display_content">
-    <table id="weather_forecast_table" border=0>
+    <table id="{{screen.hash}}_forecast_table" border=0>
         <tr>
-            <td class="default_color default_size weather_forecast_day"></td>
-            <td class="default_color default_size weather_forecast_day"></td>
-            <td class="default_color default_size weather_forecast_day"></td>
-            <td class="default_color default_size weather_forecast_day"></td>
+            <td class="default_color default_size {{screen.hash}}_forecast_day"></td>
+            <td class="default_color default_size {{screen.hash}}_forecast_day"></td>
+            <td class="default_color default_size {{screen.hash}}_forecast_day"></td>
+            <td class="default_color default_size {{screen.hash}}_forecast_day"></td>
         </tr>
         <tr>
-            <td class="default_color default_size weather_forecast_icon"></td>
-            <td class="default_color default_size weather_forecast_icon"></td>
-            <td class="default_color default_size weather_forecast_icon"></td>
-            <td class="default_color default_size weather_forecast_icon"></td>
+            <td class="default_color default_size {{screen.hash}}_forecast_icon"></td>
+            <td class="default_color default_size {{screen.hash}}_forecast_icon"></td>
+            <td class="default_color default_size {{screen.hash}}_forecast_icon"></td>
+            <td class="default_color default_size {{screen.hash}}_forecast_icon"></td>
         </tr>
         <tr>
-            <td class="default_color default_size weather_forecast_cond"></td>
-            <td class="default_color default_size weather_forecast_cond"></td>
-            <td class="default_color default_size weather_forecast_cond"></td>
-            <td class="default_color default_size weather_forecast_cond"></td>
+            <td class="default_color default_size {{screen.hash}}_forecast_cond"></td>
+            <td class="default_color default_size {{screen.hash}}_forecast_cond"></td>
+            <td class="default_color default_size {{screen.hash}}_forecast_cond"></td>
+            <td class="default_color default_size {{screen.hash}}_forecast_cond"></td>
         </tr>
         <tr>
-            <td class="default_color default_size weather_forecast_temp"></td>
-            <td class="default_color default_size weather_forecast_temp"></td>
-            <td class="default_color default_size weather_forecast_temp"></td>
-            <td class="default_color default_size weather_forecast_temp"></td>
+            <td class="default_color default_size {{screen.hash}}_forecast_temp"></td>
+            <td class="default_color default_size {{screen.hash}}_forecast_temp"></td>
+            <td class="default_color default_size {{screen.hash}}_forecast_temp"></td>
+            <td class="default_color default_size {{screen.hash}}_forecast_temp"></td>
         </tr>
     </table>
 </div>
