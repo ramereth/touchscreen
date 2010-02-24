@@ -6,7 +6,15 @@
     This screen displays the current shots of the different webcams around OSU's
     facilities.
 -->
+<style>
+    .{{screen.hash}}_top_thumbs{
+        top: 0;
+    }
 
+    .{{screen.hash}}_bottom_thumbs{
+        bottom: 0;
+    }
+</style>
 <script type="text/javascript">
 function {{screen.hash}}()
 {
@@ -18,6 +26,65 @@ function {{screen.hash}}()
     // main tile flickering)
     var displayToMainTileRunning = false;
 
+    // a webcam object, consisting of a title and an image URL
+    function webcam( title, image )
+    {
+        this.title = title;
+        this.image = image;
+    }
+
+    // a collection of webcams
+    var webcams = new Array(
+        new webcam(
+            "{{settings.screens_webcams.title_0}}",
+            "{{settings.screens_webcams.imgAddr_0}}"
+        ),
+        new webcam(
+            "{{settings.screens_webcams.title_1}}",
+            "{{settings.screens_webcams.imgAddr_1}}"
+        ),
+        new webcam(
+            "{{settings.screens_webcams.title_2}}",
+            "{{settings.screens_webcams.imgAddr_2}}"
+        ),
+        new webcam(
+            "{{settings.screens_webcams.title_3}}",
+            "{{settings.screens_webcams.imgAddr_3}}"
+        ),
+        new webcam(
+            "{{settings.screens_webcams.title_4}}",
+            "{{settings.screens_webcams.imgAddr_4}}"
+        ),
+        new webcam(
+            "{{settings.screens_webcams.title_5}}",
+            "{{settings.screens_webcams.imgAddr_5}}"
+        ),
+        new webcam(
+            "{{settings.screens_webcams.title_6}}",
+            "{{settings.screens_webcams.imgAddr_6}}"
+        ),
+        new webcam(
+            "{{settings.screens_webcams.title_7}}",
+            "{{settings.screens_webcams.imgAddr_7}}"
+        ),
+        new webcam(
+            "{{settings.screens_webcams.title_8}}",
+            "{{settings.screens_webcams.imgAddr_8}}"
+        ),
+        new webcam(
+            "{{settings.screens_webcams.title_9}}",
+            "{{settings.screens_webcams.imgAddr_9}}"
+        ),
+        new webcam(
+            "{{settings.screens_webcams.title_10}}",
+            "{{settings.screens_webcams.imgAddr_10}}"
+        ),
+        new webcam(
+            "{{settings.screens_webcams.title_11}}",
+            "{{settings.screens_webcams.imgAddr_11}}"
+        )
+    );
+
     ///////////////////
     // Screen Events //
     ///////////////////
@@ -26,17 +93,15 @@ function {{screen.hash}}()
     {
         safelog('webcams: initializing...');
 
-        // intitialize tile click event handling. NOTE: This section is for
-        // demonstration purposes only. Eventually, these div manipulations will
-        // be done via the touchscreen interface.
-        initTileClickEvents();
-
         // make images refresh themselves at the specified interval
         $(".{{screen.hash}}_img").refreshImage({
             interval:
                 {{settings.screens_webcams.imgRefreshInterval}},
             start:true
         });
+
+        // intitialize debug tile click handling
+        initTileClickEvents();
     }
 
     this.start = function()
@@ -158,6 +223,36 @@ function {{screen.hash}}()
             $("#{{screen.hash}}_agate").outerWidth(true) +
             tilePadding_horiz * 5 );
 
+    }
+
+    function positionTiles_new()
+    {
+        // calculate the padding between the tiles to evently distribute them
+        // across the screen
+        var horizPadding =
+            (screenWidth()-$("#{{screen.hash}}_thumb_0").outerWidth(true) *
+            webcams.length/2)/((webcams.length/2)-1);
+
+        // position the thumbs
+        for( var i = 0; i < webcams.length/2; i++ ){
+
+            // top row
+            $("#{{screen.hash}}_thumb_" + i).css('left',
+                $("#{{screen.hash}}_thumb_0").outerWidth(true) * i +
+                horizPadding * i);
+
+            // bottom row
+            $("#{{screen.hash}}_thumb_"+(i+webcams.length/2)).css('bottom',0);
+            $("#{{screen.hash}}_thumb_"+(i+webcams.length/2)).css('left',
+                $("#{{screen.hash}}_thumb_0").outerWidth(true) * i +
+                horizPadding * i );
+        }
+
+        // place the tile in the middle of the screen
+        $("#{{screen.hash}}_main").css('top', screenHeight()/2 -
+            $("#{{screen.hash}}_main").outerHeight(true)/2);
+        $("#{{screen.hash}}_main").css('left', screenWidth()/2 -
+            $("#{{screen.hash}}_main").outerWidth(true)/2);
     }
 
     // initTileClickEvents()
