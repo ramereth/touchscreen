@@ -24,28 +24,18 @@ create instance of screens this plugin provides. The parameters are as follows:
 
 """
 
-osl_about = Screen( 
-    # Required Parameters --------------------------------------
-    'osl_about.html', # the screen's file name
-    'osl_about',      # the screen's name
+class AboutGeneralSettingsForm(ScreenGeneralSettings):
+    DISPLAY_DURATION = forms.IntegerField(
+        label='Default Screen Duration',
+        help_text='How long screens will be displayed',
+        initial=300000
+    )
 
-    # Optional Parameters --------------------------------------
-    duration=300000, # how long to display the screen
-    #hide='slide',    # the hide transition
-    #show='slide',    # the show transition
-    slideshow=True,  # include the screen in the slideshow?
-
-    js_init ='init',  # a function to call when
-                                       # initializing the screen
-
-    js_start='start', # a function to call when
-                                       # showing the screen
-
-    js_stop ='stop',  # a function to call when
-                                       # hiding the screen
-                                       
-    js_onWinResize = 'onWinResize', # a function to call when
-                                                     # the window gets resized
-)
-
+class OSL_About(Screen):
+    description = 'Screen displaying generation information about the open source lab'
+    template = 'osl_about.html' # the screen's file name
+    js_init ='init'  # a function to call when initializing the screen
+    js_start='start' # a function to call when showing the screen
+    js_stop ='stop'  # a function to call when hiding the screen
+    js_onWinResize = 'onWinResize' # a function to call when window gets resized
 
