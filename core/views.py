@@ -5,8 +5,7 @@ from django.shortcuts import render_to_response
 from django.conf import settings
 from django.template import RequestContext
 
-from plugin_manager import *
-from models import general_settings
+from muddle.plugins.plugin_manager import RootPluginManager
 
 PLUGIN_MANAGER = None
 
@@ -14,21 +13,19 @@ def plugin_processor(request):
     global PLUGIN_MANAGER
 
     if PLUGIN_MANAGER == None:
-        PLUGIN_MANAGER = PluginManager()
+        PLUGIN_MANAGER = RootPluginManager()
         PLUGIN_MANAGER.autodiscover()
 
     return {
         'plugin_manager':PLUGIN_MANAGER,
-        'settings':PLUGIN_MANAGER.get_settings()
+        'settings':PLUGIN_MANAGER['ScreenManager'].get_settings()
     }
 
 # The display view
 def display(request):
-
     rc = RequestContext(request, processors=[plugin_processor])
-
     return render_to_response('display.html', {
-        'screens':PLUGIN_MANAGER.screens,
+        'screens':PLUGIN_MANAGER['ScreenManager'].plugins,
     }, context_instance=rc)
 
 # The menu view
