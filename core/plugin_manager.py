@@ -61,6 +61,6 @@ class ScreenManager(TouchscreenPlugin, PluginManager):
         """
         Aggregates settings from all the plugins
         """
-        touchscreen_settings = {'general':self.config}
+        touchscreen_settings = {'general':self.config.config}
         return touchscreen_settings
 
