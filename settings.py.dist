@@ -85,8 +85,12 @@ INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.sessions',
     'django.contrib.sites',
-    'dbsettings',
-    #'core',
+    'muddle',
+    'core',
     #'screen_helloscreen',
     #'screen_fooscreen',
+)
+
+CORE_PLUGINS = (
+    'core.plugin_manager.ScreenManager'
 )
