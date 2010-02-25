@@ -1,43 +1,7 @@
-from django.db import models
-import dbsettings
+from django import forms
+from muddle.plugins.plugin import Plugin
 
-""" ================================================================
-# General Settings
-================================================================ """
-class GeneralSettings(dbsettings.Group):
-
-    MAX_OPTIMAL_WIDTH  = dbsettings.IntegerValue(
-        'Maximum Optimal Width',
-        'Maximum width optimal for reading',
-        default=780
-    )
-
-    DISPLAY_DURATION   = dbsettings.IntegerValue(
-        'Default Screen Duration',
-        'How long screens will be displayed',
-        default=10000
-    )
-
-    TIMEOUT            = dbsettings.IntegerValue(
-        'Default Screen Timeout',
-        'Duration of time without activity before the slide show restarts',
-        default=10000
-    )
-        
-    MSG_SEND_URL = dbsettings.StringValue(
-        'Message Send URL', 
-        'The send url of the message server', 
-        default='http://localhost:9000/?c=1&q=touchscreen'
-    )
-
-    MSG_RECEIVE_URL = dbsettings.StringValue(
-        'Message Receive URL', 
-        'The receive url of the message server', 
-        default='http://localhost:9000/?c=0&q=touchscreen'
-    )
-
-general_settings = GeneralSettings('General Settings')
-
+'''
 class Plugin(models.Model):
     """
     Base model for all plugins.
@@ -66,16 +30,27 @@ class Plugin(models.Model):
             raise 'Plugin description cannot be null'
 
         return True
+'''
+class TouchscreenPlugin(Plugin):
+    pass
 
-class Screen(Plugin):
+
+class ScreenGeneralSettings(forms.Form):
+    duration    = forms.IntegerField(initial=10000, required=False)
+    hide        = forms.CharField(max_length='30', initial="slide")
+    show        = forms.CharField(max_length='30', initial="slide")
+    slideshow   = forms.IntegerField(initial=1)
+
+
+class Screen(TouchscreenPlugin):
     """
     Plugin for screens.  A screen is a single view that can be shown
     on the display.
     """
-    duration    = models.IntegerField(default=10000, null=True)
-    hide        = models.CharField(max_length='30', default="slide")
-    show        = models.CharField(max_length='30', default="slide")
-    slideshow   = models.IntegerField(default=1)
+    target = 'ScreenManager'
+    _target = 'ScreenManager'
+
+    config_form = ScreenGeneralSettings
 
     # fields that are not parameters so they do not need to be changed on the fly
     template    = None      # template for the screen
@@ -83,25 +58,27 @@ class Screen(Plugin):
     js_start = None         # javascript start function called on screen show
     js_stop = None          # javascript stop function called on screen hide
     js_onWinResize = None   # javascript function called when window is resized
+    hide='slide'            # hide animation
+    show='slide'            # show animation
+    slideshow=True          # include in slideshow
 
-    def validate(self):
-        super.validate(self)
+    
 
-        if not template:
-            raise 'Plugin template cannot be null'
+    def __init__(self, *args, **kwargs):
+        super(Screen, self).__init__(*args, **kwargs)
+        
+        self.hash = self.name()
+        
+        # add general settings for all screens combine with user defined
+        '''# settings which might be a list, tuple, or single class
+        if self.config_form:
+            if isinstance(self.config_form, (list,)):
+                self.config_form.append(ScreenGeneralSettings)
+            elif isinstance(self.config_form, (tuple,)):
+                self.config_form = self.config_form + (ScreenGeneralSettings,)
+            else:
+                self.config_form = (ScreenGeneralSettings, self.config_form)
+        else:
+            self.config_form = ScreenGeneralSettings
+        '''
 
-        return True
-
-    def __init__(self, template, name, duration=10000, settings=None, hide='slide', show='slide', slideshow=True, js_init=None, js_start=None, js_stop=None, js_onWinResize=None, *args, **kwargs):
-        Plugin.__init__(self, *args, **kwargs)
-        self.name = name
-        self.duration = duration
-        self.settings = settings
-        self.hide = hide
-        self.show = show
-        self.slideshow = slideshow
-        self.template = template
-        self.js_init = js_init
-        self.js_start = js_start
-        self.js_stop = js_stop
-        self.js_onWinResize = js_onWinResize
