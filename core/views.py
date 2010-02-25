@@ -21,19 +21,29 @@ def plugin_processor(request):
         'settings':PLUGIN_MANAGER['ScreenManager'].get_settings()
     }
 
-# The display view
+
+def settings_processor(request):
+    return {
+        'ROOT':settings.SITE_ROOT,
+        'MEDIA':settings.MEDIA_URL
+    }
+
+
 def display(request):
-    rc = RequestContext(request, processors=[plugin_processor])
+    """ view for displaying display """
+    rc = RequestContext(request, processors=[plugin_processor, settings_processor])
     return render_to_response('display.html', {
         'screens':PLUGIN_MANAGER['ScreenManager'].plugins,
     }, context_instance=rc)
 
-# The menu view
+
 def menu(request):
+    """ View for displaying menu """
     return render_to_response('menu.html')
 
-# A simple proxy
+
 def proxy(request):
+    """ a simple proxy for pulling in external content via ajax """
     connection = httplib2.Http()
     url = request.POST['url']
     response, content = connection.request( url, "GET" )
