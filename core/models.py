@@ -37,9 +37,9 @@ class TouchscreenPlugin(Plugin):
 
 class ScreenGeneralSettings(forms.Form):
     duration    = forms.IntegerField(initial=10000, required=False)
-    hide        = forms.CharField(max_length='30', initial="slide")
-    show        = forms.CharField(max_length='30', initial="slide")
-    slideshow   = forms.IntegerField(initial=1)
+    #hide        = forms.CharField(max_length='30', initial="slide")
+    #show        = forms.CharField(max_length='30', initial="slide")
+    slideshow   = forms.BooleanField(initial=True)
 
 
 class Screen(TouchscreenPlugin):
