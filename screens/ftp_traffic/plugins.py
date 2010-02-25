@@ -1,5 +1,6 @@
+from django import forms
+
 from core.models import *
-from models import ftp_traffic_settings
 
 """
 create instance of screens this plugin provides. The parameters are as follows:
@@ -25,18 +26,25 @@ create instance of screens this plugin provides. The parameters are as follows:
 
 """
 
-ftp_traffic = Screen(
-    'ftp_traffic.html',
-    'ftp_traffic', 
+class FTPTrafficSettings(forms.Form):
+    img_addr = forms.CharField(
+            label='FTP traffic map URL',
+            help_text='URL of the FTP traffic map',
+            initial='http://larch.osuosl.org/ftpmap/weathermap.png',
+            max_length=128
+    )
+    
+    imgRefreshInterval = forms.IntegerField(
+            label='Image Refresh Interval',
+            help_text='The time interval to refresh the image, in milliseconds',
+            initial=30000
+    )
 
-    #optional params
-    duration=300000,
-    settings=ftp_traffic_settings,
-    #hide='fade', 
-    #show='fade',
-    slideshow=True,
-    js_init ='init',
-    js_start='start',
-    js_stop ='stop',
+class FTP_Traffic(Screen):
+    description = 'Map of bandwidth usage by the OSL and its mirrors'
+    template = 'ftp_traffic.html'
+    config_form = (FTPTrafficSettings, ScreenGeneralSettings)
+    js_init ='init'
+    js_start='start'
+    js_stop ='stop'
     js_onWinResize = 'onScreenResize'
-)
