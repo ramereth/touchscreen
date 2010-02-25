@@ -17,13 +17,15 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     #(r'^admin/(.*)', admin.site.root),
-    (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root':  settings.MEDIA_ROOT}),
+    
 
     # Enable the touchscreen core
     (r'^/*', include('core.urls')),
 
     # Enable muddle
     (r'^/*', include('muddle.urls')),
+    
+    (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root':  settings.MEDIA_ROOT}),
 )
 
 
