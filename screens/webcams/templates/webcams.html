@@ -135,15 +135,35 @@ function {{screen.hash}}()
     // initTiles()
     // Initialize and write the tiles
     function initTiles()
-    {
-        
-        alert( $("#{{screen.hash}}_thumbs").html() );
-        
-        for( i in webcams ){
-            alert( i );
-            
-            $("#{{screen.hash}}_thumbs").append(
-                "<div id='#{{screen.hash}}_thumb_"+i+"'></div>"
+    {       
+        for( var i=0; i < webcams.length; i++ ){
+
+            // write top row
+            if( i < webcams.length/2 )
+                $("#{{screen.hash}}_thumbs").append(
+                    "<div id='{{screen.hash}}_thumb_" + i +
+                        "' class='{{screen.hash}}_top_thumbs " +
+                        "display_img_thumb display_tile '></div>"
+                );
+
+            // write bottom row
+            else
+                $("#{{screen.hash}}_thumbs").append(
+                    "<div id='{{screen.hash}}_thumb_" + i +
+                        "' class='{{screen.hash}}_bottom_thumbs " +
+                        "display_img_thumb display_tile'></div>"
+                );
+
+            // write contents
+            $("#{{screen.hash}}_thumb_"+i).append(
+                "<div class='display_img_thumb_caption'>" +
+                    webcams[i].title +
+                "</div>" + 
+             
+                "<img class='{{screen.hash}}_img'"+
+                    "src='"+ webcams[i].image +"'"+
+                    "height={{settings.screens_webcams.thumbnail_height}}"+
+                    "width={{settings.screens_webcams.thumbnail_width}}>"
             );
         }
         
@@ -170,7 +190,6 @@ function {{screen.hash}}()
                 horizPadding * i);
 
             // bottom row
-            $("#{{screen.hash}}_thumb_"+(i+webcams.length/2)).css('bottom',0);
             $("#{{screen.hash}}_thumb_"+(i+webcams.length/2)).css('left',
                 $("#{{screen.hash}}_thumb_0").outerWidth(true) * i +
                 horizPadding * i );
@@ -189,10 +208,18 @@ function {{screen.hash}}()
     // touchscreen control interface.)
     function initTileClickEvents()
     {
-        for( i in webcams )
-            $("#{{screen.hash}}_thumb_" + i).click(function(){
-                displayToMainTile( i );
-            });
+        $("#{{screen.hash}}_thumb_0").click(function(){displayToMainTile(0)});
+        $("#{{screen.hash}}_thumb_1").click(function(){displayToMainTile(1)});
+        $("#{{screen.hash}}_thumb_2").click(function(){displayToMainTile(2)});
+        $("#{{screen.hash}}_thumb_3").click(function(){displayToMainTile(3)});
+        $("#{{screen.hash}}_thumb_4").click(function(){displayToMainTile(4)});
+        $("#{{screen.hash}}_thumb_5").click(function(){displayToMainTile(5)});
+        $("#{{screen.hash}}_thumb_6").click(function(){displayToMainTile(6)});
+        $("#{{screen.hash}}_thumb_7").click(function(){displayToMainTile(7)});
+        $("#{{screen.hash}}_thumb_8").click(function(){displayToMainTile(8)});
+        $("#{{screen.hash}}_thumb_9").click(function(){displayToMainTile(9)});
+        $("#{{screen.hash}}_thumb_10").click(function(){displayToMainTile(10)});
+        $("#{{screen.hash}}_thumb_11").click(function(){displayToMainTile(11)});
     }
 
     ///////////////////
