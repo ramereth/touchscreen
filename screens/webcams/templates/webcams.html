@@ -128,6 +128,30 @@ function {{screen.hash}}()
         displayToMainTile( 0 );
     }
 
+    ///////////////////
+    // MENU COMMANDS //
+    ///////////////////
+
+    // a menu command to show the specified graph set (by name, first
+    // encountered)
+    this.show = function( name )
+    {
+        var index = null;
+        
+        // find the index of the webcam set by name
+        for( i in webcams ){
+
+            if( webcams[i].title == name ){
+                index = i;
+                break;
+            }
+        }
+
+        // if the webcam is found, display it to the main tile
+        if( index != null ) displayToMainTile( index );
+        else safelog( "{{screen_hash}}: show: webcam set '"+name+"' not found." );
+    }
+
     //////////////////
     // Initializers //
     //////////////////
