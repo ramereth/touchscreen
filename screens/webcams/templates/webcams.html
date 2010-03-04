@@ -26,6 +26,8 @@ function {{screen.hash}}()
     // main tile flickering)
     var displayToMainTileRunning = false;
 
+    var refresher = null;
+
     // a webcam object, consisting of a title and an image URL
     function webcam( title, image )
     {
@@ -93,12 +95,6 @@ function {{screen.hash}}()
     {
         safelog('webcams: initializing...');
 
-        // make images refresh themselves at the specified interval
-        $(".{{screen.hash}}_img").refreshImage({
-            interval: {{settings.screens_webcams.imgRefreshInterval}},
-            start:true
-        });
-
         // write and initialize tiles
         initTiles();
     }
@@ -107,15 +103,18 @@ function {{screen.hash}}()
     {
         safelog('webcams: starting...');
 
+        // make images refresh themselves at the specified interval
+        $(".{{screen.hash}}_img").refreshImage({
+            interval: {{settings.screens_webcams.imgRefreshInterval}},
+            start:true
+        });
+
         // position the thumbnail tiles
         positionTiles();
-
-        //  initialize the main tile
-        displayToMainTile( 0 );
     }
 
     this.stop = function()
-    {
+    {        
         safelog('webcams: stopping...');
     }
 
@@ -123,9 +122,6 @@ function {{screen.hash}}()
     {
         // position the thumbnail tiles
         positionTiles();
-
-        //  initialize the main tile
-        displayToMainTile( 0 );
     }
 
     ///////////////////
@@ -193,6 +189,9 @@ function {{screen.hash}}()
         
         // intitialize debug tile click handling
         initTileClickEvents();
+
+        // display a random webcam to the main tile
+        displayToMainTile( Math.floor( Math.random() * webcams.length ) );
     }
 
     // positionTiles()
@@ -302,12 +301,6 @@ function {{screen.hash}}()
 </script>
 <div id="{{screen.hash}}_thumbs"></div>
 <div id="{{screen.hash}}_main" class="display_img display_tile ">
-
-    <div id="{{screen.hash}}_title_main" class="display_img_caption">
-        {{settings.screens_webcams.title_mu}}
-    </div>
-
-    <img id="{{screen.hash}}_img_main" class="{{screen.hash}}_img "
-        src="{{settings.screens_webcams.imgAddr_mu}}">
-
+    <div id="{{screen.hash}}_title_main" class="display_img_caption"></div>
+    <img id="{{screen.hash}}_img_main" class="{{screen.hash}}_img">
 </div>

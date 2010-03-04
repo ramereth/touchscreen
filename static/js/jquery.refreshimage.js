@@ -76,7 +76,10 @@
 
 
             /* Start - Immediately refreshes the page.  The interval is also reset */
-            function refresh_now() {
+            function refresh_now()
+            {
+                safelog( "safelog: refreshing images" );
+                
                 // images are being cached so we need to change the url by adding a hashtag to it
                 // the following code accounts for a urls that may or may not have a query string at the end
                 matches = image_href.match(/^(.*)(\?.*)?$/);// split the url at the query string
