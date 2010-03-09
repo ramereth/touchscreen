@@ -26,8 +26,6 @@ function {{screen.hash}}()
     // main tile flickering)
     var displayToMainTileRunning = false;
 
-    var refresher = null;
-
     // a webcam object, consisting of a title and an image URL
     function webcam( title, image )
     {
@@ -104,7 +102,7 @@ function {{screen.hash}}()
         safelog('webcams: starting...');
 
         // make images refresh themselves at the specified interval
-        $(".{{screen.hash}}_img").refreshImage({
+        $("#{{screen.hash}}_img_main").refreshImage({
             interval: {{settings.screens_webcams.imgRefreshInterval}},
             start:true
         });
@@ -128,7 +126,7 @@ function {{screen.hash}}()
     // MENU COMMANDS //
     ///////////////////
 
-    // a menu command to show the specified graph set (by name, first
+    // a menu command to show the specified graph set (by name, first-
     // encountered)
     this.show = function( name )
     {
@@ -145,7 +143,8 @@ function {{screen.hash}}()
 
         // if the webcam is found, display it to the main tile
         if( index != null ) displayToMainTile( index );
-        else safelog( "{{screen_hash}}: show: webcam set '"+name+"' not found." );
+        else safelog( "{{screen_hash}}: show: webcam set '" + name +
+            "' not found." );
     }
 
     //////////////////
@@ -264,8 +263,8 @@ function {{screen.hash}}()
 
                 // fill the main tile with the title and the picture of the
                 // specified webcam shot
-                $("#{{screen.hash}}_title_main").html( 
-                    webcams[tileIndex].title 
+                $("#{{screen.hash}}_title_main").html(
+                    webcams[tileIndex].title
                 );
                 $("#{{screen.hash}}_img_main").attr( 
                     'src', webcams[tileIndex].image 

@@ -29,23 +29,24 @@
         start:false     // start refresh immediately
     }
 
-    jQuery.fn.refreshImage = function(settings) {
+    jQuery.fn.refreshImage = function(settings){
+        
         settings = $.extend( {}, $.refreshImage, settings );
 
-        return this.each(function(){
-            $image = $(this);
-            image_href = $image.attr('src');
+        return this.each(function()
+        {
+            obj = $(this);
             counter = 0;
             timer = -1
 
             // Custom events bound to image
-            if( !$image.ribound) {
-                $image
+            if( !obj.ribound) {
+                obj
                     .bind('start.refreshImage', start)          //starts or continues updates.
                     .bind('pause.refreshImage', pause)          //pauses updates indefinitely
                     .bind('refresh.refreshImage', refresh_now)  //refreshes image immediately
             }
-            $image.ribound = true // prevents binding a second time
+            obj.ribound = true // prevents binding a second time
 
 
             // record the next time this image should refresh
@@ -53,20 +54,20 @@
             next_refresh = now + settings.interval;
 
             // start refreshing
-            if (settings.start)
+            if( settings.start )
                 timer = setTimeout(refresh_now, settings.interval);
 
             /* Start - starts periodic updates of the image.  If the 
                 *         updates were previously running it continues
                 *         from the old interval.  If the interval is passed
                 *         then it refreshes immeditely and resets the timer */
-            function start() {
+            function start()
+            {
                 now = new Date().getTime();
                 if (now > next_refresh) {
                     refresh_now();
                 }
             }
-
 
             /* Pause - Stops updates. Timer expiration date is still saved
                 *         so it can be continued later with start() */
@@ -74,17 +75,24 @@
                 clear();
             }
 
-
             /* Start - Immediately refreshes the page.  The interval is also reset */
             function refresh_now()
             {
-                safelog( "safelog: refreshing images" );
+                image_href = obj.attr('src');
+            
+                //safelog( "refreshImage: refreshing images" );
+                //safelog( "refreshImage: Image url: " + obj.attr('src') );
                 
-                // images are being cached so we need to change the url by adding a hashtag to it
-                // the following code accounts for a urls that may or may not have a query string at the end
-                matches = image_href.match(/^(.*)(\?.*)?$/);// split the url at the query string
-                href_counter = matches[1] + '#' + counter + matches[2]//reconstruct with hashtag before querystring
-                $image.attr('src', href_counter);
+                // images are being cached so we need to change the url by
+                // adding a hashtag to it the following code accounts for a urls
+                // that may or may not have a query string at the end
+
+                // split the url at the query string
+                matches = image_href.match(/^(.*)(\?.*)?$/);
+
+                //reconstruct with hashtag before querystring
+                href_counter = matches[1] + '#' + counter + matches[2]
+                obj.attr('src', href_counter);
                 counter = counter + 1;
 
                 // record the next time this image should refresh
@@ -97,9 +105,9 @@
                 timer = setTimeout(refresh_now, settings.interval);
             }
 
-            function clear(){
-                if (timer != -1)
-                    clearTimeout(timer);
+            function clear()
+            {
+                if( timer != -1 ) clearTimeout(timer);
             };
 
         });
