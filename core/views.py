@@ -5,9 +5,8 @@ from django.shortcuts import render_to_response
 from django.conf import settings
 from django.template import RequestContext
 
-from muddle.plugins.managers.root_plugin_manager import RootPluginManager
-
-PLUGIN_MANAGER = None
+from muddle.views import manager
+PLUGIN_MANAGER = manager
 
 def plugin_processor(request):
     global PLUGIN_MANAGER
