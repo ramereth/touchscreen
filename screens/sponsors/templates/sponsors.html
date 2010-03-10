@@ -55,14 +55,14 @@ function {{screen.hash}}()
             $( ".{{screen.hash}}_friends" ).scrollable({
                 vertical:true,
                 items:".display_scrollable_items_vert",
-                speed:{{settings.screens_sponsors.friends_scroll_speed}},
+                speed:{{screen.friends_scroll_speed}},
                 api:true,
             });
         sponsors_scroller =
             $( ".{{screen.hash}}_sponsors" ).scrollable({
                 vertical:true,
                 items:".display_scrollable_items_vert",
-                speed:{{settings.screens_sponsors.sponsors_scroll_speed}},
+                speed:{{screen.sponsors_scroll_speed}},
                 api:true,
             });
 
@@ -141,11 +141,11 @@ function {{screen.hash}}()
     // begin auto-advancement for the friends tile
     {
         // grab the scroll interval value
-        var interval = {{settings.screens_sponsors.friends_scroll_interval}};
+        var interval = {{screen.friends_scroll_interval}};
 
         // Ensure the interval is at least 50 ms > than the advancement speed
-        if( {{settings.screens_sponsors.friends_scroll_speed}} > interval - 50 )
-            interval = {{settings.screens_sponsors.friends_scroll_speed}} + 50;
+        if( {{screen.friends_scroll_speed}} > interval - 50 )
+            interval = {{screen.friends_scroll_speed}} + 50;
 
 
         // Make sure scolling starts in the middle of the list
@@ -168,11 +168,11 @@ function {{screen.hash}}()
     // begin auto-advancement for the sponsors tile
     {
         // grab the scroll interval value
-        var interval = {{settings.screens_sponsors.sponsors_scroll_interval}};
+        var interval = {{screen.sponsors_scroll_interval}};
 
         // Ensure the interval is at least 50 ms > than the advancement speed
-        if( {{settings.screens_sponsors.sponsors_scroll_speed}} > interval-50 )
-            interval = {{settings.screens_sponsors.sponsors_scroll_speed}} + 50;
+        if( {{screen.sponsors_scroll_speed}} > interval-50 )
+            interval = {{screen.sponsors_scroll_speed}} + 50;
 
 
         // Make sure scolling starts in the middle of the list
@@ -349,7 +349,7 @@ function {{screen.hash}}()
         $('.{{screen.hash}}_sponsors').width(
             {{settings.general.MAX_OPTIMAL_WIDTH}});
         $('.{{screen.hash}}_friends').width(
-            {{settings.screens_sponsors.friends_width}});
+            {{screen.friends_width}});
 
         // if the total tile width is too large to fit in the window,
         // resize the sponsors tile dynamically
@@ -442,7 +442,7 @@ function {{screen.hash}}()
         // browser security model restrictions regarding AJAX GET requests to
         // remote servers
         $.post('/proxy/',
-            {'url':'{{settings.screens_sponsors.sponsors_URL}}'}, 
+            {'url':'{{screen.sponsors_URL}}'}, 
             function( sponsors_XML ){
 
             // temporary title and body storage
@@ -480,7 +480,7 @@ function {{screen.hash}}()
         
         // load the friends through the simple proxy and into the friends list
         $.post('/proxy/',
-            {'url':'{{settings.screens_sponsors.friends_URL}}' },
+            {'url':'{{screen.friends_URL}}' },
             function( friends_XML ){
             
             // temp name storage
@@ -513,7 +513,7 @@ function {{screen.hash}}()
 <div class="{{screen.hash}}_friends display_tile display_content">
     <img id='{{screen.hash}}_friends_gradient'
          class='display_gradient'
-         src="{{SITE_ROOT}}/static/screens/sponsors/gradient.png">
+         src="{{MEDIA}}/screens.sponsors/gradient.png">
     <div class='display_scrollable_items_vert'>
         <!-- to be filled by refresh code above -->
     </div>
@@ -522,7 +522,7 @@ function {{screen.hash}}()
 <div class="{{screen.hash}}_sponsors display_tile display_content">
     <img id='{{screen.hash}}_sponsors_gradient'
          class='display_gradient'
-         src="{{SITE_ROOT}}/static/screens/sponsors/gradient.png">
+         src="{{MEDIA}}/screens.sponsors/gradient.png">
     <div id='{{screen.hash}}_sponsors_items' 
         class='display_scrollable_items_vert'>
         <!-- to be filled by refresh code above -->
