@@ -12,7 +12,6 @@
 
         <!-- jQuery includes -->
         <script type='text/javascript' src="{{MEDIA_URL}}/js/jquery-1.4.min.js"></script>
-        <script type='text/javascript' src="{{MEDIA_URL}}/js/jquery.doubleBorderedBox.js"></script>
         <script type="text/javascript" src="{{MEDIA_URL}}/js/jquery.refreshimage.js"></script>
         <script type="text/javascript" src="{{MEDIA_URL}}/js/jquery.scale/jquery.scale.js"></script>
         <script type="text/javascript" src="{{MEDIA_URL}}/js/jquery.tools.min.js"></script>
@@ -51,11 +50,13 @@
 
                 //first move the screen into place
                 $screen.css('left',0);
+                $screen.css('top',0);
 
                 //animate fading in of background
                 $screen.children('.background').fadeIn(500, function(){
                     $screen.children('.content').fadeIn(750);
                 });
+                
                 return 1250
             }
 
@@ -68,7 +69,7 @@
                     //fade the background out
                     $screen.children('.background').fadeOut(750, function(){
                         //move the box off the screen
-                        $screen.css('left',-1400);
+                        $screen.css('left',-100-Screen.getViewportWidth());
                     });
                 });
 

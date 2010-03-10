@@ -18,7 +18,7 @@
     width:100%;
 }
 
-.background {
+.background, .content {
     position:absolute;
     height:100%;
     width:100%;
