@@ -404,24 +404,24 @@ function {{screen.hash}}()
             -( $('#{{screen.hash}}_sponsors_gradient').outerHeight( true ) -
             $('#{{screen.hash}}_sponsors_gradient').height() ) );
         $('#{{screen.hash}}_sponsors_gradient').css( 'left',
-            -( $('#{{screen.hash}}_sponsors_gradient').outerWidth( true ) -
+            4-( $('#{{screen.hash}}_sponsors_gradient').outerWidth( true ) -
             $('#{{screen.hash}}_sponsors_gradient').width() ) );
         $('#{{screen.hash}}_sponsors_gradient').height(
             $('.{{screen.hash}}_sponsors').outerHeight( ) );
         $('#{{screen.hash}}_sponsors_gradient').width(
-            $('.{{screen.hash}}_sponsors').outerWidth( ) );
+            $('.{{screen.hash}}_sponsors').outerWidth( )-8 );
 
         $('#{{screen.hash}}_friends_gradient').css( 'z-index', 1 );
         $('#{{screen.hash}}_friends_gradient').css( 'top',
             -( $('#{{screen.hash}}_friends_gradient').outerHeight( true ) -
             $('#{{screen.hash}}_friends_gradient').height() ) );
         $('#{{screen.hash}}_friends_gradient').css( 'left',
-            -( $('#{{screen.hash}}_friends_gradient').outerWidth( true ) -
+            4-( $('#{{screen.hash}}_friends_gradient').outerWidth( true ) -
             $('#{{screen.hash}}_friends_gradient').width() ) );
         $('#{{screen.hash}}_friends_gradient').height(
             $('.{{screen.hash}}_friends').outerHeight( ) );
         $('#{{screen.hash}}_friends_gradient').width(
-            $('.{{screen.hash}}_friends').outerWidth( ) );
+            $('.{{screen.hash}}_friends').outerWidth( )-8 );
     }
 
     //////////////////

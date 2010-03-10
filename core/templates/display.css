@@ -80,8 +80,8 @@
 }
 
 .display_gradient{
-    -moz-border-radius:6px;
-    -webkit-border-radius:6px;
+    -moz-border-radius:4px;
+    -webkit-border-radius:4px;
     position: absolute;
 }
 
@@ -103,7 +103,7 @@
     text-align: center;
 }
 
-.display_img{S
+.display_img{
     font-size: 14px;
     padding:5px;
 }
