@@ -24,6 +24,8 @@
 
         <!-- other includes -->
         <script type="text/javascript" src="{{MEDIA_URL}}/js/util.js"></script>
+        <script type="text/javascript" src="{{MEDIA}}/js/cufon-yui.js"></script>
+        <script type="text/javascript" src="{{MEDIA}}/js/osl_500.font.js"></script>
 
         <script type="text/javascript">
 
@@ -391,6 +393,7 @@
                 safelog("core: Initializing Display");
                 hide_all();
                 init_all();
+                Cufon.replace('.display_title');
                 slideshow_start();
                 //get_message();  //start waiting for messages
 
