@@ -54,7 +54,7 @@ class WeatherSettings(forms.Form):
     refresh_interval = forms.IntegerField(
         label='Refresh Interval',
         help_text='How often to refresh the data (in milliseconds.)',
-        initial=60000
+        initial=600000
     )
 
     maps_cycle_timeout = forms.IntegerField(

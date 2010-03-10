@@ -78,6 +78,8 @@ function {{screen.hash}}()
     // Global Data //
     /////////////////
 
+    var last_update = undefined;
+
     // unit information
     var units = {
         temp:null,      // i.e. F (fahrenheit) or C (celcius)
@@ -174,8 +176,16 @@ function {{screen.hash}}()
         safelog('weather: starting...');
 
         // load the weather data from the weather feed
-        this.loadData();
-
+        now = new Date().getTime();
+        if (last_update==undefined || now>= last_update+{{screen.refresh_interval}} ){
+            this.loadData();
+        } else {
+            // hasn't timed out yet, set timeout for duration remaining
+            dataRefreshTimer = setTimeout(
+                '{{screen.hash}}.loadData()',
+                {{screen.refresh_interval}}-(now-last_update)
+            );
+        }
         //$(".{{screen.hash}}_map").scale();
 
         // start the weather maps cycle
@@ -342,6 +352,8 @@ function {{screen.hash}}()
                     '{{screen.hash}}.loadData()',
                     {{screen.refresh_interval}}
                 );
+                
+            last_update = new Date().getTime();
         });
     }
 
@@ -406,7 +418,6 @@ function {{screen.hash}}()
         
         // fill the 5-day forecast tile
         $(".{{screen.hash}}_forecast_day").each(function(dayIndex){
-            console.log(dayIndex);
             // day names
             $(this).html( 
                 "<h1>" + 
