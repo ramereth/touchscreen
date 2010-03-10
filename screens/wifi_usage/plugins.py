@@ -21,7 +21,6 @@ create instance of screens this plugin provides. The parameters are as follows:
 """
 
 class WifiUsageSettings(forms.Form):
-    
     img_addr = forms.CharField(
             label='Campus WiFi usage map URL',
             help_text='URL of the WiFi usage map',

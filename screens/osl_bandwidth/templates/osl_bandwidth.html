@@ -24,34 +24,34 @@ function {{screen.hash}}()
     // a set of graph sets
     var graphSets = new Array(
         new graphSet(
-            '{{settings.screens_osl_bandwidth.title_0}}',
-            '{{settings.screens_osl_bandwidth.imgAddr_0a}}',
-            '{{settings.screens_osl_bandwidth.imgAddr_0b}}'
+            '{{screen.title_0}}',
+            '{{screen.imgAddr_0a}}',
+            '{{screen.imgAddr_0b}}'
         ),
         new graphSet(
-            '{{settings.screens_osl_bandwidth.title_1}}',
-            '{{settings.screens_osl_bandwidth.imgAddr_1a}}',
-            '{{settings.screens_osl_bandwidth.imgAddr_1b}}'
+            '{{screen.title_1}}',
+            '{{screen.imgAddr_1a}}',
+            '{{screen.imgAddr_1b}}'
         ),
         new graphSet(
-            '{{settings.screens_osl_bandwidth.title_2}}',
-            '{{settings.screens_osl_bandwidth.imgAddr_2a}}',
-            '{{settings.screens_osl_bandwidth.imgAddr_2b}}'
+            '{{screen.title_2}}',
+            '{{screen.imgAddr_2a}}',
+            '{{screen.imgAddr_2b}}'
         ),
         new graphSet(
-            '{{settings.screens_osl_bandwidth.title_3}}',
-            '{{settings.screens_osl_bandwidth.imgAddr_3a}}',
-            '{{settings.screens_osl_bandwidth.imgAddr_3b}}'
+            '{{screen.title_3}}',
+            '{{screen.imgAddr_3a}}',
+            '{{screen.imgAddr_3b}}'
         ),
         new graphSet(
-            '{{settings.screens_osl_bandwidth.title_4}}',
-            '{{settings.screens_osl_bandwidth.imgAddr_4a}}',
-            '{{settings.screens_osl_bandwidth.imgAddr_4b}}'
+            '{{screen.title_4}}',
+            '{{screen.imgAddr_4a}}',
+            '{{screen.imgAddr_4b}}'
         ),
         new graphSet(
-            '{{settings.screens_osl_bandwidth.title_5}}',
-            '{{settings.screens_osl_bandwidth.imgAddr_5a}}',
-            '{{settings.screens_osl_bandwidth.imgAddr_5b}}'
+            '{{screen.title_5}}',
+            '{{screen.imgAddr_5a}}',
+            '{{screen.imgAddr_5b}}'
         )
     );
     
@@ -88,7 +88,7 @@ function {{screen.hash}}()
         // make images refresh themselves at the specified interval
         $(".{{screen.hash}}_img").refreshImage({
             interval:
-                {{settings.screens_osl_bandwidth.imgRefreshInterval}},
+                {{screen.imgRefreshInterval}},
             start:true
         });
     };
@@ -145,13 +145,13 @@ function {{screen.hash}}()
 
                     '<img id="{{screen.hash}}_img_'+i+'a" class="{{screen.hash}}_img"'+
                         'src="'+graphSets[i].graph1+'"'+
-                        'height="{{settings.screens_osl_bandwidth.thumbnail_img_height}}"'+
-                        'width="{{settings.screens_osl_bandwidth.thumbnail_img_width}}">'+
+                        'height="{{screen.thumbnail_img_height}}"'+
+                        'width="{{screen.thumbnail_img_width}}">'+
 
                     '<img id="{{screen.hash}}_img_'+i+'b" class="{{screen.hash}}_img"'+
                         'src="'+graphSets[i].graph2+'"'+
-                        'height="{{settings.screens_osl_bandwidth.thumbnail_img_height}}"'+
-                        'width="{{settings.screens_osl_bandwidth.thumbnail_img_width}}">'+
+                        'height="{{screen.thumbnail_img_height}}"'+
+                        'width="{{screen.thumbnail_img_width}}">'+
                 '</div>'
             );
         }
@@ -238,14 +238,14 @@ function {{screen.hash}}()
                 graphSets[graphSetIndex].graph2
             );
             $("#{{screen.hash}}_img_main").height(
-                {{settings.screens_osl_bandwidth.mainTile_height}}
+                {{screen.mainTile_height}}
             );
 
             // set max height and width
             $("#{{screen.hash}}_img_main").attr( 'max-height',
-                '{{settings.screens_osl_bandwidth.mainTile_height}}' );
+                '{{screen.mainTile_height}}' );
             $("#{{screen.hash}}_img_main").attr( 'max-width',
-                '{{settings.screens_osl_bandwidth.mainTile_width}}' );
+                '{{screen.mainTile_width}}' );
         });
 
         // fade the main tile back in
@@ -259,23 +259,23 @@ function {{screen.hash}}()
     <div id='{{screen.hash}}_main' class='display_img display_tile'>
 
         <div id='{{screen.hash}}_title_main' class='display_img_caption'>
-            {{settings.screens_osl_bandwidth.title_0}}
+            {{screen.title_0}}
         </div>
 
         <table>
             <tr>
                 <td>
                     <img id='{{screen.hash}}_img_main_a' class='{{screen.hash}}_img'
-                    src='{{settings.screens_osl_bandwidth.imgAddr_0a}}'
-                    height={{settings.screens_osl_bandwidth.mainTile_height}}
-                    width={{settings.screens_osl_bandwidth.mainTile_width}}>
+                    src='{{screen.imgAddr_0a}}'
+                    height={{screen.mainTile_height}}
+                    width={{screen.mainTile_width}}>
                 </td>
 
                 <td>
                     <img id='{{screen.hash}}_img_main_b' class='{{screen.hash}}_img'
-                    src='{{settings.screens_osl_bandwidth.imgAddr_0b}}'
-                    height={{settings.screens_osl_bandwidth.mainTile_height}}
-                    width={{settings.screens_osl_bandwidth.mainTile_width}}>
+                    src='{{screen.imgAddr_0b}}'
+                    height={{screen.mainTile_height}}
+                    width={{screen.mainTile_width}}>
                 </td>
             </tr>
         </table>
