@@ -89,6 +89,7 @@ class Simple(resource.Resource):
                         return queue['messages'].pop(0)
                     except:
                         reactor.callLater(TIMEOUT, self.timeout, queue, request)
+                        request.setHeader('Access-Control-Allow-Origin','*')
                         queue['requests'].append(request)
                         return server.NOT_DONE_YET
         except KeyError:
