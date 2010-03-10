@@ -56,6 +56,10 @@
         width:100%;
     }
     
+    #{{screen.hash}}_forecast_table td{
+        width:20%;
+    }
+    
     .{{screen.hash}}_forecast_icon{
         padding-top:1em;
         padding-bottom:1em;
@@ -402,13 +406,11 @@ function {{screen.hash}}()
         
         // fill the 5-day forecast tile
         $(".{{screen.hash}}_forecast_day").each(function(dayIndex){
-            
+            console.log(dayIndex);
             // day names
             $(this).html( 
                 "<h1>" + 
-                    // add 1 to days so it doesn't include the current
-                    // day
-                    forecast.days[dayIndex+1].name +
+                    forecast.days[dayIndex].name +
                 "</h1>"
             );
             
@@ -416,21 +418,19 @@ function {{screen.hash}}()
             $(".{{screen.hash}}_forecast_icon").eq(dayIndex).html(
                 "<img class='centered_block' "+
                     "src='{{SITE_ROOT}}/static/screens/weather/icons/large/" +
-                    forecast.days[dayIndex+1].icon + 
+                    forecast.days[dayIndex].icon + 
                     ".png' height='{{screen.forecast_icon_height}}'>"
             );
             
             // conditions
             $(".{{screen.hash}}_forecast_cond").eq(dayIndex).html( 
-                // add 1 to days so it doesn't include the current day
-                forecast.days[dayIndex+1].condition
+                forecast.days[dayIndex].condition
             );
             
             // temperature
             $(".{{screen.hash}}_forecast_temp").eq(dayIndex).html( 
-                // add 1 to days so it doesn't include the current day
-                forecast.days[dayIndex+1].low + "/" +
-                forecast.days[dayIndex+1].high
+                forecast.days[dayIndex].low + "/" +
+                forecast.days[dayIndex].high
             );
         });  
 
@@ -541,20 +541,24 @@ function {{screen.hash}}()
             <td class="default_color default_size {{screen.hash}}_forecast_day"></td>
             <td class="default_color default_size {{screen.hash}}_forecast_day"></td>
             <td class="default_color default_size {{screen.hash}}_forecast_day"></td>
+            <td class="default_color default_size {{screen.hash}}_forecast_day"></td>
         </tr>
         <tr>
             <td class="default_color default_size {{screen.hash}}_forecast_icon"></td>
             <td class="default_color default_size {{screen.hash}}_forecast_icon"></td>
             <td class="default_color default_size {{screen.hash}}_forecast_icon"></td>
             <td class="default_color default_size {{screen.hash}}_forecast_icon"></td>
+            <td class="default_color default_size {{screen.hash}}_forecast_icon"></td>
         </tr>
         <tr>
             <td class="default_color default_size {{screen.hash}}_forecast_cond"></td>
             <td class="default_color default_size {{screen.hash}}_forecast_cond"></td>
             <td class="default_color default_size {{screen.hash}}_forecast_cond"></td>
             <td class="default_color default_size {{screen.hash}}_forecast_cond"></td>
+            <td class="default_color default_size {{screen.hash}}_forecast_cond"></td>
         </tr>
         <tr>
+            <td class="default_color default_size {{screen.hash}}_forecast_temp"></td>
             <td class="default_color default_size {{screen.hash}}_forecast_temp"></td>
             <td class="default_color default_size {{screen.hash}}_forecast_temp"></td>
             <td class="default_color default_size {{screen.hash}}_forecast_temp"></td>
