@@ -4,6 +4,11 @@
 
     This screen displays a map of the FTP traffic
 -->
+<style>
+    .background{
+        background-color:white;
+    }
+</style>
 
 <script type="text/javascript">
 
@@ -15,10 +20,10 @@ function {{screen.hash}}()
 
         // make the image refresh itself at the specified interval
         $("#{{screen.hash}}_img").refreshImage({
-            interval:
-                {{screen.imgRefreshInterval}},
+            interval:{{screen.imgRefreshInterval}},
             start:true
         });
+        $("#{{screen.hash}}_img").scale("center");
     };
 
     this.start = function()
@@ -26,7 +31,7 @@ function {{screen.hash}}()
         safelog('ftp_traffic: starting...');
 
         // scale the wifi usage image to fit inside the parent
-        $("#{{screen.hash}}_img").scale("center");
+        //$("#{{screen.hash}}_img").scale("center");
     };
 
     this.stop = function()
@@ -43,6 +48,9 @@ function {{screen.hash}}()
 } {{screen.hash}} = new {{screen.hash}}();
 
 </script>
-<img id="{{screen.hash}}_img"
-     src="{{screen.img_addr}}"
-     class="display_tile display_img">
+
+<div class="background"></div>
+<div class="content">
+    <img id="{{screen.hash}}_img" src="{{screen.img_addr}}" />
+</div>
+

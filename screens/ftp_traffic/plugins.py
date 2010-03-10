@@ -48,3 +48,5 @@ class FTP_Traffic(Screen):
     js_start='start'
     js_stop ='stop'
     js_onWinResize = 'onScreenResize'
+    show='fade'
+    hide='fade'
