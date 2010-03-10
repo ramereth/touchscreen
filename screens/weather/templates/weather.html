@@ -179,7 +179,7 @@ function {{screen.hash}}()
             fx:'fade',
             fit:0,
             containerResize:0,
-            timeout:{{settings.screens_weather.maps_cycle_timeout}},
+            timeout:{{screen.maps_cycle_timeout}},
             //after:function(){$(".{{screen.hash}}_map").scale();}
         });
         
@@ -248,7 +248,7 @@ function {{screen.hash}}()
         
         // get and prepare the weather feed URL
         var weatherFeedURL = 
-            ("{{settings.screens_weather.weather_feed_URL}}&par={{settings.screens_weather.weather_feed_par_key_URL}}&key={{settings.screens_weather.weather_feed_main_key_URL}}")
+            ("{{screen.weather_feed_URL}}&par={{screen.weather_feed_par_key_URL}}&key={{screen.weather_feed_main_key_URL}}")
             .replace( /&amp\;/g, "&" );
         
         // get the feed
@@ -336,7 +336,7 @@ function {{screen.hash}}()
             dataRefreshTimer = 
                 setTimeout(
                     '{{screen.hash}}.loadData()',
-                    {{settings.screens_weather.refresh_interval}}
+                    {{screen.refresh_interval}}
                 );
         });
     }
@@ -417,7 +417,7 @@ function {{screen.hash}}()
                 "<img class='centered_block' "+
                     "src='{{SITE_ROOT}}/static/screens/weather/icons/large/" +
                     forecast.days[dayIndex+1].icon + 
-                    ".png' height='{{settings.screens_weather.forecast_icon_height}}'>"
+                    ".png' height='{{screen.forecast_icon_height}}'>"
             );
             
             // conditions

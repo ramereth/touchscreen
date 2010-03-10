@@ -152,7 +152,7 @@ function {{screen.hash}}()
 
                 // since someone was explicitly selected, pause auto rotation
                 pauseAutoRotation(
-                    {{settings.screens_people.rotation_pause_timeout}}
+                    {{screen.rotation_pause_timeout}}
                 );
             }
 
@@ -287,11 +287,11 @@ function {{screen.hash}}()
         clearTimeout( autoscrollTimer );
         
         // grab the scroll interval
-        var interval = {{settings.screens_people.scroll_interval}};
+        var interval = {{screen.scroll_interval}};
 
         // ensure the interval is at least 50 ms > than the advancement speed
-        if({{settings.screens_people.scroll_speed}} > interval-50)
-            interval={{settings.screens_people.scroll_speed}} + 50
+        if({{screen.scroll_speed}} > interval-50)
+            interval={{screen.scroll_speed}} + 50
 
         // Make sure scoller has been set up
         if( scroller != null ){
@@ -341,7 +341,7 @@ function {{screen.hash}}()
         // auto rotate every specified number of milliseconds
         autoRandRotateTimer =
             setTimeout('{{screen.hash}}.startAutoRotate()',
-                {{settings.screens_people.auto_rotation_interval}});
+                {{screen.auto_rotation_interval}});
     }
 
     function pauseAutoRotation( timeout )
@@ -367,7 +367,7 @@ function {{screen.hash}}()
     {
         // load the people data
         $.post('/proxy/',
-            {'url':'{{settings.screens_people.people_URL}}' },
+            {'url':'{{screen.people_URL}}' },
             function( peoplePage ){
 
             // for each person encountered...
@@ -396,7 +396,7 @@ function {{screen.hash}}()
                 // load the person's image URL
                 parsedImage =
                     "http://" +
-                    "{{settings.screens_people.people_URL}}"
+                    "{{screen.people_URL}}"
                     .replace(/http:\/\//g,"").replace(/\/.*/g,"") +
                     $(this).find("img").attr("src");
 
@@ -419,7 +419,7 @@ function {{screen.hash}}()
                             "' class='display_img_center "+
                                 "{{screen.hash}}_thumb_img'"+
                             "height='"+
-                                "{{settings.screens_people.thumbnail_height}}'>"+
+                                "{{screen.thumbnail_height}}'>"+
                         "<div class='display_img_thumb_caption'>"+
                             people[personIndex].name+
                         "</div>"+
@@ -456,7 +456,7 @@ function {{screen.hash}}()
             $(".{{screen.hash}}_scroller").scrollable({
                 items:"#{{screen.hash}}_items",
             }).circular({
-                speed:{{settings.screens_people.scroll_speed}},
+                speed:{{screen.scroll_speed}},
                 api:true
             });
 

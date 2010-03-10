@@ -1,5 +1,5 @@
-from core.models import *
-from models import weather_settings
+from core.models import Screen, ScreenGeneralSettings
+from django import forms
 
 """
 create instance of screens this plugin provides. The parameters are as follows:
@@ -24,20 +24,27 @@ create instance of screens this plugin provides. The parameters are as follows:
 								screen
 
 """
+class WifiBandwidthSettings(forms.Form):
+    img_addr = forms.CharField(
+            label='Campus WiFi bandwidth map URL',
+            help_text='URL of the WiFi bandwidth map',
+            initial='http://oregonstate.edu/net/wifi_map/wifi_bandwidth_map.png',
+            max_length=128
+    )
+    
+    imgRefreshInterval = forms.IntegerField(
+            label='Image Refresh Interval',
+            help_text='The time interval to refresh the images, in milliseconds',
+            initial=30000
+    )
 
-weather = Screen(
-    'weather.html',
-    'weather',
+class WifiBandwidth(Screen):
+    template = 'wifi_bandwidth.html'
+    description = 'Map of OSU wifi bandwidth usage'
 
     #optional params
-    duration=300000,
-    settings=weather_settings,
-    #hide='fade', 
-    #show='fade',
-    slideshow=True,
-    js_init ='init',
-    js_start='start',
-    js_stop ='stop',
-    js_onWinResize = 'onScreenResize'
-)
-
+    config_form=(WifiBandwidthSettings, ScreenGeneralSettings)
+    js_init ='init'
+    js_start='start'
+    js_stop ='stop'
+    js_onWinResize = 'onWinResize'

@@ -16,7 +16,7 @@ function {{screen.hash}}()
         // make the image refresh itself at the specified interval
 		$("#{{screen.hash}}_img").refreshImage({
             interval:
-                {{settings.screens_wifi_usage.imgRefreshInterval}},
+                {{screen.imgRefreshInterval}},
             start:true
         });
     }
@@ -45,5 +45,5 @@ function {{screen.hash}}()
 
 <!-- set up the wifi usage map image ------------------------------------------>
 <img id="{{screen.hash}}_img"
-     src="{{settings.screens_wifi_usage.img_addr}}" 
+     src="{{screen.img_addr}}" 
      class="display_tile display_img">
