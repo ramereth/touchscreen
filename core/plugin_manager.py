@@ -1,6 +1,6 @@
 from django import forms
 from muddle.plugins.plugin import Plugin
-from muddle.plugins.plugin_manager import PluginManager
+from muddle.plugins.managers.plugin_manager import PluginManager, PlugableManager
 
 from models import TouchscreenPlugin
 
@@ -64,3 +64,9 @@ class ScreenManager(TouchscreenPlugin, PluginManager):
         touchscreen_settings = {'general':self.config.config}
         return touchscreen_settings
 
+
+class ScreenAnimationManager(PlugableManager):
+    """
+    Manager that registers screens
+    """
+    description = 'Manager that registers screen animations'

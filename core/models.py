@@ -62,23 +62,18 @@ class Screen(TouchscreenPlugin):
     show='slide'            # show animation
     slideshow=True          # include in slideshow
 
-    
-
     def __init__(self, *args, **kwargs):
         super(Screen, self).__init__(*args, **kwargs)
-        
         self.hash = self.name()
-        
-        # add general settings for all screens combine with user defined
-        '''# settings which might be a list, tuple, or single class
-        if self.config_form:
-            if isinstance(self.config_form, (list,)):
-                self.config_form.append(ScreenGeneralSettings)
-            elif isinstance(self.config_form, (tuple,)):
-                self.config_form = self.config_form + (ScreenGeneralSettings,)
-            else:
-                self.config_form = (ScreenGeneralSettings, self.config_form)
-        else:
-            self.config_form = ScreenGeneralSettings
-        '''
 
+class ScreenAnimation(TouchscreenPlugin):
+    """
+    Plugin for screen hide/show animations.
+    """
+    target = 'ScreenAnimationManager'
+    _target = 'ScreenAnimationManager'
+    template = None
+    
+    def __init__(self, *args, **kwargs):
+        super(ScreenAnimation, self).__init__(*args, **kwargs)
+        self.hash = self.name().lower()

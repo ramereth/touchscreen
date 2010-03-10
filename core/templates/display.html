@@ -30,51 +30,14 @@
             /* ===============================
              *  Shower / Hiders
              * =============================== */
-            function slide_in(screen) {
-                id = screen['id']
-                duration = 1000;
-                $('#'+id).animate({left:0}, duration );
-                return duration;
-            }
-
-            function slide_out(screen) {
-                id = screen['id']
-                duration = 1000;
-                $('#'+id).animate({left:-1400}, duration );
-                return duration;
-            }
-
-            function fade_in(screen) {
-                id = screen['id']
-                $screen = $('#'+id);
-
-                //first move the screen into place
-                $screen.css('left',0);
-                $screen.css('top',0);
-
-                //animate fading in of background
-                $screen.children('.background').fadeIn(500, function(){
-                    $screen.children('.content').fadeIn(750);
-                });
-                
-                return 1250
-            }
-
-            function fade_out(screen) {
-                id = screen['id']
-                $screen = $('#'+id);
-
-                //fade the contents out
-                $screen.children('.content').fadeOut(750, function(){
-                    //fade the background out
-                    $screen.children('.background').fadeOut(750, function(){
-                        //move the box off the screen
-                        $screen.css('left',-100-Screen.getViewportWidth());
-                    });
-                });
-
-                return 1500;
-            }
+            // setup show/hide animations
+            var hiders  = {};
+            var showers = {};
+            {% for key, animation in screen_animations.items %}
+                hiders['{{animation.hash}}'] = '{{animation.hash}}_out';
+                showers['{{animation.hash}}'] = '{{animation.hash}}_in';
+                {% include animation.template %}
+            {% endfor %}
 
             /* ===============================
              *  Show / Hide Screen
@@ -378,16 +341,6 @@
                         'onWinResize': '{{screen.js_onWinResize}}' // Javascript function called when window is resized
                     }
             {% endfor %}
-
-            // setup show/hide animations
-            hiders  = {
-                        'slide':'slide_out',
-                        'fade':'fade_out'
-                      };
-            showers = {
-                        'slide':'slide_in',
-                        'fade':'fade_in'
-                      };
 
             // hides all screens
             function hide_all() {

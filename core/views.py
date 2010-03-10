@@ -5,7 +5,7 @@ from django.shortcuts import render_to_response
 from django.conf import settings
 from django.template import RequestContext
 
-from muddle.plugins.plugin_manager import RootPluginManager
+from muddle.plugins.managers.root_plugin_manager import RootPluginManager
 
 PLUGIN_MANAGER = None
 
@@ -34,6 +34,7 @@ def display(request):
     rc = RequestContext(request, processors=[plugin_processor, settings_processor])
     return render_to_response('display.html', {
         'screens':PLUGIN_MANAGER['ScreenManager'].plugins,
+        'screen_animations':PLUGIN_MANAGER['ScreenAnimationManager'].plugins,
     }, context_instance=rc)
 
 
