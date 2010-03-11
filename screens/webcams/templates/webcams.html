@@ -36,52 +36,52 @@ function {{screen.hash}}()
     // a collection of webcams
     var webcams = new Array(
         new webcam(
-            "{{settings.screens_webcams.title_0}}",
-            "{{settings.screens_webcams.imgAddr_0}}"
+            "{{screen.title_0}}",
+            "{{screen.imgAddr_0}}"
         ),
         new webcam(
-            "{{settings.screens_webcams.title_1}}",
-            "{{settings.screens_webcams.imgAddr_1}}"
+            "{{screen.title_1}}",
+            "{{screen.imgAddr_1}}"
         ),
         new webcam(
-            "{{settings.screens_webcams.title_2}}",
-            "{{settings.screens_webcams.imgAddr_2}}"
+            "{{screen.title_2}}",
+            "{{screen.imgAddr_2}}"
         ),
         new webcam(
-            "{{settings.screens_webcams.title_3}}",
-            "{{settings.screens_webcams.imgAddr_3}}"
+            "{{screen.title_3}}",
+            "{{screen.imgAddr_3}}"
         ),
         new webcam(
-            "{{settings.screens_webcams.title_4}}",
-            "{{settings.screens_webcams.imgAddr_4}}"
+            "{{screen.title_4}}",
+            "{{screen.imgAddr_4}}"
         ),
         new webcam(
-            "{{settings.screens_webcams.title_5}}",
-            "{{settings.screens_webcams.imgAddr_5}}"
+            "{{screen.title_5}}",
+            "{{screen.imgAddr_5}}"
         ),
         new webcam(
-            "{{settings.screens_webcams.title_6}}",
-            "{{settings.screens_webcams.imgAddr_6}}"
+            "{{screen.title_6}}",
+            "{{screen.imgAddr_6}}"
         ),
         new webcam(
-            "{{settings.screens_webcams.title_7}}",
-            "{{settings.screens_webcams.imgAddr_7}}"
+            "{{screen.title_7}}",
+            "{{screen.imgAddr_7}}"
         ),
         new webcam(
-            "{{settings.screens_webcams.title_8}}",
-            "{{settings.screens_webcams.imgAddr_8}}"
+            "{{screen.title_8}}",
+            "{{screen.imgAddr_8}}"
         ),
         new webcam(
-            "{{settings.screens_webcams.title_9}}",
-            "{{settings.screens_webcams.imgAddr_9}}"
+            "{{screen.title_9}}",
+            "{{screen.imgAddr_9}}"
         ),
         new webcam(
-            "{{settings.screens_webcams.title_10}}",
-            "{{settings.screens_webcams.imgAddr_10}}"
+            "{{screen.title_10}}",
+            "{{screen.imgAddr_10}}"
         ),
         new webcam(
-            "{{settings.screens_webcams.title_11}}",
-            "{{settings.screens_webcams.imgAddr_11}}"
+            "{{screen.title_11}}",
+            "{{screen.imgAddr_11}}"
         )
     );
 
@@ -98,7 +98,7 @@ function {{screen.hash}}()
 
         // start the image refresh
         $(".{{screen.hash}}_img").refreshImage({
-            interval: 5000, //{{settings.screens_webcams.imgRefreshInterval}},
+            interval: 5000, //{{screen.imgRefreshInterval}},
             start: false
         }, "debug");
     }
@@ -187,8 +187,8 @@ function {{screen.hash}}()
              
                 "<img class='{{screen.hash}}_img'"+
                     "src='"+ webcams[i].image +"'"+
-                    "height={{settings.screens_webcams.thumbnail_height}}"+
-                    "width={{settings.screens_webcams.thumbnail_width}}>"
+                    "height={{screen.thumbnail_height}}"+
+                    "width={{screen.thumbnail_width}}>"
             );
         }
         
@@ -276,15 +276,15 @@ function {{screen.hash}}()
                     'src', webcams[tileIndex].image 
                 );
                 $("#{{screen.hash}}_img_main").height(
-                    {{settings.screens_webcams.mainTile_height}}
+                    {{screen.mainTile_height}}
                 );
 
                 // set max height and width
                 $("#{{screen.hash}}_img_main").attr( 'max-height',
-                    '{{settings.screens_webcams.mainTile_height}}'
+                    '{{screen.mainTile_height}}'
                 );
                 $("#{{screen.hash}}_img_main").attr( 'max-width',
-                    '{{settings.screens_webcams.mainTile_width}}'
+                    '{{screen.mainTile_width}}'
                 );
 
                 // place the tile in the middle of the screen
