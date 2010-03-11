@@ -68,11 +68,17 @@ class ScreenManager(TouchscreenPlugin, PluginManager):
 
     def register(self, screen):
         super(ScreenManager, self).register(screen)
-        urllib2.urlopen('%s&m=slideshow,enable,%s' % (self.MSG_SEND_URL,screen.name()))
+        try:
+            urllib2.urlopen('%s&m=slideshow,enable,%s' % (self.MSG_SEND_URL,screen.name()))
+        except:
+            pass
 
     def deregister(self, screen):
         super(ScreenManager, self).deregister(screen)
-        urllib2.urlopen('%s&m=slideshow,disable,%s' % (self.MSG_SEND_URL,screen.name()))
+        try:
+            urllib2.urlopen('%s&m=slideshow,disable,%s' % (self.MSG_SEND_URL,screen.name()))
+        except:
+            pass
 
 
 class ScreenAnimationManager(PlugableManager):
