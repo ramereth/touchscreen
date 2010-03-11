@@ -127,7 +127,8 @@ class Simple(resource.Resource):
             if not request.finished:
                 request.write('0')
                 request.finish()
-                del queue['requests'][request.args['u'][0]]
+                if request.args['u'][0] in queue['requests']:
+                    del queue['requests'][request.args['u'][0]]
 
     def client_timeout(self, queue, client):
         """
@@ -140,7 +141,6 @@ class Simple(resource.Resource):
             if client in queue['requests']:
                 del queue['requests'][client]
             del queue['timeouts'][client]
-            
 
 
 def getMessageService():
