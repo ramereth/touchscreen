@@ -1,9 +1,11 @@
 import httplib2
-from django.http import HttpResponse
+import simplejson
 
+from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.conf import settings
-from django.template import RequestContext
+from django.template import RequestContext, Context, loader
+
 
 from muddle.views import manager
 PLUGIN_MANAGER = manager
@@ -48,3 +50,27 @@ def proxy(request):
     url = request.POST['url']
     response, content = connection.request( url, "GET" )
     return HttpResponse( content )
+
+
+def reload(request):
+    """ view for reloading a screen """
+    screen = PLUGIN_MANAGER['ScreenManager'][request.GET['screen']]
+    t = loader.get_template(screen.template)
+    context = {'screen':screen}
+    context.update(settings_processor(None))
+    context.update(plugin_processor(None))
+    html = t.render(Context(context))
+    screen = {
+            'id':screen.hash,
+            'hide':screen.hide,
+            'show':screen.show,
+            'duration': screen.duration,
+            'slideshow':int(screen.slideshow),
+            'init':screen.js_init,
+            'start':screen.js_start,
+            'stop':screen.js_stop,
+            'onWinResize': screen.js_onWinResize
+            }
+    
+    response = {'screen':screen, 'html':html}
+    return HttpResponse(simplejson.dumps(response))

@@ -8,6 +8,7 @@ urlpatterns = patterns('',
     (r'^display/$', display),
     (r'^menu/$', menu),
     (r'^proxy/$', proxy),
+    (r'^reload/$', reload),
 )
 
 

@@ -57,7 +57,6 @@
                 for( var i in screens )
                     if( id == screens[i].id )
                         return i;
-
                 return -1;
             }
 
@@ -212,7 +211,7 @@
             function get_message()
             {
                 safelog("core messaging: eagerly awaiting next command.");
-                $.get(encodeURI('{{settings.general.MSG_RECEIVE_URL}}'), message_received);
+                $.get('{{settings.general.MSG_RECEIVE_URL|safe}}', message_received);
             }
 
             /*
@@ -267,6 +266,12 @@
                     else if( cmd == "stop" ) cmd_string = 'slideshow_stop()';
                     else if( cmd == "next" ) cmd_string = 'slideshow_next()';
                     else if( cmd == "prev" ) cmd_string = 'slideshow_prev()';
+		    else if( cmd == "enable" ) {
+			cmd_string = 'reload_screen("'+splitResponse[2]+'")';
+		    }
+		    else if( cmd == "disable" ) {
+			cmd_string = 'unload_screen("'+splitResponse[2]+'")';
+		    }
                     else
                         safelog("core messaging: unknown slideshow command '" +
                         splitResponse[1] + "'");
@@ -274,34 +279,24 @@
 
                 // otherwise, the message refers to a screen
                 else {
-
                     slideshow_screen_index = get_screen_index( objName );
-
                     if( slideshow_screen_index != -1 ){
-
                         show_slide( screens[ slideshow_screen_index ] );
-
                         safelog( "core messaging: showing screen " + objName );
 
                         // if a command (and optionally arguments) are also
                         // supplied, execute the command
                         if( splitResponse.length >= 2 ) {
-
                             command = splitResponse[1];
-
                             // process args into strings if ther are more than
                             // two comma-seperated values
                             args = '';
                             if( splitResponse.length > 2 ) {
-
                                 for( i=2; i<splitResponse.length; i++ ){
-
                                     if( i > 2 ) args += ',';
-
                                     args += '"' + splitResponse[i] + '"';
                                 }
                             }
-
                             // Build command string to evaluate
                             cmd_string = objName + "." + command + '('+args+')';
                         }
@@ -344,6 +339,34 @@
                     }
             {% endfor %}
 
+	    function reload_screen(name){
+		$.getJSON('{{ROOT}}/reload/',{'screen':name}, process_reload);
+	    }
+	    
+	    function process_reload(data){
+		// create the content div and add to the DOM
+		return // TODO fix this
+		new_screen = data['screen'];
+		unload_screen(new_screen.id);
+		html = data['html'];
+		div = $("<div id='"+ new_screen.id +"' class='screen'>");
+		div.append(html);
+		$('#screens').append(div);
+		init_screen(new_screen);
+		eval(hiders[new_screen['hide']]);
+		screens[screens.length] = new_screen;
+	    }
+
+	    function unload_screen(name) {
+		// TODO fix this
+		$('#'+name).remove();
+		for (i in screens) {
+		    if (screens[i].id == name) {
+			screens.splice(i,1);
+		    }
+		}
+	    }
+
             // hides all screens
             function hide_all() {
                 for (i=0; i<screens.length; i++) {
@@ -375,17 +398,18 @@
                 // check for the existance of event functions in the screens,
                 // void them if they don't exist, and validate if they do
                 for( i=0; i<screens.length; i++ ){
-                    scr = screens[i];
-                    scr['init'] = fix_function(scr, scr['init']);
-                    scr['start'] = fix_function(scr, scr['start']);
-                    scr['stop'] = fix_function(scr, scr['stop']);
-                    scr['onWinResize'] = fix_function(scr, scr['onWinResize']);
-
-                    eval(screens[i]['init']);
+                    init_screen(screens[i]);
                 }
-
                 safelog("core: All screens initialized");
             }
+	    
+	    function init_screen(scr){
+		scr['init'] = fix_function(scr, scr['init']);
+		scr['start'] = fix_function(scr, scr['start']);
+		scr['stop'] = fix_function(scr, scr['stop']);
+		scr['onWinResize'] = fix_function(scr, scr['onWinResize']);
+		eval(scr['init']);
+	    }
 
             // on load handler.
             $(document).ready(function()
@@ -514,6 +538,5 @@
                 </div>
             {% endfor %}
         </div>
-
     </body>
 </html>

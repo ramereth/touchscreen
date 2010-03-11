@@ -1,3 +1,5 @@
+import urllib2
+
 from django import forms
 from muddle.plugins.plugin import Plugin
 from muddle.plugins.managers.plugin_manager import PluginManager, PlugableManager
@@ -63,6 +65,14 @@ class ScreenManager(TouchscreenPlugin, PluginManager):
         """
         touchscreen_settings = {'general':self.config.config}
         return touchscreen_settings
+
+    def register(self, screen):
+        super(ScreenManager, self).register(screen)
+        urllib2.urlopen('%s&m=slideshow,enable,%s' % (self.MSG_SEND_URL,screen.name()))
+
+    def deregister(self, screen):
+        super(ScreenManager, self).deregister(screen)
+        urllib2.urlopen('%s&m=slideshow,disable,%s' % (self.MSG_SEND_URL,screen.name()))
 
 
 class ScreenAnimationManager(PlugableManager):
