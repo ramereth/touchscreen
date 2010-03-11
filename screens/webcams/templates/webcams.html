@@ -95,6 +95,12 @@ function {{screen.hash}}()
 
         // write and initialize tiles
         initTiles();
+
+        // start the image refresh
+        $(".{{screen.hash}}_img").refreshImage({
+            interval: 5000, //{{settings.screens_webcams.imgRefreshInterval}},
+            start: false
+        }, "debug");
     }
 
     this.start = function()
@@ -104,24 +110,16 @@ function {{screen.hash}}()
         // position the thumbnail tiles
         positionTiles();
 
-        // make images refresh themselves at the specified interval
-        $(".{{screen.hash}}_img").refreshImage({
-            interval: {{settings.screens_webcams.imgRefreshInterval}},
-            start:true
-        });
-
-        //$(".{{screen.hash}}_img").test();
-
-        // start image refresh
-        // $(".{{screen.hash}}_img").trigger("start.refreshImage");
+        // start the image refresh
+        $(".{{screen.hash}}_img").refreshImage("start", "debug");
     }
 
     this.stop = function()
     {        
         safelog('webcams: stopping...');
 
-        // pause image refresh
-        // $(".{{screen.hash}}_img").trigger("pause.refreshImage");
+        // stop the image refresh
+        $(".{{screen.hash}}_img").refreshImage("stop", "debug");
     }
 
     this.onWinResize = function() 
