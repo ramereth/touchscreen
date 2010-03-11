@@ -3,14 +3,15 @@
 
 """
 Simple Messaging Daemon.  It allows multiple queues of messages to be added to
-and retrieved.
+and retrieved.  It allows multiple clients to receive messages.
 
 Uses http GET requests
 
 Parameters:
-   c = 1 for send,  0 for retrieve.
+   c = 0 for receive, 1 for send,  2 for clear user's queue
    q = queue name to send to or retrieve from
    m = message to queue (only required for send)
+   u = user requesting message (only required for receive)
 
 Example:
    http://localhost:9000/?c=1&q=foo_queue&m=bar_message
@@ -29,7 +30,8 @@ from twisted.internet import reactor
 from twisted.internet.defer import Deferred
 from threading import Lock
 
-TIMEOUT = 240 # timeout in seconds
+TIMEOUT = 240 # request timeout in seconds
+CLIENT_TIMEOUT = TIMEOUT + 30
 MESSAGE_QUEUES = {}
 QUEUE_LOCK = Lock()
 
@@ -46,7 +48,7 @@ def get_queue(name):
             queue = MESSAGE_QUEUES[name]
         except:
             #queue doesn't exist, create it
-            queue = {'messages':[], 'requests':[], 'lock':Lock()}
+            queue = {'clients':{}, 'requests':{}, 'timeouts':{}, 'lock':Lock()}
             MESSAGE_QUEUES[name] = queue
     return queue
 
@@ -55,47 +57,64 @@ class Simple(resource.Resource):
     isLeaf = True    
 
     def render_GET(self, request):
-
-        try:
-            command = int(request.args['c'][0])
-            queue_name = request.args['q'][0]
-
-            if command:
-                # its a send command, record message
-                try:
-                    message = request.args['m'][0]
-                except KeyError:
-                    #missing parameter, return error code
-                    return '-1'
-
-                queue = get_queue(queue_name)
-                with queue['lock']:
-                    # if there are waiting requests, process the first request
-                    # that has not timed out.  otherwise queue the message
-                    if queue['requests']:
-                        waiting = queue['requests'].pop(0)
+        args = request.args
+        if 'c' in args and 'q' in args and 'u' in args:
+            command = int(args['c'][0])
+            queue_name = args['q'][0]
+            client = args['u'][0]
+            queue = get_queue(queue_name)
+            request.setHeader('Access-Control-Allow-Origin','*')
+            
+            with queue['lock']:
+                # setup client timeout.  reset existing timeout if it exists
+                if client in queue['timeouts']:
+                    queue['timeouts'][client].reset(CLIENT_TIMEOUT)
+                else:
+                    queue['timeouts'][client] = reactor.callLater( \
+                                                        CLIENT_TIMEOUT, \
+                                                        self.client_timeout, \
+                                                        queue, client)
+                if command == 1:
+                    # its a send command, record message
+                    try:
+                        message = args['m'][0]
+                    except KeyError:
+                        #missing parameter, return error code
+                        return '-1'
+                    
+                    # if there are clients waiting for requests process those
+                    # immediately.  queue the message for all other clients
+                    clients = queue['clients'].keys()
+                    for waiting in queue['requests'].values():
                         waiting.write(message)
                         waiting.finish()
-                    else:
-                        queue['messages'].append(message)
-                # return success
-                return '1'
+                        clients.remove(waiting.args['u'][0])
+                    queue['requests'] = {}
+                    
+                    for client in clients: 
+                        queue['clients'][client].append(message)
+                    # return success
+                    return '1'
 
-            else:
-                #get command, pop message out of the queue
-                queue = get_queue(queue_name)
-                with queue['lock']:
+                elif command == 0:
+                    #get command, pop message out of the queue
+                    if not client in queue['clients']:
+                        queue['clients'][client]=[]
                     try:
-                        return queue['messages'].pop(0)
+                        return queue['clients'][client].pop(0)
                     except:
                         reactor.callLater(TIMEOUT, self.timeout, queue, request)
-                        request.setHeader('Access-Control-Allow-Origin','*')
-                        queue['requests'].append(request)
+                        queue['requests'][client]=request
                         return server.NOT_DONE_YET
-        except KeyError:
+            
+                elif command == 2:
+                    #clear queue
+                    queue['clients'][client] = []
+                return '1'
+            
+        else:
             #missing parameter, return error code
             return '-1'
-
 
     def timeout(self, queue, request):
         """
@@ -108,7 +127,20 @@ class Simple(resource.Resource):
             if not request.finished:
                 request.write('0')
                 request.finish()
-                queue['requests'].remove(request)
+                del queue['requests'][request.args['u'][0]]
+
+    def client_timeout(self, queue, client):
+        """
+        Times out an inactive client.  any messages it hasn't consumed yet are
+        destroyed.
+        """
+        with queue['lock']:
+            if client in queue['clients']:
+                del queue['clients'][client]
+            if client in queue['requests']:
+                del queue['requests'][client]
+            del queue['timeouts'][client]
+            
 
 
 def getMessageService():
