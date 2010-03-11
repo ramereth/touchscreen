@@ -95,25 +95,31 @@ function {{screen.hash}}()
 
         // write and initialize tiles
         initTiles();
+
+        // start the image refresh
+        $(".{{screen.hash}}_img").refreshImage({
+            interval: 5000, //{{settings.screens_webcams.imgRefreshInterval}},
+            start: false
+        }, "debug");
     }
 
     this.start = function()
     {
         safelog('webcams: starting...');
 
-        // make images refresh themselves at the specified interval
-        $("#{{screen.hash}}_img_main").refreshImage({
-            interval: {{settings.screens_webcams.imgRefreshInterval}},
-            start:true
-        });
-
         // position the thumbnail tiles
         positionTiles();
+
+        // start the image refresh
+        $(".{{screen.hash}}_img").refreshImage("start", "debug");
     }
 
     this.stop = function()
     {        
         safelog('webcams: stopping...');
+
+        // stop the image refresh
+        $(".{{screen.hash}}_img").refreshImage("stop", "debug");
     }
 
     this.onWinResize = function() 
@@ -259,8 +265,8 @@ function {{screen.hash}}()
             displayToMainTileRunning = true;
             
             // fade out the main tile
-            $("#{{screen.hash}}_main").fadeOut(function(){
-
+            $("#{{screen.hash}}_main").fadeOut(function()
+            {
                 // fill the main tile with the title and the picture of the
                 // specified webcam shot
                 $("#{{screen.hash}}_title_main").html(
