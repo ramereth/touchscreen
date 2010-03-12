@@ -9,6 +9,9 @@ REFERENCE
 *~
 *.bkp*
 *swp
-*.log
+*.log*
 *.pid
-twistd.log*
+*.zip
+/muddle/
+*.db
+
