@@ -9,6 +9,23 @@
         top:0;
         left:0;
     }
+    
+    #{{screen.hash}} .display_title {
+        font-size:20px;
+        position:absolute;
+        margin-top:20px;
+        left:50%;
+        margin-left:-300px;
+        width:600px;
+    }
+    
+    #{{screen.hash}}_locations {
+        position:absolute;
+        left:10px;
+        top:350px;
+        height:350px;
+        width:150px;
+    }
 </style>
 
 
@@ -122,4 +139,7 @@ function {{screen.hash}}()
 <div class="content">
     <img class="map" src="{{MEDIA}}/screens.ftp_usersmap/map_1360nolabel.png"/>
     <div id="{{screen.hash}}_canvas" class="canvas"></div>
+    
+    <div class="display_tile display_title">Realtime Sample of OSL FTP Users</div>
+    <div id="{{screen.hash}}_locations" class="display_tile display_content"></div>
 </div>
