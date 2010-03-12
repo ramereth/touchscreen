@@ -1,0 +1,125 @@
+
+<style>
+    #{{screen.hash}} .background {
+        background-color:#154459;
+    }
+    
+    #{{screen.hash}} .content .map, #{{screen.hash}} .content .canvas {
+        position:absolute;
+        top:0;
+        left:0;
+    }
+</style>
+
+
+<script type="text/javascript">
+
+function ping(x, y, canvas){
+    targets = canvas.set();
+    targets.push(canvas.circle(x, y, 1),
+       canvas.circle(x, y, 1),
+       canvas.circle(x, y, 1),
+       canvas.circle(x, y, 1));
+    targets.attr({stroke: "#FF0000", "stroke-opacity": 1, "stroke-width":1});
+    targets[1].animate({r:20, "stroke-width":5, "stroke-opacity":0}, 1000, ">");
+    targets[2].animate({r:18, "stroke-width":5, "stroke-opacity":0}, 1600, ">");
+    targets[3].animate({r:10, "stroke-width":4, "stroke-opacity":0}, 2000, ">");
+    return targets
+}
+
+
+function {{screen.hash}}()
+{
+    var canvas = undefined;
+    var pings = Array();
+    var max_pings = 22
+    
+    this.init = function()
+    {        
+        safelog('ftp_user_map: initializing...');
+        canvas = Raphael('{{screen.hash}}_canvas', 1360, 768);
+        canvas.rect(10, 10, 50, 50);
+        $('#debug_f1').click(function(){
+            {{screen.hash}}.get_point();
+        });
+    };
+
+    this.start = function()
+    {
+        safelog('ftp_user_map: starting...');
+    };
+
+    this.stop = function()
+    {
+        safelog('ftp_user_map: stopping');
+    };
+
+    this.onWinResize = function()
+    {
+        
+    };
+    
+    this.get_point = function() {
+        //$.get('/proxy/',{url:'http://ftp-osl.osuosl.org:8000/'},{{screen.hash}}.create_point});
+        
+        //XXX TODO - fake response for now since the url above doesn't work outside the OSL
+        {{screen.hash}}.create_point('<rss version="2.0"><channel>' + 
+        '<title>Latest download locale</title>' + 
+        '<link>http://ftp-osl.osuosl.org:8000/</link>' +
+        '<pubDate>Tue Nov 17 03:25:57 2009</pubDate>' + 
+        '<item><title>New York, United States</title></item>' + 
+        '<item><title>40.7619018555</title></item>' + 
+        '<item><title>-73.9763031006</title></item>' + 
+        '</channel></rss>');
+    }
+    
+    this.create_point = function(data) {
+        $item = $(data).find('item title');
+        label = $item[0].text;
+        lat = $item[1].text;
+        lon = $item[2].text;
+
+        // get pixel coords and create a ping animation
+        coords = {{screen.hash}}.get_coords(lat, lon);
+        x = coords[0]
+        y = coords[1]
+        animation = ping(x,y, canvas);
+        pings.push(animation);
+        if (pings.length > max_pings){
+            old = pings.shift();
+            old.remove();
+        }
+        
+        // create a scrolling label for the new point
+        //this.map.locationBox.scroller.addRow(label);
+    }
+
+    this.get_coords = function(lat, lon){
+        // convert lat,lon into x,y (pixels)
+        earthradius=6376445;                         // earth radius in meters
+        scale=0.00100880364654288                    // something to do with the scale of the map (not really sure)
+        metersPerPixel=29.46702941176470588235294;   // how many meters are in each pixel (aprox)
+        equator=438;                                 // pixel location of equator
+        primeMeridian=680;                           // pixel location of prime meridian
+        mapLonOffset = 0;                            // additional offset
+        pointerOffsetX = 0;                          // additional offset
+        pointerOffsetY = 0;                          // additional offset
+
+        offsetY = earthradius * scale * Math.log( Math.tan( Math.PI/4 + (lat*Math.PI/180)/2 )) / metersPerPixel;
+        Y = equator - offsetY + pointerOffsetY;
+
+        offsetX = earthradius * scale * ((lon-mapLonOffset)*Math.PI/180) / metersPerPixel
+        X = primeMeridian + offsetX + pointerOffsetX;
+        
+        return [X,Y];
+    }
+
+} {{screen.hash}} = new {{screen.hash}}();
+</script>
+
+
+<div class="background"></div>
+<div class="content">
+    <img class="map" src="{{MEDIA}}/screens.ftp_usersmap/map_1360nolabel.png"/>
+    <div id="{{screen.hash}}_canvas" class="canvas"></div>
+</div>
