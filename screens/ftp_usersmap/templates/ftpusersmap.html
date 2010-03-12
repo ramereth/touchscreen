@@ -21,15 +21,35 @@
     
     #{{screen.hash}}_locations {
         position:absolute;
-        left:10px;
+        left:0px;
         top:350px;
-        height:350px;
+        height:300px;
         width:150px;
+        
+        overflow:hidden;
+    }
+    
+    #{{screen.hash}}_locations li {
+        color:#CC5900;
+        list-style:none;
+        margin:0;
+        width:100%;
+        padding-bottom:3px;
+        padding-top:3px;
+        height:19px;
+        border-bottom:1px dotted #222222;
     }
 </style>
 
 
 <script type="text/javascript">
+
+// Easing equation, borrowed from jQuery easing plugin
+// http://gsgd.co.uk/sandbox/jquery/easing/
+jQuery.easing.easeOutQuart = function (x, t, b, c, d) {
+	return -c * ((t=t/d-1)*t*t*t - 1) + b;
+};
+
 
 function ping(x, y, canvas){
     targets = canvas.set();
@@ -48,14 +68,34 @@ function ping(x, y, canvas){
 function {{screen.hash}}()
 {
     var canvas = undefined;
-    var pings = Array();
+    var cycle = undefined;
     var max_pings = 22
+    var pings = Array();
+    var $locations = undefined;
     
     this.init = function()
     {        
         safelog('ftp_user_map: initializing...');
         canvas = Raphael('{{screen.hash}}_canvas', 1360, 768);
         canvas.rect(10, 10, 50, 50);
+        
+        $locations = $('#{{screen.hash}}_locations');
+        $locations.serialScroll({
+		items:'li',
+		duration:800,
+		force:true,
+		axis:'y',
+		easing:'easeOutQuart',
+		lazy:true,// NOTE: it's set to true, meaning you can add/remove/reorder items and the changes are taken into account.
+		step:1,
+                cycle:false,
+                onAfter:function(){
+                    if ($locations.children().length > 600) {
+                        $locations.children().first().remove();
+                    }
+                }
+	});	
+
         $('#debug_f1').click(function(){
             {{screen.hash}}.get_point();
         });
@@ -64,11 +104,18 @@ function {{screen.hash}}()
     this.start = function()
     {
         safelog('ftp_user_map: starting...');
+        
+        
+        
+        this.get_point();
     };
 
     this.stop = function()
     {
         safelog('ftp_user_map: stopping');
+        if (cycle != undefined) {
+            cancelTimeout(cycle);
+        }
     };
 
     this.onWinResize = function()
@@ -77,7 +124,7 @@ function {{screen.hash}}()
     };
     
     this.get_point = function() {
-        //$.get('/proxy/',{url:'http://ftp-osl.osuosl.org:8000/'},{{screen.hash}}.create_point});
+        //$.get('/proxy/',{url:'http://ftp-osl.osuosl.org:8000/'},{{screen.hash}}.create_point);
         
         //XXX TODO - fake response for now since the url above doesn't work outside the OSL
         {{screen.hash}}.create_point('<rss version="2.0"><channel>' + 
@@ -108,7 +155,12 @@ function {{screen.hash}}()
         }
         
         // create a scrolling label for the new point
-        //this.map.locationBox.scroller.addRow(label);
+        $locations.append('<li>'+label+'</li>');
+        if ($locations.children().length > 13) {
+            safelog('next');
+            $locations.trigger('next');
+        }
+        cycle = setTimeout({{screen.hash}}.get_point, 1000);
     }
 
     this.get_coords = function(lat, lon){
@@ -141,5 +193,6 @@ function {{screen.hash}}()
     <div id="{{screen.hash}}_canvas" class="canvas"></div>
     
     <div class="display_tile display_title">Realtime Sample of OSL FTP Users</div>
-    <div id="{{screen.hash}}_locations" class="display_tile display_content"></div>
+    <ul id="{{screen.hash}}_locations" class="display_tile display_content">
+    </ul>
 </div>
