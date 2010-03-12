@@ -47,7 +47,7 @@ def menu(request):
 def proxy(request):
     """ a simple proxy for pulling in external content via ajax """
     connection = httplib2.Http()
-    url = request.POST['url']
+    url = request.GET['url']
     response, content = connection.request( url, "GET" )
     return HttpResponse( content )
 
