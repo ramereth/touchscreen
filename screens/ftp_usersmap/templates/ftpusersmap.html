@@ -1,0 +1,202 @@
+
+<style>
+    #{{screen.hash}} .background {
+        background-color:#154459;
+    }
+    
+    #{{screen.hash}}_map, #{{screen.hash}} .content .canvas {
+        position:absolute;
+        top:0;
+        left:0;
+    }
+    
+    #{{screen.hash}} .display_title {
+        font-size:20px;
+        position:absolute;
+        margin-top:20px;
+        left:50%;
+        margin-left:-300px;
+        width:600px;
+    }
+    
+    #{{screen.hash}}_locations {
+        position:absolute;
+        left:0px;
+        top:350px;
+        height:315px;
+        width:150px;
+        
+        overflow:hidden;
+    }
+    
+    #{{screen.hash}}_locations li {
+        border-bottom:1px dotted #222222;
+        color:#CC5900;
+        font-size:12px;
+        font-family:'helvetica';
+        height:19px;
+        list-style:none;
+        margin:0;
+        overflow:hidden;
+        padding-bottom:3px;
+        padding-top:3px;
+        white-space:nowrap;
+        width:100%;
+    }
+</style>
+
+
+<script type="text/javascript">
+
+// Easing equation, borrowed from jQuery easing plugin
+// http://gsgd.co.uk/sandbox/jquery/easing/
+jQuery.easing.easeOutQuart = function (x, t, b, c, d) {
+	return -c * ((t=t/d-1)*t*t*t - 1) + b;
+};
+
+
+function ping(x, y, canvas){
+    targets = canvas.set();
+    targets.push(canvas.circle(x, y, 1),
+       canvas.circle(x, y, 1),
+       canvas.circle(x, y, 1),
+       canvas.circle(x, y, 1));
+    targets.attr({stroke: "#FF0000", "stroke-opacity": 1, "stroke-width":1});
+    targets[1].animate({r:20, "stroke-width":5, "stroke-opacity":0}, 1000, ">");
+    targets[2].animate({r:18, "stroke-width":5, "stroke-opacity":0}, 1600, ">");
+    targets[3].animate({r:10, "stroke-width":4, "stroke-opacity":0}, 2000, ">");
+    return targets
+}
+
+
+function {{screen.hash}}()
+{
+    var canvas = undefined;
+    var cycle = undefined;
+    var max_pings = {{screen.ping_max}};
+    var pings = Array();
+    var $locations = undefined;
+    
+    this.init = function()
+    {        
+        safelog('ftp_user_map: initializing...');
+        canvas = Raphael('{{screen.hash}}_canvas', 1360, 768);
+        $locations = $('#{{screen.hash}}_locations');
+        $locations.serialScroll({
+		items:'li',
+		duration:{{screen.ping_interval}}-300,
+		force:true,
+		axis:'y',
+		easing:'easeOutQuart',
+		lazy:true,// NOTE: it's set to true, meaning you can add/remove/reorder items and the changes are taken into account.
+		step:1,
+                cycle:false,
+                onAfter:function(){
+                    if ($locations.children().length > 600) {
+                        $locations.children().first().remove();
+                    }
+                }
+	});	
+
+        $('#debug_f1').click(function(){
+            {{screen.hash}}.get_point();
+        });
+    };
+
+    this.start = function()
+    {
+        safelog('ftp_user_map: starting...');
+        
+        
+        
+        this.get_point();
+    };
+
+    this.stop = function()
+    {
+        safelog('ftp_user_map: stopping');
+        if (cycle != undefined) {
+            cancelTimeout(cycle);
+        }
+    };
+
+    this.onWinResize = function()
+    {
+    };
+    
+    this.get_point = function() {
+        $.get('/proxy/',{url:'http://ftp-osl.osuosl.org:8000/'},{{screen.hash}}.create_point);
+        return;
+        //XXX TODO - fake response for now since the url above doesn't work outside the OSL
+        {{screen.hash}}.create_point('<rss version="2.0"><channel>' + 
+        '<title>Latest download locale</title>' + 
+        '<link>http://ftp-osl.osuosl.org:8000/</link>' +
+        '<pubDate>Tue Nov 17 03:25:57 2009</pubDate>' + 
+        '<item><title>New York, United States</title></item>' + 
+        '<item><title>40.7619018555</title></item>' + 
+        '<item><title>-73.9763031006</title></item>' + 
+        '</channel></rss>');
+    }
+    
+    this.create_point = function(data) {
+        $item = $(data).find('item title');
+        
+        // check to make sure a proper message was received
+        if ($item.length != 0) {
+            label = $item[0].text;
+            lat = $item[1].text;
+            lon = $item[2].text;
+    
+            // get pixel coords and create a ping animation
+            coords = {{screen.hash}}.get_coords(lat, lon);
+            x = coords[0]
+            y = coords[1]
+            animation = ping(x,y, canvas);
+            pings.push(animation);
+            if (pings.length > max_pings){
+                old = pings.shift();
+                old.remove();
+            }
+            
+            // create a scrolling label for the new point
+            $locations.append('<li>'+label+'</li>');
+            if ($locations.children().length > 13) {
+                $locations.trigger('next');
+            }
+        }
+        cycle = setTimeout({{screen.hash}}.get_point, {{screen.ping_interval}});
+    }
+
+    this.get_coords = function(lat, lon){
+        // convert lat,lon into x,y (pixels)
+        earthradius=6376445;                         // earth radius in meters
+        scale=0.00100880364654288                    // something to do with the scale of the map (not really sure)
+        metersPerPixel=29.46702941176470588235294;   // how many meters are in each pixel (aprox)
+        equator=438;                                 // pixel location of equator
+        primeMeridian=680;                           // pixel location of prime meridian
+        mapLonOffset = 0;                            // additional offset
+        pointerOffsetX = 0;                          // additional offset
+        pointerOffsetY = 0;                          // additional offset
+
+        offsetY = earthradius * scale * Math.log( Math.tan( Math.PI/4 + (lat*Math.PI/180)/2 )) / metersPerPixel;
+        Y = equator - offsetY + pointerOffsetY;
+
+        offsetX = earthradius * scale * ((lon-mapLonOffset)*Math.PI/180) / metersPerPixel;
+        X = primeMeridian + offsetX + pointerOffsetX;
+        
+        return [X,Y];
+    }
+
+} {{screen.hash}} = new {{screen.hash}}();
+</script>
+
+
+<div class="background"></div>
+<div class="content">
+    <img id="{{screen.hash}}_map" src="{{MEDIA}}/screens.ftp_usersmap/map_1360nolabel.png"/>
+    <div id="{{screen.hash}}_canvas" class="canvas"></div>
+    
+    <div class="display_tile display_title">Realtime Sample of OSL FTP Users</div>
+    <ul id="{{screen.hash}}_locations" class="display_tile display_content">
+    </ul>
+</div>

@@ -11,19 +11,21 @@
         </style>
 
         <!-- jQuery includes -->
-        <script type='text/javascript' src="{{MEDIA_URL}}/js/jquery-1.4.min.js"></script>
-        <script type="text/javascript" src="{{MEDIA_URL}}/js/jquery.refreshImage.js"></script>
-        <script type="text/javascript" src="{{MEDIA_URL}}/js/jquery.scale/jquery.scale.js"></script>
-        <script type="text/javascript" src="{{MEDIA_URL}}/js/jquery.tools.min.js"></script>
-        <script type="text/javascript" src="{{MEDIA_URL}}/js/jquery.cycle.all.min.js"></script>
-
+        <script type='text/javascript' src="{{MEDIA}}/js/jquery-1.4.min.js"></script>
+        <script type="text/javascript" src="{{MEDIA}}/js/jquery.refreshImage.js"></script>
+        <script type="text/javascript" src="{{MEDIA}}/js/jquery.scale/jquery.scale.js"></script>
+        <script type="text/javascript" src="{{MEDIA}}/js/jquery.tools.min.js"></script>
+        <script type="text/javascript" src="{{MEDIA}}/js/jquery.cycle.all.min.js"></script>
+        <script type="text/javascript" src="{{MEDIA}}/js/jquery.serialScroll-1.2.2-min.js"></script>
+        <script type="text/javascript" src="{{MEDIA}}/js/jquery.scrollTo-1.4.2-min.js"></script>
          <!-- jQuery UI includes -->
-        <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}/js/jquery.ui/theme/ui.all.css" />
-        <script type="text/javascript" src="{{MEDIA_URL}}/js/jquery.ui/jquery.ui.core-1.7.2.js"></script>
-        <script type="text/javascript" src="{{MEDIA_URL}}/js/jquery.ui/jquery.ui.draggable-1.7.2.js"></script>
+        <link rel="stylesheet" type="text/css" href="{{MEDIA}}/js/jquery.ui/theme/ui.all.css" />
+        <script type="text/javascript" src="{{MEDIA}}/js/jquery.ui/jquery.ui.core-1.7.2.js"></script>
+        <script type="text/javascript" src="{{MEDIA}}/js/jquery.ui/jquery.ui.draggable-1.7.2.js"></script>
 
         <!-- other includes -->
-        <script type="text/javascript" src="{{MEDIA_URL}}/js/util.js"></script>
+        <script type="text/javascript" src="{{MEDIA}}/js/util.js"></script>
+	<script type="text/javascript" src="{{MEDIA}}/js/raphael-min.js"></script>
         <script type="text/javascript" src="{{MEDIA}}/js/cufon-yui.js"></script>
         <script type="text/javascript" src="{{MEDIA}}/js/osl_500.font.js"></script>
 
@@ -345,7 +347,7 @@
 	    
 	    function process_reload(data){
 		// create the content div and add to the DOM
-		return // TODO fix this
+		return; // TODO fix this
 		new_screen = data['screen'];
 		unload_screen(new_screen.id);
 		html = data['html'];
@@ -358,7 +360,7 @@
 	    }
 
 	    function unload_screen(name) {
-		// TODO fix this
+                return; // TODO fix this
 		$('#'+name).remove();
 		for (i in screens) {
 		    if (screens[i].id == name) {
@@ -369,14 +371,19 @@
 
             // hides all screens
             function hide_all() {
+                max_delay = 0
                 for (i=0; i<screens.length; i++) {
                     //get hider and call it for the screen
                     hider_key = screens[i]['hide'];
                     hider = hiders[hider_key];
-                    eval(hider+'(screens[i])');
+                    delay = eval(hider+'(screens[i])');
+                    if (delay > max_delay) {
+                        max_delay = delay
+                    }
                     safelog("core: Hiding " + screens[i]['id']);
                 }
                 safelog("core: All screens hidden");
+                return max_delay;
             }
 
             // global functions for querying the size of the viewport
@@ -415,10 +422,10 @@
             $(document).ready(function()
             {
                 safelog("core: Initializing Display");
-                hide_all();
+                delay = hide_all();
                 init_all();
                 Cufon.replace('.display_title');
-                slideshow_start();
+                setTimeout(slideshow_start, delay);
                 //get_message();  //start waiting for messages
 
                 // Debug window controls

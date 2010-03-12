@@ -266,7 +266,7 @@ function {{screen.hash}}()
             .replace( /&amp\;/g, "&" );
         
         // get the feed
-        $.post('/proxy/', {'url':weatherFeedURL}, function( feed ){
+        $.get('/proxy/', {'url':weatherFeedURL}, function( feed ){
             
             // load weather unit data (note: find will not find "head")
             units.temp = $( feed ).find("ut").text();

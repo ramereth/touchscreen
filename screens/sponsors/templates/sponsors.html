@@ -441,7 +441,7 @@ function {{screen.hash}}()
         // grab and load sponsors XML file through a simple proxy to circumvent
         // browser security model restrictions regarding AJAX GET requests to
         // remote servers
-        $.post('/proxy/',
+        $.get('/proxy/',
             {'url':'{{screen.sponsors_URL}}'}, 
             function( sponsors_XML ){
 
@@ -479,7 +479,7 @@ function {{screen.hash}}()
         });
         
         // load the friends through the simple proxy and into the friends list
-        $.post('/proxy/',
+        $.get('/proxy/',
             {'url':'{{screen.friends_URL}}' },
             function( friends_XML ){
             
