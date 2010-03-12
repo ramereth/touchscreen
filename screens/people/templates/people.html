@@ -366,7 +366,7 @@ function {{screen.hash}}()
     // a the _afterDataLoad() function when loading is complete.
     {
         // load the people data
-        $.post('/proxy/',
+        $.get('/proxy/',
             {'url':'{{screen.people_URL}}' },
             function( peoplePage ){
 
