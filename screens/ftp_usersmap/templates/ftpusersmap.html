@@ -23,21 +23,24 @@
         position:absolute;
         left:0px;
         top:350px;
-        height:300px;
+        height:315px;
         width:150px;
         
         overflow:hidden;
     }
     
     #{{screen.hash}}_locations li {
+        border-bottom:1px dotted #222222;
         color:#CC5900;
+        font-size:12px;
+        height:19px;
         list-style:none;
         margin:0;
-        width:100%;
+        overflow:hidden;
         padding-bottom:3px;
         padding-top:3px;
-        height:19px;
-        border-bottom:1px dotted #222222;
+        white-space:nowrap;
+        width:100%;
     }
 </style>
 
@@ -69,7 +72,7 @@ function {{screen.hash}}()
 {
     var canvas = undefined;
     var cycle = undefined;
-    var max_pings = 22
+    var max_pings = {{screen.ping_max}};
     var pings = Array();
     var $locations = undefined;
     
@@ -80,7 +83,7 @@ function {{screen.hash}}()
         $locations = $('#{{screen.hash}}_locations');
         $locations.serialScroll({
 		items:'li',
-		duration:800,
+		duration:{{screen.ping_interval}}-300,
 		force:true,
 		axis:'y',
 		easing:'easeOutQuart',
@@ -121,8 +124,8 @@ function {{screen.hash}}()
     };
     
     this.get_point = function() {
-        //$.get('/proxy/',{url:'http://ftp-osl.osuosl.org:8000/'},{{screen.hash}}.create_point);
-        
+        $.get('/proxy/',{url:'http://ftp-osl.osuosl.org:8000/'},{{screen.hash}}.create_point);
+        return;
         //XXX TODO - fake response for now since the url above doesn't work outside the OSL
         {{screen.hash}}.create_point('<rss version="2.0"><channel>' + 
         '<title>Latest download locale</title>' + 
@@ -136,28 +139,31 @@ function {{screen.hash}}()
     
     this.create_point = function(data) {
         $item = $(data).find('item title');
-        label = $item[0].text;
-        lat = $item[1].text;
-        lon = $item[2].text;
-
-        // get pixel coords and create a ping animation
-        coords = {{screen.hash}}.get_coords(lat, lon);
-        x = coords[0]
-        y = coords[1]
-        animation = ping(x,y, canvas);
-        pings.push(animation);
-        if (pings.length > max_pings){
-            old = pings.shift();
-            old.remove();
-        }
         
-        // create a scrolling label for the new point
-        $locations.append('<li>'+label+'</li>');
-        if ($locations.children().length > 13) {
-            safelog('next');
-            $locations.trigger('next');
+        // check to make sure a proper message was received
+        if ($item.length != 0) {
+            label = $item[0].text;
+            lat = $item[1].text;
+            lon = $item[2].text;
+    
+            // get pixel coords and create a ping animation
+            coords = {{screen.hash}}.get_coords(lat, lon);
+            x = coords[0]
+            y = coords[1]
+            animation = ping(x,y, canvas);
+            pings.push(animation);
+            if (pings.length > max_pings){
+                old = pings.shift();
+                old.remove();
+            }
+            
+            // create a scrolling label for the new point
+            $locations.append('<li>'+label+'</li>');
+            if ($locations.children().length > 13) {
+                $locations.trigger('next');
+            }
         }
-        cycle = setTimeout({{screen.hash}}.get_point, 1000);
+        cycle = setTimeout({{screen.hash}}.get_point, {{screen.ping_interval}});
     }
 
     this.get_coords = function(lat, lon){
