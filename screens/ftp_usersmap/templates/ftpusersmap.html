@@ -4,7 +4,7 @@
         background-color:#154459;
     }
     
-    #{{screen.hash}} .content .map, #{{screen.hash}} .content .canvas {
+    #{{screen.hash}}_map, #{{screen.hash}} .content .canvas {
         position:absolute;
         top:0;
         left:0;
@@ -77,8 +77,6 @@ function {{screen.hash}}()
     {        
         safelog('ftp_user_map: initializing...');
         canvas = Raphael('{{screen.hash}}_canvas', 1360, 768);
-        canvas.rect(10, 10, 50, 50);
-        
         $locations = $('#{{screen.hash}}_locations');
         $locations.serialScroll({
 		items:'li',
@@ -120,7 +118,6 @@ function {{screen.hash}}()
 
     this.onWinResize = function()
     {
-        
     };
     
     this.get_point = function() {
@@ -177,7 +174,7 @@ function {{screen.hash}}()
         offsetY = earthradius * scale * Math.log( Math.tan( Math.PI/4 + (lat*Math.PI/180)/2 )) / metersPerPixel;
         Y = equator - offsetY + pointerOffsetY;
 
-        offsetX = earthradius * scale * ((lon-mapLonOffset)*Math.PI/180) / metersPerPixel
+        offsetX = earthradius * scale * ((lon-mapLonOffset)*Math.PI/180) / metersPerPixel;
         X = primeMeridian + offsetX + pointerOffsetX;
         
         return [X,Y];
@@ -189,7 +186,7 @@ function {{screen.hash}}()
 
 <div class="background"></div>
 <div class="content">
-    <img class="map" src="{{MEDIA}}/screens.ftp_usersmap/map_1360nolabel.png"/>
+    <img id="{{screen.hash}}_map" src="{{MEDIA}}/screens.ftp_usersmap/map_1360nolabel.png"/>
     <div id="{{screen.hash}}_canvas" class="canvas"></div>
     
     <div class="display_tile display_title">Realtime Sample of OSL FTP Users</div>
