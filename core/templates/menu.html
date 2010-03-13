@@ -370,7 +370,7 @@
              *  Communication
              * =============================== */
             function send(msg) {
-                $('/proxy/', {url:'http://localhost:9000/?u=touchscreen&c=1&q=touchscreen&m='+msg});
+                $.get('/proxy/', {url:'http://localhost:9000/?u=touchscreen&c=1&q=touchscreen&m='+msg});
             }
         
             /* ===============================
