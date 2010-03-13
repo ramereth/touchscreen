@@ -172,8 +172,7 @@
                 
                     if(debug)
                         console.log("refreshImage: option 'start' == true." +
-                            " Starting refresh cycle. Image will refresh in " +
-                            options.interval + " milliseconds."
+                            " Starting refresh cycle."
                         );
 
                     startTimer();
@@ -214,7 +213,7 @@
                 function stopRefreshing()
                 {
                     if(debug)          
-                        console.log("refreshImage: stopping. clearing timer.");
+                        console.log("refreshImage: clearing timer.");
 
                     var timer = image.data('refreshImage_timer');
                     
@@ -226,8 +225,15 @@
                 {
                     var options = image.data('refreshImage_options');
                     stopRefreshing(); // clear the old timer
-                    var timer = setTimeout(function(){refreshNow()}, options.interval);
+                    var timer = setTimeout(
+                        function(){refreshNow()},
+                        options.interval
+                    );
                     image.data( 'refreshImage_timer', timer );
+                    if(debug)          
+                        console.log("refreshImage: timer started. Next refresh"+
+                            " in "+options.interval+" milliseconds."
+                        );
                 }
             });
         }
