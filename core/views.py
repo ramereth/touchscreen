@@ -41,7 +41,8 @@ def display(request):
 
 def menu(request):
     """ View for displaying menu """
-    return render_to_response('menu.html')
+    rc = RequestContext(request, processors=[plugin_processor, settings_processor])
+    return render_to_response('menu.html', context_instance=rc)
 
 
 def proxy(request):

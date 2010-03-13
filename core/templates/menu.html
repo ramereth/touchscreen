@@ -7,317 +7,426 @@
 <html>
     <head>
         <style>
-            *{
-                font-family:monospace;
-                display:block;
-            }
-
-            style{
-                display:none;
-            }
-
-            body{
-                border:1px solid grey;
-                width:720px;
-                margin-left:auto;
-                margin-right:auto;
+            * {
+                font-family: sans-serif;
+                margin:0;
+                padding:0;
             }
             
-            title1{
-                font-size:xx-large;
+            body {
+                background-image:url('{{MEDIA}}/images/background-gray-2x1.gif');
+            }
+            
+            .button {
+                color:white;
+                height:124px;
+                padding-top:100px;
+                padding-left:7px;
+                padding-right:24px;
+                position:absolute;
+                text-align:center;
+                width:194px;
+            }
+            
+            .button_red {background-image:url('{{MEDIA}}/images/menu/buttons/button-red.png')}
+            .button_blue {background-image:url('{{MEDIA}}/images/menu/buttons/button-blue.png')}
+            .button_green {background-image:url('{{MEDIA}}/images/menu/buttons/button-green.png')}
+            .button_yellow {background-image:url('{{MEDIA}}/images/menu/buttons/button-yellow.png')}
+            .button_orange {background-image:url('{{MEDIA}}/images/menu/buttons/button-orange.png')}
+            .button_purple {background-image:url('{{MEDIA}}/images/menu/buttons/button-purple.png')}
+            
+            #header {
+                padding: 20px;
+            }
+            
+            #slideshow {
+                color:white;
+                float:right;
                 font-weight:bold;
-
-                margin-top: 25px;
-                margin-left: 25px;
+                text-align:center;
             }
-
-            subtitle1{
-                font-size:medium;
-                margin-top:10px;
-                margin-bottom:10px;
-
-                margin-left: 25px;
+            
+            #slideshow img {
+                margin:15px 35px 0 0;
             }
-
-            title2{
-                font-size:x-large;
-                font-weight:bold;
-                margin-left: 50px;
-                margin-top: 25px;
+            
+            #status {
+                background-color:black;
+                border-bottom:1px solid white;
+                border-top:1px solid white;
+                color:white;
+                font-size:30px;
+                font-family: sans-serif;
+                height:40px;
+                padding-left: 20px;
+                padding-top:10px;
             }
-
-            item{
-                font-size:large;
-                margin-left: 75px;
-                margin-top: 25px;
-                margin-bottom: 10px;
+            
+            #back {
+                color: white;
+                position: absolute;
+                top: 200px;
+                border: 1px solid red;
             }
+            
+            #menus {
+                height:500px;
+                overflow:hidden;
+                position:absolute;
+                top:350px;
+                width:100%;
 
-            cmd{
-                font-size:medium;
-                margin-left: 100px;
-                margin-top: 5px;
-                margin-bottom: 5px;
-                display:list-item;
             }
-
+            
+            #center {
+                background-color:red;
+                margin-left:auto;
+                margin-right:auto;
+                width:1px;
+                height:600px;
+            }
+            
         </style>
+        
+        <script type='text/javascript' src="{{MEDIA}}/js/jquery-1.4.min.js"></script>
+        <script type="text/javascript" src="{{MEDIA}}/js/raphael-min.js"></script>
+        <script type="text/javascript" src="{{MEDIA}}/js/cufon-yui.js"></script>
+        <script type="text/javascript" src="{{MEDIA}}/js/osl_500.font.js"></script>
+        <script type="text/javascript">
+        
+            // Easing equation, borrowed from jQuery easing plugin
+            // http://gsgd.co.uk/sandbox/jquery/easing/
+            jQuery.easing.easeOutQuart = function (x, t, b, c, d) {
+                    return -c * ((t=t/d-1)*t*t*t - 1) + b;
+            };
+        
+            /* ===============================
+             *  Menu Animations
+             * =============================== */
+        
+            var spacing = 75;
+            var width = 1280;
+            var buttonWidth = 200;
+            var x0 = 0 - buttonWidth - spacing-75;
+            var x1 = width + spacing;
+        
+            function init($menu){
+                switch($menu.children().length) {
+                    case 2:
+                        init_2($menu);
+                        break;
+                    case 4:
+                        init_4($menu);
+                        break;
+                    case 5:
+                        init_5($menu);
+                        break;
+                    case 6:
+                        init_6($menu);
+                        break;
+                    case 8:
+                        init_8($menu);
+                        break;
+                }
+            }
+            
+            function init_4($menu) {
+                $children = $menu.children()
+                $children.slice(0,2).css('top', 0)
+                $children.slice(2).css('top', 290)
+            }
+            
+            function init_5($menu) {
+                $children = $menu.children()
+                $children.slice(0,3).css('top', 0)
+                $children.slice(3).css('top', 290)
+            }
+            
+            function init_6($menu) {
+                $children = $menu.children()
+                $children.slice(0,3).css('top', 0)
+                $children.slice(3).css('top', 290)
+            }
+            
+            function init_8($menu) {
+                $children = $menu.children()
+                $children.slice(0,4).css('top', 0)
+                $children.slice(4).css('top', 290)
+            }
+        
+            function hide($menu){
+                switch($menu.children().length) {
+                    case 2:
+                        hide_2($menu);
+                        break;
+                    case 4:
+                        hide_4($menu);
+                        break;
+                    case 5:
+                        hide_5($menu);
+                        break;
+                    case 6:
+                        hide_6($menu);
+                        break;
+                    case 8:
+                        hide_8($menu);
+                        break;
+                }
+            }
+            
+            function hide_2($menu) {
+                $children = $menu.children()
+                $($children[0]).animate({'left':x0}, 400);
+                $($children[1]).animate({'left':x1}, 800);
+            }
+            
+            function hide_4($menu) {
+                $children = $menu.children()
+                $($children[0]).animate({'left':x0}, 400);
+                $($children[1]).animate({'left':x1}, 800);
+                $($children[2]).animate({'left':x0}, 800);
+                $($children[3]).animate({'left':x1}, 400);
+            }
+            
+            function hide_5($menu) {
+                $children = $menu.children()
+                $($children[0]).animate({'left':x0}, 400);
+                $($children[1]).animate({'left':x0}, 800);
+                $($children[2]).animate({'left':x1}, 400);
+                $($children[3]).animate({'left':x0}, 800);
+                $($children[4]).animate({'left':x1}, 800);
+            }
+            
+            function hide_6($menu) {
+                $children = $menu.children()
+                $($children[0]).animate({'left':x0}, 400);
+                $($children[1]).animate({'left':x0}, 800);
+                $($children[2]).animate({'left':x1}, 400);
+                $($children[3]).animate({'left':x0}, 800);
+                $($children[4]).animate({'left':x1}, 800);
+                $($children[5]).animate({'left':x1}, 400);
+            }
+        
+            function hide_8($menu) {
+                $children = $menu.children()
+                $($children[0]).animate({'left':x0}, 400);
+                $($children[1]).animate({'left':x0}, 800);
+                $($children[4]).animate({'left':x0}, 400);
+                $($children[5]).animate({'left':x0}, 800);
+                $($children[2]).animate({'left':x1}, 800);
+                $($children[3]).animate({'left':x1}, 400);
+                $($children[6]).animate({'left':x1}, 800);
+                $($children[7]).animate({'left':x1}, 400);
+            }
+        
+            function show($menu){
+                switch($menu.children().length) {
+                    case 2:
+                        show_2($menu);
+                        break;
+                    case 4:
+                        show_4($menu);
+                        break;
+                    case 5:
+                        show_5($menu);
+                        break;
+                    case 6:
+                        show_6($menu);
+                        break;
+                    case 8:
+                        show_8($menu);
+                        break;
+                }
+            }
+            
+            function show_2($menu) {
+                L0 = (width/2)-(spacing/2)-buttonWidth;
+                L1 = (width/2)+(spacing/2)
+                $children = $menu.children();
+                $($children[0]).animate({'left':L0}, 800);
+                $($children[1]).animate({'left':L1}, 800);
+            }
+            
+            function show_4($menu) {
+                L0 = (width/2)-(spacing/2)-buttonWidth;
+                L1 = (width/2)+(spacing/2)
+                $children = $menu.children();
+                $($children[0]).animate({'left':L0}, 400);
+                $($children[1]).animate({'left':L1}, 800);
+                $($children[2]).animate({'left':L0}, 800);
+                $($children[3]).animate({'left':L1}, 400);
+            }
+            
+            function show_5($menu) {
+                L0 = (width/2)-spacing-(buttonWidth*1.5);
+                L1 = (width/2)-(buttonWidth/2)
+                L2 = (width/2)+spacing+(buttonWidth/2);
+                L3 = (width/2)-(spacing/2)-buttonWidth;
+                L4 = (width/2)+(spacing/2)
+                
+                $children = $menu.children();
+                $($children[0]).animate({'left':L0}, 600);
+                $($children[1]).animate({'left':L1}, 400);
+                $($children[2]).animate({'left':L2}, 800);
+                $($children[3]).animate({'left':L3}, 800);
+                $($children[4]).animate({'left':L4}, 400);
+            }
+            
+            function show_6($menu) {
+                L0 = (width/2)-spacing-(buttonWidth*1.5);
+                L1 = (width/2)-(buttonWidth/2);
+                L2 = (width/2)+spacing+(buttonWidth/2);
+                                
+                $children = $menu.children();
+                $($children[0]).animate({'left':L0}, 800);
+                $($children[1]).animate({'left':L1}, 400);
+                $($children[2]).animate({'left':L2}, 600);
+                $($children[3]).animate({'left':L0}, 600);
+                $($children[4]).animate({'left':L1}, 400);
+                $($children[5]).animate({'left':L2}, 800);
+            }
+            
+            function show_8($menu) {
+                L0 = (width/2)-(spacing/2)-(2*buttonWidth+spacing);
+                L1 = (width/2)-(spacing/2)-buttonWidth;
+                L2 = (width/2)+(spacing/2)
+                L3 = (width/2)+(spacing/2)+(buttonWidth+spacing);
+                                
+                $children = $menu.children();
+                $($children[0]).animate({'left':L0}, 800, "easeOutQuart");
+                $($children[1]).animate({'left':L1}, 400, "easeOutQuart");
+                $($children[4]).animate({'left':L0}, 800, "easeOutQuart");
+                $($children[5]).animate({'left':L1}, 400, "easeOutQuart");
+                $($children[2]).animate({'left':L2}, 400, "easeOutQuart");
+                $($children[3]).animate({'left':L3}, 800, "easeOutQuart");
+                $($children[6]).animate({'left':L2}, 400, "easeOutQuart");
+                $($children[7]).animate({'left':L3}, 800, "easeOutQuart");
+            }
+        
+            
+            
+            /* ===============================
+             *  Communication
+             * =============================== */
+            function send(msg) {
+                $('/proxy/', {url:'http://localhost:9000/?u=touchscreen&c=1&q=touchscreen&m='+msg});
+            }
+        
+            /* ===============================
+             *  menu navigation
+             * =============================== */
+            var breadcrumbs = new Array();
+            
+            function submenu(menu_name) {
+                hide(breadcrumbs[breadcrumbs.length-1]);
+                $menu = $('#'+menu_name);
+                console.log('showing: ', $menu);
+                breadcrumbs.push($menu);
+                setTimeout(show, 900, $menu);
+            }
+        
+            function back() {
+                if (breadcrumbs.length == 1){
+                    return;
+                }
+                $menu = breadcrumbs.pop();
+                hide($menu);
+                setTimeout(show, 900, breadcrumbs[breadcrumbs.length-1]);
+            }
+        
+            function reset() {
+                // hide current menu
+                hide(breadcrumbs.pop());
+                // pop all other menus off the breadcrumbs
+                while (breadcrumbs.length > 1) {
+                    
+                }
+            }
+        
+            /* ===============================
+             *  Initialization
+             * =============================== */
+            $(document).ready(function()
+            {
+                Cufon.replace('.button .text', {
+                        textShadow: '1px 1px rgba(0, 0, 0, 0.8)'
+                    });
+                
+                $('#menus').children().each(function(){
+                    init($(this));
+                    hide($(this));
+                });
+                
+                $('#back').click(back);
+                
+                $mainmenu = $('#mainmenu')
+                breadcrumbs.push($mainmenu);
+                $mainmenu.delay(800).each(function(){show($(this))});
+            });
+        </script>
     </head>
     <body>
-
-        <title1>Temporary Menu</title1>
-        <subtitle1>
-            This is a temporary menu that will send cmds to the message
-            server.
-        </subtitle1>
-
-        <title2>Debug:</title2>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=hello">
-                send bogus "hello" message
-            </a>
-        </cmd>
-
-        <title2>Slideshow Control:</title2>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=slideshow,prev">
-                << previous
-            </a>
-        </cmd>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=slideshow,next">
-                >> next
-            </a>
-        </cmd>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=slideshow,start">
-                start
-            </a>
-        </cmd>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=slideshow,stop">
-                stop
-            </a>
-        </cmd>
-
-        <title2>Screens:</title2>
-
-        <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_ftp_traffic">
-            <item>ftp_traffic</item>
-        </a>
-
-        <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_osl_about">
-            <item>osl_about</item>
-        </a>
-
-        <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_osl_bandwidth">
-            <item>osl_bandwidth</item>
-        </a>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_osl_bandwidth,show,Apache">
-                Show "Apache" bandwidth graphs
-            </a>
-        </cmd>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_osl_bandwidth,show,Gentoo">
-                Show "Gentoo" bandwidth graphs
-            </a>
-        </cmd>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_osl_bandwidth,show,Kernel.org">
-                Show "Kernel.org" bandwidth graphs
-            </a>
-        </cmd>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_osl_bandwidth,show,OpenOffice.org">
-                Show "OpenOffice.org" bandwidth graphs
-            </a>
-        </cmd>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_osl_bandwidth,show,Mozilla">
-                Show "Mozilla" bandwidth graphs
-            </a>
-        </cmd>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_osl_bandwidth,show,OSL Services">
-                Show "OSL Services" bandwidth graphs
-            </a>
-        </cmd>
-        
-
-        <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_people">
-            <item>people</item>
-        </a>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_people,show,Shay Dakan">
-                Show the profile for "Shay Dakan"
-            </a>
-        </cmd>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_people,show,Jon Dolan">
-                Show the profile for "Jon Dolan"
-            </a>
-        </cmd>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_people,show,Jeff Sheltren">
-                Show the profile for "Jeff Sheltren"
-            </a>
-        </cmd>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_people,show,Lance Albertson">
-                Show the profile for "Lance Albertson"
-            </a>
-        </cmd>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_people,show,Mike Anderson">
-                Show the profile for "Mike Anderson"
-            </a>
-        </cmd>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_people,show,Deborah Bryant">
-                Show the profile for "Deborah Bryant"
-            </a>
-        </cmd>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_people,show,Sean Connell">
-                Show the profile for "Sean Connell"
-            </a>
-        </cmd>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_people,show,Rudy Grigar">
-                Show the profile for "Rudy Grigar"
-            </a>
-        </cmd>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_people,show,Russell Haering">
-                Show the profile for "Russell Haering"
-            </a>
-        </cmd>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_people,show,Brian Henderson">
-                Show the profile for "Brian Henderson"
-            </a>
-        </cmd>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_people,show,Ben Kero">
-                Show the profile for "Ben Kero"
-            </a>
-        </cmd>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_people,show,Peter Krenesky">
-                Show the profile for "Peter Krenesky"
-            </a>
-        </cmd>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_people,show,Greg Lund-Chaix">
-                Show the profile for "Greg Lund-Chaix"
-            </a>
-        </cmd>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_people,show,Rob McGuire-Dale">
-                Show the profile for "Rob McGuire-Dale"
-            </a>
-        </cmd>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_people,show,Brad Morgan">
-                Show the profile for "Brad Morgan"
-            </a>
-        </cmd>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_people,show,Ani Ovsepyan">
-                Show the profile for "Ani Ovsepyan"
-            </a>
-        </cmd>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_people,show,Alex Weeks">
-                Show the profile for "Alex Weeks"
-            </a>
-        </cmd>
-
-        <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_sponsors">
-            <item>sponsors</item>
-        </a>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_sponsors,show,Google">
-                Show the profile for sponsor "Google"
-            </a>
-        </cmd>
-
-        <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_weather">
-            <item>weather</item>
-        </a>
-                <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_webcams,show,Monroe Street">
-                Show the "Monroe Street" webcam
-            </a>
-        </cmd>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_webcams,show,Reser Stadium">
-                Show the "Reser Stadium" webcam
-            </a>
-        </cmd>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_webcams,show,Memorial Union">
-                Show the "Memorial Union" webcam
-            </a>
-        </cmd>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_webcams,show,Valley Library">
-                Show the "Valley Library" webcam
-            </a>
-        </cmd>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_webcams,show,Gloss Stadium">
-                Show the "Gloss Stadium" webcam
-            </a>
-        </cmd>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_webcams,show,Wave Lab">
-                Show the "Wave Lab" webcam
-            </a>
-        </cmd>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_webcams,show,South Campus">
-                Show the "South Campus" webcam
-            </a>
-        </cmd>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_webcams,show,Gill Renovation">
-                Show the "Gill Renovation" webcam
-            </a>
-        </cmd>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_webcams,show,Andrews Forrest">
-                Show the "Andrews Forrest" webcam
-            </a>
-        </cmd>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_webcams,show,Hatfield Marine Science">
-                Show the "Hatfield Marine Science" webcam
-            </a>
-        </cmd>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_webcams,show,Agate Beach">
-                Show the "Agate Beach" webcam
-            </a>
-        </cmd>
-        <cmd>
-            <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_webcams,show,Research Vessel WECOMA">
-                Show the "Research Vessel WECOMA" webcam
-            </a>
-        </cmd>
-
-
-        <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_webcams">
-            <item>webcams</item>
-        </a>
-
-        <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_wifi_bandwidth">
-            <item>wifi_bandwidth</item>
-        </a>
-
-        <a href="http://localhost:9000/?c=1&q=touchscreen&m=screens_wifi_usage">
-            <item>wifi_usage</item>
-        </a>        
+        <div id="header">
+            <img src="{{MEDIA}}/images/osl_logo.png"/>
+            <div id="slideshow">
+                <div>Slideshow</div>
+                <img id="prev" src="{{MEDIA}}/images/menu/buttons/prevSlide.gif"/>
+                <img id="stop" src="{{MEDIA}}/images/menu/buttons/stop.gif"/>
+                <img id="play" src="{{MEDIA}}/images/menu/buttons/play.gif"/>
+                <img id="next" src="{{MEDIA}}/images/menu/buttons/nextSlide.gif"/>
+            </div>
+        </div>
+        <div id="status">Main Menu</div>
+        <div id="center"></div>
+        <div id="back">Back</div>
+        <div id="menus">
+            
+            <div id="mainmenu">
+                <div class="button button_orange" onclick="submenu('osl');"><div class="text">Open Source Lab</div></div>
+                <div class="button button_red" onclick="submenu('network');"><div class="text">Network Engineering</div></div>
+                <div class="button button_blue"><div class="text">Data Center Map</div></div>
+                <div class="button button_purple" onclick="send();"><div class="text">Webcams</div></div>
+                <div class="button button_yellow"><div class="text">Weather</div></div>
+                <div class="button button_green"><div class="text">Help</div></div>
+            </div>
+            
+            <div id="osl">
+                <div class="button button_orange" onclick="submenu('osl_network_graphs');"><div class="text">Network Graphs</div></div>
+                <div class="button button_red" onclick="send();"><div class="text">FTP Status</div></div>
+                <div class="button button_blue" onclick="send();"><div class="text">FTP Users Map</div></div>
+                <div class="button button_green"><div class="text">Outages</div></div>
+                <div class="button button_orange" onclick="send();"><div class="text">About</div></div>
+                <div class="button button_red" onclick="send();"><div class="text">People</div></div>
+                <div class="button button_blue" onclick="send();"><div class="text">Donors</div></div>
+                <div class="button button_green"><div class="text">Help</div></div>
+            </div>
+            
+            <div id="osl_network_graphs">
+                <div class="button button_orange"><div class="text">Open Source Lab Services</div></div>
+                <div class="button button_red"><div class="text">Apache</div></div>
+                <div class="button button_blue"><div class="text">Gentoo</div></div>
+                <div class="button button_purple"><div class="text">Kernel .org</div></div>
+                <div class="button button_yellow"><div class="text">OpenOffice. org</div></div>
+                <div class="button button_green"><div class="text">Mozilla</div></div>
+            </div>
+            
+            <div id="webcams">
+                <div class="button button_orange"><div class="text">Valley Library</div></div>
+                <div class="button button_red"><div class="text">Memorial Union</div></div>
+                <div class="button button_blue"><div class="text">South Campus</div></div>
+                <div class="button button_purple"><div class="text">Goss Stadium</div></div>
+                <div class="button button_yellow"><div class="text">Gill Annex</div></div>
+            </div>
+            
+            <div id="network">
+                <div class="button button_orange"><div class="text">People</div></div>
+                <div class="button button_red"><div class="text">Traffic Graphs</div></div>
+                <div class="button button_blue" onclick="send();"><div class="text">Wifi Usage Map</div></div>
+                <div class="button button_purple" onclick="send();"><div class="text">Wifi Bandwidth Map</div></div>
+            </div>
+            
+            
+            
+        </div>
     </body>
 </html>
