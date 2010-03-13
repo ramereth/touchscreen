@@ -422,19 +422,19 @@
                 <div class="button button_orange" onclick="submenu('osl');"><div class="text">Open Source Lab</div></div>
                 <div class="button button_red" onclick="submenu('network');"><div class="text">Network Engineering</div></div>
                 <div class="button button_blue"><div class="text">Data Center Map</div></div>
-                <div class="button button_purple" onclick="submenu('webcams');"><div class="text">Webcams</div></div>
-                <div class="button button_yellow" onclick="send();"><div class="text">Weather</div></div>
+                <div class="button button_purple" onclick="submenu('webcams');send('slideshow,show,Webcams');"><div class="text">Webcams</div></div>
+                <div class="button button_yellow" onclick="send('slideshow,show,Weather');"><div class="text">Weather</div></div>
                 <div class="button button_green"><div class="text">Help</div></div>
             </div>
             
             <div id="osl" title="Open Source Lab">
-                <div class="button button_orange" onclick="submenu('osl_network_graphs');"><div class="text">Network Graphs</div></div>
-                <div class="button button_red" onclick="send();"><div class="text">FTP Status</div></div>
-                <div class="button button_blue" onclick="send();"><div class="text">FTP Users Map</div></div>
+                <div class="button button_orange" onclick="submenu('osl_network_graphs');send('slideshow,show,OSLBandwidth')"><div class="text">Network Graphs</div></div>
+                <div class="button button_red" onclick="send('slideshow,show,FTP_Traffic');"><div class="text">FTP Status</div></div>
+                <div class="button button_blue" onclick="send('slideshow,show,FTP_Users_Map');"><div class="text">FTP Users Map</div></div>
                 <div class="button button_green"><div class="text">Outages</div></div>
-                <div class="button button_orange" onclick="send();"><div class="text">About</div></div>
-                <div class="button button_red" onclick="send();"><div class="text">People</div></div>
-                <div class="button button_blue" onclick="send();"><div class="text">Donors</div></div>
+                <div class="button button_orange" onclick="send('slideshow,show,OSL_About');"><div class="text">About</div></div>
+                <div class="button button_red" onclick="send('slideshow,show,OSLPeopleScreen');"><div class="text">People</div></div>
+                <div class="button button_blue" onclick="send('slideshow,show,OSL_Donors');"><div class="text">Sponsors</div></div>
                 <div class="button button_green"><div class="text">Help</div></div>
             </div>
             
@@ -458,8 +458,8 @@
             <div id="network" title="Network Engineering">
                 <div class="button button_orange"><div class="text">People</div></div>
                 <div class="button button_red"><div class="text">Traffic Graphs</div></div>
-                <div class="button button_blue" onclick="send();"><div class="text">Wifi Usage Map</div></div>
-                <div class="button button_purple" onclick="send();"><div class="text">Wifi Bandwidth Map</div></div>
+                <div class="button button_blue" onclick="send('slideshow,show,WifiBandwidth');"><div class="text">Wifi Usage Map</div></div>
+                <div class="button button_purple" onclick="send('slideshow,show,WifiUsage');"><div class="text">Wifi Bandwidth Map</div></div>
             </div>
             
             
