@@ -265,6 +265,10 @@
                     cmd = splitResponse[1];
 
                     if( cmd == "start" ) cmd_string = 'slideshow_start()';
+		    else if( cmd == "show" ) {
+			slideshow_screen_index = get_screen_index( splitResponse[2] );
+			show_slide( screens[ slideshow_screen_index ] );
+		    }
                     else if( cmd == "stop" ) cmd_string = 'slideshow_stop()';
                     else if( cmd == "next" ) cmd_string = 'slideshow_next()';
                     else if( cmd == "prev" ) cmd_string = 'slideshow_prev()';
