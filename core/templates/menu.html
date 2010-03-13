@@ -396,15 +396,26 @@
             
             function reset() {
                 reset_timer = undefined;
-                send('slideshow,reset');
+                send('slideshow,play');
                 // hide current menu
                 hide(breadcrumbs.pop());
                 // pop all other menus off the breadcrumbs
                 while (breadcrumbs.length > 1) {
                     breadcrumbs.pop()
                 }
+                
                 // show main menu
-                show(breadcrumbs[0]);
+                $menu = breadcrumbs[0];
+                setTimeout(function(){
+                    $('#status_color')
+                        .css('background-color', submenu_colors[$menu.attr('id')])
+                        .fadeIn(500);
+                    $('#status_text').html($menu.attr('title'));
+                    Cufon.replace('#status_text', {
+                        textShadow: '1px 1px rgba(0, 0, 0, 0.8)'
+                    });
+                }, 350)
+                setTimeout(show, 900, $menu);
             }
             
             function submenu(menu_name) {
