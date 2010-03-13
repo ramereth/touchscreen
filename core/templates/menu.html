@@ -327,6 +327,8 @@
              *  menu navigation
              * =============================== */
             var breadcrumbs = new Array();
+            var reset_timer = undefined;
+            var inactivity_timeout = 6000;
             var submenu_colors = {
                 'osl':'#E55E00',
                 'osl_network_graphs':'#E55E00',
@@ -335,7 +337,28 @@
                 'mainmenu':'#000000'
             }
             
+            function activity() {
+                if (reset_timer != undefined) {
+                    cancelTimeout(reset);
+                }
+                reset_timer = setTimeout(reset, inactivity_timeout);
+            }
+            
+            function reset() {
+                reset_timer = undefined;
+                send('slideshow,reset');
+                // hide current menu
+                hide(breadcrumbs.pop());
+                // pop all other menus off the breadcrumbs
+                while (breadcrumbs.length > 1) {
+                    breadcrumbs.pop()
+                }
+                // show main menu
+                show(breadcrumbs[0]);
+            }
+            
             function submenu(menu_name) {
+                activity();
                 // hide old info
                 hide(breadcrumbs[breadcrumbs.length-1]);
                 $menu = $('#'+menu_name);
@@ -346,12 +369,16 @@
                         .css('background-color', submenu_colors[menu_name])
                         .fadeIn(500);
                     $('#status_text').html($menu.attr('title'));
+                    Cufon.replace('#status_text', {
+                        textShadow: '1px 1px rgba(0, 0, 0, 0.8)'
+                    });
                 }, 350)
                 breadcrumbs.push($menu);
                 setTimeout(show, 900, $menu);
             }
         
             function back() {
+                activity();
                 // prevent mainmenu from being popped off
                 if (breadcrumbs.length == 1){
                     return;
@@ -367,25 +394,23 @@
                         .css('background-color', submenu_colors[$new_menu.attr('id')])
                         .fadeIn(500);
                     $('#status_text').html($new_menu.attr('title'));
+                    Cufon.replace('#status_text', {
+                        textShadow: '1px 1px rgba(0, 0, 0, 0.8)'
+                    });
                 }, 350)
                 setTimeout(show, 900, $new_menu);
             }
-        
-            function reset() {
-                // hide current menu
-                hide(breadcrumbs.pop());
-                // pop all other menus off the breadcrumbs
-                while (breadcrumbs.length > 1) {
-                    
-                }
-            }
-        
+            
             /* ===============================
              *  Initialization
              * =============================== */
             $(document).ready(function()
             {
                 Cufon.replace('.button .text', {
+                        textShadow: '1px 1px rgba(0, 0, 0, 0.8)'
+                    });
+                
+                Cufon.replace('#status_text', {
                         textShadow: '1px 1px rgba(0, 0, 0, 0.8)'
                     });
                 
@@ -407,10 +432,10 @@
             <img src="{{MEDIA}}/images/osl_logo.png"/>
             <div id="slideshow">
                 <div>Slideshow</div>
-                <img id="prev" src="{{MEDIA}}/images/menu/buttons/prevSlide.gif"/>
-                <img id="stop" src="{{MEDIA}}/images/menu/buttons/stop.gif"/>
-                <img id="play" src="{{MEDIA}}/images/menu/buttons/play.gif"/>
-                <img id="next" src="{{MEDIA}}/images/menu/buttons/nextSlide.gif"/>
+                <img id="prev" src="{{MEDIA}}/images/menu/buttons/prevSlide.gif" onclick="send('slideshow,prev');"/>
+                <img id="stop" src="{{MEDIA}}/images/menu/buttons/stop.gif" onclick="send('slideshow,stop');"/>
+                <img id="play" src="{{MEDIA}}/images/menu/buttons/play.gif" onclick="send('slideshow,play');"/>
+                <img id="next" src="{{MEDIA}}/images/menu/buttons/nextSlide.gif" onclick="send('slideshow,next');"/>
             </div>
         </div>
         <div id="status"><div id="status_color"></div><div id="status_text">Main Menu</div></div>
