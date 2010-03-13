@@ -9,20 +9,21 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASE_ENGINE = 'sqlite3'    # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-DATABASE_NAME = 'touchscreen'  # Or path to database file if using sqlite3.
-DATABASE_USER = ''             # Not used with sqlite3.
-DATABASE_PASSWORD = ''         # Not used with sqlite3.
-DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
-DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
+DATABASE_ENGINE = 'sqlite3'       # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+DATABASE_NAME = 'touchscreen.db'  # Or path to database file if using sqlite3.
+DATABASE_USER = ''                # Not used with sqlite3.
+DATABASE_PASSWORD = ''            # Not used with sqlite3.
+DATABASE_HOST = ''                # Set to empty string for localhost. Not used with sqlite3.
+DATABASE_PORT = ''                # Set to empty string for default. Not used with sqlite3.
 
 
-# prefix used for the site.  ie. http://myhost.com/<SITE_ROOT>/
-# for the django standalone server this should be /
-# for apache this is the url the site is mapped to, probably /pgd
+# prefix used for the site.  ie. http://myhost.com/<SITE_ROOT>
+# For the django standalone server this should be blank.
+# For apache this is the url the site is mapped to, i.e. /touchscreen
 SITE_ROOT = ''
 
-# absolute path to the docroot of this site
+# absolute path to the docroot of this site WITHOUT the final  /
+# e.g. /your/path/here
 DOC_ROOT = ''
 
 # Local time zone for this installation. Choices can be found here:
@@ -81,6 +82,7 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
+    # TOUCHSCREEN REQUIRED APPS
     'django.contrib.contenttypes',
     'django.contrib.auth',
     'django.contrib.sessions',
@@ -88,13 +90,20 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'muddle',
     'core',
+
+    # EXAMPLE SCREENS
     #'screens.EXAMPLES.helloscreen',
-    #'screen_fooscreen',
-    'screens.osl_about',
+    #'screens.EXAMPLES.fooscreen',
+
+    # DISPLAY SCREENS
     'screens.ftp_traffic',
+    'screens.ftp_usersmap',
+    'screens.osl_about',
+    'screens.osl_bandwidth',
     'screens.people',
     'screens.sponsors',
     'screens.weather',
+    'screens.webcams',
     'screens.wifi_bandwidth',
     'screens.wifi_usage',
 )

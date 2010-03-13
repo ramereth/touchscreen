@@ -96,9 +96,9 @@ function {{screen.hash}}()
         // write and initialize tiles
         initTiles();
 
-        // start the image refresh
+        // Initialize the image refresher
         $(".{{screen.hash}}_img").refreshImage({
-            interval: 5000, //{{screen.imgRefreshInterval}},
+            interval: {{screen.imgRefreshInterval}},
             start: false
         }, "debug");
     }
