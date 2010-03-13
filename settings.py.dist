@@ -17,12 +17,12 @@ DATABASE_HOST = ''                # Set to empty string for localhost. Not used 
 DATABASE_PORT = ''                # Set to empty string for default. Not used with sqlite3.
 
 
-# prefix used for the site.  ie. http://myhost.com/<SITE_ROOT>/
-# for the django standalone server this should be /
-# for apache this is the url the site is mapped to, probably /pgd
+# prefix used for the site.  ie. http://myhost.com/<SITE_ROOT>
+# For the django standalone server this should be blank.
+# For apache this is the url the site is mapped to, i.e. /touchscreen
 SITE_ROOT = ''
 
-# absolute path to the docroot of this site NOT including the following /
+# absolute path to the docroot of this site WITHOUT the final  /
 # e.g. /your/path/here
 DOC_ROOT = ''
 
