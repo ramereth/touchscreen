@@ -15,13 +15,17 @@
                 start: false        // start the refresh right away?
             }
 
-            // for each of the matched elements, do the specified refresh task
-            return this.each(function() 
+            // deal with each of the matched images
+            return this.each( function() 
             {
-                // capture the current image
+                ///////////////////
+                // initializaion //
+                ///////////////////
+
+                // grab the current image
                 var image = $(this);
 
-                // set image with default options first-run
+                // first run, set image with default options
                 if( image.data('refreshImage_options') == undefined ){
 
                     if(debug)
@@ -31,11 +35,15 @@
                     image.data('refreshImage_options', defaultOptions );
                 }
 
+                //////////////////////
+                // handle arguments //
+                //////////////////////
+
                 // override default options if custom options are supplied
                 if( typeof( arg ) == "object" ){
 
                     if(debug)
-                        console.log("refreshImage: custom options supplied. " +
+                        console.log("refreshImage: New options supplied. " +
                             "Overriding previous options.");
 
                     image.data('refreshImage_options',
@@ -45,47 +53,59 @@
                 } else if( typeof( arg ) == "string" ){
 
                     if(debug)
-                        console.log("refreshImage: handling command '%s'", arg);
+                        console.log("refreshImage: argument is command.");
 
-                    // if command is "start"
-                    if( arg == "start" ) refreshNow();
+                    // if command is "start", start refreshing the image
+                    if( arg == "start" ){
+                    
+                        if(debug)
+                            console.log("refreshImage: 'start' command " +
+                                "entered. Starting refresh cycle now.");
 
-                    // clear the timeout if the command is "stop"
-                    else if( arg == "stop" ){
+                        startRefreshing();
+
+                    // if command is "stop", clear the timer to stop the
+                    // refresh
+                    } else if( arg == "stop" ){
 
                         if(debug)
-                            console.log("refreshImage: stopping. clearing "+
-                                "timers.");
-                            
-                        clearTimeout( image.data('refreshImage_timer') );
-                        
-                    // if command is "now"
-                    } else if( arg == "now" );
-                    
+                            console.log("refreshImage: 'stop' command entered."+
+                                " Stopping refresh cycle.");
+
+                        stopRefreshing();
+
                     // otherwise, the command is invalid
-                    else {
-                        
-                        if( debug )
-                            console.error( "refreshImage: invalid command: " +
-                                arg );
-                            
+                    } else {
+                        console.error( "refreshImage: invalid command: "+arg);
                         return -1;
                     }
 
                 // if the argument is not an object or a string, error out
                 } else {
-                    
-                    if(debug)
-                        console.error( "refreshImage: invalid arg type: "+arg );
-                        
+                    console.error( "refreshImage: invalid arg type: " +
+                        typeof(arg) );
                     return -1;
                 }
 
+                // if the argument was not a command, check the options to see
+                // if the image needs to be updated now
                 var options = image.data('refreshImage_options');
-
-                if( options.start == true ) refreshNow();
+                if( options.start == true ){ 
                 
-                function refreshNow()
+                    if(debug)
+                        console.log("refreshImage: option 'start' == true."
+                            +" Starting refresh cycle.");
+
+                    startRefreshing();
+                }
+               
+                //////////////////
+                // facilitators //
+                //////////////////
+
+                // startRefreshing()
+                // begin refreshing the image immediately
+                function startRefreshing()
                 {
                     var options = image.data('refreshImage_options');
                     
@@ -110,9 +130,20 @@
 
                     // set the timout, and save it in the element
                     var timer =
-                        setTimeout( function(){refreshNow()}, options.interval);
+                        setTimeout( function(){startRefreshing()}, options.interval);
                     image.data( 'refreshImage_timer', timer );
                 }
+
+                function stopRefreshing()
+                {
+                    if(debug)          
+                        console.log("refreshImage: stopping. clearing timer.");
+
+                    var timer = image.data('refreshImage_timer');
+                    
+                    if( timer != undefined ) clearTimeout( timer );
+                }
+
             });
         }
     });
