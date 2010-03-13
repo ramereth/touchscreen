@@ -81,12 +81,11 @@
             }
             
             #menus {
-                height:500px;
+                height:784px;
                 overflow:hidden;
                 position:absolute;
-                top:350px;
-                width:100%;
-
+                top:240px;
+                width:1240px;
             }
             
             #center {
@@ -138,31 +137,41 @@
                     case 8:
                         init_8($menu);
                         break;
+                    case 12:
+                        init_12($menu);
+                        break;
                 }
             }
             
             function init_4($menu) {
                 $children = $menu.children()
-                $children.slice(0,2).css('top', 0)
-                $children.slice(2).css('top', 290)
+                $children.slice(0,2).css('top', 100)
+                $children.slice(2).css('top', 390)
             }
             
             function init_5($menu) {
                 $children = $menu.children()
-                $children.slice(0,3).css('top', 0)
-                $children.slice(3).css('top', 290)
+                $children.slice(0,3).css('top', 100)
+                $children.slice(3).css('top', 390)
             }
             
             function init_6($menu) {
                 $children = $menu.children()
-                $children.slice(0,3).css('top', 0)
-                $children.slice(3).css('top', 290)
+                $children.slice(0,3).css('top', 100)
+                $children.slice(3).css('top', 390)
             }
             
             function init_8($menu) {
                 $children = $menu.children()
+                $children.slice(0,4).css('top', 100)
+                $children.slice(4).css('top', 390)
+            }
+            
+            function init_12($menu) {
+                $children = $menu.children()
                 $children.slice(0,4).css('top', 0)
-                $children.slice(4).css('top', 290)
+                $children.slice(4,8).css('top', 280)
+                $children.slice(8).css('top', 560)
             }
         
             function hide($menu){
@@ -181,6 +190,9 @@
                         break;
                     case 8:
                         hide_8($menu);
+                        break;
+                    case 12:
+                        hide_12($menu);
                         break;
                 }
             }
@@ -229,7 +241,23 @@
                 $($children[6]).animate({'left':x1}, 800);
                 $($children[7]).animate({'left':x1}, 400);
             }
-        
+            
+            function hide_12($menu) {
+                $children = $menu.children()
+                $($children[0]).animate({'left':x0}, 400, "easeOutQuart");
+                $($children[4]).animate({'left':x0}, 400, "easeOutQuart");
+                $($children[8]).animate({'left':x0}, 400, "easeOutQuart");
+                $($children[1]).animate({'left':x0}, 800, "easeOutQuart");
+                $($children[5]).animate({'left':x0}, 800, "easeOutQuart");
+                $($children[9]).animate({'left':x0}, 800, "easeOutQuart");
+                $($children[2]).animate({'left':x1}, 800, "easeOutQuart");
+                $($children[6]).animate({'left':x1}, 800, "easeOutQuart");
+                $($children[10]).animate({'left':x1}, 800, "easeOutQuart");
+                $($children[3]).animate({'left':x1}, 400, "easeOutQuart");
+                $($children[7]).animate({'left':x1}, 400, "easeOutQuart");
+                $($children[11]).animate({'left':x1}, 400, "easeOutQuart");
+            }
+            
             function show($menu){
                 switch($menu.children().length) {
                     case 2:
@@ -246,6 +274,9 @@
                         break;
                     case 8:
                         show_8($menu);
+                        break;
+                    case 12:
+                        show_12($menu);
                         break;
                 }
             }
@@ -314,7 +345,26 @@
                 $($children[7]).animate({'left':L3}, 800, "easeOutQuart");
             }
         
-            
+            function show_12($menu) {
+                L0 = (width/2)-(spacing/2)-(2*buttonWidth+spacing);
+                L1 = (width/2)-(spacing/2)-buttonWidth;
+                L2 = (width/2)+(spacing/2)
+                L3 = (width/2)+(spacing/2)+(buttonWidth+spacing);
+                                
+                $children = $menu.children();
+                $($children[0]).animate({'left':L0}, 800, "easeOutQuart");
+                $($children[4]).animate({'left':L0}, 800, "easeOutQuart");
+                $($children[8]).animate({'left':L0}, 800, "easeOutQuart");
+                $($children[1]).animate({'left':L1}, 400, "easeOutQuart");
+                $($children[5]).animate({'left':L1}, 400, "easeOutQuart");
+                $($children[9]).animate({'left':L1}, 400, "easeOutQuart");
+                $($children[2]).animate({'left':L2}, 400, "easeOutQuart");
+                $($children[6]).animate({'left':L2}, 400, "easeOutQuart");
+                $($children[10]).animate({'left':L2}, 400, "easeOutQuart");
+                $($children[3]).animate({'left':L3}, 800, "easeOutQuart");
+                $($children[7]).animate({'left':L3}, 800, "easeOutQuart");
+                $($children[11]).animate({'left':L3}, 800, "easeOutQuart");
+            }
             
             /* ===============================
              *  Communication
@@ -328,7 +378,7 @@
              * =============================== */
             var breadcrumbs = new Array();
             var reset_timer = undefined;
-            var inactivity_timeout = 6000;
+            var inactivity_timeout = 60000;
             var submenu_colors = {
                 'osl':'#E55E00',
                 'osl_network_graphs':'#E55E00',
@@ -464,20 +514,27 @@
             </div>
             
             <div id="osl_network_graphs" title="OSL Network Graphs">
-                <div class="button button_orange"><div class="text">Open Source Lab Services</div></div>
-                <div class="button button_red"><div class="text">Apache</div></div>
-                <div class="button button_blue"><div class="text">Gentoo</div></div>
-                <div class="button button_purple"><div class="text">Kernel .org</div></div>
-                <div class="button button_yellow"><div class="text">OpenOffice. org</div></div>
-                <div class="button button_green"><div class="text">Mozilla</div></div>
+                <div class="button button_orange" onclick="send('screens_osl_bandwidth,show,OSL Services');"><div class="text">Open Source Lab Services</div></div>
+                <div class="button button_red" onclick="send('screens_osl_bandwidth,show,Apache');"><div class="text">Apache</div></div>
+                <div class="button button_blue" onclick="send('screens_osl_bandwidth,show,Gentoo');"><div class="text">Gentoo</div></div>
+                <div class="button button_purple" onclick="send('screens_osl_bandwidth,show,Kernel.org');"><div class="text">Kernel .org</div></div>
+                <div class="button button_yellow" onclick="send('screens_osl_bandwidth,show,OpenOffice.org');"><div class="text">OpenOffice. org</div></div>
+                <div class="button button_green" onclick="send('screens_osl_bandwidth,show,Mozilla');"><div class="text">Mozilla</div></div>
             </div>
             
             <div id="webcams" title="Webcams">
-                <div class="button button_orange"><div class="text">Valley Library</div></div>
-                <div class="button button_red"><div class="text">Memorial Union</div></div>
-                <div class="button button_blue"><div class="text">South Campus</div></div>
-                <div class="button button_purple"><div class="text">Goss Stadium</div></div>
-                <div class="button button_yellow"><div class="text">Gill Annex</div></div>
+                <div class="button button_orange" onclick="send('Webcams,show,Valley Library');"><div class="text">Valley Library</div></div>
+                <div class="button button_orange" onclick="send('Webcams,show,Valley Library');"><div class="text">Reser Stadium</div></div>
+                <div class="button button_red" onclick="send('Webcams,show,Valley Library');"><div class="text">Memorial Union</div></div>
+                <div class="button button_red" onclick="send('Webcams,show,Valley Library');"><div class="text">Monroe Street</div></div>
+                <div class="button button_blue" onclick="send('Webcams,show,Valley Library');"><div class="text">South Campus</div></div>
+                <div class="button button_purple" onclick="send('Webcams,show,Valley Library');"><div class="text">Goss Stadium</div></div>
+                <div class="button button_red" onclick="send('Webcams,show,Valley Library');"><div class="text">Wave Lab</div></div>
+                <div class="button button_yellow" onclick="send('Webcams,show,Valley Library');"><div class="text">Gill Annex</div></div>
+                <div class="button button_red" onclick="send('Webcams,show,Valley Library');"><div class="text">Andrews Forrest</div></div>
+                <div class="button button_red" onclick="send('Webcams,show,Valley Library');"><div class="text">Hatfield Marine Science</div></div>
+                <div class="button button_red" onclick="send('Webcams,show,Valley Library');"><div class="text">Agate Beach</div></div>
+                <div class="button button_red" onclick="send('Webcams,show,Valley Library');"><div class="text">Research Vessel Wecoma</div></div>
             </div>
             
             <div id="network" title="Network Engineering">
