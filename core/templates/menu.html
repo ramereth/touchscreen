@@ -54,12 +54,23 @@
                 background-color:black;
                 border-bottom:1px solid white;
                 border-top:1px solid white;
+                height:50px;
+            }
+            
+            #status_color {
+                background-color:black;
+                position:absolute;
+                height:50px;
+                width:100%;
+            }
+            
+            #status_text {
                 color:white;
                 font-size:30px;
                 font-family: sans-serif;
-                height:40px;
-                padding-left: 20px;
-                padding-top:10px;
+                margin:10px 0 0 20px;
+                position:absolute;
+                width:100%;
             }
             
             #back {
@@ -316,22 +327,48 @@
              *  menu navigation
              * =============================== */
             var breadcrumbs = new Array();
+            var submenu_colors = {
+                'osl':'#E55E00',
+                'osl_network_graphs':'#E55E00',
+                'webcams':'#7533EF',
+                'network':'#EF3333',
+                'mainmenu':'#000000'
+            }
             
             function submenu(menu_name) {
+                // hide old info
                 hide(breadcrumbs[breadcrumbs.length-1]);
                 $menu = $('#'+menu_name);
-                console.log('showing: ', $menu);
+                $('#status_color').fadeOut(300)
+                // delay new status bar info till old info is hidden
+                setTimeout(function(){
+                    $('#status_color')
+                        .css('background-color', submenu_colors[menu_name])
+                        .fadeIn(500);
+                    $('#status_text').html($menu.attr('title'));
+                }, 350)
                 breadcrumbs.push($menu);
                 setTimeout(show, 900, $menu);
             }
         
             function back() {
+                // prevent mainmenu from being popped off
                 if (breadcrumbs.length == 1){
                     return;
                 }
+                // hide old info
                 $menu = breadcrumbs.pop();
                 hide($menu);
-                setTimeout(show, 900, breadcrumbs[breadcrumbs.length-1]);
+                $new_menu = breadcrumbs[breadcrumbs.length-1]
+                $('#status_color').fadeOut(300)
+                // delay new status bar info till old info is hidden
+                setTimeout(function(){
+                    $('#status_color')
+                        .css('background-color', submenu_colors[$new_menu.attr('id')])
+                        .fadeIn(500);
+                    $('#status_text').html($new_menu.attr('title'));
+                }, 350)
+                setTimeout(show, 900, $new_menu);
             }
         
             function reset() {
@@ -376,21 +413,21 @@
                 <img id="next" src="{{MEDIA}}/images/menu/buttons/nextSlide.gif"/>
             </div>
         </div>
-        <div id="status">Main Menu</div>
+        <div id="status"><div id="status_color"></div><div id="status_text">Main Menu</div></div>
         <div id="center"></div>
         <div id="back">Back</div>
         <div id="menus">
             
-            <div id="mainmenu">
+            <div id="mainmenu" title="Main Menu">
                 <div class="button button_orange" onclick="submenu('osl');"><div class="text">Open Source Lab</div></div>
                 <div class="button button_red" onclick="submenu('network');"><div class="text">Network Engineering</div></div>
                 <div class="button button_blue"><div class="text">Data Center Map</div></div>
-                <div class="button button_purple" onclick="send();"><div class="text">Webcams</div></div>
-                <div class="button button_yellow"><div class="text">Weather</div></div>
+                <div class="button button_purple" onclick="submenu('webcams');"><div class="text">Webcams</div></div>
+                <div class="button button_yellow" onclick="send();"><div class="text">Weather</div></div>
                 <div class="button button_green"><div class="text">Help</div></div>
             </div>
             
-            <div id="osl">
+            <div id="osl" title="Open Source Lab">
                 <div class="button button_orange" onclick="submenu('osl_network_graphs');"><div class="text">Network Graphs</div></div>
                 <div class="button button_red" onclick="send();"><div class="text">FTP Status</div></div>
                 <div class="button button_blue" onclick="send();"><div class="text">FTP Users Map</div></div>
@@ -401,7 +438,7 @@
                 <div class="button button_green"><div class="text">Help</div></div>
             </div>
             
-            <div id="osl_network_graphs">
+            <div id="osl_network_graphs" title="OSL Network Graphs">
                 <div class="button button_orange"><div class="text">Open Source Lab Services</div></div>
                 <div class="button button_red"><div class="text">Apache</div></div>
                 <div class="button button_blue"><div class="text">Gentoo</div></div>
@@ -410,7 +447,7 @@
                 <div class="button button_green"><div class="text">Mozilla</div></div>
             </div>
             
-            <div id="webcams">
+            <div id="webcams" title="Webcams">
                 <div class="button button_orange"><div class="text">Valley Library</div></div>
                 <div class="button button_red"><div class="text">Memorial Union</div></div>
                 <div class="button button_blue"><div class="text">South Campus</div></div>
@@ -418,7 +455,7 @@
                 <div class="button button_yellow"><div class="text">Gill Annex</div></div>
             </div>
             
-            <div id="network">
+            <div id="network" title="Network Engineering">
                 <div class="button button_orange"><div class="text">People</div></div>
                 <div class="button button_red"><div class="text">Traffic Graphs</div></div>
                 <div class="button button_blue" onclick="send();"><div class="text">Wifi Usage Map</div></div>
