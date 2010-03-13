@@ -23,6 +23,7 @@ DATABASE_PORT = ''                # Set to empty string for default. Not used wi
 SITE_ROOT = ''
 
 # absolute path to the docroot of this site NOT including the following /
+# e.g. /your/path/here
 DOC_ROOT = ''
 
 # Local time zone for this installation. Choices can be found here:
@@ -81,6 +82,7 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
+    # TOUCHSCREEN REQUIRED APPS
     'django.contrib.contenttypes',
     'django.contrib.auth',
     'django.contrib.sessions',
@@ -88,13 +90,20 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'muddle',
     'core',
+
+    # EXAMPLE SCREENS
     #'screens.EXAMPLES.helloscreen',
-    #'screen_fooscreen',
-    'screens.osl_about',
+    #'screens.EXAMPLES.fooscreen',
+
+    # DISPLAY SCREENS
     'screens.ftp_traffic',
+    'screens.ftp_usersmap',
+    'screens.osl_about',
+    'screens.osl_bandwidth',
     'screens.people',
     'screens.sponsors',
     'screens.weather',
+    'screens.webcams',
     'screens.wifi_bandwidth',
     'screens.wifi_usage',
 )
