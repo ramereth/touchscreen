@@ -124,7 +124,7 @@
              *  SLIDE SHOW
              * =============================== */
             // tracks timer for automatic slideshow, used for pausing slideshow
-            var slideshow_timer = -1;
+            var slideshow_timer = 0;
 
             // tracks slideshow index, may temporarily hold next or previous
             // screen
@@ -133,7 +133,8 @@
             // initializes and starts slideshow from the first slide
             function slideshow_start()
             {
-                slideshow_loop();
+                if (!slideshow_timer)
+		    slideshow_loop();
             }
 
             // loops slides automatically
@@ -143,7 +144,7 @@
 
                 //set next transition to duration of current slide
                 safelog('core: next screen in ' +
-                    parseInt(screen['duration'])/1000 + " seconds");
+                    screen['duration']/1000 + " seconds");
 
                 slideshow_timer =
                     setTimeout(slideshow_loop, screen['duration']);
@@ -154,7 +155,7 @@
             {
                 if( slideshow_timer ){
                     clearTimeout( slideshow_timer );
-                    slideshow_timer = -1;
+                    slideshow_timer = 0;
                 }
             }
 
@@ -163,13 +164,10 @@
             {
                 //get next slide
                 var screen = get_next_slide();
-
                 while( !screen['slideshow'] ){
                     screen = get_next_slide();
                 }
-
                 show_slide( screen );
-
                 return screen;
             }
 
@@ -181,7 +179,6 @@
                 while (!screen['slideshow']) {
                     screen = get_prev_slide();
                 }
-
                 show_slide(screen);
             }
 
@@ -192,7 +189,6 @@
                     slideshow_screen_index = 0;
                 else
                     slideshow_screen_index++;
-
                 return screens[slideshow_screen_index];
             }
 
@@ -203,7 +199,6 @@
                     slideshow_screen_index--;
                 else
                     slideshow_screen_index = screens.length-1;
-
                 return screens[slideshow_screen_index];
             }
 
