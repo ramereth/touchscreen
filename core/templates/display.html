@@ -56,16 +56,16 @@
             // found, return -1
             function get_screen_index( id )
             {
-                for( var i in screens )
-                    if( id == screens[i].id )
+		for( i in screens )
+                    if( id == screens[i].id ) {
                         return i;
+                    }
                 return -1;
             }
 
             function show_slide( screen )
             {
-                if( slideshow_screen_index != current_screen_index ){
-
+		if( slideshow_screen_index != current_screen_index ){
                     // hide slide if one is shown
                     if( current_screen_index != -1 ){
 
@@ -213,7 +213,7 @@
             function get_message()
             {
                 safelog("core messaging: eagerly awaiting next command.");
-                $.get('{{settings.general.MSG_RECEIVE_URL|safe}}', message_received);
+                $.getJSON('{{settings.general.MSG_RECEIVE_URL|safe}}', message_received);
             }
 
             /*
@@ -243,7 +243,7 @@
                 else
                     process_message( response );
 
-                // wait for the message
+                // wait for the message.
                 get_message();
             }
 
@@ -251,77 +251,55 @@
             {
                 safelog("core messaging: message received: " + response);
 
-                // treat the message as comma-seperated values
-                splitResponse = response.split(',');
-
-                // capture the object name
-                objName = splitResponse[0];
-
-                // for building the command string
-                cmd_string = null;
-
-                // if the message referrs to the slideshow,
+                objName = response[0]
+		cmd = response[1]
+		args = (response.length > 2) ? response.slice(2) : undefined;
+		
                 if( objName == "slideshow" ){
-                    cmd = splitResponse[1];
-
-                    if( cmd == "play" ) cmd_string = 'slideshow_start()';
+		    object = this;
+                    if( cmd == "play" ) func = slideshow_start;
 		    else if( cmd == "show" ) {
-			slideshow_screen_index = get_screen_index( splitResponse[2] );
-			show_slide( screens[ slideshow_screen_index ] );
+			func = show_slide;
+			slideshow_screen_index = get_screen_index(args[0]);
+			if( slideshow_screen_index == -1 ){
+			    safelog("core messaging: screen not found:" + args[0]);
+			    return;
+			}
+			args = [screens[slideshow_screen_index]];
 		    }
-                    else if( cmd == "stop" ) cmd_string = 'slideshow_stop()';
-                    else if( cmd == "next" ) cmd_string = 'slideshow_next()';
-                    else if( cmd == "prev" ) cmd_string = 'slideshow_prev()';
-		    else if( cmd == "enable" ) {
-			cmd_string = 'reload_screen("'+splitResponse[2]+'")';
+                    else if( cmd == "stop" ) func = slideshow_stop;
+                    else if( cmd == "next" ) func = slideshow_next;
+                    else if( cmd == "prev" ) func = slideshow_prev;
+		    else if( cmd == "enable" ) func = reload_screen;
+		    else if( cmd == "disable" ) func = unload_screen;
+                    else {
+                        safelog("core messaging: unknown slideshow command: " + cmd);
+			return;
 		    }
-		    else if( cmd == "disable" ) {
-			cmd_string = 'unload_screen("'+splitResponse[2]+'")';
-		    }
-                    else
-                        safelog("core messaging: unknown slideshow command '" +
-                        splitResponse[1] + "'");
-                }
-
-                // otherwise, the message refers to a screen
-                else {
+                } else {
+		    // otherwise, the message refers to a screen
                     slideshow_screen_index = get_screen_index( objName );
-                    if( slideshow_screen_index != -1 ){
-                        show_slide( screens[ slideshow_screen_index ] );
-                        safelog( "core messaging: showing screen " + objName );
-
-                        // if a command (and optionally arguments) are also
-                        // supplied, execute the command
-                        if( splitResponse.length >= 2 ) {
-                            command = splitResponse[1];
-                            // process args into strings if ther are more than
-                            // two comma-seperated values
-                            args = '';
-                            if( splitResponse.length > 2 ) {
-                                for( i=2; i<splitResponse.length; i++ ){
-                                    if( i > 2 ) args += ',';
-                                    args += '"' + splitResponse[i] + '"';
-                                }
-                            }
-                            // Build command string to evaluate
-                            cmd_string = objName + "." + command + '('+args+')';
-                        }
-
-                    } else
-                        safelog("core messaging: screen " + objName +
-                            " not found.");
+                    if( slideshow_screen_index == -1 ){
+                        safelog("core messaging: screen not found:" + objName);
+			return;
+                    }
+		    show_slide( screens[ slideshow_screen_index ] );
+		    object = window[objName];
+		    func = object[cmd];
                 }
-
-                // evaluate the command if it was set
-                if( cmd_string ){
-                    safelog("core messaging: parsed command from message: "
-                        + cmd_string );
-
-                    // use setTimeout to asynchronously call the function. This
-                    // allows immediate return.  It also prevents exceptions in
-                    // the called function from causing an exception here.
-                    setTimeout( cmd_string, 0 );
-                }
+		
+		// use setTimeout to asynchronously call the function. This
+		// allows immediate return.  It also prevents exceptions in
+		// the called function from causing an exception here.
+		if (args) {
+		    // call function using func.apply() which allows an array of
+		    // arguments to be passed in.
+		    // XXX calling func.apply directly with SetTimeout does not
+		    // appear to work. use an anonymous function instead.
+		    setTimeout(function(){func.apply(object, args);}, 0);
+		} else {
+		    setTimeout(func, 0);
+		}
             }
 
             /* ===============================

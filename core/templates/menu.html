@@ -102,6 +102,7 @@
         <script type="text/javascript" src="{{MEDIA}}/js/raphael-min.js"></script>
         <script type="text/javascript" src="{{MEDIA}}/js/cufon-yui.js"></script>
         <script type="text/javascript" src="{{MEDIA}}/js/osl_500.font.js"></script>
+        <script type="text/javascript" src="{{MEDIA}}/js/json2.js"></script>
         <script type="text/javascript">
         
             // Easing equation, borrowed from jQuery easing plugin
@@ -369,7 +370,12 @@
             /* ===============================
              *  Communication
              * =============================== */
-            function send(msg) {
+            function send() {
+                /*
+                    Converts all arguments sent to this function into an array
+                    which is JSON encoded and sent as a message.
+                */
+                msg = JSON.stringify($.makeArray(arguments));
                 $.get('http://localhost:9000/?u=touchscreen&c=1&q=touchscreen&m='+msg);
             }
         
@@ -378,7 +384,7 @@
              * =============================== */
             var breadcrumbs = new Array();
             var reset_timer = undefined;
-            var inactivity_timeout = 60000;
+            var inactivity_timeout = 5000;
             var submenu_colors = {
                 'osl':'#E55E00',
                 'osl_network_graphs':'#E55E00',
@@ -397,7 +403,7 @@
             function reset() {
                 reset_timer = undefined;
                 if (breadcrumbs.length == 1) {return;}
-                send('slideshow,play');
+                send('slideshow','play');
                 // hide current menu
                 hide(breadcrumbs.pop());
                 // pop all other menus off the breadcrumbs
@@ -494,10 +500,10 @@
             <img src="{{MEDIA}}/images/osl_logo.png"/>
             <div id="slideshow">
                 <div>Slideshow</div>
-                <img id="prev" src="{{MEDIA}}/images/menu/buttons/prevSlide.gif" onclick="send('slideshow,prev');"/>
-                <img id="stop" src="{{MEDIA}}/images/menu/buttons/stop.gif" onclick="send('slideshow,stop');"/>
-                <img id="play" src="{{MEDIA}}/images/menu/buttons/play.gif" onclick="send('slideshow,play');"/>
-                <img id="next" src="{{MEDIA}}/images/menu/buttons/nextSlide.gif" onclick="send('slideshow,next');"/>
+                <img id="prev" src="{{MEDIA}}/images/menu/buttons/prevSlide.gif" onclick="send('slideshow','prev');"/>
+                <img id="stop" src="{{MEDIA}}/images/menu/buttons/stop.gif" onclick="send('slideshow','stop');"/>
+                <img id="play" src="{{MEDIA}}/images/menu/buttons/play.gif" onclick="send('slideshow','play');"/>
+                <img id="next" src="{{MEDIA}}/images/menu/buttons/nextSlide.gif" onclick="send('slideshow','next');"/>
             </div>
         </div>
         <div id="status"><div id="status_color"></div><div id="status_text">Main Menu</div></div>
@@ -509,55 +515,52 @@
                 <div class="button button_orange" onclick="submenu('osl');"><div class="text">Open Source Lab</div></div>
                 <div class="button button_red" onclick="submenu('network');"><div class="text">Network Engineering</div></div>
                 <div class="button button_blue"><div class="text">Data Center Map</div></div>
-                <div class="button button_purple" onclick="submenu('webcams');send('slideshow,show,Webcams');"><div class="text">Webcams</div></div>
-                <div class="button button_yellow" onclick="send('slideshow,show,Weather');"><div class="text">Weather</div></div>
+                <div class="button button_purple" onclick="submenu('webcams');send('slideshow','show','Webcams');"><div class="text">Webcams</div></div>
+                <div class="button button_yellow" onclick="send('slideshow','show','Weather');"><div class="text">Weather</div></div>
                 <div class="button button_green"><div class="text">Help</div></div>
             </div>
             
             <div id="osl" title="Open Source Lab">
-                <div class="button button_orange" onclick="submenu('osl_network_graphs'); send('slideshow,show,OSLBandwidth');"><div class="text">Network Graphs</div></div>
-                <div class="button button_red" onclick="send('slideshow,show,FTP_Traffic');"><div class="text">FTP Status</div></div>
-                <div class="button button_blue" onclick="send('slideshow,show,FTP_Users_Map');"><div class="text">FTP Users Map</div></div>
+                <div class="button button_orange" onclick="submenu('osl_network_graphs'); send('slideshow','show','OSLBandwidth');"><div class="text">Network Graphs</div></div>
+                <div class="button button_red" onclick="send('slideshow','show','FTP_Traffic');"><div class="text">FTP Status</div></div>
+                <div class="button button_blue" onclick="send('slideshow','show','FTP_Users_Map');"><div class="text">FTP Users Map</div></div>
                 <div class="button button_green"><div class="text">Outages</div></div>
-                <div class="button button_orange" onclick="send('slideshow,show,OSL_About');"><div class="text">About</div></div>
-                <div class="button button_red" onclick="send('slideshow,show,OSLPeopleScreen');"><div class="text">People</div></div>
-                <div class="button button_blue" onclick="send('slideshow,show,OSL_Donors');"><div class="text">Sponsors</div></div>
+                <div class="button button_orange" onclick="send('slideshow','show','OSL_About');"><div class="text">About</div></div>
+                <div class="button button_red" onclick="send('slideshow','show','OSLPeopleScreen');"><div class="text">People</div></div>
+                <div class="button button_blue" onclick="send('slideshow','show','OSL_Donors');"><div class="text">Sponsors</div></div>
                 <div class="button button_green"><div class="text">Help</div></div>
             </div>
             
             <div id="osl_network_graphs" title="OSL Network Graphs">
-                <div class="button button_orange" onclick="send('screens_osl_bandwidth,show,OSL Services');"><div class="text">Open Source Lab Services</div></div>
-                <div class="button button_red" onclick="send('screens_osl_bandwidth,show,Apache');"><div class="text">Apache</div></div>
-                <div class="button button_blue" onclick="send('screens_osl_bandwidth,show,Gentoo');"><div class="text">Gentoo</div></div>
-                <div class="button button_purple" onclick="send('screens_osl_bandwidth,show,Kernel.org');"><div class="text">Kernel .org</div></div>
-                <div class="button button_yellow" onclick="send('screens_osl_bandwidth,show,OpenOffice.org');"><div class="text">OpenOffice. org</div></div>
-                <div class="button button_green" onclick="send('screens_osl_bandwidth,show,Mozilla');"><div class="text">Mozilla</div></div>
+                <div class="button button_orange" onclick="send('screens_osl_bandwidth','show','OSL Services');"><div class="text">Open Source Lab Services</div></div>
+                <div class="button button_red" onclick="send('screens_osl_bandwidth','show','Apache');"><div class="text">Apache</div></div>
+                <div class="button button_blue" onclick="send('screens_osl_bandwidth','show','Gentoo');"><div class="text">Gentoo</div></div>
+                <div class="button button_purple" onclick="send('screens_osl_bandwidth','show','Kernel.org');"><div class="text">Kernel .org</div></div>
+                <div class="button button_yellow" onclick="send('screens_osl_bandwidth','show','OpenOffice.org');"><div class="text">OpenOffice. org</div></div>
+                <div class="button button_green" onclick="send('screens_osl_bandwidth','show','Mozilla');"><div class="text">Mozilla</div></div>
             </div>
             
             <div id="webcams" title="Webcams">
-                <div class="button button_orange" onclick="send('Webcams,show,Valley Library');"><div class="text">Valley Library</div></div>
-                <div class="button button_blue" onclick="send('Webcams,show,Reser Stadium');"><div class="text">Reser Stadium</div></div>
-                <div class="button button_red" onclick="send('Webcams,show,Memorial Union');"><div class="text">Memorial Union</div></div>
-                <div class="button button_yellow" onclick="send('Webcams,show,Monroe Street');"><div class="text">Monroe Street</div></div>
-                <div class="button button_orange" onclick="send('Webcams,show,South Campus');"><div class="text">South Campus</div></div>
-                <div class="button button_blue" onclick="send('Webcams,show,Goss Stadium');"><div class="text">Goss Stadium</div></div>
-                <div class="button button_red" onclick="send('Webcams,show,Wave Lab');"><div class="text">Wave Lab</div></div>
-                <div class="button button_yellow" onclick="send('Webcams,show,Gill Annex');"><div class="text">Gill Annex</div></div>
-                <div class="button button_orange" onclick="send('Webcams,show,Andrews Forrest');"><div class="text">Andrews Forrest</div></div>
-                <div class="button button_blue" onclick="send('Webcams,show,Hatfield Marine Science');"><div class="text">Hatfield Marine Science</div></div>
-                <div class="button button_red" onclick="send('Webcams,show,Agate Beach');"><div class="text">Agate Beach</div></div>
-                <div class="button button_yellow" onclick="send('Webcams,show,Research Vessel Wecoma');"><div class="text">Research Vessel Wecoma</div></div>
+                <div class="button button_orange" onclick="send('Webcams','show','Valley Library');"><div class="text">Valley Library</div></div>
+                <div class="button button_blue" onclick="send('Webcams','show','Reser Stadium');"><div class="text">Reser Stadium</div></div>
+                <div class="button button_red" onclick="send('Webcams','show','Memorial Union');"><div class="text">Memorial Union</div></div>
+                <div class="button button_yellow" onclick="send('Webcams','show','Monroe Street');"><div class="text">Monroe Street</div></div>
+                <div class="button button_orange" onclick="send('Webcams','show','South Campus');"><div class="text">South Campus</div></div>
+                <div class="button button_blue" onclick="send('Webcams','show','Goss Stadium');"><div class="text">Goss Stadium</div></div>
+                <div class="button button_red" onclick="send('Webcams','show','Wave Lab');"><div class="text">Wave Lab</div></div>
+                <div class="button button_yellow" onclick="send('Webcams','show','Gill Annex');"><div class="text">Gill Annex</div></div>
+                <div class="button button_orange" onclick="send('Webcams','show','Andrews Forrest');"><div class="text">Andrews Forrest</div></div>
+                <div class="button button_blue" onclick="send('Webcams','show','Hatfield Marine Science');"><div class="text">Hatfield Marine Science</div></div>
+                <div class="button button_red" onclick="send('Webcams','show','Agate Beach');"><div class="text">Agate Beach</div></div>
+                <div class="button button_yellow" onclick="send('Webcams','show','Research Vessel Wecoma');"><div class="text">Research Vessel WECOMA</div></div>
             </div>
             
             <div id="network" title="Network Engineering">
                 <div class="button button_orange"><div class="text">People</div></div>
                 <div class="button button_red"><div class="text">Traffic Graphs</div></div>
-                <div class="button button_blue" onclick="send('slideshow,show,WifiBandwidth');"><div class="text">Wifi Usage Map</div></div>
-                <div class="button button_purple" onclick="send('slideshow,show,WifiUsage');"><div class="text">Wifi Bandwidth Map</div></div>
+                <div class="button button_blue" onclick="send('slideshow','show','WifiBandwidth');"><div class="text">Wifi Usage Map</div></div>
+                <div class="button button_purple" onclick="send('slideshow','show','WifiUsage');"><div class="text">Wifi Bandwidth Map</div></div>
             </div>
-            
-            
-            
         </div>
     </body>
 </html>
