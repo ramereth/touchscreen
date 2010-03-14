@@ -264,7 +264,7 @@
                 if( objName == "slideshow" ){
                     cmd = splitResponse[1];
 
-                    if( cmd == "start" ) cmd_string = 'slideshow_start()';
+                    if( cmd == "play" ) cmd_string = 'slideshow_start()';
 		    else if( cmd == "show" ) {
 			slideshow_screen_index = get_screen_index( splitResponse[2] );
 			show_slide( screens[ slideshow_screen_index ] );
