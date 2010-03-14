@@ -208,8 +208,18 @@
             function get_message()
             {
                 safelog("core messaging: eagerly awaiting next command.");
-                $.getJSON('{{settings.general.MSG_RECEIVE_URL|safe}}', message_received);
+		$.ajax({
+			url:'{{settings.general.MSG_RECEIVE_URL|safe}}',
+			success:message_received,
+			error:message_error,
+			dataType:'json'
+		    });
             }
+
+	    function message_error() {
+		// handle error, wait 10 seconds and then retry.
+		setTimeout(get_message, 10000);
+	    }
 
             /*
             Process message into command
@@ -403,7 +413,7 @@
                 init_all();
                 Cufon.replace('.display_title');
                 setTimeout(slideshow_start, delay);
-                //get_message();  //start waiting for messages
+                get_message();  //start waiting for messages
 
                 // Debug window controls
                 $('.debug_buttons').hover(
