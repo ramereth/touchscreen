@@ -370,7 +370,7 @@
              *  Communication
              * =============================== */
             function send(msg) {
-                $.get('/proxy/', {url:'http://localhost:9000/?u=touchscreen&c=1&q=touchscreen&m='+msg});
+                $.get('http://localhost:9000/?u=touchscreen&c=1&q=touchscreen&m='+msg);
             }
         
             /* ===============================
@@ -389,13 +389,14 @@
             
             function activity() {
                 if (reset_timer != undefined) {
-                    cancelTimeout(reset);
+                    clearTimeout(reset);
                 }
                 reset_timer = setTimeout(reset, inactivity_timeout);
             }
             
             function reset() {
                 reset_timer = undefined;
+                if (breadcrumbs.length == 1) {return;}
                 send('slideshow,play');
                 // hide current menu
                 hide(breadcrumbs.pop());
@@ -405,8 +406,8 @@
                 }
                 
                 // show main menu
-                $menu = breadcrumbs[0];
                 setTimeout(function(){
+                    $menu = breadcrumbs[0];
                     $('#status_color')
                         .css('background-color', submenu_colors[$menu.attr('id')])
                         .fadeIn(500);
@@ -415,7 +416,7 @@
                         textShadow: '1px 1px rgba(0, 0, 0, 0.8)'
                     });
                 }, 350)
-                setTimeout(show, 900, $menu);
+                setTimeout(show, 900, breadcrumbs[0]);
             }
             
             function submenu(menu_name) {
@@ -514,7 +515,7 @@
             </div>
             
             <div id="osl" title="Open Source Lab">
-                <div class="button button_orange" onclick="submenu('osl_network_graphs');send('slideshow,show,OSLBandwidth')"><div class="text">Network Graphs</div></div>
+                <div class="button button_orange" onclick="submenu('osl_network_graphs'); send('slideshow,show,OSLBandwidth');"><div class="text">Network Graphs</div></div>
                 <div class="button button_red" onclick="send('slideshow,show,FTP_Traffic');"><div class="text">FTP Status</div></div>
                 <div class="button button_blue" onclick="send('slideshow,show,FTP_Users_Map');"><div class="text">FTP Users Map</div></div>
                 <div class="button button_green"><div class="text">Outages</div></div>
@@ -535,17 +536,17 @@
             
             <div id="webcams" title="Webcams">
                 <div class="button button_orange" onclick="send('Webcams,show,Valley Library');"><div class="text">Valley Library</div></div>
-                <div class="button button_blue" onclick="send('Webcams,show,Valley Library');"><div class="text">Reser Stadium</div></div>
-                <div class="button button_red" onclick="send('Webcams,show,Valley Library');"><div class="text">Memorial Union</div></div>
-                <div class="button button_yellow" onclick="send('Webcams,show,Valley Library');"><div class="text">Monroe Street</div></div>
-                <div class="button button_orange" onclick="send('Webcams,show,Valley Library');"><div class="text">South Campus</div></div>
-                <div class="button button_blue" onclick="send('Webcams,show,Valley Library');"><div class="text">Goss Stadium</div></div>
-                <div class="button button_red" onclick="send('Webcams,show,Valley Library');"><div class="text">Wave Lab</div></div>
-                <div class="button button_yellow" onclick="send('Webcams,show,Valley Library');"><div class="text">Gill Annex</div></div>
-                <div class="button button_orange" onclick="send('Webcams,show,Valley Library');"><div class="text">Andrews Forrest</div></div>
-                <div class="button button_blue" onclick="send('Webcams,show,Valley Library');"><div class="text">Hatfield Marine Science</div></div>
-                <div class="button button_red" onclick="send('Webcams,show,Valley Library');"><div class="text">Agate Beach</div></div>
-                <div class="button button_yellow" onclick="send('Webcams,show,Valley Library');"><div class="text">Research Vessel Wecoma</div></div>
+                <div class="button button_blue" onclick="send('Webcams,show,Reser Stadium');"><div class="text">Reser Stadium</div></div>
+                <div class="button button_red" onclick="send('Webcams,show,Memorial Union');"><div class="text">Memorial Union</div></div>
+                <div class="button button_yellow" onclick="send('Webcams,show,Monroe Street');"><div class="text">Monroe Street</div></div>
+                <div class="button button_orange" onclick="send('Webcams,show,South Campus');"><div class="text">South Campus</div></div>
+                <div class="button button_blue" onclick="send('Webcams,show,Goss Stadium');"><div class="text">Goss Stadium</div></div>
+                <div class="button button_red" onclick="send('Webcams,show,Wave Lab');"><div class="text">Wave Lab</div></div>
+                <div class="button button_yellow" onclick="send('Webcams,show,Gill Annex');"><div class="text">Gill Annex</div></div>
+                <div class="button button_orange" onclick="send('Webcams,show,Andrews Forrest');"><div class="text">Andrews Forrest</div></div>
+                <div class="button button_blue" onclick="send('Webcams,show,Hatfield Marine Science');"><div class="text">Hatfield Marine Science</div></div>
+                <div class="button button_red" onclick="send('Webcams,show,Agate Beach');"><div class="text">Agate Beach</div></div>
+                <div class="button button_yellow" onclick="send('Webcams,show,Research Vessel Wecoma');"><div class="text">Research Vessel Wecoma</div></div>
             </div>
             
             <div id="network" title="Network Engineering">
