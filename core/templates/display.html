@@ -207,9 +207,10 @@
                 slideshow_screen_index = get_screen_index(id);
                 if( slideshow_screen_index == -1 ){
                     safelog("core messaging: screen not found:" + args[0]);
-                    return;
+                    return false;
 		}
 		show_slide(screens[slideshow_screen_index]);
+                return true;
 	    }
             
             function command_next(id){
@@ -314,12 +315,9 @@
 		    }
                 } else {
 		    // otherwise, the message refers to a screen
-                    slideshow_screen_index = get_screen_index( objName );
-                    if( slideshow_screen_index == -1 ){
-                        safelog("core messaging: screen not found:" + objName);
-			return;
+                    if (!command_show(objName)){
+                        return;
                     }
-		    show_slide( screens[ slideshow_screen_index ] );
 		    object = window[objName];
 		    func = object[cmd];
                 }
