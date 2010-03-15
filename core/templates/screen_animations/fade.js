@@ -1,6 +1,6 @@
 function fade_in(screen) {
     id = screen['id']
-    $screen = $('#'+id);
+    var $screen = $('#'+id);
 
     //first move the screen into place
     $screen.css('left',0);
@@ -16,7 +16,7 @@ function fade_in(screen) {
 
 function fade_out(screen) {
     id = screen['id']
-    $screen = $('#'+id);
+    var $screen = $('#'+id);
 
     //fade the contents out
     $screen.children('.content').fadeOut(750, function(){
