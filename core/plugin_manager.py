@@ -26,17 +26,17 @@ class GeneralSettingsForm(forms.Form):
         initial=10000
     )
         
-    MSG_SEND_URL = forms.CharField(
-        label='Message Send URL', 
-        help_text='The send url of the message server', 
-        initial='http://localhost:9000/?c=1&q=touchscreen',
+    MSG_SERVER_URL = forms.CharField(
+        label='Message Server',
+        help_text='The url of the message server',
+        initial='http://localhost:9000',
         max_length=128
     )
 
-    MSG_RECEIVE_URL = forms.CharField(
-        label='Message Receive URL', 
-        help_text='The receive url of the message server', 
-        initial='http://localhost:9000/?c=0&q=touchscreen',
+    MSG_SERVER_QUEUE = forms.CharField(
+        label='Message Server Queue',
+        help_text='The queue to use on the message server, change if you have multiple displays using the same server', 
+        initial='touchscreen',
         max_length=128
     )
 

@@ -379,7 +379,13 @@
                 */
                 activity();
                 msg = JSON.stringify($.makeArray(arguments));
-                $.get('http://localhost:9000/?u=touchscreen&c=1&q=touchscreen&m='+msg);
+                $.get('{{settings.general.MSG_SERVER_URL|safe}}',
+                        {
+                            c:1,
+                            q:'{{settings.general.MSG_SERVER_QUEUE}}',
+                            u:'touchscreen',
+                            m:msg
+                        });
             }
         
             /* ===============================

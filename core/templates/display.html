@@ -238,7 +238,12 @@
             {
                 safelog("core messaging: eagerly awaiting next command.");
 		$.ajax({
-			url:'{{settings.general.MSG_RECEIVE_URL|safe}}&u=touchcreen',
+			url:'{{settings.general.MSG_SERVER_URL|safe}}',
+                        data:{
+                            c:0,
+                            q:'{{settings.general.MSG_SERVER_QUEUE}}',
+                            u:'touchscreen'
+                        },
 			success:message_received,
 			error:message_error,
 			dataType:'json'
