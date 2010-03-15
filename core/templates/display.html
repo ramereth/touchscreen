@@ -38,9 +38,9 @@
             var hiders  = {};
             var showers = {};
             {% for key, animation in screen_animations.items %}
-                hiders['{{animation.hash}}'] = '{{animation.hash}}_out';
-                showers['{{animation.hash}}'] = '{{animation.hash}}_in';
                 {% include animation.template %}
+                hiders['{{animation.hash}}'] = {{animation.hash}}_out;
+                showers['{{animation.hash}}'] = {{animation.hash}}_in;
             {% endfor %}
 
             /* ===============================
@@ -68,68 +68,62 @@
 		if( slideshow_screen_index != current_screen_index ){
                     // hide slide if one is shown
                     if( current_screen_index != -1 ){
-
                         current_screen = screens[current_screen_index];
                         safelog('core: hiding ' + current_screen['id']);
-                        hider = eval(hiders[current_screen['hide']]);
+                        hider = hiders[current_screen['hide']];
                         var hidetime = hider(current_screen);
-
+                        
                         // hide the screen
                         eval(current_screen['stop']);
-
+                        
                     } else {
                         // no current slide
                         var hidetime = 0;
                     }
-
+                    
                     current_screen_index = slideshow_screen_index;
-
+                    
                     if( !hidetime ) hidetime = 999;
-
+                    
                     // clear past timer in case next/prev was clicked
                     // repeatedly
                     if( show_timer ) { clearTimeout(show_timer)};
                     if( start_timer ) { clearTimeout(start_timer)};
-
+                    
                     // set the window resize pointer to the screen's resize hook
                     // function
                     window.onresize = function(){
                         safelog('core: window resized to ' +
                             screenWidth() + "x" + screenHeight());
-
                         eval( screens[current_screen_index]['onWinResize'] );
                     }
-
+                    
+                    // set timeout for showing the screen via an anonymous func
+                    // start of screen should be delayed until the show
+                    // animation is completed
                     show = showers[screen['show']];
-
-                    safelog('core: showing ' + screen['id']);
-
-                    show_timer = setTimeout( "show_slide_animation_wrapper('" +
-                        show+"(screens[current_screen_index])'," +
-                        current_screen_index +")", hidetime);
+                    show_timer = setTimeout(
+                        function(){
+                            safelog('core: showing ' + screen['id']);
+                            start_timer = showtime = show(screens[current_screen_index]);
+                            setTimeout(screens[current_screen_index]['start'], showtime);
+                        },
+                        hidetime
+                    );
+                    
                 }
             }
-
-            /*
-            function that wraps the animation call for showing the next screen.
-            This is used to delay calling screen.start() until after the screen
-            has been shown
-            */
-            function show_slide_animation_wrapper (func, screen_index) {
-                start_timer = showtime = eval(func);
-                setTimeout(screens[screen_index]['start']);
-            }
-
+            
             /* ===============================
              *  SLIDE SHOW
              * =============================== */
             // tracks timer for automatic slideshow, used for pausing slideshow
             var slideshow_timer = 0;
-
+            
             // tracks slideshow index, may temporarily hold next or previous
             // screen
             var slideshow_screen_index = -1;
-
+            
             // initializes and starts slideshow from the first slide
             function slideshow_start()
             {
@@ -342,7 +336,7 @@
 		div.append(html);
 		$('#screens').append(div);
 		init_screen(new_screen);
-		eval(hiders[new_screen['hide']]);
+                hiders[new_screen['hide']];
 		screens[screens.length] = new_screen;
 	    }
 
@@ -363,7 +357,8 @@
                     //get hider and call it for the screen
                     hider_key = screens[i]['hide'];
                     hider = hiders[hider_key];
-                    delay = eval(hider+'(screens[i])');
+                    console.log(screens, screens[i]);
+                    delay = hider(screens[i]);
                     if (delay > max_delay) {
                         max_delay = delay
                     }
