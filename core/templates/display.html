@@ -234,6 +234,12 @@
             /* ===============================
              *  AJAX Messaging
              * =============================== */
+            // generate a random user string for each request to allow multiple
+            // instances of the display.
+            var user = '' + Math.floor(Math.random()*999999999999999999999)
+                        + Math.floor(Math.random()*999999999999999999999)
+                        + Math.floor(Math.random()*999999999999999999999);
+            
             function get_message()
             {
                 safelog("core messaging: eagerly awaiting next command.");
@@ -242,7 +248,7 @@
                         data:{
                             c:0,
                             q:'{{settings.general.MSG_SERVER_QUEUE}}',
-                            u:'touchscreen'
+                            u:user
                         },
 			success:message_received,
 			error:message_error,
