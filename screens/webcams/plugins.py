@@ -167,7 +167,7 @@ class WebcamsSettings(forms.Form):
     title_4 = forms.CharField(
             label='Webcam 4 Title', 
             help_text='The title for webcam 4',  
-            initial='Gloss Stadium'
+            initial='Goss Stadium'
     )
 
     title_5 = forms.CharField(
@@ -185,7 +185,7 @@ class WebcamsSettings(forms.Form):
     title_7 = forms.CharField(
             label='Webcam 7 Title', 
             help_text='The title for webcam 7',  
-            initial='Gill Renovation'
+            initial='Gill Annex'
     )
 
     title_8 = forms.CharField(
