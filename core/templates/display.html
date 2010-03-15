@@ -57,9 +57,8 @@
             function get_screen_index( id )
             {
 		for( i in screens )
-                    if( id == screens[i].id ) {
+                    if( id == screens[i].id )
                         return i;
-                    }
                 return -1;
             }
 
@@ -197,13 +196,49 @@
             }
 
             /* ===============================
+             *  SLIDE SHOW Commands
+             * =============================== */
+            function command_show(id){
+		/*
+		    command used to show a slide directly.  stops the slideshow
+		    and shows the slide
+		*/
+		slideshow_stop();
+                slideshow_screen_index = get_screen_index(id);
+                if( slideshow_screen_index == -1 ){
+                    safelog("core messaging: screen not found:" + args[0]);
+                    return;
+		}
+                console.log(slideshow_screen_index, screens[slideshow_screen_index])
+		show_slide(screens[slideshow_screen_index]);
+	    }
+            
+            function command_next(id){
+		/*
+		    command used to show a slide directly.  stops the slideshow
+		    and shows the slide
+		*/
+		slideshow_stop();
+		slideshow_next();
+	    }
+            
+            function command_prev(id){
+		/*
+		    command used to show a slide directly.  stops the slideshow
+		    and shows the slide
+		*/
+		slideshow_stop();
+		slideshow_prev();
+	    }
+
+            /* ===============================
              *  AJAX Messaging
              * =============================== */
             function get_message()
             {
                 safelog("core messaging: eagerly awaiting next command.");
 		$.ajax({
-			url:'{{settings.general.MSG_RECEIVE_URL|safe}}',
+			url:'{{settings.general.MSG_RECEIVE_URL|safe}}&u=touchcreen',
 			success:message_received,
 			error:message_error,
 			dataType:'json'
@@ -257,18 +292,10 @@
                 if( objName == "slideshow" ){
 		    object = this;
                     if( cmd == "play" ) func = slideshow_start;
-		    else if( cmd == "show" ) {
-			func = show_slide;
-			slideshow_screen_index = get_screen_index(args[0]);
-			if( slideshow_screen_index == -1 ){
-			    safelog("core messaging: screen not found:" + args[0]);
-			    return;
-			}
-			args = [screens[slideshow_screen_index]];
-		    }
+		    else if( cmd == "show" ) func = command_show;
                     else if( cmd == "stop" ) func = slideshow_stop;
-                    else if( cmd == "next" ) func = slideshow_next;
-                    else if( cmd == "prev" ) func = slideshow_prev;
+                    else if( cmd == "next" ) func = command_next;
+                    else if( cmd == "prev" ) func = command_prev;
 		    else if( cmd == "enable" ) func = reload_screen;
 		    else if( cmd == "disable" ) func = unload_screen;
                     else {
@@ -357,7 +384,6 @@
                     //get hider and call it for the screen
                     hider_key = screens[i]['hide'];
                     hider = hiders[hider_key];
-                    console.log(screens, screens[i]);
                     delay = hider(screens[i]);
                     if (delay > max_delay) {
                         max_delay = delay
