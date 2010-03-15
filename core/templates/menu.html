@@ -375,6 +375,7 @@
                     Converts all arguments sent to this function into an array
                     which is JSON encoded and sent as a message.
                 */
+                activity();
                 msg = JSON.stringify($.makeArray(arguments));
                 $.get('http://localhost:9000/?u=touchscreen&c=1&q=touchscreen&m='+msg);
             }
@@ -383,8 +384,8 @@
              *  menu navigation
              * =============================== */
             var breadcrumbs = new Array();
-            var reset_timer = undefined;
-            var inactivity_timeout = 5000;
+            var reset_timer = 0;
+            var inactivity_timeout = 600000;
             var submenu_colors = {
                 'osl':'#E55E00',
                 'osl_network_graphs':'#E55E00',
@@ -394,14 +395,14 @@
             }
             
             function activity() {
-                if (reset_timer != undefined) {
-                    clearTimeout(reset);
+                if (reset_timer) {
+                    clearTimeout(reset_timer);
                 }
                 reset_timer = setTimeout(reset, inactivity_timeout);
             }
             
             function reset() {
-                reset_timer = undefined;
+                reset_timer = 0;
                 if (breadcrumbs.length == 1) {return;}
                 send('slideshow','play');
                 // hide current menu
