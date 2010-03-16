@@ -57,23 +57,11 @@
                 background-color:black;
                 border-bottom:1px solid white;
                 border-top:1px solid white;
-                height:50px;
-            }
-            
-            #status_color {
-                background-color:black;
-                position:absolute;
-                height:50px;
-                width:100%;
-            }
-            
-            #status_text {
                 color:white;
                 font-size:30px;
                 font-family: sans-serif;
-                margin:10px 0 0 20px;
-                position:absolute;
-                width:100%;
+                height:40px;
+                padding:10px 0 0 20px;
             }
             
             #back {
@@ -188,6 +176,7 @@
         </style>
         
         <script type='text/javascript' src="{{MEDIA}}/js/jquery-1.4.min.js"></script>
+        <script type='text/javascript' src="{{MEDIA}}/js/jquery.color.js"></script>
         <script type="text/javascript" src="{{MEDIA}}/js/raphael-min.js"></script>
         <script type="text/javascript" src="{{MEDIA}}/js/cufon-yui.js"></script>
         <script type="text/javascript" src="{{MEDIA}}/js/osl_500.font.js"></script>
@@ -512,11 +501,10 @@
                 // show main menu
                 setTimeout(function(){
                     $menu = breadcrumbs[0];
-                    $('#status_color')
-                        .css('background-color', submenu_colors[$menu.attr('id')])
-                        .fadeIn(500);
-                    $('#status_text').html($menu.attr('title'));
-                    Cufon.replace('#status_text', {
+                    $('#status')
+                        .html($menu.attr('title'))
+                        .animate({backgroundColor: submenu_colors[$menu.attr('id')]}, 500);
+                    Cufon.replace('#status', {
                         textShadow: '1px 1px rgba(0, 0, 0, 0.8)'
                     });
                 }, 350)
@@ -528,15 +516,15 @@
                 // hide old info
                 hide(breadcrumbs[breadcrumbs.length-1]);
                 $menu = $('#'+menu_name);
-                $('#status_color').fadeOut(300)
+                //$('#status_color').fadeOut(300)
+                $('#status').animate({backgroundColor: '#000'}, 300);
                 $('#back').fadeIn(300);
                 // delay new status bar info till old info is hidden
                 setTimeout(function(){
-                    $('#status_color')
-                        .css('background-color', submenu_colors[menu_name])
-                        .fadeIn(500);
-                    $('#status_text').html($menu.attr('title'));
-                    Cufon.replace('#status_text', {
+                    $('#status')
+                        .html($menu.attr('title'))
+                        .animate({backgroundColor: submenu_colors[menu_name]}, 500);
+                    Cufon.replace('#status', {
                         textShadow: '1px 1px rgba(0, 0, 0, 0.8)'
                     });
                 }, 350)
@@ -564,14 +552,14 @@
                 
                 // hide old info
                 $new_menu = breadcrumbs[breadcrumbs.length-1]
-                $('#status_color').fadeOut(300)
+                $('#status').animate({backgroundColor: '#000000'}, 300);
                 // delay new status bar info till old info is hidden
                 setTimeout(function(){
-                    $('#status_color')
-                        .css('background-color', submenu_colors[$new_menu.attr('id')])
-                        .fadeIn(500);
-                    $('#status_text').html($new_menu.attr('title'));
-                    Cufon.replace('#status_text', {
+                    $('#status')
+                        .html($new_menu.attr('title'))
+                        .animate({backgroundColor: submenu_colors[$new_menu.attr('id')]}, 500);
+                        
+                    Cufon.replace('#status', {
                         textShadow: '1px 1px rgba(0, 0, 0, 0.8)'
                     });
                 }, 350)
@@ -680,7 +668,7 @@
                        textShadow: '1px 1px rgba(0, 0, 0, 0.8)'
                 });
                 
-                Cufon.replace('#status_text', {
+                Cufon.replace('#status', {
                         textShadow: '1px 1px rgba(0, 0, 0, 0.8)'
                 });
                 
@@ -713,7 +701,7 @@
                 <img id="next" src="{{MEDIA}}/images/menu/buttons/nextSlide.gif" onclick="send('slideshow','next');"/>
             </div>
         </div>
-        <div id="status"><div id="status_color"></div><div id="status_text">Main Menu</div></div>
+        <div id="status">Main Menu</div>
         <div id="center"></div>
         <img id="back" src="{{MEDIA}}/images/menu/buttons/back.png"/>
         <div id="menus">
