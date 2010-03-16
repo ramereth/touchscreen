@@ -456,6 +456,16 @@
                 setTimeout(slideshow_start, delay);
                 get_message();  //start waiting for messages
 
+                $('html').keypress(function(event){
+                    if (event.which == 99) {
+                        if ($('body').hasClass('show_cursor')){
+                            $('body').removeClass('show_cursor');
+                        } else {
+                            $('body').addClass('show_cursor');
+                        }
+                    }
+                });
+
                 // Debug window controls
                 $('.debug_buttons').hover(
                     function(){$(this).addClass("ui-state-hover");},

@@ -3,6 +3,14 @@
     padding:0px;
 }
 
+body {
+    cursor:none;
+}
+
+body.show_cursor {
+    cursor:default;
+}
+
 #screens {
     position: absolute;
     height:100%;

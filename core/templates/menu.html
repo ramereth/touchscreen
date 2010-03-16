@@ -11,10 +11,18 @@
                 font-family: sans-serif;
                 margin:0;
                 padding:0;
+                
             }
             
             body {
                 background-image:url('{{MEDIA}}/images/background-gray-2x1.gif');
+                height:100%;
+                width:100%;
+                cursor:none;
+            }
+            
+            body.show_cursor {
+                cursor:default;
             }
             
             .button {
@@ -28,7 +36,7 @@
                 position:absolute;
                 text-align:center;
                 width:197px;
-                cursor:pointer;
+                
             }
 
             .button_red {background-image:url('{{MEDIA}}/images/menu/buttons/button-red.png')}
@@ -675,6 +683,16 @@
                 $mainmenu = $('#mainmenu')
                 breadcrumbs.push($mainmenu);
                 $mainmenu.delay(800).each(function(){show($(this))});
+                
+                $('html').keypress(function(event){
+                    if (event.which == 99) {
+                        if ($('body').hasClass('show_cursor')){
+                            $('body').removeClass('show_cursor');
+                        } else {
+                            $('body').addClass('show_cursor');
+                        }
+                    }
+                });
             });
         </script>
     </head>
