@@ -425,14 +425,14 @@
                 L3 = (width/2)+(spacing/2)+(buttonWidth+spacing);
                                 
                 $children = $menu.children();
-                $($children[0]).animate({'left':L0}, 800, "easeOutQuart");
-                $($children[1]).animate({'left':L1}, 400, "easeOutQuart");
-                $($children[4]).animate({'left':L0}, 800, "easeOutQuart");
-                $($children[5]).animate({'left':L1}, 400, "easeOutQuart");
-                $($children[2]).animate({'left':L2}, 400, "easeOutQuart");
-                $($children[3]).animate({'left':L3}, 800, "easeOutQuart");
-                $($children[6]).animate({'left':L2}, 400, "easeOutQuart");
-                $($children[7]).animate({'left':L3}, 800, "easeOutQuart");
+                $($children[0]).animate({'left':L0}, 800 );
+                $($children[1]).animate({'left':L1}, 400 );
+                $($children[4]).animate({'left':L0}, 800);
+                $($children[5]).animate({'left':L1}, 400);
+                $($children[2]).animate({'left':L2}, 400);
+                $($children[3]).animate({'left':L3}, 800);
+                $($children[6]).animate({'left':L2}, 400);
+                $($children[7]).animate({'left':L3}, 800);
             }
         
             function show_12($menu) {
@@ -677,12 +677,12 @@
             $(document).ready(function()
             {
                 Cufon.replace('.button', {
-                        textShadow: '1px 1px rgba(0, 0, 0, 0.8)'
-                    });
+                       textShadow: '1px 1px rgba(0, 0, 0, 0.8)'
+                });
                 
                 Cufon.replace('#status_text', {
                         textShadow: '1px 1px rgba(0, 0, 0, 0.8)'
-                    });
+                });
                 
                 hide_help();
                 
@@ -739,12 +739,12 @@
             </div>
             
             <div id="osl_network_graphs" title="OSL Network Graphs" class="menu">
-                <div class="button button_orange" onclick="send('screens_osl_bandwidth','show','OSL Services');">Open Source Lab Services</div>
-                <div class="button button_red" onclick="send('screens_osl_bandwidth','show','Apache');">Apache</div>
-                <div class="button button_blue" onclick="send('screens_osl_bandwidth','show','Gentoo');">Gentoo</div>
-                <div class="button button_purple" onclick="send('screens_osl_bandwidth','show','Kernel.org');">Kernel .org</div>
-                <div class="button button_yellow" onclick="send('screens_osl_bandwidth','show','OpenOffice.org');">OpenOffice. org</div>
-                <div class="button button_green" onclick="send('screens_osl_bandwidth','show','Mozilla');">Mozilla</div>
+                <div class="button button_orange" onclick="send('OSLBandwidth','show','OSL Services');">Open Source Lab Services</div>
+                <div class="button button_red" onclick="send('OSLBandwidth','show','Apache');">Apache</div>
+                <div class="button button_blue" onclick="send('OSLBandwidth','show','Gentoo');">Gentoo</div>
+                <div class="button button_purple" onclick="send('OSLBandwidth','show','Kernel.org');">Kernel .org</div>
+                <div class="button button_yellow" onclick="send('OSLBandwidth','show','OpenOffice.org');">OpenOffice. org</div>
+                <div class="button button_green" onclick="send('OSLBandwidth','show','Mozilla');">Mozilla</div>
             </div>
             
             <div id="webcams" title="Webcams" class="menu">
