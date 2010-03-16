@@ -99,17 +99,14 @@ function {{screen.hash}}()
 	});	
 
         $('#debug_f1').click(function(){
-            {{screen.hash}}.get_point();
+            get_point();
         });
     };
 
     this.start = function()
     {
         safelog('ftp_user_map: starting...');
-        
-        
-        
-        this.get_point();
+        get_point();
     };
 
     this.stop = function()
@@ -120,11 +117,11 @@ function {{screen.hash}}()
         }
     };
     
-    this.get_point = function() {
-        $.get('/proxy/',{url:'http://ftp-osl.osuosl.org:8000/'},{{screen.hash}}.create_point);
+    function get_point() {
+        $.get('/proxy/',{url:'http://ftp-osl.osuosl.org:8000/'},create_point);
         return;
         //XXX TODO - fake response for now since the url above doesn't work outside the OSL
-        {{screen.hash}}.create_point('<rss version="2.0"><channel>' + 
+        create_point('<rss version="2.0"><channel>' + 
         '<title>Latest download locale</title>' + 
         '<link>http://ftp-osl.osuosl.org:8000/</link>' +
         '<pubDate>Tue Nov 17 03:25:57 2009</pubDate>' + 
@@ -134,7 +131,7 @@ function {{screen.hash}}()
         '</channel></rss>');
     }
     
-    this.create_point = function(data) {
+    function create_point(data) {
         $item = $(data).find('item title');
         
         // check to make sure a proper message was received
@@ -144,7 +141,7 @@ function {{screen.hash}}()
             lon = $item[2].text;
     
             // get pixel coords and create a ping animation
-            coords = {{screen.hash}}.get_coords(lat, lon);
+            coords = get_coords(lat, lon);
             x = coords[0]
             y = coords[1]
             animation = ping(x,y, canvas);
@@ -160,10 +157,10 @@ function {{screen.hash}}()
                 $locations.trigger('next');
             }
         }
-        cycle = setTimeout({{screen.hash}}.get_point, {{screen.ping_interval}});
+        cycle = setTimeout(get_point, {{screen.ping_interval}});
     }
 
-    this.get_coords = function(lat, lon){
+    function get_coords(lat, lon){
         // convert lat,lon into x,y (pixels)
         earthradius=6376445;                         // earth radius in meters
         scale=0.00100880364654288                    // something to do with the scale of the map (not really sure)
