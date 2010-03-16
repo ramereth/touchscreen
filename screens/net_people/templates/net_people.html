@@ -1,0 +1,548 @@
+<!--
+    net_people.html
+    by Rob McGuire-Dale, March 15, 2010
+    
+    This screen displays the photos of the employees of Network Services.
+-->
+
+<style>
+    /* debug colors for scrollers
+    .cloned{ color:red; }
+    .active{ color:yellow; } */
+
+    .{{screen.hash}}_main_img{
+        float:right;
+        margin-left: 1em;
+        margin-right: 1em;
+        margin-bottom: 1em;
+    }
+
+    .{{screen.hash}}_thumb_img{
+        margin-bottom: 1em;
+    }
+
+    #{{screen.hash}}_main{
+        z-index: 2; /* Make sure the main tile is on top */
+    }
+</style>
+
+<script type="text/javascript">
+function {{screen.hash}}()
+{    
+    /////////////////
+    // Global Data //
+    /////////////////
+
+    // scroller plugin API for the people scroller
+    var scroller = null;
+
+    // a person class
+    function person( name, title, image )
+    {
+        this.name = name;
+        this.title = title;
+        this.image = image
+    }
+
+    // a list of people (HARDCODED FOR NOW)
+    var people = [
+        new person(
+            "Bill Myers",
+            "Central Router Support",
+            "{{MEDIA}}/screens.people/bill.jpg"
+        ),
+        new person(
+            "Cary Shufelt",
+            "AD and Windows Networking",
+            "{{MEDIA}}/screens.people/cary.jpg"
+        ),
+        new person(
+            "Chris Giem",
+            "Senior Network Engineer",
+            "{{MEDIA}}/screens.people/chris.jpg"
+        ),
+        new person(
+            "Ed Lim",
+            "Wireless Development",
+            "{{MEDIA}}/screens.people/ed.jpg"
+        ),
+        new person(
+            "Gaylon DeGeer",
+            "Network Analyst",
+            "{{MEDIA}}/screens.people/gaylon.jpg"
+        ),
+        new person(
+            "Joel Burks",
+            "Network Analyst",
+            "{{MEDIA}}/screens.people/joel.jpg"
+        ),
+        new person(
+            "Jon Dolan",
+            "Associate Director of Network Services",
+            "{{MEDIA}}/screens.people/jon.jpg"
+        ),
+        new person(
+            "Kirsten Peterson",
+            "Unix System Admin",
+            "{{MEDIA}}/screens.people/kirsten.jpg"
+        ),
+        new person(
+            "Mark Keppinger",
+            "Network Analyst",
+            "{{MEDIA}}/screens.people/mark.jpg"
+        ),
+        new person(
+            "Shay Dakan",
+            "Director of Human Services",
+            "{{MEDIA}}/screens.people/shay.jpg"
+        ),
+        new person(
+            "Steve Heitmeyer",
+            "Network Monitoring",
+            "{{MEDIA}}/screens.people/steve.jpg"
+        ),
+        new person(
+            "Tony Brock",
+            "Senior Network Security Engineer",
+            "{{MEDIA}}/screens.people/tony.jpg"
+        ),
+    ]
+
+    // person-index association to keep track of associations between a person
+    // and the index they reside at in the people array.
+    var person_index = new Array();
+
+    // auto movement timers
+    var autoscrollTimer = null;
+    var autoRandRotateTimer = null;
+
+
+    ///////////////////
+    // Screen Events //
+    ///////////////////
+
+    this.init = function()
+    {
+        safelog('net_people: initializing...');
+
+        setup();
+    }
+
+    this.start = function()
+    {
+        safelog('net_people: starting...');
+
+        refreshTiles();
+
+        // begin auto movement (both need "this." b/c they're publically
+        // accessable because of the js timer functions.)
+        this.startAutoscroll();
+        this.startAutoRotate();
+
+        // debug stuff
+        $('#debug_f1').click(function(){
+            showPerson( "Deborah Bryant" );
+        });
+        $('#debug_f2').click(function(){
+            showPerson( "Alex Weeks" );
+        });
+        $('#debug_f3').click(function(){
+            showPerson( "/random" );
+
+            pauseAutoRotation( 30000 );
+        });
+    }
+
+    this.stop = function()
+    {
+        safelog('net_people: stopping');
+
+        // stop auto movements
+        clearTimeout( autoscrollTimer );
+        clearTimeout( autoRandRotateTimer );
+    }
+
+    this.onScreenResize = function()
+    {
+        refreshTiles();
+    }
+
+    ///////////////////
+    // MENU COMMANDS //
+    ///////////////////
+
+    this.show = function( name )
+    {
+        showPerson( name );
+    }
+
+    //////////////////
+    // Facilitators //
+    //////////////////
+
+    function showPerson( personName )
+    // Display a person specified by a name to the main screen. If the name is
+    // "/random" a random person will be displayed.
+    {
+        // make sure people data is loaded
+        if( people.length > 0 ){
+
+            // temp var to hold the recalled person
+            var person = null;
+
+            // if personName is the command "/random" choose a random person.
+            if( personName == "/random" ){
+
+                person = people[ Math.floor( Math.random() * people.length ) ];
+
+                safelog( "net_people: showing random person '" +
+                    person.name + "'" );
+
+            // otherwise, attempt to choose the specified person
+            } else {
+
+                person =
+                    people[
+                        person_index[personName]
+                    ];
+
+                safelog( "net_people: showing person '" + person.name +
+                    "'" );
+
+                // since someone was explicitly selected, pause auto rotation
+                pauseAutoRotation(
+                    {{screen.rotation_pause_timeout}}
+                );
+            }
+
+            // as long as the person is in the people array, display him/her
+            // to the main tile
+            if( person != undefined ){
+
+                // fade out the main tile
+                $("#{{screen.hash}}_main").fadeOut( function(){
+
+                    // clear the tile
+                    $("#{{screen.hash}}_main").html( "" );
+
+                    // Add the person's name and title
+                    $("#{{screen.hash}}_main").append(
+                        "<h1>" + person.name + ", " + person.title + "</h1>" +
+                        "<img src='" + person.image +
+                            "' class='{{screen.hash}}_main_img'>"
+                    );
+
+                    // Add the person's description
+                    for( i = 0; i < person.body.length; ++i ){
+                        $("#{{screen.hash}}_main").append(
+                            "<p>" + person.body[i] + "<p>"
+                        );
+                    }
+
+                    // size and position main tile
+                    refreshMainTile()
+                });
+
+                // fade tile back in
+                $("#{{screen.hash}}_main").fadeIn("slow");
+
+            } else
+                safelog( "net_people: unknown person '" + personName + "'" );
+
+        } else
+            safelog( "net_people: Show person failed. People data not yet " +
+                "loaded.");
+    }
+
+    function refreshTiles()
+    // Re-positions and re-sizes tiles depending on screen size
+    {
+        // position title tile
+        $("#{{screen.hash}}_title").width( screenWidth() -
+            ( $("#{{screen.hash}}_title").outerWidth( true ) -
+            $("#{{screen.hash}}_title").width() ) );
+
+        // size and position main tile
+        refreshMainTile()
+
+        // position and size scroller
+        $(".{{screen.hash}}_scroller").css('bottom', 0 );
+        $(".{{screen.hash}}_scroller").width( screenWidth()-
+            ( $(".{{screen.hash}}_scroller").outerWidth( true )-
+            $(".{{screen.hash}}_scroller").width() ) );
+        $(".{{screen.hash}}_scroller").height(
+            $(".display_scrollable_item").outerHeight(true) );
+
+        // position and size gradient over scroller
+        $('#{{screen.hash}}_gradient').css( 'z-index', 1 );
+        $('#{{screen.hash}}_gradient').css( 'top',
+            -( $('#{{screen.hash}}_gradient').outerHeight( true ) -
+            $('#{{screen.hash}}_gradient').height() ) );
+        $('#{{screen.hash}}_gradient').css( 'left',
+            -( $('#{{screen.hash}}_gradient').outerWidth( true ) -
+            $('#{{screen.hash}}_gradient').width() ) );
+        $('#{{screen.hash}}_gradient').height(
+            $('.{{screen.hash}}_scroller').outerHeight( ) );
+        $('#{{screen.hash}}_gradient').width(
+            $('.{{screen.hash}}_scroller').outerWidth( ) );
+
+        // figure out a new page size for the scroller
+        if( scroller != null ){
+
+            scroller.getConf().size =
+                Math.round(
+                    $(".{{screen.hash}}_scroller").innerWidth() /
+                    $(".{{screen.hash}}_person").outerWidth(true)
+                );
+
+            safelog( "net_people: scroller page size updated to " +
+                scroller.getConf().size );
+        }
+    }
+
+    function refreshMainTile()
+    // Re-position and re-size only the main tile.
+    {
+        // calculate the vertical space between the title and scroller tiles
+        var verticalSpace = screenHeight() -
+            ($(".{{screen.hash}}_scroller").outerHeight(true) +
+            $(".{{screen.hash}}_title").outerHeight(true));
+
+        // size the tile with a maximum specified width
+        if( {{settings.general.MAX_OPTIMAL_WIDTH}} <= screenWidth() ){
+
+            $("#{{screen.hash}}_main").width(
+                {{settings.general.MAX_OPTIMAL_WIDTH}}
+            );
+
+        } else {
+
+            $("#{{screen.hash}}_main").width(
+                screenWidth() -
+                ($("#{{screen.hash}}_main").outerWidth(true) -
+                $("#{{screen.hash}}_main").width())
+            );
+
+        }
+
+        // center the tile
+        $("#{{screen.hash}}_main").css('top', verticalSpace/2 -
+            $("#{{screen.hash}}_main").outerHeight(true)/2 +
+            $("#{{screen.hash}}_title").outerHeight(true)/2 );
+
+        $("#{{screen.hash}}_main").css('left', screenWidth()/2 -
+            $("#{{screen.hash}}_main").outerWidth(true)/2);
+    }
+
+    ///////////////////
+    // Auto Movement //
+    ///////////////////
+
+    this.startAutoscroll = function()
+    // Begin autoscrolling. One may stop autoscrolling by using
+    // clearTimeout( autoscrollTimer ). Must be publically accessable because it
+    // uses timeout functions.
+    {
+        clearTimeout( autoscrollTimer );
+        
+        // grab the scroll interval
+        var interval = {{screen.scroll_interval}};
+
+        // ensure the interval is at least 50 ms > than the advancement speed
+        if({{screen.scroll_speed}} > interval-50)
+            interval={{screen.scroll_speed}} + 50
+
+        // Make sure scoller has been set up
+        if( scroller != null ){
+
+            safelog( "net_people: autoscrolling" );
+
+            // If this is the first auto-advance, select the middle person
+            if( scroller.getClickIndex() == -1 ){
+
+                scroller.click(
+                    scroller.getConf().size / 2 );
+
+            // Otherwise, select the next person
+            } else {
+
+                // for selecting a random person for next click
+                var randomIndex =
+                    Math.floor( Math.random() * people.length );
+
+                // for selecting the next person for next click
+                var next = scroller.getClickIndex() -
+                    scroller.getConf().size + 1
+
+                scroller.click( next );
+            }
+
+        } else
+            safelog("net_people: autoscroll failed. Data not yet loaded.");
+
+        // auto scroll every specified number of milliseconds
+        autoscrollTimer =
+            setTimeout('{{screen.hash}}.startAutoscroll()', interval );
+    }
+
+    this.startAutoRotate = function()
+    // Begin auto rotating the main tile. One may stop the auto rotation by
+    // using clearTimeout( autoRandRotateTimer ). Must be publically accessable
+    // because it uses timeout functions.
+    {
+        clearTimeout( autoRandRotateTimer );
+        
+        safelog( "net_people: auto rotating." )
+
+        // show a random person
+        showPerson( "/random" );
+
+        // auto rotate every specified number of milliseconds
+        autoRandRotateTimer =
+            setTimeout('{{screen.hash}}.startAutoRotate()',
+                {{screen.auto_rotation_interval}});
+    }
+
+    function pauseAutoRotation( timeout )
+    // Pause auto rotation for the main tile for a specified number of
+    // milliseconds.
+    {
+        safelog( "net_people: auto rotation paused for " + timeout + " ms.")
+
+        // clear the auto rotate timer, and start it up again according to the
+        // timeout.
+        clearTimeout( autoRandRotateTimer );
+        setTimeout('{{screen.hash}}.startAutoRotate()', timeout);
+    }
+
+
+    ////////////////////
+    // Initialization //
+    ////////////////////
+
+    function setup()
+    // Load people into the scoller tile, and run the afterDataLoad() function
+    // when loading is complete.
+    {
+        // load the people data
+        $.get('/proxy/',
+            {'url':'{{screen.people_URL}}' },
+            function( peoplePage ){
+
+            // for each person encountered...
+            $( peoplePage ).find(".staff-profile").each(
+                function( personIndex ){
+
+                // temp data storage
+                var parsedName = null;
+                var parsedTitle = null;
+                var parsedBody = new Array();
+                var parsedImage = null;
+
+                // load the person's name
+                parsedName = $(this).find(".profile-header").text()
+                    .replace(/,.*$/g, "").replace(/^\s+|\s+$/g,"");
+
+                // load the person's title
+                parsedTitle = $(this).find(".profile-header").text()
+                    .replace(/.*?,/g, "").replace(/^\s+|\s+$/g,"");
+
+                // load the person's discription
+                $(this).find("p").each( function(){
+                    parsedBody.push( $(this).text() );
+                });
+
+                // load the person's image URL
+                parsedImage =
+                    "http://" +
+                    "{{screen.people_URL}}"
+                    .replace(/http:\/\//g,"").replace(/\/.*/g,"") +
+                    $(this).find("img").attr("src");
+
+                // push this record onto the people stack
+                people.push(
+                    new person( parsedName, parsedTitle,
+                        parsedBody, parsedImage ) ) ;
+
+                // associate the person with the index number
+                person_index[ parsedName ] = personIndex;
+
+                safelog( "net_people: loading person:" +
+                    people[ personIndex ].name );
+
+                // fill up the scroller tile
+                $("#{{screen.hash}}_items").append(
+                    "<div class='{{screen.hash}}_person display_scrollable_item "+
+                        "display_img_thumb'>"+
+                        "<img src='" + people[personIndex].image+
+                            "' class='display_img_center "+
+                                "{{screen.hash}}_thumb_img'"+
+                            "height='"+
+                                "{{screen.thumbnail_height}}'>"+
+                        "<div class='display_img_thumb_caption'>"+
+                            people[personIndex].name+
+                        "</div>"+
+                    "</div>"
+                );
+            });
+
+            // AFTER the data is loaded...
+            setup_afterDataLoad()
+        });
+    }
+
+    function setup_afterDataLoad()
+    // Tasks to perform after the data is done loading
+    {
+        safelog( "net_people: Data loaded. Performing after-load tasks." );
+
+        // find the widest item, and set each tile to its width to provide
+        // uniformly-sized scroller items
+        var widestItemWidth = 0;
+
+        $(".{{screen.hash}}_person").each( function(i){
+            widestItemWidth = Math.max( widestItemWidth, $(this).width() );
+            safelog(">>>" + $(this).width() + " " + people[i].name);
+        });
+
+        $(".{{screen.hash}}_person").each(function(){
+            $(this).width( widestItemWidth );
+        });
+
+        // initialize the scroller plugin
+        scroller =
+            $(".{{screen.hash}}_scroller").scrollable({
+                items:"#{{screen.hash}}_items",
+            }).circular({
+                speed:{{screen.scroll_speed}},
+                api:true
+            });
+
+        // force a refresh
+        refreshTiles();
+
+        // display a random person in the main tile
+        showPerson( "/random" );
+    }
+} {{screen.hash}} = new {{screen.hash}}();
+</script>
+
+<!-- Title -->
+<div id="{{screen.hash}}_title" class="display_tile display_title"> OSL Staff </div>
+
+<!-- Main tile -->
+<div id="{{screen.hash}}_main" class="display_tile display_content">
+    <!-- to be filled by javascript above -->
+</div>
+
+<!-- Scroller tile -->
+<div class="{{screen.hash}}_scroller display_tile display_content">
+
+    <img id='{{screen.hash}}_gradient' class='display_gradient'
+         src="{{MEDIA}}/screens.people/gradient.png">
+
+    <div id="{{screen.hash}}_items" class='display_scrollable_items_horiz'>
+        <!-- to be filled by javascript above -->
+    </div>
+
+</div>
