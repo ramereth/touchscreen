@@ -68,8 +68,8 @@
                     // hide slide if one is shown
                     if( current_screen_index != -1 ){
                         current_screen = screens[current_screen_index];
-                        safelog('core: hiding ' + current_screen['id']);
-                        hider = hiders[current_screen['hide']];
+                        safelog('core: hiding ' + current_screen.id);
+                        hider = hiders[current_screen.hide];
                         var hidetime = hider(current_screen);
                         
                         // hide the screen
@@ -137,10 +137,10 @@
 
                 //set next transition to duration of current slide
                 safelog('core: next screen in ' +
-                    screen['duration']/1000 + " seconds");
+                    screen.duration/1000 + " seconds");
 
                 slideshow_timer =
-                    setTimeout(slideshow_loop, screen['duration']);
+                    setTimeout(slideshow_loop, screen.duration);
             }
 
             // pauses the slideshow
@@ -157,7 +157,7 @@
             {
                 //get next slide
                 var screen = get_next_slide();
-                while( !screen['slideshow'] ){
+                while( !screen.slideshow ){
                     screen = get_next_slide();
                 }
                 show_slide( screen );
@@ -169,7 +169,7 @@
             {
                 //get previous slide
                 var screen = get_prev_slide();
-                while (!screen['slideshow']) {
+                while (!screen.slideshow) {
                     screen = get_prev_slide();
                 }
                 show_slide(screen);
@@ -372,7 +372,7 @@
 		div.append(html);
 		$('#screens').append(div);
 		init_screen(new_screen);
-                hiders[new_screen['hide']];
+                hiders[new_screen.hide];
 		screens[screens.length] = new_screen;
 	    }
 
@@ -391,13 +391,13 @@
                 max_delay = 0
                 for (i=0; i<screens.length; i++) {
                     //get hider and call it for the screen
-                    hider_key = screens[i]['hide'];
+                    hider_key = screens[i].hide;
                     hider = hiders[hider_key];
                     delay = hider(screens[i]);
                     if (delay > max_delay) {
                         max_delay = delay
                     }
-                    safelog("core: Hiding " + screens[i]['id']);
+                    safelog("core: Hiding " + screens[i].id);
                 }
                 safelog("core: All screens hidden");
                 return max_delay;
