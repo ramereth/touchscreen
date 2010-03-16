@@ -67,10 +67,8 @@
             #back {
                 color: white;
                 display:none;
-                height:118px;
                 position: absolute;
                 top: 200px;
-                width:163px;
             }
             
             #menus {
@@ -79,14 +77,6 @@
                 position:absolute;
                 top:240px;
                 width:1240px;
-            }
-            
-            #center {
-                background-color:red;
-                margin-left:auto;
-                margin-right:auto;
-                width:1px;
-                height:600px;
             }
             
             #help {
@@ -195,7 +185,7 @@
         
             var spacing = 75;
             var width = 1280;
-            var buttonWidth = 200;
+            var buttonWidth = 224;
             var x0 = 0 - buttonWidth - spacing-75;
             var x1 = width + spacing;
         
@@ -702,8 +692,6 @@
             </div>
         </div>
         <div id="status">Main Menu</div>
-        <div id="center"></div>
-        <img id="back" src="{{MEDIA}}/images/menu/buttons/back.png"/>
         <div id="menus">
             
             <div id="mainmenu" title="Main Menu" class="menu">
@@ -773,5 +761,6 @@
                 <button id="help_again">Play Again</button>
             </div>
         </div>
+        <img id="back" src="{{MEDIA}}/images/menu/buttons/back.png"/>
     </body>
 </html>
