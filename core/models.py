@@ -7,7 +7,7 @@ class TouchscreenPlugin(Plugin):
 
 
 class ScreenGeneralSettings(forms.Form):
-    duration    = forms.IntegerField(initial=10000, required=False)
+    duration    = forms.IntegerField(initial=30000, required=False)
     slideshow   = forms.BooleanField(initial=True)
 
 
