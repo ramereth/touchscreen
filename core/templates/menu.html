@@ -563,17 +563,15 @@
                 activity();
                 // hide old info
                 hide(breadcrumbs[breadcrumbs.length-1]);
-                $('#status_color').fadeOut(300)
+                $('#status').animate({backgroundColor: '#000000'}, 300);
                 $('#back').fadeIn(300);
 
                 // delay new status bar info till old info is hidden
                 $menu = $('#help');
                 setTimeout(function(){
-                    $('#status_color')
-                        .css('background-color', submenu_colors['help'])
-                        .fadeIn(500);
-                    
-                    $('#status_text').html("Help");
+                    $('#status')
+                        .html("Help")
+                        .animate({backgroundColor: submenu_colors['help']}, 500);
                     Cufon.replace('#status_text', {
                         textShadow: '1px 1px rgba(0, 0, 0, 0.8)'
                     });
