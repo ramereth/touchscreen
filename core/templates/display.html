@@ -94,7 +94,7 @@
                     window.onresize = function(){
                         safelog('core: window resized to ' +
                             screenWidth() + "x" + screenHeight());
-                        screens[current_screen_index].resize;
+                        screens[current_screen_index].resize();
                     }
                     
                     // set timeout for showing the screen via an anonymous func
@@ -418,16 +418,27 @@
                 safelog("core: All screens initialized");
             }
 	    
+            function fix_scope(closure, name) {
+                /*
+                   return a function that is setup to use the correct scope
+                   when its called.  otherwise "this" will not be setup
+                   correctly.
+                */
+                if (closure && closure[name])
+                    return function() {closure[name].apply(closure)}
+                return $.noop;
+            }
+            
 	    function init_screen(scr){
                 /*
                     gets pointers to functions within the screen's enclosure
                     if there is one.  the enclosure MUST match the screen's id
                 */
                 if (enclosure = window[scr.id]) {
-                    scr.init = (enclosure.init) ? enclosure.init : $.noop;
-                    scr.start = (enclosure.start) ? enclosure.start : $.noop;
-                    scr.stop = (enclosure.stop) ? enclosure.stop : $.noop;
-                    scr.resize = (enclosure.resize) ? enclosure.resize : $.noop;
+                    scr.init = fix_scope(enclosure, "init");
+                    scr.start = fix_scope(enclosure, "start");
+                    scr.stop = fix_scope(enclosure, "stop");
+                    scr.resize = fix_scope(enclosure, "resize");
                 } else {
                     // no javascript enclosure for this screen
                     scr.init = scr.start = scr.stop = scr.resize = $.noop;
