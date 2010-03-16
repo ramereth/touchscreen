@@ -232,13 +232,6 @@ function {{screen.hash}}()
                             "' class='{{screen.hash}}_main_img'>"
                     );
 
-                    // Add the person's description
-                    for( i = 0; i < person.body.length; ++i ){
-                        $("#{{screen.hash}}_main").append(
-                            "<p>" + person.body[i] + "<p>"
-                        );
-                    }
-
                     // size and position main tile
                     refreshMainTile()
                 });
@@ -424,87 +417,33 @@ function {{screen.hash}}()
     // Load people into the scoller tile, and run the afterDataLoad() function
     // when loading is complete.
     {
-        // load the people data
-        $.get('/proxy/',
-            {'url':'{{screen.people_URL}}' },
-            function( peoplePage ){
+        for( personIndex in people ){
 
-            // for each person encountered...
-            $( peoplePage ).find(".staff-profile").each(
-                function( personIndex ){
+            // associate the person with the index number
+            person_index[ people[personIndex].name ] = personIndex;
 
-                // temp data storage
-                var parsedName = null;
-                var parsedTitle = null;
-                var parsedBody = new Array();
-                var parsedImage = null;
-
-                // load the person's name
-                parsedName = $(this).find(".profile-header").text()
-                    .replace(/,.*$/g, "").replace(/^\s+|\s+$/g,"");
-
-                // load the person's title
-                parsedTitle = $(this).find(".profile-header").text()
-                    .replace(/.*?,/g, "").replace(/^\s+|\s+$/g,"");
-
-                // load the person's discription
-                $(this).find("p").each( function(){
-                    parsedBody.push( $(this).text() );
-                });
-
-                // load the person's image URL
-                parsedImage =
-                    "http://" +
-                    "{{screen.people_URL}}"
-                    .replace(/http:\/\//g,"").replace(/\/.*/g,"") +
-                    $(this).find("img").attr("src");
-
-                // push this record onto the people stack
-                people.push(
-                    new person( parsedName, parsedTitle,
-                        parsedBody, parsedImage ) ) ;
-
-                // associate the person with the index number
-                person_index[ parsedName ] = personIndex;
-
-                safelog( "net_people: loading person:" +
-                    people[ personIndex ].name );
-
-                // fill up the scroller tile
-                $("#{{screen.hash}}_items").append(
-                    "<div class='{{screen.hash}}_person display_scrollable_item "+
-                        "display_img_thumb'>"+
-                        "<img src='" + people[personIndex].image+
-                            "' class='display_img_center "+
-                                "{{screen.hash}}_thumb_img'"+
-                            "height='"+
-                                "{{screen.thumbnail_height}}'>"+
-                        "<div class='display_img_thumb_caption'>"+
-                            people[personIndex].name+
-                        "</div>"+
-                    "</div>"
-                );
-            });
-
-            // AFTER the data is loaded...
-            setup_afterDataLoad()
-        });
-    }
-
-    function setup_afterDataLoad()
-    // Tasks to perform after the data is done loading
-    {
-        safelog( "net_people: Data loaded. Performing after-load tasks." );
+            // fill up the scroller tile
+            $("#{{screen.hash}}_items").append(
+                "<div class='{{screen.hash}}_person display_scrollable_item "+
+                    "display_img_thumb'>"+
+                    "<img src='" + people[personIndex].image+
+                        "' class='display_img_center "+
+                            "{{screen.hash}}_thumb_img'"+
+                        "height='"+
+                            "{{screen.thumbnail_height}}'>"+
+                    "<div class='display_img_thumb_caption'>"+
+                        people[personIndex].name+
+                    "</div>"+
+                "</div>"
+            );
+        }
 
         // find the widest item, and set each tile to its width to provide
         // uniformly-sized scroller items
         var widestItemWidth = 0;
-
         $(".{{screen.hash}}_person").each( function(i){
             widestItemWidth = Math.max( widestItemWidth, $(this).width() );
-            safelog(">>>" + $(this).width() + " " + people[i].name);
         });
-
         $(".{{screen.hash}}_person").each(function(){
             $(this).width( widestItemWidth );
         });
@@ -524,11 +463,14 @@ function {{screen.hash}}()
         // display a random person in the main tile
         showPerson( "/random" );
     }
+    
 } {{screen.hash}} = new {{screen.hash}}();
 </script>
 
 <!-- Title -->
-<div id="{{screen.hash}}_title" class="display_tile display_title"> OSL Staff </div>
+<div id="{{screen.hash}}_title" class="display_tile display_title">
+    Network Services Staff
+</div>
 
 <!-- Main tile -->
 <div id="{{screen.hash}}_main" class="display_tile display_content">
