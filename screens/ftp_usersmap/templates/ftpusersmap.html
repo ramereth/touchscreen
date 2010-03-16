@@ -115,6 +115,7 @@ function {{screen.hash}}()
         safelog('ftp_user_map: stopping');
         if (cycle != undefined) {
             clearTimeout(cycle);
+            cycle = undefined;
         }
     };
     
