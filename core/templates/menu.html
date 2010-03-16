@@ -18,16 +18,19 @@
             }
             
             .button {
+                background-color:transparent;
                 color:white;
+                font-size:16px;
                 height:124px;
                 padding-top:100px;
-                padding-left:7px;
-                padding-right:24px;
+                padding-left:5px;
+                padding-right:22px;
                 position:absolute;
                 text-align:center;
-                width:194px;
+                width:197px;
+                cursor:pointer;
             }
-            
+
             .button_red {background-image:url('{{MEDIA}}/images/menu/buttons/button-red.png')}
             .button_blue {background-image:url('{{MEDIA}}/images/menu/buttons/button-blue.png')}
             .button_green {background-image:url('{{MEDIA}}/images/menu/buttons/button-green.png')}
@@ -96,6 +99,90 @@
                 margin-right:auto;
                 width:1px;
                 height:600px;
+            }
+            
+            #help {
+                position: absolute;
+                height: 500px;
+                left:50%;
+                margin-left:-400px;
+                overflow:hidden;
+                top:100px;
+                width:800px;
+            }
+            
+            #help_display, #help_hand, #help_touchscreen, #help_button {
+                position: absolute;
+            }
+            
+            #help_button {
+                background-color:#fd8d42;
+                display:none;
+                height:33px;
+                left:424px;
+                top:197px;
+                width:34px;
+            }
+            
+            #help_display { top: 0px; }
+            #help_touchscreen { top: 88px; }
+            #help_hand {
+                left:413px;
+            }
+            
+            #help_text {
+                color:white;
+                font-size:24px;
+            }
+            
+            #help_text, #help_again {
+                margin-top:380px;
+                text-align:center;
+            }
+            
+            #help_again {
+                font-size:28px;
+                margin-left:310;
+                width:180px;
+            }
+            
+            #help_animation {
+                position: absolute;
+                border-left:2px solid #444444;
+                border-bottom:2px solid #444444;
+                height:150px;
+                left:120px;
+                position: absolute;
+                top: 75px;
+                width:200px;
+                overflow:hidden;
+            }
+            
+            .help_bar {
+                height:150px;
+                position:absolute;
+                top:151px;
+                width:20px;
+            }
+            
+            #help_bar1 {
+                background-color:#337EEF;
+                left:20px;
+            }
+            
+            #help_bar2 {
+                background-color:#0EB066;
+                left:60px;
+            }
+            
+            #help_bar3 {
+                background-color:#E55E00;
+                left:100px;
+            }
+            
+            #help_bar4 {
+                background-color:#EFBC33;
+                left:140px;
             }
             
         </style>
@@ -399,7 +486,8 @@
                 'osl_network_graphs':'#E55E00',
                 'webcams':'#7533EF',
                 'network':'#EF3333',
-                'mainmenu':'#000000'
+                'mainmenu':'#000000',
+                'help':'#0EB066'
             }
             
             function activity() {
@@ -464,9 +552,17 @@
                 } else if (breadcrumbs.length == 2){
                     $('#back').fadeOut(300);
                 }
-                // hide old info
+                
                 $menu = breadcrumbs.pop();
-                hide($menu);
+                
+                // help is a special case
+                if ($menu.attr('id') == 'help') {
+                    hide_help();
+                } else {
+                    hide($menu);
+                }
+                
+                // hide old info
                 $new_menu = breadcrumbs[breadcrumbs.length-1]
                 $('#status_color').fadeOut(300)
                 // delay new status bar info till old info is hidden
@@ -483,11 +579,104 @@
             }
             
             /* ===============================
+             *  help
+             * =============================== */
+            function show_help(){
+                activity();
+                // hide old info
+                hide(breadcrumbs[breadcrumbs.length-1]);
+                $('#status_color').fadeOut(300)
+                $('#back').fadeIn(300);
+
+                // delay new status bar info till old info is hidden
+                $menu = $('#help');
+                setTimeout(function(){
+                    $('#status_color')
+                        .css('background-color', submenu_colors['help'])
+                        .fadeIn(500);
+                    
+                    $('#status_text').html("Help");
+                    Cufon.replace('#status_text', {
+                        textShadow: '1px 1px rgba(0, 0, 0, 0.8)'
+                    });
+                    help_animation();
+                }, 350)
+                breadcrumbs.push($menu);
+            }
+            
+            function hide_help(){
+                $('#help').fadeOut(500, function(){
+                    $('#help_display, #help_hand, #help_touchscreen, #help_text, #help_again').hide()
+                });
+                
+            }
+            
+            function help_animation(){
+                $('#help').show();
+                $('#help_touchscreen')
+                    .css('left',293)
+                    .fadeIn(300)
+                    .delay(6500)
+                    .animate({'left':550},800);
+                
+                $('#help_text')
+                    .delay(350)
+                    .html('This interactive display shows information about this facility')
+                    .delay(100)
+                    .fadeIn(900)
+                    .delay(1000)
+                    .fadeOut(500, function(){
+                        $('#help_text')
+                            .html('Select a choice on this touchscreen')
+                            .fadeIn(900)
+                            .delay(1000)
+                            .fadeOut(500, function() {
+                                $('#help_text')
+                                    .html('Information will be displayed on the screen to your left')
+                                    .delay(1000)
+                                    .fadeIn(900)
+                                    .delay(4000)
+                                    .fadeOut(500, function(){
+                                        $('#help_again').fadeIn(500);
+                                    });
+                            });
+                    });
+                    
+                $('#help_hand')
+                    .delay(3600)
+                    .css('top', 235)
+                    .fadeIn(500)
+                    .delay(500)
+                    .animate({'top':210}, 400, 'linear', function(){
+                        $('#help_button').show();
+                        setTimeout(function(){
+                            $('#help_button').hide();
+                            $('#help_hand').fadeOut(700);
+                        }, 1000)
+                    })
+                
+                $('#help_bar1, #help_bar2, #help_bar3, #help_bar4').css('top',151);
+                $('#help_display')
+                    .css('left',-460)
+                    .show()
+                    .delay(7200)
+                    .animate({'left':0}, 800, 'linear', function(){
+                        setTimeout(function(){
+                            $('#help_bar1').animate({top:50}, 400);
+                            $('#help_bar2').animate({top:120}, 400);
+                            $('#help_bar3').animate({top:0}, 350);
+                            $('#help_bar4').animate({top:90}, 400);
+                        }, 850);
+                    });
+                
+            }
+            
+            /* ===============================
              *  Initialization
              * =============================== */
             $(document).ready(function()
             {
-                Cufon.replace('.button .text', {
+                Cufon.replace('.button', {
                         textShadow: '1px 1px rgba(0, 0, 0, 0.8)'
                     });
                 
@@ -495,13 +684,18 @@
                         textShadow: '1px 1px rgba(0, 0, 0, 0.8)'
                     });
                 
-                $('#menus').children().each(function(){
+                hide_help();
+                
+                $('#menus').children('.menu').each(function(){
                     init($(this));
                     hide($(this));
                 });
                 
                 $('#back').click(back);
-                
+                $('#help_again').click(function(){
+                    hide_help();
+                    setTimeout(help_animation, 650);
+                });
                 $mainmenu = $('#mainmenu')
                 breadcrumbs.push($mainmenu);
                 $mainmenu.delay(800).each(function(){show($(this))});
@@ -524,55 +718,71 @@
         <img id="back" src="{{MEDIA}}/images/menu/buttons/back.png"/>
         <div id="menus">
             
-            <div id="mainmenu" title="Main Menu">
-                <div class="button button_orange" onclick="submenu('osl');"><div class="text">Open Source Lab</div></div>
-                <div class="button button_red" onclick="submenu('network');"><div class="text">Network Engineering</div></div>
-                <div class="button button_blue"><div class="text">Data Center Map</div></div>
-                <div class="button button_purple" onclick="submenu('webcams');send('slideshow','show','Webcams');"><div class="text">Webcams</div></div>
-                <div class="button button_yellow" onclick="send('slideshow','show','Weather');"><div class="text">Weather</div></div>
-                <div class="button button_green"><div class="text">Help</div></div>
+            <div id="mainmenu" title="Main Menu" class="menu">
+                <div class="button button_orange" onclick="submenu('osl');">Open Source Lab</div>
+                <div class="button button_red" onclick="submenu('network');">Network Engineering</div>
+                <div class="button button_blue">Data Center Map</div>
+                <div class="button button_purple" onclick="submenu('webcams');send('slideshow','show','Webcams');">Webcams</div>
+                <div class="button button_yellow" onclick="send('slideshow','show','Weather');">Weather</div>
+                <div class="button button_green" onclick="show_help();">Help</div>
             </div>
             
-            <div id="osl" title="Open Source Lab">
-                <div class="button button_orange" onclick="submenu('osl_network_graphs'); send('slideshow','show','OSLBandwidth');"><div class="text">Network Graphs</div></div>
-                <div class="button button_red" onclick="send('slideshow','show','FTP_Traffic');"><div class="text">FTP Status</div></div>
-                <div class="button button_blue" onclick="send('slideshow','show','FTP_Users_Map');"><div class="text">FTP Users Map</div></div>
-                <div class="button button_green"><div class="text">Outages</div></div>
-                <div class="button button_orange" onclick="send('slideshow','show','OSL_About');"><div class="text">About</div></div>
-                <div class="button button_red" onclick="send('slideshow','show','OSLPeopleScreen');"><div class="text">People</div></div>
-                <div class="button button_blue" onclick="send('slideshow','show','OSL_Donors');"><div class="text">Sponsors</div></div>
-                <div class="button button_green"><div class="text">Help</div></div>
+            <div id="osl" title="Open Source Lab" class="menu">
+                <div class="button button_orange" onclick="submenu('osl_network_graphs'); send('slideshow','show','OSLBandwidth');">Network Graphs</div>
+                <div class="button button_red" onclick="send('slideshow','show','FTP_Traffic');">FTP Status</div>
+                <div class="button button_blue" onclick="send('slideshow','show','FTP_Users_Map');">FTP Users Map</div>
+                <div class="button button_green">Outages</div>
+                <div class="button button_orange" onclick="send('slideshow','show','OSL_About');">About</div>
+                <div class="button button_red" onclick="send('slideshow','show','OSLPeopleScreen');">People</div>
+                <div class="button button_blue" onclick="send('slideshow','show','OSL_Donors');">Sponsors</div>
+                <div class="button button_green">Help</div>
             </div>
             
-            <div id="osl_network_graphs" title="OSL Network Graphs">
-                <div class="button button_orange" onclick="send('screens_osl_bandwidth','show','OSL Services');"><div class="text">Open Source Lab Services</div></div>
-                <div class="button button_red" onclick="send('screens_osl_bandwidth','show','Apache');"><div class="text">Apache</div></div>
-                <div class="button button_blue" onclick="send('screens_osl_bandwidth','show','Gentoo');"><div class="text">Gentoo</div></div>
-                <div class="button button_purple" onclick="send('screens_osl_bandwidth','show','Kernel.org');"><div class="text">Kernel .org</div></div>
-                <div class="button button_yellow" onclick="send('screens_osl_bandwidth','show','OpenOffice.org');"><div class="text">OpenOffice. org</div></div>
-                <div class="button button_green" onclick="send('screens_osl_bandwidth','show','Mozilla');"><div class="text">Mozilla</div></div>
+            <div id="osl_network_graphs" title="OSL Network Graphs" class="menu">
+                <div class="button button_orange" onclick="send('screens_osl_bandwidth','show','OSL Services');">Open Source Lab Services</div>
+                <div class="button button_red" onclick="send('screens_osl_bandwidth','show','Apache');">Apache</div>
+                <div class="button button_blue" onclick="send('screens_osl_bandwidth','show','Gentoo');">Gentoo</div>
+                <div class="button button_purple" onclick="send('screens_osl_bandwidth','show','Kernel.org');">Kernel .org</div>
+                <div class="button button_yellow" onclick="send('screens_osl_bandwidth','show','OpenOffice.org');">OpenOffice. org</div>
+                <div class="button button_green" onclick="send('screens_osl_bandwidth','show','Mozilla');">Mozilla</div>
             </div>
             
-            <div id="webcams" title="Webcams">
-                <div class="button button_orange" onclick="send('Webcams','show','Valley Library');"><div class="text">Valley Library</div></div>
-                <div class="button button_blue" onclick="send('Webcams','show','Reser Stadium');"><div class="text">Reser Stadium</div></div>
-                <div class="button button_red" onclick="send('Webcams','show','Memorial Union');"><div class="text">Memorial Union</div></div>
-                <div class="button button_yellow" onclick="send('Webcams','show','Monroe Street');"><div class="text">Monroe Street</div></div>
-                <div class="button button_orange" onclick="send('Webcams','show','South Campus');"><div class="text">South Campus</div></div>
-                <div class="button button_blue" onclick="send('Webcams','show','Goss Stadium');"><div class="text">Goss Stadium</div></div>
-                <div class="button button_red" onclick="send('Webcams','show','Wave Lab');"><div class="text">Wave Lab</div></div>
-                <div class="button button_yellow" onclick="send('Webcams','show','Gill Annex');"><div class="text">Gill Annex</div></div>
-                <div class="button button_orange" onclick="send('Webcams','show','Andrews Forrest');"><div class="text">Andrews Forrest</div></div>
-                <div class="button button_blue" onclick="send('Webcams','show','Hatfield Marine Science');"><div class="text">Hatfield Marine Science</div></div>
-                <div class="button button_red" onclick="send('Webcams','show','Agate Beach');"><div class="text">Agate Beach</div></div>
-                <div class="button button_yellow" onclick="send('Webcams','show','Research Vessel WECOMA');"><div class="text">Research Vessel WECOMA</div></div>
+            <div id="webcams" title="Webcams" class="menu">
+                <div class="button button_orange" onclick="send('Webcams','show','Valley Library');">Valley Library</div>
+                <div class="button button_blue" onclick="send('Webcams','show','Reser Stadium');">Reser Stadium</div>
+                <div class="button button_red" onclick="send('Webcams','show','Memorial Union');">Memorial Union</div>
+                <div class="button button_yellow" onclick="send('Webcams','show','Monroe Street');">Monroe Street</div>
+                <div class="button button_orange" onclick="send('Webcams','show','South Campus');">South Campus</div>
+                <div class="button button_blue" onclick="send('Webcams','show','Goss Stadium');">Goss Stadium</div>
+                <div class="button button_red" onclick="send('Webcams','show','Wave Lab');">Wave Lab</div>
+                <div class="button button_yellow" onclick="send('Webcams','show','Gill Annex');">Gill Annex</div>
+                <div class="button button_orange" onclick="send('Webcams','show','Andrews Forrest');">Andrews Forrest</div>
+                <div class="button button_blue" onclick="send('Webcams','show','Hatfield Marine Science');">Hatfield Marine Science</div>
+                <div class="button button_red" onclick="send('Webcams','show','Agate Beach');">Agate Beach</div>
+                <div class="button button_yellow" onclick="send('Webcams','show','Research Vessel WECOMA');">Research Vessel WECOMA</div>
             </div>
             
-            <div id="network" title="Network Engineering">
-                <div class="button button_orange"><div class="text">People</div></div>
-                <div class="button button_red"><div class="text">Traffic Graphs</div></div>
-                <div class="button button_blue" onclick="send('slideshow','show','WifiBandwidth');"><div class="text">Wifi Usage Map</div></div>
-                <div class="button button_purple" onclick="send('slideshow','show','WifiUsage');"><div class="text">Wifi Bandwidth Map</div></div>
+            <div id="network" title="Network Engineering" class="menu">
+                <div class="button button_orange">People</div>
+                <div class="button button_red">Traffic Graphs</div>
+                <div class="button button_blue" onclick="send('slideshow','show','WifiBandwidth');">Wifi Usage Map</div>
+                <div class="button button_purple" onclick="send('slideshow','show','WifiUsage');">Wifi Bandwidth Map</div>
+            </div>
+            <div id="help" title="Help">
+                <div id="help_display">
+                    <img src="{{MEDIA}}/images/menu/help/display.png"/>
+                    <div id="help_animation">
+                        <div id="help_bar1" class="help_bar"></div>
+                        <div id="help_bar2" class="help_bar"></div>
+                        <div id="help_bar3" class="help_bar"></div>
+                        <div id="help_bar4" class="help_bar"></div>
+                    </div>
+                </div>
+                <img id="help_touchscreen" src="{{MEDIA}}/images/menu/help/touchscreen.png"/>
+                <div id="help_button"></div>
+                <img id="help_hand" src="{{MEDIA}}/images/menu/help/hand.png"/>
+                <div id="help_text"></div>
+                <button id="help_again">Play Again</button>
             </div>
         </div>
     </body>
