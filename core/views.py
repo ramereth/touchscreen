@@ -1,4 +1,4 @@
-import httplib2
+import urllib2
 import simplejson
 
 from django.http import HttpResponse
@@ -47,10 +47,7 @@ def menu(request):
 
 def proxy(request):
     """ a simple proxy for pulling in external content via ajax """
-    connection = httplib2.Http()
-    url = request.GET['url']
-    response, content = connection.request( url, "GET" )
-    return HttpResponse( content )
+    return HttpResponse( urllib2.urlopen(request.GET['url']) )
 
 
 def reload(request):
