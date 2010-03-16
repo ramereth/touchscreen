@@ -139,6 +139,12 @@
                 text-align:center;
             }
             
+            #help_again {
+                font-size:28px;
+                margin-left:310;
+                width:180px;
+            }
+            
             #help_animation {
                 position: absolute;
                 border-left:2px solid #444444;
@@ -592,7 +598,6 @@
                     Cufon.replace('#status_text', {
                         textShadow: '1px 1px rgba(0, 0, 0, 0.8)'
                     });
-                    $('#help').show();
                     help_animation();
                 }, 350)
                 breadcrumbs.push($menu);
@@ -606,11 +611,12 @@
             }
             
             function help_animation(){
+                $('#help').show();
                 $('#help_touchscreen')
                     .css('left',293)
                     .fadeIn(300)
                     .delay(6500)
-                    .animate({'left':500},800);
+                    .animate({'left':550},800);
                 
                 $('#help_text')
                     .delay(350)
@@ -629,7 +635,9 @@
                                     .delay(1000)
                                     .fadeIn(900)
                                     .delay(4000)
-                                    .fadeOut(500);
+                                    .fadeOut(500, function(){
+                                        $('#help_again').fadeIn(500);
+                                    });
                             });
                     });
                     
@@ -646,16 +654,18 @@
                         }, 1000)
                     })
                 
-                
+                $('#help_bar1, #help_bar2, #help_bar3, #help_bar4').css('top',151);
                 $('#help_display')
                     .css('left',-460)
                     .show()
                     .delay(7200)
                     .animate({'left':0}, 800, 'linear', function(){
-                        $('#help_bar1').animate({top:50}, 400)
-                        $('#help_bar2').animate({top:120}, 400)
-                        $('#help_bar3').animate({top:0}, 400)
-                        $('#help_bar4').animate({top:90}, 400)
+                        setTimeout(function(){
+                            $('#help_bar1').animate({top:50}, 400);
+                            $('#help_bar2').animate({top:120}, 400);
+                            $('#help_bar3').animate({top:0}, 350);
+                            $('#help_bar4').animate({top:90}, 400);
+                        }, 850);
                     });
                 
             }
@@ -681,7 +691,10 @@
                 });
                 
                 $('#back').click(back);
-                
+                $('#help_again').click(function(){
+                    hide_help();
+                    setTimeout(help_animation, 650);
+                });
                 $mainmenu = $('#mainmenu')
                 breadcrumbs.push($mainmenu);
                 $mainmenu.delay(800).each(function(){show($(this))});
@@ -769,7 +782,7 @@
                 <div id="help_button"></div>
                 <img id="help_hand" src="{{MEDIA}}/images/menu/help/hand.png"/>
                 <div id="help_text"></div>
-                <div id="help_again">Again</div>
+                <button id="help_again">Play Again</button>
             </div>
         </div>
     </body>
