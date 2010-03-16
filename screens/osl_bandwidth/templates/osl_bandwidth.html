@@ -6,6 +6,12 @@
     This screen displays osl bandwidth graphs
 -->
 
+<style>
+    #{{screen.hash}}_wrapper td img {
+        margin:2px;
+    }
+</style>
+
 <script type="text/javascript">
 function {{screen.hash}}()
 {
@@ -143,11 +149,6 @@ function {{screen.hash}}()
                         graphSets[i].title+
                     '</div>'+
 
-                    '<img id="{{screen.hash}}_img_'+i+'a" class="{{screen.hash}}_img"'+
-                        'src="'+graphSets[i].graph1+'"'+
-                        'height="{{screen.thumbnail_img_height}}"'+
-                        'width="{{screen.thumbnail_img_width}}">'+
-
                     '<img id="{{screen.hash}}_img_'+i+'b" class="{{screen.hash}}_img"'+
                         'src="'+graphSets[i].graph2+'"'+
                         'height="{{screen.thumbnail_img_height}}"'+
@@ -225,7 +226,7 @@ function {{screen.hash}}()
         var speed = "fast"; // fade in/fade out speed
 
         // fade out the main tile
-        $("#{{screen.hash}}_main").fadeOut( speed, function(){
+       $("#{{screen.hash}}_main_inner").fadeOut( speed, function(){
 
             // fill the main tile with the title and the picture of the
             // specified webcam shot
@@ -249,7 +250,7 @@ function {{screen.hash}}()
         });
 
         // fade the main tile back in
-        $("#{{screen.hash}}_main").fadeIn( speed );
+        $("#{{screen.hash}}_main_inner").fadeIn( speed );
     }
 
 } {{screen.hash}} = new {{screen.hash}}();
@@ -257,28 +258,27 @@ function {{screen.hash}}()
 
 <div id="{{screen.hash}}_wrapper">
     <div id='{{screen.hash}}_main' class='display_img display_tile'>
-
-        <div id='{{screen.hash}}_title_main' class='display_img_caption'>
-            {{screen.title_0}}
+        <div id="{{screen.hash}}_main_inner">
+            <div id='{{screen.hash}}_title_main' class='display_img_caption'>
+                {{screen.title_0}}
+            </div>
+            <table>
+                <tr>
+                    <td>
+                        <img id='{{screen.hash}}_img_main_a' class='{{screen.hash}}_img'
+                        src='{{screen.imgAddr_0a}}'
+                        height={{screen.mainTile_height}}
+                        width={{screen.mainTile_width}}>
+                    </td>
+    
+                    <td>
+                        <img id='{{screen.hash}}_img_main_b' class='{{screen.hash}}_img'
+                        src='{{screen.imgAddr_0b}}'
+                        height={{screen.mainTile_height}}
+                        width={{screen.mainTile_width}}>
+                    </td>
+                </tr>
+            </table>
         </div>
-
-        <table>
-            <tr>
-                <td>
-                    <img id='{{screen.hash}}_img_main_a' class='{{screen.hash}}_img'
-                    src='{{screen.imgAddr_0a}}'
-                    height={{screen.mainTile_height}}
-                    width={{screen.mainTile_width}}>
-                </td>
-
-                <td>
-                    <img id='{{screen.hash}}_img_main_b' class='{{screen.hash}}_img'
-                    src='{{screen.imgAddr_0b}}'
-                    height={{screen.mainTile_height}}
-                    width={{screen.mainTile_width}}>
-                </td>
-            </tr>
-        </table>
-        
     </div>
 </div>
