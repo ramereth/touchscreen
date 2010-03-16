@@ -34,7 +34,7 @@ function {{screen.hash}}()
         safelog('wifi_usage: stopping');
     }
     
-    this.onScreenResize = function()
+    this.resize = function()
     {        
         // re-scale every time the window is resized
         $("#{{screen.hash}}_img").scale("center");

@@ -119,10 +119,6 @@ function {{screen.hash}}()
             clearTimeout(cycle);
         }
     };
-
-    this.onWinResize = function()
-    {
-    };
     
     this.get_point = function() {
         $.get('/proxy/',{url:'http://ftp-osl.osuosl.org:8000/'},{{screen.hash}}.create_point);

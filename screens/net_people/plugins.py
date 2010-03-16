@@ -1,6 +1,7 @@
 from core.models import Screen, ScreenGeneralSettings
 from django import forms
 
+
 class NetPeopleSettings(forms.Form):
     thumbnail_height = forms.IntegerField(
             label='Thumbnail Image Height',
@@ -32,13 +33,8 @@ class NetPeopleSettings(forms.Form):
         initial=180000
     )
 
+
 class NetPeopleScreen(Screen):
     template='net_people.html'
     description="Photos of the employees of Network Services"
     config_form=(NetPeopleSettings, ScreenGeneralSettings)
-
-    #optional params
-    js_init ='init'
-    js_start='start'
-    js_stop ='stop'
-    js_onWinResize = 'onScreenResize'

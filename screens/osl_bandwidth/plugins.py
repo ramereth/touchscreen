@@ -1,24 +1,6 @@
 from core.models import Screen, ScreenGeneralSettings
 from django import forms
 
-"""
-create instance of screens this plugin provides. The parameters are as follows:
-
-	Required:
-	- the name of the screen's html file (i.e. 'screen.html')
-	- the name of the screen (i.e. 'screen')
-
-	Optional:
-	- hide='<transition name>'	i.e. hide='fade', or hide='slide')
-	- show='<transition name>'	i.e. show='fade', or show='slide')
-	- js_init='<js function>'	a javascript function to call when the screen is
-								initialized.
-	- js_start='<js function>'	a javascript function to call when showing the 
-								screen
-	- js_stop='<js function>'	a javascript function to call when hiding the 
-								screen
-
-"""
 
 class OSL_BandwidthSettings(forms.Form):
 
@@ -186,6 +168,7 @@ class OSL_BandwidthSettings(forms.Form):
             initial='http://netfoo.nero.net/netviewer/img/OSUOSL-Services-Normal-week-ifInOctets-100000000000-AVERAGE.png',
             max_length=128
     )
+
 
 class OSLBandwidth(Screen):
     template='osl_bandwidth.html'

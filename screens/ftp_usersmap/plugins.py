@@ -24,7 +24,3 @@ class FTP_Users_Map(Screen):
     config_form=(FTPPingMapSettings, ScreenGeneralSettings)
     show='fade'
     hide='fade'
-    js_init ='init'
-    js_start='start'
-    js_stop ='stop'
-    js_onWinResize = 'onWinResize'
