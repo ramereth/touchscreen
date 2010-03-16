@@ -21,13 +21,13 @@ class OSL_BandwidthSettings(forms.Form):
     thumbnail_img_height = forms.IntegerField(
             label='Thumbnail Image Height', 
             help_text='The height of the thumbnail images', 
-            initial=82
+            initial=144
     )
     
     thumbnail_img_width = forms.IntegerField(
             label='Thumbnail Image Width', 
             help_text='The width of the thumbnail images', 
-            initial=200
+            initial=350
     )
     
     mainTile_height = forms.IntegerField(
