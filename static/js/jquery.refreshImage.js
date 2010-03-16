@@ -74,8 +74,8 @@
         refreshImage: function( arg, debug )
         {            
             // flag debug mode if the debug argument's value is "debug"
-            //debug = debug == "debug";
-            debug = false;
+            debug = debug == "debug";
+            //debug = false;
             
             if(debug) console.info("refreshImage: debug mode on");
 

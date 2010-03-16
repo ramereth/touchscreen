@@ -20,9 +20,10 @@ function {{screen.hash}}()
 
         // make the image refresh itself at the specified interval
         $("#{{screen.hash}}_img").refreshImage({
-            interval:{{screen.imgRefreshInterval}},
-            start:true
+            interval:{{screen.imgRefreshInterval}}
         });
+
+        // do an initial scale of the image
         $("#{{screen.hash}}_img").scale("center");
     };
 
@@ -31,12 +32,18 @@ function {{screen.hash}}()
         safelog('ftp_traffic: starting...');
 
         // scale the wifi usage image to fit inside the parent
-        //$("#{{screen.hash}}_img").scale("center");
+        $("#{{screen.hash}}_img").scale("center");
+
+        // start the image refresh
+        $("#{{screen.hash}}_img").refreshImage("start", "debug");
     };
 
     this.stop = function()
     {
         safelog('ftp_traffic: stopping');
+
+        // stop the image refresh
+        $("#{{screen.hash}}_img").refreshImage("stop", "debug");
     };
 
     this.resize = function()
