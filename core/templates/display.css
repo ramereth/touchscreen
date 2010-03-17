@@ -1,7 +1,7 @@
 *{
     margin:0px;
     padding:0px;
-    font-family:'verdana','geneva','arial','helvetica';
+    font-family:'helvetica', 'arial';
 }
 
 body {
@@ -163,8 +163,7 @@ img, p, li, h1{
 
 h1{
     font-size: 16px;
-    margin-top: 1em
-    margin-bottom: 5em;
+    margin-top: 2em;
 }
 
 p, li { 
