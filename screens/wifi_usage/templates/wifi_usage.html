@@ -14,16 +14,19 @@ function {{screen.hash}}()
         safelog('wifi_usage: initializing...');
     
         // make the image refresh itself at the specified interval
-		$("#{{screen.hash}}_img").refreshImage({
-            interval:
-                {{screen.imgRefreshInterval}},
-            start:true
+        $("#{{screen.hash}}_img").refreshImage({
+            interval: {{screen.imgRefreshInterval}},
         });
+
+        $("#{{screen.hash}}_img").scale("center");
     }
 
     this.start = function()
     {
         safelog('wifi_usage: starting...');
+
+        // start the image refresh
+        $("#{{screen.hash}}_img").refreshImage("start");
 
         // scale the wifi usage image to fit inside the parent
         $("#{{screen.hash}}_img").scale("center");
@@ -32,6 +35,9 @@ function {{screen.hash}}()
     this.stop = function()
     {
         safelog('wifi_usage: stopping');
+
+        // stop the image refresh
+        $("#{{screen.hash}}_img").refreshImage("stop");
     }
     
     this.resize = function()

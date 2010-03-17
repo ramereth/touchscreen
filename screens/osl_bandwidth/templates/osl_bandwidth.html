@@ -79,6 +79,11 @@ function {{screen.hash}}()
 
         // init debug click events
         initTileClickEvents();
+
+        // Initialize the image refresher
+        $(".{{screen.hash}}_img").refreshImage({
+            interval: {{screen.imgRefreshInterval}}
+        });
     };
 
     this.start = function()
@@ -91,17 +96,16 @@ function {{screen.hash}}()
         // randomize the main tile
         randomizeMainTile();
 
-        // make images refresh themselves at the specified interval
-        $(".{{screen.hash}}_img").refreshImage({
-            interval:
-                {{screen.imgRefreshInterval}},
-            start:true
-        });
+        // start the image refresh
+        $(".{{screen.hash}}_img").refreshImage("start");
     };
 
     this.stop = function()
     {
         safelog('osl_bandwidth: stopping...');
+
+        // stop the image refresh
+        $(".{{screen.hash}}_img").refreshImage("stop");
     };
 
     this.resize = function()

@@ -34,56 +34,20 @@ function {{screen.hash}}()
     }
 
     // a collection of webcams
-    var webcams = new Array(
-        new webcam(
-            "{{screen.title_0}}",
-            "{{screen.imgAddr_0}}"
-        ),
-        new webcam(
-            "{{screen.title_1}}",
-            "{{screen.imgAddr_1}}"
-        ),
-        new webcam(
-            "{{screen.title_2}}",
-            "{{screen.imgAddr_2}}"
-        ),
-        new webcam(
-            "{{screen.title_3}}",
-            "{{screen.imgAddr_3}}"
-        ),
-        new webcam(
-            "{{screen.title_4}}",
-            "{{screen.imgAddr_4}}"
-        ),
-        new webcam(
-            "{{screen.title_5}}",
-            "{{screen.imgAddr_5}}"
-        ),
-        new webcam(
-            "{{screen.title_6}}",
-            "{{screen.imgAddr_6}}"
-        ),
-        new webcam(
-            "{{screen.title_7}}",
-            "{{screen.imgAddr_7}}"
-        ),
-        new webcam(
-            "{{screen.title_8}}",
-            "{{screen.imgAddr_8}}"
-        ),
-        new webcam(
-            "{{screen.title_9}}",
-            "{{screen.imgAddr_9}}"
-        ),
-        new webcam(
-            "{{screen.title_10}}",
-            "{{screen.imgAddr_10}}"
-        ),
-        new webcam(
-            "{{screen.title_11}}",
-            "{{screen.imgAddr_11}}"
-        )
-    );
+    var webcams = [
+        new webcam("{{screen.title_0}}","{{screen.imgAddr_0}}"),
+        new webcam("{{screen.title_1}}","{{screen.imgAddr_1}}"),
+        new webcam("{{screen.title_2}}","{{screen.imgAddr_2}}"),
+        new webcam("{{screen.title_3}}","{{screen.imgAddr_3}}"),
+        new webcam("{{screen.title_4}}","{{screen.imgAddr_4}}"),
+        new webcam("{{screen.title_5}}","{{screen.imgAddr_5}}"),
+        new webcam("{{screen.title_6}}","{{screen.imgAddr_6}}"),
+        new webcam("{{screen.title_7}}","{{screen.imgAddr_7}}"),
+        new webcam("{{screen.title_8}}","{{screen.imgAddr_8}}"),
+        new webcam("{{screen.title_9}}","{{screen.imgAddr_9}}"),
+        new webcam("{{screen.title_10}}","{{screen.imgAddr_10}}"),
+        new webcam("{{screen.title_11}}","{{screen.imgAddr_11}}")
+    ];
 
     ///////////////////
     // Screen Events //
@@ -98,9 +62,8 @@ function {{screen.hash}}()
 
         // Initialize the image refresher
         $(".{{screen.hash}}_img").refreshImage({
-            interval: {{screen.imgRefreshInterval}},
-            start: false
-        }, "debug");
+            interval: {{screen.imgRefreshInterval}}
+        });
     }
 
     this.start = function()
@@ -111,7 +74,7 @@ function {{screen.hash}}()
         positionTiles();
 
         // start the image refresh
-        $(".{{screen.hash}}_img").refreshImage("start", "debug");
+        $(".{{screen.hash}}_img").refreshImage("start");
     }
 
     this.stop = function()
@@ -119,7 +82,7 @@ function {{screen.hash}}()
         safelog('webcams: stopping...');
 
         // stop the image refresh
-        $(".{{screen.hash}}_img").refreshImage("stop", "debug");
+        $(".{{screen.hash}}_img").refreshImage("stop");
     }
 
     this.resize = function() 

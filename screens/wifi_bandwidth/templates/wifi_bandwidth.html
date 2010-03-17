@@ -13,12 +13,12 @@ function {{screen.hash}}()
     {
         safelog('wifi_bandwidth: initializing...');
     
-        // make the image refresh itself at the specified interval
-		$("#{{screen.hash}}_img").refreshImage({
-            interval:
-                {{screen.imgRefreshInterval}},
-            start:true
+        // Initialize the image refresher
+        $("#{{screen.hash}}_img").refreshImage({
+            interval: {{screen.imgRefreshInterval}}
         });
+
+        $("#{{screen.hash}}_img").scale("center","stretch");
     }
 
     this.start = function() 
@@ -27,11 +27,17 @@ function {{screen.hash}}()
 
         // scale the wifi bandwidth image to fit inside the parent
         $("#{{screen.hash}}_img").scale("center","stretch");
+
+        // start the image refresh
+        $("#{{screen.hash}}_img").refreshImage("start");
     }
     
     this.stop = function() 
     {
         safelog('wifi_bandwidth: stopping');
+
+        // stop the image refresh
+        $("#{{screen.hash}}_img").refreshImage("stop");
     }
     
     this.resize = function()
