@@ -1,6 +1,7 @@
 *{
     margin:0px;
     padding:0px;
+    font-family:'verdana','geneva','arial','helvetica';
 }
 
 body {
@@ -69,7 +70,6 @@ body.show_cursor {
     overflow:hidden;
     margin:25px;
     background-color: black;
-    font-family:'verdana','geneva','arial','helvetica',sans-serif;
 }
 
 .display_content, .display_img, .display_title{
