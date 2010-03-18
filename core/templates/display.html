@@ -363,7 +363,10 @@
 	    }
 	    
 	    function process_reload(data){
-		// create the content div and add to the DOM
+		// TODO fix this - temporary fix is to reload display on config
+		// changes.  right now removing/adding screens causes problems
+		// with the slideshow
+		window.location.reload();
 		return; // TODO fix this
 		new_screen = data['screen'];
 		unload_screen(new_screen.id);
@@ -377,7 +380,11 @@
 	    }
 
 	    function unload_screen(name) {
-                return; // TODO fix this
+		 // TODO fix this - temporary fix is to reload display on config
+		 // changes.  right now removing/adding screens causes problems
+		 // with the slideshow
+		window.location.reload();
+                return;
 		$('#'+name).remove();
 		for (i in screens) {
 		    if (screens[i].id == name) {
