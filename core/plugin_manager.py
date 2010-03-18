@@ -1,4 +1,6 @@
+import urllib
 import urllib2
+import simplejson
 
 from django import forms
 from muddle.plugins.plugin import Plugin
@@ -66,20 +68,18 @@ class ScreenManager(TouchscreenPlugin, PluginManager):
         touchscreen_settings = {'general':self.config.config}
         return touchscreen_settings
 
-    def register(self, screen):
-        super(ScreenManager, self).register(screen)
-        try:
-            urllib2.urlopen('%s&m=slideshow,enable,%s' % (self.MSG_SEND_URL,screen.name()))
-        except:
-            pass
-
     def deregister(self, screen):
         super(ScreenManager, self).deregister(screen)
+        data = urllib.urlencode({
+            'c':1,
+            'm':simplejson.dumps(['slideshow','disable',screen.name()]),
+            'q':self.MSG_SERVER_QUEUE,
+            'u':'touchscreen'
+        })
         try:
-            urllib2.urlopen('%s&m=slideshow,disable,%s' % (self.MSG_SEND_URL,screen.name()))
+            urllib2.urlopen(self.MSG_SERVER_URL, data)
         except:
             pass
-
 
 class ScreenAnimationManager(PlugableManager):
     """

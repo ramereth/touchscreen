@@ -1,3 +1,6 @@
+import urllib
+import urllib2
+import simplejson
 from django import forms
 from muddle.plugins.plugin import Plugin
 
@@ -33,6 +36,24 @@ class Screen(TouchscreenPlugin):
     def __init__(self, *args, **kwargs):
         super(Screen, self).__init__(*args, **kwargs)
         self.hash = self.name()
+
+    def update_config(self, *args, **kwargs):
+        """
+        Overridden to send signal to screens that a plugin should be reloaded
+        """
+        from muddle.views import manager
+        super(Screen, self).update_config(*args, **kwargs)
+        data = urllib.urlencode({
+            'c':1,
+            'm':simplejson.dumps(['slideshow','enable',self.name()]),
+            'q':manager['ScreenManager'].MSG_SERVER_QUEUE,
+            'u':'touchscreen'
+        })
+        try:
+            urllib2.urlopen(manager['ScreenManager'].MSG_SERVER_URL, data)
+        except:
+            pass
+
 
 class ScreenAnimation(TouchscreenPlugin):
     """
