@@ -56,6 +56,9 @@ def get_queue(name):
 class Simple(resource.Resource):
     isLeaf = True    
 
+    def render_POST(self, request):
+        return self.render_GET(request)
+
     def render_GET(self, request):
         args = request.args
         if 'c' in args and 'q' in args and 'u' in args:
