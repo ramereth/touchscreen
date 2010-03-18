@@ -5,7 +5,27 @@
     This screen displays a graphical representation of the number of users
     connected to each wifi access point around campus.
 -->
-
+<style>
+ #{{screen.hash}} .content {
+	position:absolute;
+	width:1320px;
+	height:728px;
+	padding:20px;
+    }
+    
+    #{{screen.hash}}_mask{
+	position:absolute;
+	border: 17px solid white;
+	top:20px;
+	left:225px;
+	height:695px;
+	width:879px;
+    }
+    
+    #{{screen.hash}} .background {
+	background-color:white;
+    }
+</style>
 <script type="text/javascript">
 function {{screen.hash}}()
 {
@@ -50,6 +70,12 @@ function {{screen.hash}}()
 </script>
 
 <!-- set up the wifi usage map image ------------------------------------------>
-<img id="{{screen.hash}}_img"
-     src="{{screen.img_addr}}" 
-     class="display_tile display_img">
+<div class="background"></div>
+<div class="content">
+    <img id="{{screen.hash}}_img"
+     src="{{screen.img_addr}}"
+     class="">
+    <div id="{{screen.hash}}_mask">
+	
+    </div>
+</div>

@@ -23,3 +23,5 @@ class WifiBandwidth(Screen):
 
     #optional params
     config_form=(WifiBandwidthSettings, ScreenGeneralSettings)
+    show='fade'
+    hide='fade'

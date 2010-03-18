@@ -22,3 +22,5 @@ class WifiUsage(Screen):
 
     #optional params
     config_form=(WifiUsageSettings, ScreenGeneralSettings)
+    hide="fade"
+    show="fade"

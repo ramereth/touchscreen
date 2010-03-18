@@ -1,6 +1,7 @@
 *{
     margin:0px;
     padding:0px;
+    font-family:'helvetica', 'arial';
 }
 
 body {
@@ -69,7 +70,6 @@ body.show_cursor {
     overflow:hidden;
     margin:25px;
     background-color: black;
-    font-family:'verdana','geneva','arial','helvetica',sans-serif;
 }
 
 .display_content, .display_img, .display_title{
@@ -163,8 +163,7 @@ img, p, li, h1{
 
 h1{
     font-size: 16px;
-    margin-top: 1em
-    margin-bottom: 5em;
+    margin-top: 2em;
 }
 
 p, li { 
