@@ -84,13 +84,18 @@ class Simple(resource.Resource):
                     except KeyError:
                         #missing parameter, return error code
                         return '-1'
-                    
                     # if there are clients waiting for requests process those
                     # immediately.  queue the message for all other clients
                     clients = queue['clients'].keys()
                     for waiting in queue['requests'].values():
                         waiting.write(message)
-                        waiting.finish()
+                        try:
+                            waiting.finish()
+                        except:
+                            # silently discard any errors while finishing the
+                            # request.  Errors here could prevent other clients
+                            # from receiving the message
+                            pass 
                         clients.remove(waiting.args['u'][0])
                     queue['requests'] = {}
                     
@@ -129,7 +134,11 @@ class Simple(resource.Resource):
         with queue['lock']:
             if not request.finished:
                 request.write('0')
-                request.finish()
+                try:
+                    request.finish()
+                except:
+                    # silently discard any errors
+                    pass
                 if request.args['u'][0] in queue['requests']:
                     del queue['requests'][request.args['u'][0]]
 
