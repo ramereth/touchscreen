@@ -430,9 +430,19 @@
                    return a function that is setup to use the correct scope
                    when its called.  otherwise "this" will not be setup
                    correctly.
+                   
+                   This also wraps the function call within a try/catch
+                   statement to prevent errors in a screen from crashing the
+                   whole slideshow
                 */
                 if (closure && closure[name])
-                    return function() {closure[name].apply(closure)}
+                    return function() {
+			try {
+			    closure[name].apply(closure);
+			} catch(err) {
+			    safelog('Error in closure: ' + closure.id + '.' + name);
+			}
+		    }
                 return $.noop;
             }
             

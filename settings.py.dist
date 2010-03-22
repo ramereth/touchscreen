@@ -108,9 +108,17 @@ INSTALLED_APPS = (
     'screens.wifi_usage',
 )
 
+# core muddle plugins required by touchscreen 
 CORE_PLUGINS = (
     'core.plugin_manager.ScreenManager',
     'core.plugin_manager.ScreenAnimationManager',
     'core.screen_animations.Slide',
     'core.screen_animations.Fade'
+)
+
+# abstract muddle plugin classes that touchscreen defines
+ABSTRACT_PLUGINS = (
+    'core.models.TouchscreenPlugin',
+    'core.models.Screen',
+    'core.models.ScreenAnimation'
 )
