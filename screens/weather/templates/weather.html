@@ -169,11 +169,14 @@ function {{screen.hash}}()
     this.init = function()
     {
         safelog('weather: initializing...');
+        this.refreshTiles();
     }
 
     this.start = function()
     {
         safelog('weather: starting...');
+
+        clearTimeout(dataRefreshTimer);
 
         // load the weather data from the weather feed
         now = new Date().getTime();
