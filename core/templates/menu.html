@@ -658,8 +658,14 @@
             /* ===============================
              *  Initialization
              * =============================== */
+            function FFprevent_drag(event){
+                if (event.preventDefault)
+                event.preventDefault();
+            }
+            
             $(document).ready(function()
             {
+                $('img').mousedown(FFprevent_drag);
                 Cufon.replace('.button', {
                        textShadow: '1px 1px rgba(0, 0, 0, 0.8)'
                 });
