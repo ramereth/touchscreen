@@ -3,7 +3,12 @@ from django import forms
 
 
 class FooSettings(forms.Form):
-    text = forms.CharField(max_length=100, help_text='this text will show up in the box')
+    text = forms.CharField(
+                label = 'text value',
+                initial = 'Enter some text',
+                help_text='the value you enter will be used in the template',
+                max_length=100
+                )
 
 
 class Foo(Screen):
