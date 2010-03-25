@@ -465,6 +465,7 @@
             /* ===============================
              *  menu navigation
              * =============================== */
+            var lock = false;
             var breadcrumbs = new Array();
             var reset_timer = 0;
             var inactivity_timeout = 600000;
@@ -485,6 +486,10 @@
             }
             
             function reset() {
+                /* anti button spam - only one animation at a time */
+                if (lock){return;}
+                lock=true;
+                
                 reset_timer = 0;
                 if (breadcrumbs.length == 1) {return;}
                 send('slideshow','play');
@@ -507,10 +512,17 @@
                     });
                 }, 350)
                 setTimeout(show, 900, breadcrumbs[0]);
+                /* anti button spam unlock */
+                setTimeout(function(){lock=false}, 1800, $menu);
             }
             
             function submenu(menu_name) {
+                /* anti button spam - only one animation at a time */
+                if (lock){return;}
+                lock=true;
+                
                 activity();
+                
                 // hide old info
                 hide(breadcrumbs[breadcrumbs.length-1]);
                 $menu = $('#'+menu_name);
@@ -528,9 +540,16 @@
                 }, 350)
                 breadcrumbs.push($menu);
                 setTimeout(show, 900, $menu);
+                
+                /* anti button spam unlock */
+                setTimeout(function(){lock=false}, 1800, $menu);
             }
         
             function back() {
+                /* anti button spam - only one animation at a time */
+                if (lock){return;}
+                lock=true;
+                
                 activity();
                 // prevent mainmenu from being popped off
                 if (breadcrumbs.length == 1){
@@ -562,12 +581,19 @@
                     });
                 }, 350)
                 setTimeout(show, 900, $new_menu);
+                
+                /* anti button spam unlock */
+                setTimeout(function(){lock=false}, 1800, $menu);
             }
             
             /* ===============================
              *  help
              * =============================== */
             function show_help(){
+                /* anti button spam - only one animation at a time */
+                if (lock){return;}
+                lock=true;
+                
                 activity();
                 // hide old info
                 hide(breadcrumbs[breadcrumbs.length-1]);
@@ -584,6 +610,7 @@
                         textShadow: '1px 1px rgba(0, 0, 0, 0.8)'
                     });
                     help_animation();
+                    lock = false;
                 }, 350)
                 breadcrumbs.push($menu);
             }
@@ -592,7 +619,6 @@
                 $('#help').fadeOut(500, function(){
                     $('#help_display, #help_hand, #help_touchscreen, #help_text, #help_again').hide()
                 });
-                
             }
             
             function help_animation(){

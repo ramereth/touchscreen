@@ -3,15 +3,18 @@
         position: absolute;
         top:300px;
         left:400px;
-        background-color:blue;
+        background-color:#8989FF;
         color:white;
-        padding:5px;
+        padding:10px;
         width:200px;
         height:200px;
+        border:1px solid white;
+        -moz-border-radius:5px;
+        -webkit-border-radius:5px;
     }
 
     #fooScreen_background {
-        background-color:white;
+        background-color:black;
     }
 </style>
 
@@ -43,5 +46,5 @@ function {{screen.hash}}()
 
 <div id="fooScreen_background" class="background"></div>
 <div id="fooScreen" class="content">
-    {{settings.screens_fooscreen.TEXT}}
+    {{screen.text}}
 </div>
