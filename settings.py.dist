@@ -1,6 +1,6 @@
 # Django settings for touchscreen project.
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -16,7 +16,7 @@ SITE_ROOT = ''
  
 # absolute path to the docroot of this site WITHOUT the final  /
 # e.g. /your/path/here
-DOC_ROOT = ''
+DOC_ROOT = __file__[:__file__.rfind('/')]
 
 # DATABASE SETTINGS
 DATABASE_ENGINE   = 'sqlite3'   # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
@@ -58,7 +58,7 @@ MEDIA_URL = '%s/static' % SITE_ROOT
 ADMIN_MEDIA_PREFIX = '/media'
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'dk#^frv&4y_&7a90#bn62@t-1jyc@q9*!69y7zq&@&8)g#szu4'
+SECRET_KEY = 'dk#^frv&4asdfasdfasdft-1jyc@qsdfsadf9y7zq&@&8)g#szu4'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -92,20 +92,15 @@ INSTALLED_APPS = (
     'core',
 
     # EXAMPLE SCREENS
-    #'screens.EXAMPLES.helloscreen',
-    #'screens.EXAMPLES.fooscreen',
+    'screens.EXAMPLES.helloscreen',
+    'screens.EXAMPLES.fooscreen',
 
-    # DISPLAY SCREENS
-    'screens.ftp_traffic',
-    'screens.ftp_usersmap',
-    'screens.osl_about',
-    'screens.osl_bandwidth',
-    'screens.people',
-    'screens.sponsors',
-    'screens.weather',
-    'screens.webcams',
-    'screens.wifi_bandwidth',
-    'screens.wifi_usage',
+    # DISPLAY SCREENS   
+    #'screens.osl_about',
+    #'screens.osl_bandwidth',
+    #'screens.people',
+    #'screens.sponsors',
+    #'screens.weather'
 )
 
 # core muddle plugins required by touchscreen 
