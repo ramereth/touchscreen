@@ -278,50 +278,36 @@ function {{screen.hash}}()
             units.pressure = $( feed ).find("up").text();
 
             // load location data
-            locationInfo.name = 
-                $( feed ).find("loc>dnam").text();
-            locationInfo.time = 
-                $( feed ).find("loc>tm").text();
-            locationInfo.sunrise = 
-                $( feed ).find("loc>sunr").text();
-            locationInfo.sunset = 
-                $( feed ).find("loc>suns").text();
+            locationInfo.name =     $(feed).find("loc>dnam").text();
+            locationInfo.time =     $(feed).find("loc>tm").text();
+            locationInfo.sunrise =  $(feed).find("loc>sunr").text();
+            locationInfo.sunset =   $(feed).find("loc>suns").text();
 
             // load current condition data
-            cc.lastUpdate = 
-                $(feed).find("cc>lsup").text();
-            cc.temp = $(feed).find("cc>tmp").text();
-            cc.feelsLike = 
-                $(feed).find("cc>flik").text();
-            cc.condition = $(feed).find("cc>t").text();
-            cc.icon = $(feed).find("cc>icon").text();
-            cc.pressure.value = 
-                $(feed).find("cc>bar>r").text();
-            cc.pressure.description = 
-                $(feed).find("cc>bar>d").text();
-            cc.wind.speed = 
-                $(feed).find("cc>wind>s").text();
-            cc.wind.from = 
-                $(feed).find("cc>wind>t").text();
-            cc.humidity = $(feed).find("cc>hmid").text();
-            cc.visual = $(feed).find("cc>vis").text();
-            cc.dewpoint = $(feed).find("cc>dewp").text();
-            cc.moon.icon = 
-                $(feed).find("cc>moon>icon").text();
-            cc.moon.description = 
-                $(feed).find("cc>moon>t").text();
-            cc.uv.index = 
-                $(feed).find("cc>uv>i").text();
-            cc.uv.description = 
-                $(feed).find("cc>uv>t").text();
+            cc.lastUpdate =             $(feed).find("cc>lsup").text();
+            cc.temp =                   $(feed).find("cc>tmp").text();
+            cc.feelsLike =              $(feed).find("cc>flik").text();
+            cc.condition =              $(feed).find("cc>t").text();
+            cc.icon =                   $(feed).find("cc>icon").text();
+            cc.pressure.value =         $(feed).find("cc>bar>r").text();
+            cc.pressure.description =   $(feed).find("cc>bar>d").text();
+            cc.wind.speed =             $(feed).find("cc>wind>s").text();
+            cc.wind.from =              $(feed).find("cc>wind>t").text();
+            cc.humidity =               $(feed).find("cc>hmid").text();
+            cc.visual =                 $(feed).find("cc>vis").text();
+            cc.dewpoint =               $(feed).find("cc>dewp").text();
+            cc.moon.icon =              $(feed).find("cc>moon>icon").text();
+            cc.moon.description =       $(feed).find("cc>moon>t").text();
+            cc.uv.index =               $(feed).find("cc>uv>i").text();
+            cc.uv.description =         $(feed).find("cc>uv>t").text();
             
             // load 5-day forecast data
-            forecast.lastUpdate = 
-                $(feed).find("dayf>lsup").text();
             
+            forecast.lastUpdate = $(feed).find("dayf>lsup").text();
+            forecast.days = []; // clear the old forecast days
             $(feed).find("dayf>day").each(function(dayIndex){
                 
-                // grab the day part of the day
+                // grab the day (as oppose to the night) part of the day
                 var dayPart = null;
                 $(this).find("part").each(function(){
                     if($(this).attr("p")=="d") dayPart = $(this);
