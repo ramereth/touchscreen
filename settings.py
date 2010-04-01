@@ -96,11 +96,17 @@ INSTALLED_APPS = (
     'screens.EXAMPLES.fooscreen',
 
     # DISPLAY SCREENS   
+    #'screens.ftp_traffic',
+    #'screens.ftp_usersmap',
+    #'screens.net_people',
     #'screens.osl_about',
     #'screens.osl_bandwidth',
     #'screens.people',
     #'screens.sponsors',
-    #'screens.weather'
+    #'screens.weather',
+    #'screens.webcams',
+    #'screens.wifi_bandwidth',
+    #'screens.wifi_usage',
 )
 
 # core muddle plugins required by touchscreen 
