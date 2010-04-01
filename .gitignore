@@ -12,6 +12,5 @@ settings.py
 *.log*
 *.pid
 *.zip
-muddle/
 *.db
 
