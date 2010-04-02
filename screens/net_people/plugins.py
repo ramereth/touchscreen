@@ -3,10 +3,17 @@ from django import forms
 
 
 class NetPeopleSettings(forms.Form):
+    
     thumbnail_height = forms.IntegerField(
             label='Thumbnail Image Height',
             help_text='The height of the thumbnail images',
-            initial=150
+            initial=100
+    )
+
+    main_height = forms.IntegerField(
+            label='Main Image Height',
+            help_text='The height of the main image',
+            initial=200
     )
     
     scroll_interval = forms.IntegerField(

@@ -8,13 +8,10 @@
 <style>
     /* debug colors for scrollers
     .cloned{ color:red; }
-    .active{ color:yellow; } */
-
+    .active{ color:yellow; } 
+    */
+    
     .{{screen.hash}}_main_img{
-        float:right;
-        margin-left: 1em;
-        margin-right: 1em;
-        margin-bottom: 1em;
     }
 
     .{{screen.hash}}_thumb_img{
@@ -141,15 +138,7 @@ function {{screen.hash}}()
 
         // debug stuff
         $('#debug_f1').click(function(){
-            showPerson( "Deborah Bryant" );
-        });
-        $('#debug_f2').click(function(){
-            showPerson( "Alex Weeks" );
-        });
-        $('#debug_f3').click(function(){
-            showPerson( "/random" );
-
-            pauseAutoRotation( 30000 );
+            showPerson( "Ed Lim" );
         });
     }
 
@@ -227,9 +216,12 @@ function {{screen.hash}}()
 
                     // Add the person's name and title
                     $("#{{screen.hash}}_main").append(
-                        "<h1>" + person.name + ", " + person.title + "</h1>" +
+                        "<h1 style='margin-top:0; margin-bottom:0.5em'>" +
+                            person.name + ", " + person.title +
+                        "</h1>" +
                         "<img src='" + person.image +
-                            "' class='{{screen.hash}}_main_img'>"
+                            "' height='{{screen.main_height}}'"+
+                            " class='{{screen.hash}}_main_img'>"
                     );
 
                     // size and position main tile
@@ -300,23 +292,6 @@ function {{screen.hash}}()
         var verticalSpace = screenHeight() -
             ($(".{{screen.hash}}_scroller").outerHeight(true) +
             $(".{{screen.hash}}_title").outerHeight(true));
-
-        // size the tile with a maximum specified width
-        if( {{settings.general.MAX_OPTIMAL_WIDTH}} <= screenWidth() ){
-
-            $("#{{screen.hash}}_main").width(
-                {{settings.general.MAX_OPTIMAL_WIDTH}}
-            );
-
-        } else {
-
-            $("#{{screen.hash}}_main").width(
-                screenWidth() -
-                ($("#{{screen.hash}}_main").outerWidth(true) -
-                $("#{{screen.hash}}_main").width())
-            );
-
-        }
 
         // center the tile
         $("#{{screen.hash}}_main").css('top', verticalSpace/2 -
