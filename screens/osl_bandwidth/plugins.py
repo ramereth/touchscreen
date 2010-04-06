@@ -44,7 +44,8 @@ class OSL_BandwidthSettings(forms.Form):
 
     # ===========================
     #  image address and titles
-    # ===========================    
+    # ===========================
+    
     title_0 = forms.CharField(
             label='Tile 0\'s Title', 
             help_text='The title of the 0th tile', 
@@ -170,7 +171,7 @@ class OSL_BandwidthSettings(forms.Form):
     )
 
 
-class OSLBandwidth(Screen):
+class screens_osl_bandwidth(Screen):
     template='osl_bandwidth.html'
     description='Graphs of OSL bandwidth'
 

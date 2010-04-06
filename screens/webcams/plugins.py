@@ -195,7 +195,7 @@ class WebcamsSettings(forms.Form):
     )
 
 
-class Webcams(Screen):
+class screens_webcams(Screen):
     template='webcams.html'
     description='still images from webcams around campus'
 

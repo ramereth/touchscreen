@@ -16,7 +16,7 @@ class WifiUsageSettings(forms.Form):
             initial=30000
     )
 
-class WifiUsage(Screen):
+class screens_wifi_usage(Screen):
     template='wifi_usage.html'
     description='Map of wifi usage at OSU'
 

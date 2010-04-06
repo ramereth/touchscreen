@@ -41,7 +41,7 @@ class PeopleSettings(forms.Form):
     )
 
 
-class OSLPeopleScreen(Screen):
+class screens_osl_people(Screen):
     template='people.html'
     description="Bio's and photos of OSL employees"
     config_form=(PeopleSettings, ScreenGeneralSettings)

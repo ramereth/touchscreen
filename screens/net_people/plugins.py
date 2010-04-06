@@ -41,7 +41,7 @@ class NetPeopleSettings(forms.Form):
     )
 
 
-class NetPeopleScreen(Screen):
+class screens_net_people(Screen):
     template='net_people.html'
     description="Photos of the employees of Network Services"
     config_form=(NetPeopleSettings, ScreenGeneralSettings)
