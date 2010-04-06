@@ -1,0 +1,16 @@
+# This file tells git to ignore files who's names match the following patterns:
+
+REFERENCE
+static/js/ARCHIVE
+screen_webcams/mockups/
+static/js/jquery.scale/jquery-1.3.2.min.js
+settings.py
+*.pyc
+*~
+*.bkp*
+*swp
+*.log*
+*.pid
+*.zip
+*.db
+
