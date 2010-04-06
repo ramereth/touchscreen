@@ -256,7 +256,7 @@ function {{screen.hash}}()
             ( $(".{{screen.hash}}_scroller").outerWidth( true )-
             $(".{{screen.hash}}_scroller").width() ) );
         $(".{{screen.hash}}_scroller").height(
-            $(".display_scrollable_item").outerHeight(true) );
+            $(".{{screen.hash}}_person").outerHeight(true) );
 
         // position and size gradient over scroller
         $('#{{screen.hash}}_gradient').css( 'z-index', 1 );
@@ -392,22 +392,22 @@ function {{screen.hash}}()
     // Load people into the scoller tile, and run the afterDataLoad() function
     // when loading is complete.
     {
-        for( personIndex in people ){
+        for( var i = 0; i<people.length; i++ ){
 
             // associate the person with the index number
-            person_index[ people[personIndex].name ] = personIndex;
+            person_index[ people[i].name ] = i;
 
             // fill up the scroller tile
             $("#{{screen.hash}}_items").append(
                 "<div class='{{screen.hash}}_person display_scrollable_item "+
                     "display_img_thumb'>"+
-                    "<img src='" + people[personIndex].image+
+                    "<img src='" + people[i].image+
                         "' class='display_img_center "+
                             "{{screen.hash}}_thumb_img'"+
                         "height='"+
                             "{{screen.thumbnail_height}}'>"+
                     "<div class='display_img_thumb_caption'>"+
-                        people[personIndex].name+
+                        people[i].name+
                     "</div>"+
                 "</div>"
             );
@@ -424,8 +424,7 @@ function {{screen.hash}}()
         });
 
         // initialize the scroller plugin
-        scroller =
-            $(".{{screen.hash}}_scroller").scrollable({
+        scroller = $(".{{screen.hash}}_scroller").scrollable({
                 items:"#{{screen.hash}}_items",
             }).circular({
                 speed:{{screen.scroll_speed}},
@@ -455,8 +454,10 @@ function {{screen.hash}}()
 <!-- Scroller tile -->
 <div class="{{screen.hash}}_scroller display_tile display_content">
 
+    <!--
     <img id='{{screen.hash}}_gradient' class='display_gradient'
          src="{{MEDIA}}/screens.net_people/gradient.png">
+    -->
 
     <div id="{{screen.hash}}_items" class='display_scrollable_items_horiz'>
         <!-- to be filled by javascript above -->
