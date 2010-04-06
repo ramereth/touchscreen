@@ -16,7 +16,7 @@ class FTPPingMapSettings(forms.Form):
     )
 
 
-class FTP_Users_Map(Screen):    
+class screens_ftp_usersmap(Screen):    
     template='ftpusersmap.html'
     description='Realtime sample of ftp users'
 

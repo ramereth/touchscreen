@@ -17,7 +17,7 @@ class FTPTrafficSettings(forms.Form):
     )
 
 
-class FTP_Traffic(Screen):
+class screens_ftp_traffic(Screen):
     description = 'Map of bandwidth usage by the OSL and its mirrors'
     template = 'ftp_traffic.html'
     config_form = (FTPTrafficSettings, ScreenGeneralSettings)

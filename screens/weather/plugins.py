@@ -46,7 +46,7 @@ class WeatherSettings(forms.Form):
     )
 
 
-class Weather(Screen):
+class screens_weather(Screen):
     template='weather.html'
     description='Weather powered by weather.com'
 

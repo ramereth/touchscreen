@@ -17,7 +17,7 @@ class WifiBandwidthSettings(forms.Form):
     )
 
 
-class WifiBandwidth(Screen):
+class screens_wifi_bandwidth(Screen):
     template = 'wifi_bandwidth.html'
     description = 'Map of OSU wifi bandwidth usage'
 

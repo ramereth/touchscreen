@@ -48,7 +48,7 @@ class OSLSponsorsSettings(forms.Form):
         initial=2000)
 
 
-class OSL_Donors(Screen):
+class screens_sponsors(Screen):
     template = 'sponsors.html'
     description = 'Open Source Lab sponsors'
 
