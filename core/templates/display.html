@@ -24,7 +24,7 @@
 
         <!-- other includes -->
         <script type="text/javascript" src="{{MEDIA}}/js/util.js"></script>
-	<script type="text/javascript" src="{{MEDIA}}/js/raphael-min.js"></script>
+        <script type="text/javascript" src="{{MEDIA}}/js/raphael-min.js"></script>
         <script type="text/javascript" src="{{MEDIA}}/js/cufon-yui.js"></script>
         <script type="text/javascript" src="{{MEDIA}}/js/osl_500.font.js"></script>
 
@@ -55,7 +55,7 @@
             // found, return -1
             function get_screen_index( id )
             {
-		for( i in screens )
+                for( i in screens )
                     if( id == screens[i].id )
                         return i;
                 return -1;
@@ -63,7 +63,7 @@
 
             function show_slide( screen )
             {
-		if( slideshow_screen_index != current_screen_index ){
+                if( slideshow_screen_index != current_screen_index ){
                     // hide slide if one is shown
                     if( current_screen_index != -1 ){
                         current_screen = screens[current_screen_index];
@@ -126,7 +126,7 @@
             function slideshow_start()
             {
                 if (!slideshow_timer)
-		    slideshow_loop();
+                    slideshow_loop();
             }
 
             // loops slides automatically
@@ -198,37 +198,37 @@
              *  SLIDE SHOW Commands
              * =============================== */
             function command_show(id){
-		/*
-		    command used to show a slide directly.  stops the slideshow
-		    and shows the slide
-		*/
-		slideshow_stop();
+                /*
+                    command used to show a slide directly.  stops the slideshow
+                    and shows the slide
+                */
+                slideshow_stop();
                 slideshow_screen_index = get_screen_index(id);
                 if( slideshow_screen_index == -1 ){
                     safelog("core messaging: screen not found:" + args[0]);
                     return false;
-		}
-		show_slide(screens[slideshow_screen_index]);
+                }
+                show_slide(screens[slideshow_screen_index]);
                 return true;
-	    }
+            }
             
             function command_next(id){
-		/*
-		    command used to show a slide directly.  stops the slideshow
-		    and shows the slide
-		*/
-		slideshow_stop();
-		slideshow_next();
-	    }
+                /*
+                    command used to show a slide directly.  stops the slideshow
+                    and shows the slide
+                */
+                slideshow_stop();
+                slideshow_next();
+            }
             
             function command_prev(id){
-		/*
-		    command used to show a slide directly.  stops the slideshow
-		    and shows the slide
-		*/
-		slideshow_stop();
-		slideshow_prev();
-	    }
+                /*
+                    command used to show a slide directly.  stops the slideshow
+                    and shows the slide
+                */
+                slideshow_stop();
+                slideshow_prev();
+            }
 
             /* ===============================
              *  AJAX Messaging
@@ -242,23 +242,23 @@
             function get_message()
             {
                 safelog("core messaging: eagerly awaiting next command.");
-		$.ajax({
-			url:'{{settings.general.MSG_SERVER_URL|safe}}',
+                $.ajax({
+                        url:'{{settings.general.MSG_SERVER_URL|safe}}',
                         data:{
                             c:0,
                             q:'{{settings.general.MSG_SERVER_QUEUE}}',
                             u:user
                         },
-			success:message_received,
-			error:message_error,
-			dataType:'json'
-		    });
+                        success:message_received,
+                        error:message_error,
+                        dataType:'json'
+                    });
             }
 
-	    function message_error() {
-		// handle error, wait 10 seconds and then retry.
-		setTimeout(get_message, 10000);
-	    }
+            function message_error() {
+                // handle error, wait 10 seconds and then retry.
+                setTimeout(get_message, 10000);
+            }
 
             /*
             Process message into command
@@ -296,43 +296,43 @@
                 safelog("core messaging: message received: " + response);
 
                 objName = response[0]
-		cmd = response[1]
-		args = (response.length > 2) ? response.slice(2) : undefined;
-		
+                cmd = response[1]
+                args = (response.length > 2) ? response.slice(2) : undefined;
+                
                 if( objName == "slideshow" ){
-		    object = this;
+                    object = this;
                     if( cmd == "play" ) func = slideshow_start;
-		    else if( cmd == "show" ) func = command_show;
+                    else if( cmd == "show" ) func = command_show;
                     else if( cmd == "stop" ) func = slideshow_stop;
                     else if( cmd == "next" ) func = command_next;
                     else if( cmd == "prev" ) func = command_prev;
-		    else if( cmd == "enable" ) func = reload_screen;
-		    else if( cmd == "disable" ) func = unload_screen;
+                    else if( cmd == "enable" ) func = reload_screen;
+                    else if( cmd == "disable" ) func = unload_screen;
                     else {
                         safelog("core messaging: unknown slideshow command: " + cmd);
-			return;
-		    }
+                        return;
+                    }
                 } else {
-		    // otherwise, the message refers to a screen
+                    // otherwise, the message refers to a screen
                     if (!command_show(objName)){
                         return;
                     }
-		    object = window[objName];
-		    func = object[cmd];
+                    object = window[objName];
+                    func = object[cmd];
                 }
-		
-		// use setTimeout to asynchronously call the function. This
-		// allows immediate return.  It also prevents exceptions in
-		// the called function from causing an exception here.
-		if (args) {
-		    // call function using func.apply() which allows an array of
-		    // arguments to be passed in.
-		    // XXX calling func.apply directly with SetTimeout does not
-		    // appear to work. use an anonymous function instead.
-		    setTimeout(function(){func.apply(object, args);}, 0);
-		} else {
-		    setTimeout(func, 0);
-		}
+                
+                // use setTimeout to asynchronously call the function. This
+                // allows immediate return.  It also prevents exceptions in
+                // the called function from causing an exception here.
+                if (args) {
+                    // call function using func.apply() which allows an array of
+                    // arguments to be passed in.
+                    // XXX calling func.apply directly with SetTimeout does not
+                    // appear to work. use an anonymous function instead.
+                    setTimeout(function(){func.apply(object, args);}, 0);
+                } else {
+                    setTimeout(func, 0);
+                }
             }
 
             /* ===============================
@@ -357,40 +357,40 @@
                     }
             {% endfor %}
 
-	    function reload_screen(name){
-		$.getJSON('{{ROOT}}/reload/',{'screen':name}, process_reload);
-	    }
-	    
-	    function process_reload(data){
-		// TODO fix this - temporary fix is to reload display on config
-		// changes.  right now removing/adding screens causes problems
-		// with the slideshow
-		window.location.reload();
-		return; // TODO fix this
-		new_screen = data['screen'];
-		unload_screen(new_screen.id);
-		html = data['html'];
-		div = $("<div id='"+ new_screen.id +"' class='screen'>");
-		div.append(html);
-		$('#screens').append(div);
-		init_screen(new_screen);
+            function reload_screen(name){
+                $.getJSON('{{ROOT}}/reload/',{'screen':name}, process_reload);
+            }
+            
+            function process_reload(data){
+                // TODO fix this - temporary fix is to reload display on config
+                // changes.  right now removing/adding screens causes problems
+                // with the slideshow
+                window.location.reload();
+                return; // TODO fix this
+                new_screen = data['screen'];
+                unload_screen(new_screen.id);
+                html = data['html'];
+                div = $("<div id='"+ new_screen.id +"' class='screen'>");
+                div.append(html);
+                $('#screens').append(div);
+                init_screen(new_screen);
                 hiders[new_screen.hide];
-		screens[screens.length] = new_screen;
-	    }
+                screens[screens.length] = new_screen;
+            }
 
-	    function unload_screen(name) {
-		 // TODO fix this - temporary fix is to reload display on config
-		 // changes.  right now removing/adding screens causes problems
-		 // with the slideshow
-		window.location.reload();
+            function unload_screen(name) {
+                 // TODO fix this - temporary fix is to reload display on config
+                 // changes.  right now removing/adding screens causes problems
+                 // with the slideshow
+                window.location.reload();
                 return;
-		$('#'+name).remove();
-		for (i in screens) {
-		    if (screens[i].id == name) {
-			screens.splice(i,1);
-		    }
-		}
-	    }
+                $('#'+name).remove();
+                for (i in screens) {
+                    if (screens[i].id == name) {
+                        screens.splice(i,1);
+                    }
+                }
+            }
 
             // hides all screens
             function hide_all() {
@@ -423,7 +423,7 @@
                 }
                 safelog("core: All screens initialized");
             }
-	    
+            
             function fix_scope(closure, name) {
                 /*
                    return a function that is setup to use the correct scope
@@ -436,16 +436,16 @@
                 */
                 if (closure && closure[name])
                     return function() {
-			try {
-			    closure[name].apply(closure);
-			} catch(err) {
-			    safelog('Error in closure: ' + closure.id + '.' + name);
-			}
-		    }
+                        try {
+                            closure[name].apply(closure);
+                        } catch(err) {
+                            safelog('Error in closure: ' + closure.id + '.' + name);
+                        }
+                    }
                 return $.noop;
             }
             
-	    function init_screen(scr){
+            function init_screen(scr){
                 /*
                     gets pointers to functions within the screen's enclosure
                     if there is one.  the enclosure MUST match the screen's id
@@ -459,8 +459,8 @@
                     // no javascript enclosure for this screen
                     scr.init = scr.start = scr.stop = scr.resize = $.noop;
                 }
-		scr.init();
-	    }
+                scr.init();
+            }
 
             // on load handler.
             $(document).ready(function()
