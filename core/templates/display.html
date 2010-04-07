@@ -156,9 +156,8 @@
             {
                 //get next slide
                 var screen = get_next_slide();
-                while( !screen.slideshow ){
+                while( !screen.slideshow )
                     screen = get_next_slide();
-                }
                 show_slide( screen );
                 return screen;
             }
@@ -168,9 +167,8 @@
             {
                 //get previous slide
                 var screen = get_prev_slide();
-                while (!screen.slideshow) {
+                while( !screen.slideshow )
                     screen = get_prev_slide();
-                }
                 show_slide(screen);
             }
 
@@ -469,9 +467,15 @@
                 delay = hide_all();
                 init_all();
                 Cufon.replace('.display_title');
-                setTimeout(slideshow_start, delay);
-                get_message();  //start waiting for messages
 
+                // start the slideshow if screens exist
+                if( screens.length != 0 )
+                    setTimeout( slideshow_start, delay );
+
+                // start waiting for messages
+                get_message();
+
+                // show the cursor if the 'c' key is pressed. Hidden by default.
                 $('html').keypress(function(event){
                     if (event.which == 99) {
                         if ($('body').hasClass('show_cursor')){
