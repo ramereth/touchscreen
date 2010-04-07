@@ -1,7 +1,6 @@
 from core.models import Screen, ScreenGeneralSettings
 from django import forms
 
-
 class NetPeopleSettings(forms.Form):
     
     thumbnail_height = forms.IntegerField(
@@ -13,7 +12,7 @@ class NetPeopleSettings(forms.Form):
     main_height = forms.IntegerField(
             label='Main Image Height',
             help_text='The height of the main image',
-            initial=200
+            initial=450
     )
     
     scroll_interval = forms.IntegerField(
