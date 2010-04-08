@@ -168,14 +168,16 @@ function {{screen.hash}}()
     this.init = function()
     {
         safelog('weather: initializing...');
-        this.refreshTiles();
+        
+        // load the data, but don't start the refresh cycle
+        this.refreshData('once');
     }
 
     this.start = function()
     {
         safelog('weather: starting...');
 
-        // start the data refresh cycle
+        // try refreshing the data (if enough time has passed since load
         this.refreshData();
 
         // start the weather maps cycle
@@ -244,14 +246,19 @@ function {{screen.hash}}()
 
     function stopRefreshingData(){ clearTimeout(dataRefreshTimer) };
 
-    this.refreshData = function()
+    this.refreshData = function( once )
     // Loads data from the weather RSS feed into the data structure and
-    // refreshes the tiles with the loaded data. 
+    // refreshes the tiles with the loaded data. If once = 'once', only refresh
     {
+        once = once == 'once';
         // if this is the first time loading the feed OR the current time is
-        // passed the timeout, refresh now
+        // passed the timeout OR the once flag is set, refresh now
         var now = new Date().getTime();
-        if( !last_update || now >= last_update+{{screen.refresh_interval}} ){
+        if(
+            !last_update ||
+            now >= last_update+{{screen.refresh_interval}} ||
+            once
+        ){
             
             safelog( "weather: loading data..." );
         
@@ -327,19 +334,24 @@ function {{screen.hash}}()
                 // fill the tiles with the loaded data
                 fillTiles();
 
-                // set a timeout to refresh again at the specified interval
-                stopRefreshingData(); // clear any previous timers
-                dataRefreshTimer = setTimeout(
-                    '{{screen.hash}}.refreshData()', {{screen.refresh_interval}}
-                );
+                // if the once flag is set, don't touch the timers
+                if( !once ){
+                    
+                    // set a timeout to refresh again at the specified interval
+                    stopRefreshingData(); // clear any previous timers
+                    dataRefreshTimer = setTimeout(
+                        '{{screen.hash}}.refreshData()',
+                        {{screen.refresh_interval}}
+                    );
 
-                // set the last_update stamp
-                last_update = new Date().getTime();
+                    // set the last_update stamp
+                    last_update = new Date().getTime();
+                }
             });
 
         // Otherwise, if the time out hasn't timed out yet. Report the error.
         } else
-            safelog( "weather: refreshData: not ready to refresh again yet" );
+            safelog( "weather: not ready to refresh just yet" );
     }
 
     function fillTiles()
