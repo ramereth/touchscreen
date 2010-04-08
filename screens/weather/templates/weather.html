@@ -78,8 +78,6 @@ function {{screen.hash}}()
     // Global Data //
     /////////////////
 
-    var last_update = undefined;
-
     // unit information
     var units = {
         temp:null,      // i.e. F (fahrenheit) or C (celcius)
@@ -159,8 +157,9 @@ function {{screen.hash}}()
         this.humidity = humidity;
     }
 
-    // Timer for the data refresh
-    var dataRefreshTimer = null;
+    // data refresh cycle variables
+    var dataRefreshTimer = null;    // the refresh timer
+    var last_update = null;         // the last_update stamp
 
     ///////////////////
     // Screen Events //
@@ -176,20 +175,8 @@ function {{screen.hash}}()
     {
         safelog('weather: starting...');
 
-        clearTimeout(dataRefreshTimer);
-
-        // load the weather data from the weather feed
-        now = new Date().getTime();
-        if (last_update==undefined || now>= last_update+{{screen.refresh_interval}} ){
-            this.loadData();
-        } else {
-            // hasn't timed out yet, set timeout for duration remaining
-            dataRefreshTimer = setTimeout(
-                '{{screen.hash}}.loadData()',
-                {{screen.refresh_interval}}-(now-last_update)
-            );
-        }
-        //$(".{{screen.hash}}_map").scale();
+        // start the data refresh cycle
+        this.refreshData();
 
         // start the weather maps cycle
         $('#{{screen.hash}}_maps').cycle({
@@ -202,7 +189,7 @@ function {{screen.hash}}()
         
         // setup debug buttons
         $('#debug_f1').click(function(){
-            this.loadData();
+            this.refreshData();
         });
     }
 
@@ -210,8 +197,8 @@ function {{screen.hash}}()
     {
         safelog('weather: stopping');
 
-        // clear the data refresh timer
-        clearTimeout(dataRefreshTimer);
+        // stop the data refresh cycle
+        stopRefreshingData();
         
         // stop the weather maps cycle
         $('#{{screen.hash}}_maps').cycle('stop');
@@ -225,10 +212,9 @@ function {{screen.hash}}()
     //////////////////
     // Facilitators //
     //////////////////
-
-    // refreshTiles()
-    // Repositions and resizes the tiles depending on their content.
+    
     function refreshTiles()
+    // Repositions and resizes the tiles depending on their content.
     {
         safelog("weather: refreshing tiles...");
         
@@ -256,99 +242,108 @@ function {{screen.hash}}()
         );
     }
 
-    // loadData()
+    function stopRefreshingData(){ clearTimeout(dataRefreshTimer) };
+
+    this.refreshData = function()
     // Loads data from the weather RSS feed into the data structure and
-    // refreshes the tiles with the loaded data.
-    this.loadData = function()
+    // refreshes the tiles with the loaded data. 
     {
-        safelog( "weather: loading data..." );
+        // if this is the first time loading the feed OR the current time is
+        // passed the timeout, refresh now
+        var now = new Date().getTime();
+        if( !last_update || now >= last_update+{{screen.refresh_interval}} ){
+            
+            safelog( "weather: loading data..." );
         
-        // get and prepare the weather feed URL
-        var weatherFeedURL = 
-            ("{{screen.weather_feed_URL}}&par={{screen.weather_feed_par_key_URL}}&key={{screen.weather_feed_main_key_URL}}")
-            .replace( /&amp\;/g, "&" );
-        
-        // get the feed
-        $.get('/proxy/', {'url':weatherFeedURL}, function( feed ){
+            // get and prepare the weather feed URL
+            var weatherFeedURL = 
+                ("{{screen.weather_feed_URL}}&par={{screen.weather_feed_par_key_URL}}&key={{screen.weather_feed_main_key_URL}}")
+                .replace( /&amp\;/g, "&" );
             
-            // load weather unit data (note: find will not find "head")
-            units.temp = $( feed ).find("ut").text();
-            units.distance = $( feed ).find("ud").text();
-            units.speed = $( feed ).find("us").text();
-            units.pressure = $( feed ).find("up").text();
-
-            // load location data
-            locationInfo.name =     $(feed).find("loc>dnam").text();
-            locationInfo.time =     $(feed).find("loc>tm").text();
-            locationInfo.sunrise =  $(feed).find("loc>sunr").text();
-            locationInfo.sunset =   $(feed).find("loc>suns").text();
-
-            // load current condition data
-            cc.lastUpdate =             $(feed).find("cc>lsup").text();
-            cc.temp =                   $(feed).find("cc>tmp").text();
-            cc.feelsLike =              $(feed).find("cc>flik").text();
-            cc.condition =              $(feed).find("cc>t").text();
-            cc.icon =                   $(feed).find("cc>icon").text();
-            cc.pressure.value =         $(feed).find("cc>bar>r").text();
-            cc.pressure.description =   $(feed).find("cc>bar>d").text();
-            cc.wind.speed =             $(feed).find("cc>wind>s").text();
-            cc.wind.from =              $(feed).find("cc>wind>t").text();
-            cc.humidity =               $(feed).find("cc>hmid").text();
-            cc.visual =                 $(feed).find("cc>vis").text();
-            cc.dewpoint =               $(feed).find("cc>dewp").text();
-            cc.moon.icon =              $(feed).find("cc>moon>icon").text();
-            cc.moon.description =       $(feed).find("cc>moon>t").text();
-            cc.uv.index =               $(feed).find("cc>uv>i").text();
-            cc.uv.description =         $(feed).find("cc>uv>t").text();
-            
-            // load 5-day forecast data
-            
-            forecast.lastUpdate = $(feed).find("dayf>lsup").text();
-            forecast.days = []; // clear the old forecast days
-            $(feed).find("dayf>day").each(function(dayIndex){
+            // get the feed
+            $.get('/proxy/', {'url':weatherFeedURL}, function( feed ){
                 
-                // grab the day (as oppose to the night) part of the day
-                var dayPart = null;
-                $(this).find("part").each(function(){
-                    if($(this).attr("p")=="d") dayPart = $(this);
+                // load weather unit data (note: find will not find "head")
+                units.temp = $( feed ).find("ut").text();
+                units.distance = $( feed ).find("ud").text();
+                units.speed = $( feed ).find("us").text();
+                units.pressure = $( feed ).find("up").text();
+
+                // load location data
+                locationInfo.name =     $(feed).find("loc>dnam").text();
+                locationInfo.time =     $(feed).find("loc>tm").text();
+                locationInfo.sunrise =  $(feed).find("loc>sunr").text();
+                locationInfo.sunset =   $(feed).find("loc>suns").text();
+
+                // load current condition data
+                cc.lastUpdate =             $(feed).find("cc>lsup").text();
+                cc.temp =                   $(feed).find("cc>tmp").text();
+                cc.feelsLike =              $(feed).find("cc>flik").text();
+                cc.condition =              $(feed).find("cc>t").text();
+                cc.icon =                   $(feed).find("cc>icon").text();
+                cc.pressure.value =         $(feed).find("cc>bar>r").text();
+                cc.pressure.description =   $(feed).find("cc>bar>d").text();
+                cc.wind.speed =             $(feed).find("cc>wind>s").text();
+                cc.wind.from =              $(feed).find("cc>wind>t").text();
+                cc.humidity =               $(feed).find("cc>hmid").text();
+                cc.visual =                 $(feed).find("cc>vis").text();
+                cc.dewpoint =               $(feed).find("cc>dewp").text();
+                cc.moon.icon =              $(feed).find("cc>moon>icon").text();
+                cc.moon.description =       $(feed).find("cc>moon>t").text();
+                cc.uv.index =               $(feed).find("cc>uv>i").text();
+                cc.uv.description =         $(feed).find("cc>uv>t").text();
+                
+                // load 5-day forecast data
+                
+                forecast.lastUpdate = $(feed).find("dayf>lsup").text();
+                forecast.days = []; // clear the old forecast days
+                $(feed).find("dayf>day").each(function(dayIndex){
+                    
+                    // grab the day (as oppose to the night) part of the day
+                    var dayPart = null;
+                    $(this).find("part").each(function(){
+                        if($(this).attr("p")=="d") dayPart = $(this);
+                    });
+                    
+                    // push a new day onto the days array
+                    forecast.days.push( 
+                        new forecast_day(
+                            $(this).attr("t"),
+                            $(this).find("hi").text(),
+                            $(this).find("low").text(),
+                            $(this).find("sunr").text(),
+                            $(this).find("suns").text(),
+                            dayPart.find("icon").text(),
+                            dayPart.find("t").eq(0).text(),
+                            dayPart.find("wind>s").text(),
+                            dayPart.find("wind>t").text(),
+                            dayPart.find("ppcp").text(),
+                            dayPart.find("hmid").text()
+                        )
+                    );
+                    
                 });
-                
-                // push a new day onto the days array
-                forecast.days.push( 
-                    new forecast_day(
-                        $(this).attr("t"),
-                        $(this).find("hi").text(),
-                        $(this).find("low").text(),
-                        $(this).find("sunr").text(),
-                        $(this).find("suns").text(),
-                        dayPart.find("icon").text(),
-                        dayPart.find("t").eq(0).text(),
-                        dayPart.find("wind>s").text(),
-                        dayPart.find("wind>t").text(),
-                        dayPart.find("ppcp").text(),
-                        dayPart.find("hmid").text()
-                    )
-                );
-                
-            });
-           
-            // fill the tiles with the loaded data
-            fillTiles();
+               
+                // fill the tiles with the loaded data
+                fillTiles();
 
-            // set a timeout to reload the data again at a specified interval
-            dataRefreshTimer = 
-                setTimeout(
-                    '{{screen.hash}}.loadData()',
-                    {{screen.refresh_interval}}
+                // set a timeout to refresh again at the specified interval
+                stopRefreshingData(); // clear any previous timers
+                dataRefreshTimer = setTimeout(
+                    '{{screen.hash}}.refreshData()', {{screen.refresh_interval}}
                 );
-                
-            last_update = new Date().getTime();
-        });
+
+                // set the last_update stamp
+                last_update = new Date().getTime();
+            });
+
+        // Otherwise, if the time out hasn't timed out yet. Report the error.
+        } else
+            safelog( "weather: refreshData: not ready to refresh again yet" );
     }
 
-    // fillTiles()
-    // Fills the tiles with data from the data structure
     function fillTiles()
+    // Fills the tiles with data from the data structure
     {
         safelog( "weather: filling tiles..." );
         
