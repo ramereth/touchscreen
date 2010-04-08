@@ -63,7 +63,7 @@ function {{screen.hash}}()
         // Initialize the image refresher
         $(".{{screen.hash}}_img").refreshImage({
             interval: {{screen.imgRefreshInterval}}
-        });
+        },"debug");
     }
 
     this.start = function()
@@ -74,7 +74,7 @@ function {{screen.hash}}()
         positionTiles();
 
         // start the image refresh
-        $(".{{screen.hash}}_img").refreshImage("start");
+        $(".{{screen.hash}}_img").refreshImage("start","debug");
     }
 
     this.stop = function()
@@ -82,7 +82,7 @@ function {{screen.hash}}()
         safelog('webcams: stopping...');
 
         // stop the image refresh
-        $(".{{screen.hash}}_img").refreshImage("stop");
+        $(".{{screen.hash}}_img").refreshImage("stop","debug");
     }
 
     this.resize = function() 

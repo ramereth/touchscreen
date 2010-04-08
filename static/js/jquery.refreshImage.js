@@ -216,8 +216,10 @@
                     if(debug)          
                         console.log("refreshImage: clearing timer.");
 
+                    // attempt to load the timer saved in the image
                     var timer = image.data('refreshImage_timer');
-                    
+
+                    // clear the timer if one was successfully extracted
                     if( timer != undefined ) clearTimeout( timer );
                 }
 
@@ -225,12 +227,17 @@
                 function startTimer()
                 {
                     var options = image.data('refreshImage_options');
+                    
                     stopRefreshing(); // clear the old timer
+                    
                     var timer = setTimeout(
                         function(){refreshNow()},
                         options.interval
                     );
+
+                    // save the timer in the image
                     image.data( 'refreshImage_timer', timer );
+                    
                     if(debug)          
                         console.log("refreshImage: timer started. Next refresh"+
                             " in "+options.interval+" milliseconds."
