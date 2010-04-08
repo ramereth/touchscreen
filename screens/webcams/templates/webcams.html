@@ -74,7 +74,7 @@ function {{screen.hash}}()
         positionTiles();
 
         // start the image refresh
-        $(".{{screen.hash}}_img").refreshImage("start","debug");
+        $(".{{screen.hash}}_img").refreshImage("start");
     }
 
     this.stop = function()
@@ -82,7 +82,7 @@ function {{screen.hash}}()
         safelog('webcams: stopping...');
 
         // stop the image refresh
-        $(".{{screen.hash}}_img").refreshImage("stop","debug");
+        $(".{{screen.hash}}_img").refreshImage("stop");
     }
 
     this.resize = function() 
