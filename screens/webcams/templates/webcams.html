@@ -60,6 +60,9 @@ function {{screen.hash}}()
         // write and initialize tiles
         initTiles();
 
+        // position the thumbnail tiles
+        positionTiles();
+
         // Initialize the image refresher
         $(".{{screen.hash}}_img").refreshImage({
             interval: {{screen.imgRefreshInterval}}
