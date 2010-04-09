@@ -311,7 +311,6 @@ function {{screen.hash}}()
                 cc.uv.description =         $(feed).find("cc>uv>t").text();
                 
                 // load 5-day forecast data
-                
                 forecast.lastUpdate = $(feed).find("dayf>lsup").text();
                 forecast.days = []; // clear the old forecast days
                 $(feed).find("dayf>day").each(function(dayIndex){
@@ -416,6 +415,8 @@ function {{screen.hash}}()
         $("#{{screen.hash}}_cc_uv").html( cc.uv.index +
             " (" + cc.uv.description + ")"
         );
+
+        $("#{{screen.hash}}_cc_dewpoint").html( cc.dewpoint + "&#176;" );
         
         $("#{{screen.hash}}_cc_lastUpdate").html(
             cc.lastUpdate
