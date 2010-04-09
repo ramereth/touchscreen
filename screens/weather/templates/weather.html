@@ -69,6 +69,10 @@
     #{{screen.hash}}_maps{
         right:0;
     }
+
+    .{{screen.hash}}_map{
+        float:left;
+    }
 </style>
 
 <script type="text/javascript">
@@ -187,15 +191,15 @@ function {{screen.hash}}()
 
         // start the weather maps cycle and image refresh
         refreshTiles();
-        /*
         $('#{{screen.hash}}_maps').cycle({
             fx:'fade',
-            fit:0,
-            containerResize:0,
+            speed:0,
+            sync:false,
+            fit:false,
+            containerResize:false,
             timeout:{{screen.maps_cycle_timeout}},
             //after:function(){$(".{{screen.hash}}_map").scale("center")}
         });
-        */
         $(".{{screen.hash}}_map").refreshImage("start");
         
         // setup debug buttons
@@ -213,7 +217,7 @@ function {{screen.hash}}()
         
         // stop the weather maps cycle and image refresh
         $('#{{screen.hash}}_maps').cycle('stop');
-        $(".{{screen.hash}}_map").refreshImage("stop");
+        $(".{{screen.hash}}_map").refreshImage('stop');
     }
 
     this.resize = function()
