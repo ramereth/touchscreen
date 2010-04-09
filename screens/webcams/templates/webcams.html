@@ -98,9 +98,9 @@ function {{screen.hash}}()
     // MENU COMMANDS //
     ///////////////////
 
+    this.show = function( name )
     // a menu command to show the specified graph set (by name, first-
     // encountered)
-    this.show = function( name )
     {
         var index = null;
         
@@ -122,10 +122,9 @@ function {{screen.hash}}()
     //////////////////
     // Initializers //
     //////////////////
-
-    // initTiles()
-    // Initialize and write the tiles
+    
     function initTiles()
+    // Initialize and write the tiles
     {       
         for( var i=0; i < webcams.length; i++ ){
 
@@ -162,12 +161,11 @@ function {{screen.hash}}()
         initTileClickEvents();
 
         // display a random webcam to the main tile
-        displayToMainTile( Math.floor( Math.random() * webcams.length ) );
+        displayToMainTile(2); //Math.floor( Math.random() * webcams.length ) );
     }
 
-    // positionTiles()
-    // Resizes and repositions tiles depending on thier content.
     function positionTiles()
+    // Resizes and repositions tiles depending on thier content.
     {
         // calculate the padding between the tiles to evently distribute them
         // across the screen
@@ -196,11 +194,10 @@ function {{screen.hash}}()
             $("#{{screen.hash}}_main").outerWidth(true)/2);
     }
 
-    // initTileClickEvents()
+    function initTileClickEvents()
     // Initialize click event handling. (NOTE: This section is for demonstration
     // purposes only. Eventually, these tile manipulations will be done via the
     // touchscreen control interface.)
-    function initTileClickEvents()
     {
         $("#{{screen.hash}}_thumb_0").click(function(){displayToMainTile(0)});
         $("#{{screen.hash}}_thumb_1").click(function(){displayToMainTile(1)});
@@ -219,50 +216,43 @@ function {{screen.hash}}()
     ///////////////////
     //  FACILITATORS //
     ///////////////////
-
-    // displayToMainTile( tileIndex )
-    // Display the specified webcam to the main tile
+    
     function displayToMainTile( tileIndex )
+    // Display the specified webcam to the main tile
     {
         // make sure only one instance of this function runs at a time
         if( !displayToMainTileRunning ){
 
             // set a running flag so only one function runs at a time
             displayToMainTileRunning = true;
-            
-            // fade out the main tile
-            $("#{{screen.hash}}_main").fadeOut(function()
-            {
-                // fill the main tile with the title and the picture of the
-                // specified webcam shot
+
+            // fade out the main title and replace with the new one
+            $("#{{screen.hash}}_title_main").fadeOut(function(){
                 $("#{{screen.hash}}_title_main").html(
                     webcams[tileIndex].title
                 );
+            });
+            
+            // fade out the main image and replace with the new one
+            $("#{{screen.hash}}_img_main").fadeOut(function(){
                 $("#{{screen.hash}}_img_main").attr( 
                     'src', webcams[tileIndex].image 
                 );
                 $("#{{screen.hash}}_img_main").height(
                     {{screen.mainTile_height}}
                 );
-
-                // set max height and width
-                $("#{{screen.hash}}_img_main").attr( 'max-height',
-                    '{{screen.mainTile_height}}'
-                );
-                $("#{{screen.hash}}_img_main").attr( 'max-width',
-                    '{{screen.mainTile_width}}'
-                );
-
+                
                 // place the tile in the middle of the screen
                 $("#{{screen.hash}}_main").css('top', screenHeight()/2 -
                     $("#{{screen.hash}}_main").outerHeight(true)/2);
                 $("#{{screen.hash}}_main").css('left', screenWidth()/2 -
                     $("#{{screen.hash}}_main").outerWidth(true)/2);
+            });
 
-                // fade the main tile back in
-                $("#{{screen.hash}}_main").fadeIn("slow");
-
-                // clear the running flag to allow the function to run again
+            // fade back in the main title and image
+            $("#{{screen.hash}}_title_main").fadeIn("slow");
+            $("#{{screen.hash}}_img_main").fadeIn("slow", function(){
+                // clear the display-to running flag
                 displayToMainTileRunning = false;
             });
         }
