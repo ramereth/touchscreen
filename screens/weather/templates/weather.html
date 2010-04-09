@@ -171,6 +171,11 @@ function {{screen.hash}}()
         
         // load the data, but don't start the refresh cycle
         this.refreshData('once');
+
+        // Initialize the image refresher for the maps
+        $(".{{screen.hash}}_map").refreshImage({
+            interval: {{screen.refresh_interval}}
+        });
     }
 
     this.start = function()
@@ -180,14 +185,18 @@ function {{screen.hash}}()
         // try refreshing the data (if enough time has passed since load)
         this.refreshData();
 
-        // start the weather maps cycle
+        // start the weather maps cycle and image refresh
+        refreshTiles();
+        /*
         $('#{{screen.hash}}_maps').cycle({
             fx:'fade',
             fit:0,
             containerResize:0,
             timeout:{{screen.maps_cycle_timeout}},
-            //after:function(){$(".{{screen.hash}}_map").scale();}
+            //after:function(){$(".{{screen.hash}}_map").scale("center")}
         });
+        */
+        $(".{{screen.hash}}_map").refreshImage("start");
         
         // setup debug buttons
         $('#debug_f1').click(function(){
@@ -202,8 +211,9 @@ function {{screen.hash}}()
         // stop the data refresh cycle
         stopRefreshingData();
         
-        // stop the weather maps cycle
+        // stop the weather maps cycle and image refresh
         $('#{{screen.hash}}_maps').cycle('stop');
+        $(".{{screen.hash}}_map").refreshImage("stop");
     }
 
     this.resize = function()
@@ -222,19 +232,15 @@ function {{screen.hash}}()
         
         // size the maps tile to match the height of the cc tile, and the width
         // of the smallest map
-        $("#{{screen.hash}}_maps").height(
-            $("#{{screen.hash}}_cc").height()
-        );
-        $("#{{screen.hash}}_maps").width( 600 -
-            $("#{{screen.hash}}_maps").width() -
-            $("#{{screen.hash}}_maps").innerWidth()
-        );
-
-        // resize each of the maps to fit inside the container
-        $(".{{screen.hash}}_map").each( function(index){
-            $(this).height( $("#{{screen.hash}}_maps").innerHeight() );
-            $(this).width( $("#{{screen.hash}}_maps").innerWidth() );
+        var largestWidth = 0;
+        $(".{{screen.hash}}_map").each(function()
+        {
+            if( $(this).width() > largestWidth )
+                largestWidth = $(this).width();
         });
+        $("#{{screen.hash}}_maps").width( largestWidth );
+        $("#{{screen.hash}}_maps").height( $("#{{screen.hash}}_cc").height() );
+        $(".{{screen.hash}}_map").scale("center");
         
         // size the forecast tile
         $("#{{screen.hash}}_forecast").width(
