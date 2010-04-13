@@ -202,7 +202,14 @@ function {{screen.hash}}()
                 fit:false,
                 containerResize:false,
                 timeout:{{screen.maps_cycle_timeout}},
+                /*
+                before:function(){
+                    $(".{{screen.hash}}_maps_overlay").fadeIn('fast',function(){
+                        $(".{{screen.hash}}_map_overlay").fadeOut('fast')
+                    }
+                )}
                 //after:function(){$(".{{screen.hash}}_map").scale("center")}
+                */
             });
         else
             $('#{{screen.hash}}_maps').cycle('resume');
