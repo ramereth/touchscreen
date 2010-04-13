@@ -453,6 +453,7 @@
                 */
                 activity();
                 msg = JSON.stringify($.makeArray(arguments));
+                console.log("menu: send: Sending message '"+msg+"'");
                 $.get('{{settings.general.MSG_SERVER_URL|safe}}',
                         {
                             c:1,
@@ -468,7 +469,7 @@
             var lock = false;
             var breadcrumbs = new Array();
             var reset_timer = 0;
-            var inactivity_timeout = 600000;
+            var inactivity_timeout = 30000;
             var submenu_colors = {
                 'osl':'#E55E00',
                 'osl_network_graphs':'#E55E00',
@@ -491,10 +492,19 @@
                 lock=true;
                 
                 reset_timer = 0;
-                if (breadcrumbs.length == 1) {return;}
+
+                // if we're already on the main menu, clear the lock and return
+                // immediatly
+                if( breadcrumbs.length == 1 ){
+                    lock=false;
+                    return;
+                }
+
                 send('slideshow','play');
+                
                 // hide current menu
                 hide(breadcrumbs.pop());
+                
                 // pop all other menus off the breadcrumbs
                 while (breadcrumbs.length > 1) {
                     breadcrumbs.pop()
@@ -747,28 +757,28 @@
                 <div class="button button_red" onclick="submenu('network');">Network Engineering</div>
                 <div class="button button_blue">Data Center Map</div>
                 <div class="button button_purple" onclick="submenu('webcams');send('slideshow','show','screens_webcams');">Webcams</div>
-                <div class="button button_yellow" onclick="send('slideshow','show','Weather');">Weather</div>
+                <div class="button button_yellow" onclick="send('slideshow','show','screens_weather');">Weather</div>
                 <div class="button button_green" onclick="show_help();">Help</div>
             </div>
             
             <div id="osl" title="Open Source Lab" class="menu">
-                <div class="button button_orange" onclick="submenu('osl_network_graphs'); send('slideshow','show','OSLBandwidth');">Network Graphs</div>
-                <div class="button button_red" onclick="send('slideshow','show','FTP_Traffic');">FTP Status</div>
-                <div class="button button_blue" onclick="send('slideshow','show','FTP_Users_Map');">FTP Users Map</div>
+                <div class="button button_orange" onclick="submenu('osl_network_graphs'); send('slideshow','show','screens_osl_bandwidth');">Network Graphs</div>
+                <div class="button button_red" onclick="send('slideshow','show','screens_ftp_traffic');">FTP Status</div>
+                <div class="button button_blue" onclick="send('slideshow','show','screens_ftp_usersmap');">FTP Users Map</div>
                 <div class="button button_green">Outages</div>
-                <div class="button button_orange" onclick="send('slideshow','show','OSL_About');">About</div>
-                <div class="button button_red" onclick="send('slideshow','show','OSLPeopleScreen');">People</div>
-                <div class="button button_blue" onclick="send('slideshow','show','OSL_Donors');">Sponsors</div>
+                <div class="button button_orange" onclick="send('slideshow','show','screens_osl_about');">About</div>
+                <div class="button button_red" onclick="send('slideshow','show','screens_osl_people');">People</div>
+                <div class="button button_blue" onclick="send('slideshow','show','screens_sponsors');">Sponsors</div>
                 <div class="button button_green">Help</div>
             </div>
             
             <div id="osl_network_graphs" title="OSL Network Graphs" class="menu">
-                <div class="button button_orange" onclick="send('OSLBandwidth','show','OSL Services');">Open Source Lab Services</div>
-                <div class="button button_red" onclick="send('OSLBandwidth','show','Apache');">Apache</div>
-                <div class="button button_blue" onclick="send('OSLBandwidth','show','Gentoo');">Gentoo</div>
-                <div class="button button_purple" onclick="send('OSLBandwidth','show','Kernel.org');">Kernel .org</div>
-                <div class="button button_yellow" onclick="send('OSLBandwidth','show','OpenOffice.org');">OpenOffice. org</div>
-                <div class="button button_green" onclick="send('OSLBandwidth','show','Mozilla');">Mozilla</div>
+                <div class="button button_orange"   onclick="send('screens_osl_bandwidth','show','OSL Services');">Open Source Lab Services</div>
+                <div class="button button_red"      onclick="send('screens_osl_bandwidth','show','Apache');">Apache</div>
+                <div class="button button_blue"     onclick="send('screens_osl_bandwidth','show','Gentoo');">Gentoo</div>
+                <div class="button button_purple"   onclick="send('screens_osl_bandwidth','show','Kernel.org');">Kernel .org</div>
+                <div class="button button_yellow"   onclick="send('screens_osl_bandwidth','show','OpenOffice.org');">OpenOffice. org</div>
+                <div class="button button_green"    onclick="send('screens_osl_bandwidth','show','Mozilla');">Mozilla</div>
             </div>
             
             <div id="webcams" title="Webcams" class="menu">
@@ -789,8 +799,8 @@
             <div id="network" title="Network Engineering" class="menu">
                 <div class="button button_orange">People</div>
                 <div class="button button_red">Traffic Graphs</div>
-                <div class="button button_blue" onclick="send('slideshow','show','WifiBandwidth');">Wifi Usage Map</div>
-                <div class="button button_purple" onclick="send('slideshow','show','WifiUsage');">Wifi Bandwidth Map</div>
+                <div class="button button_blue" onclick="send('slideshow','show','screens_wifi_usage');">Wifi Usage Map</div>
+                <div class="button button_purple" onclick="send('slideshow','show','screens_wifi_bandwidth');">Wifi Bandwidth Map</div>
             </div>
             <div id="help" title="Help">
                 <div id="help_display">
