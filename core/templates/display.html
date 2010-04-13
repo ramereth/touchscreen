@@ -55,7 +55,7 @@
             // found, return -1
             function get_screen_index( id )
             {
-                for( i in screens )
+                for( var i=0; i<screens.length; i++ )
                     if( id == screens[i].id )
                         return i;
                 return -1;
