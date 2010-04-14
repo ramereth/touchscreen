@@ -243,10 +243,10 @@ function {{screen.hash}}()
                 );
 
                 // place the tile in the middle of the screen
-                $("#{{screen.hash}}_main").animate({'top':screenHeight()/2 -
-                    $("#{{screen.hash}}_main").outerHeight(true)/2},0);
-                $("#{{screen.hash}}_main").animate({'left':screenWidth()/2 -
-                    $("#{{screen.hash}}_main").outerWidth(true)/2},0);
+                $("#{{screen.hash}}_main").css('top', screenHeight()/2 -
+                    $("#{{screen.hash}}_main").outerHeight(true)/2);
+                $("#{{screen.hash}}_main").css('left', screenWidth()/2 -
+                    $("#{{screen.hash}}_main").outerWidth(true)/2);
             });
 
             // fade back in the main title and image
