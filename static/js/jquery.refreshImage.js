@@ -193,8 +193,9 @@
                         // get rid of any previous refresh image cruft
                         var cleanSrc = image.attr('src').replace(/\#.*$/,"");
 
-                        // generate a random hash
-                        var newSrc = cleanSrc + '#' + Math.random();
+                        // make the image unique
+                        var d = new Date()
+                        var newSrc = cleanSrc + '#' + d.getTime();
 
                         // set the new source
                         image.attr( 'src', newSrc );
