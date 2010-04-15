@@ -103,8 +103,12 @@ body.show_cursor {
     margin-bottom: 3px;
 }
 
-.display_img_thumb_caption{
+.display_img_thumb_caption_top{
     margin-bottom: 3px;
+}
+
+.display_img_thumb_caption_bottom{
+    margin-top: 3px;
 }
 
 .display_img, .display_img_thumb{

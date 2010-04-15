@@ -129,32 +129,43 @@ function {{screen.hash}}()
         for( var i=0; i < webcams.length; i++ ){
 
             // write top row
-            if( i < webcams.length/2 )
+            if( i < webcams.length/2 ){
                 $("#{{screen.hash}}_thumbs").append(
                     "<div id='{{screen.hash}}_thumb_" + i +
                         "' class='{{screen.hash}}_top_thumbs " +
                         "display_img_thumb display_tile '></div>"
                 );
 
+                $("#{{screen.hash}}_thumb_"+i).append(
+                    "<div class='display_img_thumb_caption_top'>" +
+                        webcams[i].title +
+                    "</div>" + 
+                 
+                    "<img class='{{screen.hash}}_img'"+
+                        "src='"+ webcams[i].image +"'"+
+                        "height={{screen.thumbnail_height}}"+
+                        "width={{screen.thumbnail_width}}>"
+                );
+
             // write bottom row
-            else
+            } else {
                 $("#{{screen.hash}}_thumbs").append(
                     "<div id='{{screen.hash}}_thumb_" + i +
                         "' class='{{screen.hash}}_bottom_thumbs " +
                         "display_img_thumb display_tile'></div>"
                 );
 
-            // write contents
-            $("#{{screen.hash}}_thumb_"+i).append(
-                "<div class='display_img_thumb_caption'>" +
-                    webcams[i].title +
-                "</div>" + 
-             
-                "<img class='{{screen.hash}}_img'"+
-                    "src='"+ webcams[i].image +"'"+
-                    "height={{screen.thumbnail_height}}"+
-                    "width={{screen.thumbnail_width}}>"
-            );
+                $("#{{screen.hash}}_thumb_"+i).append(
+                    "<img class='{{screen.hash}}_img'"+
+                        "src='"+ webcams[i].image +"'"+
+                        "height={{screen.thumbnail_height}}"+
+                        "width={{screen.thumbnail_width}}>" +
+                        
+                    "<div class='display_img_thumb_caption_bottom'>" +
+                        webcams[i].title +
+                    "</div>"
+                );
+            }
         }
         
         // intitialize debug tile click handling
