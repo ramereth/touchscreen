@@ -464,8 +464,10 @@
             {
                 // toggle the debug window by pressing 'd'. Hidden by default.
                 $('html').keypress(function(event){
-                    if (event.which == 100)
+                    if (event.which == 100){
                         $("#debug_window").slideToggle("slow");
+                        $('body').addClass('show_cursor');
+                    }
                 });
                 
                 // Debug window controls
