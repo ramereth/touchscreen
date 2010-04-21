@@ -460,16 +460,52 @@
                 scr.init();
             }
 
-            function init_debug()
+            function init_keypress()
             {
-                // toggle the debug window by pressing 'd'. Hidden by default.
+                // handle letter keys
                 $('html').keypress(function(event){
-                    if (event.which == 100){
-                        $("#debug_window").slideToggle("slow");
-                        $('body').addClass('show_cursor');
+
+                    switch( event.which ){
+
+                        // if the 'c' key is pressed, show the cursor. Hidden
+                        // by default.
+                        case 99:
+                            if( $('body').hasClass('show_cursor') )
+                                $('body').removeClass('show_cursor');
+                            else
+                                $('body').addClass('show_cursor');
+                            break;
+
+                        // if the 'd' key is pressed, show the debug window and
+                        // the cursor
+                        case 100:
+                            $("#debug_window").slideToggle("slow");
+                            $('body').addClass('show_cursor');
+                            break;
                     }
                 });
-                
+
+                // handle arrow keys
+                $('html').keydown(function(event){
+                    switch( event.which ){
+                                                    
+                        // if left key is pressed, go to previous slide
+                        case 37:
+                            slideshow_stop();
+                            slideshow_prev();
+                            break;
+
+                        // if the right key is pressed, go to next slide
+                        case 39:
+                            slideshow_stop();
+                            slideshow_next();
+                            break;
+                    }
+                });
+            }
+
+            function init_debug()
+            {                
                 // Debug window controls
                 $('.debug_buttons').hover(
                     function(){$(this).addClass("ui-state-hover");},
@@ -528,16 +564,8 @@
                 // start waiting for messages
                 get_message();
 
-                // show the cursor if the 'c' key is pressed. Hidden by default.
-                $('html').keypress(function(event){
-                    if (event.which == 99) {
-                        if ($('body').hasClass('show_cursor')){
-                            $('body').removeClass('show_cursor');
-                        } else {
-                            $('body').addClass('show_cursor');
-                        }
-                    }
-                });
+                // initialize key press events
+                init_keypress();
 
                 // initialize the debug window
                 init_debug();
