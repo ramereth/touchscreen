@@ -45,6 +45,12 @@ class WeatherSettings(forms.Form):
         initial=5000
     )
 
+    maps_width = forms.IntegerField(
+        label='Maps Height',
+        help_text='The height of the maps',
+        initial=600
+    )
+
 
 class screens_weather(Screen):
     template='weather.html'

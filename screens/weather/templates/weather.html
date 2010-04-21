@@ -202,9 +202,6 @@ function {{screen.hash}}()
         // reposition all the tiles
         refreshTiles();
 
-        // start the image refresh cycle
-        $(".{{screen.hash}}_map").refreshImage("start");
-
         // start the map cycle
         this.startMapCycle();
         
@@ -220,9 +217,6 @@ function {{screen.hash}}()
 
         // stop the data refresh cycle
         stopRefreshingData();
-        
-        // stop the weather maps cycle and image refresh
-        $(".{{screen.hash}}_map").refreshImage('stop');
 
         // stop the map cycle
         stopMapCycle();
@@ -246,7 +240,8 @@ function {{screen.hash}}()
         // add an IMG tag for every map url
         for( var i=0; i<map_urls.length; i++ )
             $("#{{screen.hash}}_maps").append(
-                "<img class='{{screen.hash}}_map' src='"+map_urls[i]+"'>"
+                "<img class='{{screen.hash}}_map' src='"+map_urls[i]+"'"+
+                "width='"+{{screen.maps_width}}+"'>"
             );
 
         // Initialize the image refresher for the maps
@@ -262,6 +257,9 @@ function {{screen.hash}}()
     this.startMapCycle = function()
     // start the map refresh cycle
     {
+        // start the image refresh cycle
+        $(".{{screen.hash}}_map").refreshImage("start");
+        
         // grab the number of maps
         nr_maps = $(".{{screen.hash}}_map").length;
 
@@ -269,37 +267,36 @@ function {{screen.hash}}()
         // visible map is the last map, make the first one visible.
         $(".{{screen.hash}}_map").each(function(index, value){
             if( $(this).is(":visible") ){
-                $(this).fadeOut(function(){
-                    $(".{{screen.hash}}_map").eq((index+1)%nr_maps).fadeIn();
+                $(this).fadeOut("slow", function(){
+                    $(".{{screen.hash}}_map").eq((index+1)%nr_maps).fadeIn("slow");
                 });
                 return false; // break out of the each loop
             }
         });
 
-        //
+        // set a timer to fire this function again
+        stopMapCycle(); // clear the timer first
         mapRefreshTimer = setTimeout(
             '{{screen.hash}}.startMapCycle()',
             {{screen.maps_cycle_timeout}}
         );
     }
 
-    function stopMapCycle(){ clearTimeout(mapRefreshTimer) }
+    function stopMapCycle()
     // stop the map refresh cycle
+    {
+        // stop the weather maps cycle and image refresh
+        $(".{{screen.hash}}_map").refreshImage('stop');
+
+        // clear the map refresh timer
+        clearTimeout(mapRefreshTimer);
+    }
     
     function refreshTiles()
     // Repositions and resizes the tiles depending on their content.
     {
         safelog("weather: refreshing tiles...");
         
-        // size the maps tile to match the height of the cc tile, and the width
-        // of the smallest map
-        var largestWidth = 0;
-        $(".{{screen.hash}}_map").each(function()
-        {
-            if( $(this).width() > largestWidth )
-                largestWidth = $(this).width();
-        });
-        $("#{{screen.hash}}_maps").width( largestWidth );
         $("#{{screen.hash}}_maps").height( $("#{{screen.hash}}_cc").height() );
         $(".{{screen.hash}}_map").scale("center");
         
