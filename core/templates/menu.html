@@ -503,7 +503,11 @@
                 send('slideshow','play');
                 
                 // hide current menu
-                hide(breadcrumbs.pop());
+                $menu = breadcrumbs.pop();
+                if( $menu.attr('id') == 'help' ) // the menu is a special case
+                    hide_help();
+                else
+                    hide($menu);
                 
                 // pop all other menus off the breadcrumbs
                 while (breadcrumbs.length > 1) {
