@@ -82,7 +82,7 @@ function {{screen.hash}}()
     this.init = function()
     {        
         safelog('ftp_user_map: initializing...');
-        canvas = Raphael('{{screen.hash}}_canvas', 1360, 768);
+        canvas = Raphael('{{screen.hash}}_canvas', screenWidth(), screenHeight());
         $locations = $('#{{screen.hash}}_locations');
         $locations.serialScroll({
 		items:'li',
