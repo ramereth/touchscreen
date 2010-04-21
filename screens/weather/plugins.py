@@ -46,8 +46,8 @@ class WeatherSettings(forms.Form):
     )
 
     maps_width = forms.IntegerField(
-        label='Maps Height',
-        help_text='The height of the maps',
+        label='Maps Width',
+        help_text='The width of the maps',
         initial=600
     )
 
