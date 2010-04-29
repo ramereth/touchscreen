@@ -702,6 +702,35 @@
                 if (event.preventDefault)
                 event.preventDefault();
             }
+
+            function init_keypress()
+            {
+                $('html').keypress(function(event){
+                    if (event.which == 99) {
+                        if ($('body').hasClass('show_cursor')){
+                            $('body').removeClass('show_cursor');
+                        } else {
+                            $('body').addClass('show_cursor');
+                        }
+                    }
+                });
+                
+                // handle arrow keys
+                $('html').keydown(function(event){
+                    switch( event.which ){
+                                                    
+                        // if left key is pressed, go to previous slide
+                        case 37:
+                            send('slideshow','prev');
+                            break;
+                            
+                        // if the right key is pressed, go to next slide
+                        case 39:
+                            send('slideshow','next');
+                            break;
+                    }
+                });
+            }
             
             $(document).ready(function()
             {
@@ -730,15 +759,7 @@
                 breadcrumbs.push($mainmenu);
                 $mainmenu.delay(800).each(function(){show($(this))});
                 
-                $('html').keypress(function(event){
-                    if (event.which == 99) {
-                        if ($('body').hasClass('show_cursor')){
-                            $('body').removeClass('show_cursor');
-                        } else {
-                            $('body').addClass('show_cursor');
-                        }
-                    }
-                });
+                init_keypress();
             });
         </script>
     </head>
