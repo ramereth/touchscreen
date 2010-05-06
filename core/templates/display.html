@@ -253,7 +253,8 @@
                             error:message_error,
                             dataType:'json'
                         });
-                }
+                } else
+                    safelog("core messaging: disabled.");
             }
 
             function message_error() {
