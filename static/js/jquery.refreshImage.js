@@ -81,7 +81,7 @@
 
             // default options
             var defaultOptions = {
-                interval: 30000,    // default refresh interval
+                interval: 10000,    // default refresh interval
                 start: false        // start the refresh right away?
             }
 
@@ -103,6 +103,7 @@
                             "options.");
                     
                     image.data('refreshImage_options', defaultOptions );
+                    image.data('last_refresh', new Date().getTime());
                 }
 
                 //////////////////////
@@ -203,7 +204,8 @@
                         if(debug)
                             console.log("refreshImage: Refreshed image to " +
                             newSrc );
-                            
+                        
+                        image.data('last_refresh', new Date().getTime());
                     } else
                         if(debug) console.warn("refreshImage: src undefined.");
 
@@ -230,10 +232,14 @@
                     var options = image.data('refreshImage_options');
                     
                     stopRefreshing(); // clear the old timer
+                        
+                    // calculate time difference since last run
+                    now = new Date().getTime();
+                    next = options.interval - (now - image.data('last_refresh'));
                     
                     var timer = setTimeout(
-                        function(){refreshNow()},
-                        options.interval
+                        refreshNow,
+                        next
                     );
 
                     // save the timer in the image
