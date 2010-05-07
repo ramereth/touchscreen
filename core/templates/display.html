@@ -239,18 +239,22 @@
             
             function get_message()
             {
-                safelog("core messaging: eagerly awaiting next command.");
-                $.ajax({
-                        url:'{{settings.general.MSG_SERVER_URL|safe}}',
-                        data:{
-                            c:0,
-                            q:'{{settings.general.MSG_SERVER_QUEUE}}',
-                            u:user
-                        },
-                        success:message_received,
-                        error:message_error,
-                        dataType:'json'
-                    });
+                // only start messaging if messaging is enabled
+                if( "{{settings.general.MSG_SERVER_ENABLED}}" == "True" ){
+                    safelog("core messaging: eagerly awaiting next command.");
+                    $.ajax({
+                            url:'{{settings.general.MSG_SERVER_URL|safe}}',
+                            data:{
+                                c:0,
+                                q:'{{settings.general.MSG_SERVER_QUEUE}}',
+                                u:user
+                            },
+                            success:message_received,
+                            error:message_error,
+                            dataType:'json'
+                        });
+                } else
+                    safelog("core messaging: disabled.");
             }
 
             function message_error() {

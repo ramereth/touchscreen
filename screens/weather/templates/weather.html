@@ -327,9 +327,14 @@ function {{screen.hash}}()
             safelog( "weather: loading data..." );
         
             // get and prepare the weather feed URL
-            var weatherFeedURL = 
-                ("{{screen.weather_feed_URL}}&par={{screen.weather_feed_par_key_URL}}&key={{screen.weather_feed_main_key_URL}}")
-                .replace( /&amp\;/g, "&" );
+            {% autoescape off %}
+            var weatherFeedURL = "{{screen.weather_feed_URL}}" +
+                "&par={{screen.weather_feed_par_key_URL}}" +
+                "&key={{screen.weather_feed_main_key_URL}}";
+            {% endautoescape %}
+
+            safelog("weather: refreshData: Downloading weather feed from "+
+                weatherFeedURL);
             
             // get the feed
             $.get('/proxy/', {'url':weatherFeedURL}, function( feed ){

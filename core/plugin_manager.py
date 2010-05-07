@@ -27,7 +27,20 @@ class GeneralSettingsForm(forms.Form):
         help_text='Duration of time without activity before the slide show restarts',
         initial=10000
     )
-        
+
+    MSG_SERVER_ENABLED = forms.BooleanField(
+        label='Enable the Message Server?',
+        help_text='Control if Touchscreen bothers to communicate with the messaging server. (I.e. if you have no controller, just turn this off.)',
+        initial=True
+    )
+
+    MSG_SERVER_ENABLED = forms.ChoiceField(
+        label='Enable Messaging?',
+        help_text='Control if Touchscreen bothers to communicate with the messaging server. (I.e. if you have no controller, just turn this off.)',
+        choices=[ ( True, 'Yes' ), ( False, 'No' ) ],
+        initial='Yes'
+    )
+    
     MSG_SERVER_URL = forms.CharField(
         label='Message Server',
         help_text='The url of the message server',
