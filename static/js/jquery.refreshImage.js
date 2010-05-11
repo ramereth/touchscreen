@@ -237,18 +237,25 @@
                     now = new Date().getTime();
                     next = options.interval - (now - image.data('last_refresh'));
                     
-                    var timer = setTimeout(
-                        refreshNow,
-                        next
-                    );
-
-                    // save the timer in the image
-                    image.data( 'refreshImage_timer', timer );
-                    
-                    if(debug)          
-                        console.log("refreshImage: timer started. Next refresh"+
-                            " in "+options.interval+" milliseconds."
+                    if (next <= 0) {
+                        refreshNow();
+                        if(debug)  {
+                            console.log("refreshImage: timer started. refreshing now");
+                        }
+                    } else {
+                        var timer = setTimeout(
+                            refreshNow,
+                            next
                         );
+                        
+                        // save the timer in the image
+                        image.data( 'refreshImage_timer', timer );
+                        
+                        if(debug)
+                            console.log("refreshImage: timer started. Next refresh"+
+                                " in "+next+" milliseconds."
+                            );
+                    }
                 }
             });
         }
