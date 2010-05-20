@@ -1,26 +1,25 @@
-
+import os
+from django.conf import settings
 
 def get_plugin_static_dirs():
     """
-    function for building a list of paths for plugin static directories
-    This allows the paths to be added automatically rather than require
-    additional configuration for the plugins
+    This function builds a list of paths for django application static
+    directories, which allows the static paths to be added automatically.
     """
-    import os
-    from django.conf import settings
 
     paths = []
     for app in settings.INSTALLED_APPS:
         
+        # start with the document root
         path = '%s/' % settings.DOC_ROOT
-
-        if( len( app.split('.') ) > 1 ):
-            path += '%s/%s/' % (app.split('.')[-2], app.split('.')[-1])
-        else:
-            path += '%s/' % app.split('.')[-1]
         
+        # for every part of the application path, add it to the path
+        for pathChunk in app.split('.'):
+            path += '%s/' % pathChunk
+         
+        # top it off with the "static" folder we're testing for
         path += "static"
-
+ 
         # if the static dir exists, add it to the list
         if os.path.exists(path):
             paths.append((app, path))
