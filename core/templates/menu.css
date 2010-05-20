@@ -1,0 +1,163 @@
+* {
+    font-family: sans-serif;
+    margin:0;
+    padding:0;
+    
+}
+
+body {
+    background-image:url('{{MEDIA}}/images/background-gray-2x1.gif');
+    height:100%;
+    width:100%;
+    cursor:none;
+}
+
+body.show_cursor {
+    cursor:default;
+}
+
+.button {
+    background-color:transparent;
+    color:white;
+    font-size:16px;
+    height:124px;
+    padding-top:100px;
+    padding-left:5px;
+    padding-right:22px;
+    position:absolute;
+    text-align:center;
+    width:197px;
+    
+}
+
+.button_red {background-image:url('{{MEDIA}}/images/menu/buttons/button-red.png')}
+.button_blue {background-image:url('{{MEDIA}}/images/menu/buttons/button-blue.png')}
+.button_green {background-image:url('{{MEDIA}}/images/menu/buttons/button-green.png')}
+.button_yellow {background-image:url('{{MEDIA}}/images/menu/buttons/button-yellow.png')}
+.button_orange {background-image:url('{{MEDIA}}/images/menu/buttons/button-orange.png')}
+.button_purple {background-image:url('{{MEDIA}}/images/menu/buttons/button-purple.png')}
+
+#header {
+    padding: 20px;
+}
+
+#slideshow {
+    color:white;
+    float:right;
+    font-weight:bold;
+    text-align:center;
+}
+
+#slideshow img {
+    margin:15px 35px 0 0;
+}
+
+#status {
+    background-color:black;
+    border-bottom:1px solid white;
+    border-top:1px solid white;
+    color:white;
+    font-size:30px;
+    font-family: sans-serif;
+    height:40px;
+    padding:10px 0 0 20px;
+}
+
+#back {
+    color: white;
+    display:none;
+    position: absolute;
+    top: 200px;
+}
+
+#menus {
+    height:784px;
+    overflow:hidden;
+    position:absolute;
+    top:240px;
+    width:1240px;
+}
+
+#help {
+    position: absolute;
+    height: 500px;
+    left:50%;
+    margin-left:-400px;
+    overflow:hidden;
+    top:100px;
+    width:800px;
+}
+
+#help_display, #help_hand, #help_touchscreen, #help_button {
+    position: absolute;
+}
+
+#help_button {
+    background-color:#fd8d42;
+    display:none;
+    height:33px;
+    left:424px;
+    top:197px;
+    width:34px;
+}
+
+#help_display { top: 0px; }
+#help_touchscreen { top: 88px; }
+#help_hand {
+    left:413px;
+}
+
+#help_text {
+    color:white;
+    font-size:24px;
+}
+
+#help_text, #help_again {
+    margin-top:380px;
+    text-align:center;
+}
+
+#help_again {
+    font-size:28px;
+    margin-left:310;
+    width:180px;
+}
+
+#help_animation {
+    position: absolute;
+    border-left:2px solid #444444;
+    border-bottom:2px solid #444444;
+    height:150px;
+    left:120px;
+    position: absolute;
+    top: 75px;
+    width:200px;
+    overflow:hidden;
+}
+
+.help_bar {
+    height:150px;
+    position:absolute;
+    top:151px;
+    width:20px;
+}
+
+#help_bar1 {
+    background-color:#337EEF;
+    left:20px;
+}
+
+#help_bar2 {
+    background-color:#0EB066;
+    left:60px;
+}
+
+#help_bar3 {
+    background-color:#E55E00;
+    left:100px;
+}
+
+#help_bar4 {
+    background-color:#EFBC33;
+    left:140px;
+}
