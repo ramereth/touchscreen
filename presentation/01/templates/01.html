@@ -1,0 +1,115 @@
+<script type="text/javascript">
+function {{screen.hash}}()
+{
+    ////////////
+    // Events //
+    ////////////
+    
+    this.init = function()
+    {
+        safelog('{{screen.hash}}: initializing...');
+        refreshTiles();
+    }
+
+    this.start = function()
+    {
+        safelog('{{screen.hash}}: starting...');
+        refreshTiles();
+    }
+
+    this.stop = function()
+    {
+        // output some debug info to the firebug console
+        safelog('{{screen.hash}}: stopping...');
+    }
+    
+    this.resize = function()
+    {
+        refreshTiles();
+    }
+    
+    
+    //////////////////
+    // Facilitators //
+    //////////////////
+    
+    function refreshTiles() {
+
+        // if the optimal reading with fits inside the screen size
+        if( {{settings.general.MAX_OPTIMAL_WIDTH}} <= screenWidth() ){
+
+            // size the tiles to global optimal reading width
+            $("#{{screen.hash}}_title").width(
+                {{settings.general.MAX_OPTIMAL_WIDTH}} -
+                ($("#{{screen.hash}}_title").outerWidth(true) -
+                $("#{{screen.hash}}_title").width())
+            );
+            
+            $("#{{screen.hash}}_body").width(
+                {{settings.general.MAX_OPTIMAL_WIDTH}} -
+                ($("#{{screen.hash}}_body").outerWidth(true) -
+                $("#{{screen.hash}}_body").width())
+            );
+            
+            // horizontally center the tiles
+            $("#{{screen.hash}}_title").css('left', screenWidth()/2 - 
+                $("#{{screen.hash}}_title").outerWidth(true)/2 );
+            
+            $("#{{screen.hash}}_body").css('left', screenWidth()/2 - 
+                $("#{{screen.hash}}_body").outerWidth(true)/2 );
+
+        // squeeze the tiles
+        } else {
+
+            $("#{{screen.hash}}_title").width(
+                screenWidth() -
+                ($("#{{screen.hash}}_title").outerWidth(true) -
+                $("#{{screen.hash}}_title").width())
+            );
+            
+            $("#{{screen.hash}}_body").width(
+                screenWidth() -
+                ($("#{{screen.hash}}_body").outerWidth(true) -
+                $("#{{screen.hash}}_body").width())
+            );
+        }
+        
+        // Horizontally position the body tile so it's exactly in-between the 
+        // bottom of the title, and the bottom of the screen
+        $("#{{screen.hash}}_body").css('top', 
+            (screenHeight()-$("#{{screen.hash}}_title").outerHeight(true))/2 - 
+            ($("#{{screen.hash}}_body").outerHeight(true))/2 +
+            $("#{{screen.hash}}_title").outerHeight(true)-
+            ($("#{{screen.hash}}_title").outerHeight(true)-
+            $("#{{screen.hash}}_title").outerHeight())/4);
+        
+
+    }
+    
+} {{screen.hash}} = new {{screen.hash}}();
+
+</script>
+
+<div id="{{screen.hash}}_title" class="display_title display_tile">
+    About the OSL
+</div>
+
+<div id="{{screen.hash}}_body" class="display_tile display_content">
+
+    <img id="{{screen.hash}}_edRayImg" 
+        src="{{MEDIA}}/presentation/01/EdRay.png">
+
+    <p>
+        The Oregon State University Open Source Lab is the home of growing, high-impact open source communities. Its world-class hosting services enable the Linux operating system, Apache web server, the Drupal content management system and over 50 other leading open source software projects to collaborate with contributors and distribute software to millions of users globally. Through custom software development, vendor partnerships and industry events like the Government Open Source Conference (GOSCON), the Lab's staff and students encourage open source adoption in education, government, health care and other sectors.
+    </p>
+    
+    <h1>Mission</h1>
+    <p>
+        The mission of the Oregon State University Open Source Lab is to accelerate the growth of high-impact open source software projects worldwide through professional hosting services, custom development and industry expertise provided by the staff and students of Oregon State University.
+    </p>
+    
+    <h1>More Information</h1>
+    <p>
+        For more information, please visit http://osuosl.org.
+    </p>
+</div>
